@@ -27,7 +27,7 @@ function escapeHtml(value: string) {
 
 function buildPlainTextLead(payload: Required<Omit<ContactPayload, "website">>) {
   return [
-    "Новая заявка с frolofpavel.ru",
+    "Новая заявка с pavelfrolof.ru",
     "",
     `Имя: ${payload.name}`,
     `Email: ${payload.email}`,
@@ -40,7 +40,7 @@ function buildPlainTextLead(payload: Required<Omit<ContactPayload, "website">>) 
 
 function buildHtmlLead(payload: Required<Omit<ContactPayload, "website">>) {
   return [
-    "<h2>Новая заявка с frolofpavel.ru</h2>",
+    "<h2>Новая заявка с pavelfrolof.ru</h2>",
     `<p><strong>Имя:</strong> ${escapeHtml(payload.name)}</p>`,
     `<p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>`,
     `<p><strong>Проект / компания:</strong> ${escapeHtml(payload.company || "Не указано")}</p>`,

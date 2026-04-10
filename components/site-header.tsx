@@ -15,7 +15,7 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="container site-header__inner">
         <Link href="/" className="brand" aria-label="Павел Фролов — главная">
-          <span className="brand__eyebrow">frolofpavel.ru</span>
+          <span className="brand__eyebrow">pavelfrolof.ru</span>
           <span className="brand__name">{siteConfig.name}</span>
         </Link>
 

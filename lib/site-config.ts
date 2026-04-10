@@ -10,7 +10,7 @@ export const siteConfig: SiteConfig = {
   whatsapp: "https://wa.me/78005003138",
   vk: "https://vk.com/frolofpavel",
   instagram: "https://instagram.com/frolofpavel",
-  baseUrl: "https://frolofpavel.ru",
+  baseUrl: "https://pavelfrolof.ru",
   hero: {
     eyebrow: "Павел Фролов / Novoe",
     title: "Собираю сайты и digital-системы, которые помогают объяснять ценность и получать обращения.",

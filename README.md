@@ -1,4 +1,4 @@
-# frolofpavel.ru
+# pavelfrolof.ru
 
 Персональный сайт Павла Фролова на `Next.js` с блогом, кейсами, страницами услуг и контактной формой.
 
@@ -58,7 +58,7 @@ https://ваш-домен/proposals/имя-файла.html
 Пример:
 
 - файл: `public/proposals/kp-smart-v2.html`
-- ссылка: `https://frolofpavel.ru/proposals/kp-smart-v2.html`
+- ссылка: `https://pavelfrolof.ru/proposals/kp-smart-v2.html`
 
 Это самый быстрый способ публиковать клиентские КП, если они уже собираются отдельно и на выходе дают готовый HTML.
 
