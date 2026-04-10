@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Павел Фролов × SMart — План роста</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a10;--bg2:#111118;--bg3:#18181f;--bg4:#1f1f28;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
+  --text:#e0e0f0;--muted:#6a6a88;
+  --accent:#6c63ff;--accent2:#9d97ff;
+  --green:#3ecf8e;--warn:#f0b429;--danger:#e05555;--white:#fff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.02) 2px,rgba(0,0,0,0.02) 4px);pointer-events:none;z-index:999}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,16,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-top{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:50px;border-bottom:1px solid var(--border)}
+.nav-logo-txt{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--accent2);letter-spacing:-.01em}
+.nav-logo-sep{display:inline-block;width:1px;height:18px;background:var(--border2);margin:0 12px;vertical-align:middle}
+.nav-logo-name{font-size:12px;color:var(--muted)}
+.nav-arrows{display:flex;align-items:center;gap:6px}
+.nav-arrow{width:30px;height:30px;border:1px solid var(--border2);background:none;color:var(--muted);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:.2s;font-family:inherit}
+.nav-arrow:hover{color:var(--accent2);border-color:rgba(108,99,255,.4)}
+.nav-counter{font-size:11px;color:var(--muted);padding:0 8px;min-width:44px;text-align:center}
+.nav-bottom{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap}
+.nav-link{padding:7px 12px;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:.2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Inter',sans-serif;letter-spacing:.02em}
+.nav-link:hover{color:var(--text)}
+.nav-link.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.nav-num{font-size:9px;opacity:.4;margin-right:5px}
+
+.page{display:none;min-height:calc(100vh - 94px)}
+.page.active{display:block}
+.wrap{max-width:1100px;margin:0 auto;padding:0 32px}
+.sec-pad{padding:60px 0}
+
+.sec-tag{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+h2{font-family:'Syne',sans-serif;font-size:clamp(26px,3.5vw,38px);font-weight:800;color:var(--white);line-height:1.1;letter-spacing:-.02em;margin-bottom:32px}
+h3{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:12px}
+h4{font-size:15px;font-weight:600;color:var(--white);margin-bottom:8px}
+p{color:#8080a8;margin-bottom:14px;font-size:14px}
+p:last-child{margin-bottom:0}
+strong{color:var(--text)}
+
+.hl{background:linear-gradient(135deg,rgba(108,99,255,.07),rgba(108,99,255,.03));border:1px solid rgba(108,99,255,.18);border-left:3px solid var(--accent);padding:28px 32px;margin:24px 0}
+.hl-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;color:var(--white);margin-bottom:10px;line-height:1.3}
+.hl p{color:var(--text);font-size:14px;margin:0}
+
+.hl-warn{background:linear-gradient(135deg,rgba(240,180,41,.07),rgba(240,180,41,.03));border:1px solid rgba(240,180,41,.2);border-left:3px solid var(--warn);padding:20px 24px;margin:16px 0}
+.hl-warn p{color:var(--text);font-size:14px;margin:0}
+
+.cg2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.cg3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:28px}
+.cg4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:28px}
+.card{background:var(--bg2);padding:26px 28px;transition:.2s}
+.card:hover{background:var(--bg3)}
+.cg3 .card,.cg4 .card{border:none}
+.card-num{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:var(--accent2);line-height:1;margin-bottom:8px}
+.card-num.green{color:var(--green)}
+.card-num.warn{color:var(--warn)}
+
+.divider{display:flex;align-items:center;gap:14px;margin:32px 0}
+.div-line{flex:1;height:1px;background:var(--border)}
+.div-text{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+.tag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:2px}
+.tag-g{background:rgba(62,207,142,.12);color:var(--green)}
+.tag-w{background:rgba(240,180,41,.12);color:var(--warn)}
+.tag-r{background:rgba(224,85,85,.12);color:var(--danger)}
+.tag-p{background:rgba(108,99,255,.15);color:var(--accent2)}
+
+/* COVER */
+.cover{min-height:calc(100vh - 94px);display:flex;flex-direction:column;justify-content:space-between;padding:60px 0 44px}
+.cover-grid{display:grid;grid-template-columns:1fr 300px;gap:60px;align-items:start}
+.cover-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent2);border:1px solid rgba(108,99,255,.22);padding:7px 14px;margin-bottom:32px}
+.cover-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.cover-h1{font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,62px);font-weight:800;line-height:1.02;letter-spacing:-.025em;color:var(--white);margin-bottom:24px}
+.cover-h1 em{font-style:normal;background:linear-gradient(135deg,#6c63ff,#9d97ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cover-sub{font-size:16px;color:var(--muted);line-height:1.7;max-width:500px;margin-bottom:32px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;padding:6px 14px;border:1px solid var(--border2);color:var(--muted)}
+.chip-p{border-color:rgba(108,99,255,.3);color:var(--accent2)}
+.chip-g{border-color:rgba(62,207,142,.3);color:var(--green)}
+.kpi-box{background:var(--border);display:flex;flex-direction:column;gap:1px;margin-top:60px}
+.kpi-cell{background:var(--bg2);padding:20px 24px;display:flex;flex-direction:column;gap:5px}
+.kpi-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent2);line-height:1}
+.kpi-val.green{color:var(--green)}
+.kpi-label{font-size:11px;color:var(--muted)}
+.cover-bottom{border-top:1px solid var(--border);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.author{display:flex;align-items:center;gap:14px}
+.avatar{width:42px;height:42px;border-radius:50%;background:var(--bg4);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent2)}
+.author-name{font-weight:600;color:var(--white);font-size:14px}
+.author-title{font-size:12px;color:var(--muted)}
+
+/* FUNNEL */
+.funnel{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);margin:24px 0}
+.funnel-row{background:var(--bg2);display:grid;grid-template-columns:200px 80px 1fr;align-items:center;gap:0}
+.funnel-row>div{padding:18px 20px;border-right:1px solid var(--border)}
+.funnel-row>div:last-child{border-right:none}
+.funnel-row.hdr{background:var(--bg3)}
+.funnel-row.hdr>div{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.f-stage{font-weight:600;color:var(--white);font-size:14px}
+.f-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent2);line-height:1}
+.f-desc{font-size:13px;color:#8080a8}
+.f-arrow{display:flex;justify-content:center;align-items:center;font-size:20px;color:var(--accent);padding:8px!important;border-right:none!important}
+
+/* BUDGET TABLE */
+.budget-wrap{overflow-x:auto;margin:24px 0}
+.budget-table{width:100%;border-collapse:collapse;font-size:13px;min-width:700px}
+.budget-table th{text-align:left;padding:10px 14px;font-size:9px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border2)}
+.budget-table td{padding:14px;border-bottom:1px solid var(--border);color:#8080a8;vertical-align:top}
+.budget-table td:first-child{color:var(--text);font-weight:500}
+.budget-table tr:hover td{background:rgba(108,99,255,.02)}
+.budget-table tr.section-hdr td{background:var(--bg3);color:var(--accent2)!important;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:8px 14px}
+.budget-table tr.total td{background:var(--bg4);font-weight:700;color:var(--white)!important;border-top:1px solid var(--border2)}
+.budget-table tr.total td:first-child{color:var(--accent2)!important}
+.val-g{color:var(--green);font-weight:600}
+.val-w{color:var(--warn);font-weight:600}
+.val-p{color:var(--accent2);font-weight:600}
+
+/* SCENARIOS */
+.scenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:24px 0}
+.scenario{background:var(--bg2);padding:28px 24px;position:relative;overflow:hidden}
+.scenario.active-sc{background:var(--bg3);border:1px solid rgba(108,99,255,.3)}
+.scenario-label{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px}
+.scenario-budget{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;line-height:1;margin-bottom:6px}
+.scenario-leads{font-size:14px;margin-bottom:16px}
+.scenario-items{list-style:none;padding:0}
+.scenario-items li{font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative}
+.scenario-items li::before{content:'→';position:absolute;left:0;color:var(--accent);font-size:10px;top:5px}
+.scenario-badge{position:absolute;top:16px;right:16px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px}
+
+/* RESULTS TABLE */
+.results{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:24px 0}
+.results-col{background:var(--bg2);padding:0}
+.results-hdr{padding:16px 20px;background:var(--bg3);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}
+.results-row{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.results-row:last-child{border-bottom:none}
+.results-label{color:var(--muted)}
+.results-val{font-weight:700}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--border);margin-left:16px;margin-top:24px}
+.tl-item{position:relative;padding:0 0 32px 36px}
+.tl-dot{position:absolute;left:-5px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl-week{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.tl-title{font-size:16px;font-weight:700;color:var(--white);margin-bottom:10px;font-family:'Syne',sans-serif}
+.tl-list{list-style:none;padding:0}
+.tl-list li{font-size:13px;color:var(--muted);padding:3px 0 3px 14px;position:relative}
+.tl-list li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+
+/* AUDIT */
+.audit-ring{display:flex;align-items:center;gap:32px;margin:22px 0}
+.ring{position:relative;width:110px;height:110px;flex-shrink:0}
+.ring svg{transform:rotate(-90deg)}
+.ring-lbl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-val{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--white);line-height:1}
+.ring-sub{font-size:10px;color:var(--muted)}
+.audit-items{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);margin:14px 0}
+.audit-item{display:grid;grid-template-columns:30px 1fr 180px 72px;background:var(--bg2);align-items:center}
+.audit-item>div{padding:12px 14px}
+.audit-ico{font-size:14px}
+.audit-name{font-size:13px;color:var(--text);font-weight:500}
+.audit-note{font-size:12px;color:var(--muted)}
+.audit-score{font-size:12px;font-weight:700;text-align:right}
+.s-ok{color:var(--green)}.s-w{color:var(--warn)}.s-bad{color:var(--danger)}
+.audit-hdr{background:var(--bg3)!important}
+.audit-hdr>div{font-size:9px!important;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)!important;font-weight:600!important}
+
+/* COMP */
+.comp-card{background:var(--bg2);border:1px solid var(--border);padding:26px 30px;margin-bottom:12px}
+.comp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:16px;flex-wrap:wrap}
+.comp-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--white)}
+.comp-url{font-size:12px;color:var(--muted);margin-top:2px}
+.comp-score-val{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:var(--accent2);line-height:1}
+.comp-score-sub{font-size:11px;color:var(--muted);text-align:right}
+.comp-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:14px}
+.comp-cell{background:var(--bg3);padding:14px 16px}
+.comp-cell-label{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.comp-cell-val{font-size:13px;color:var(--text)}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.pros,.cons{background:var(--bg3);padding:16px 18px}
+.pros{border-top:2px solid var(--green)}
+.cons{border-top:2px solid var(--danger)}
+.pros-title,.cons-title{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.pros-title{color:var(--green)}.cons-title{color:var(--danger)}
+.pros ul,.cons ul{list-style:none;padding:0}
+.pros li,.cons li{font-size:13px;color:#8080a8;padding:3px 0 3px 16px;position:relative}
+.pros li::before{content:'+';position:absolute;left:0;color:var(--green);font-weight:700}
+.cons li::before{content:'−';position:absolute;left:0;color:var(--danger);font-weight:700}
+
+/* OFFERS & ADS */
+.offer-card{background:var(--bg2);border:1px solid var(--border);border-left:2px solid var(--accent);padding:22px 26px;margin-bottom:10px;position:relative;overflow:hidden;transition:.2s}
+.offer-card:hover{border-color:rgba(108,99,255,.4);transform:translateY(-2px)}
+.offer-card::after{content:attr(data-n);position:absolute;right:16px;top:-8px;font-family:'Syne',sans-serif;font-size:68px;font-weight:800;color:rgba(108,99,255,.04);line-height:1;pointer-events:none}
+.offer-type{font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.offer-text{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:7px}
+.offer-sub{font-size:13px;color:#8080a8}
+.ad-platform{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:24px 0 12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.ad-platform::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.ad-card{background:var(--bg2);border:1px solid var(--border);padding:17px 20px;margin-bottom:6px}
+.ad-head{font-weight:600;color:var(--white);font-size:14px;margin-bottom:5px}
+.ad-body{font-size:13px;color:#8080a8;margin-bottom:5px}
+.ad-cta{font-size:12px;color:var(--accent2);font-weight:500}
+
+/* POS MAP */
+.pos-map{aspect-ratio:1;max-width:440px;margin:24px auto;border:1px solid var(--border);position:relative;background:var(--bg2)}
+.pos-map::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border2)}
+.pos-map::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--border2)}
+.pos-l{position:absolute;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.pos-l.top{top:10px;left:50%;transform:translateX(-50%)}
+.pos-l.bot{bottom:10px;left:50%;transform:translateX(-50%)}
+.pos-l.lft{left:10px;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg)}
+.pos-l.rgt{right:10px;top:50%;writing-mode:vertical-rl;transform:translateY(-50%)}
+.pos-dot{position:absolute;border-radius:50%;transform:translate(-50%,-50%)}
+.pos-dot::after{content:attr(data-label);position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:10px;white-space:nowrap;color:var(--text);background:var(--bg3);padding:2px 8px;border:1px solid var(--border2)}
+.pos-dot.comp{width:10px;height:10px;background:var(--muted)}
+.pos-dot.client{width:16px;height:16px;background:var(--accent);box-shadow:0 0 14px rgba(108,99,255,.5)}
+
+/* DT */
+.dt{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}
+.dt th{text-align:left;padding:9px 14px;font-size:9px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border2)}
+.dt td{padding:13px 14px;border-bottom:1px solid var(--border);color:#8080a8;vertical-align:top}
+.dt td:first-child{color:var(--text);font-weight:500}
+.dt tr:hover td{background:rgba(108,99,255,.02)}
+
+/* PROTO */
+.proto-wrap{border:1px solid var(--border2);overflow:hidden;margin:22px 0}
+.proto-browser{background:var(--bg3);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.proto-dots{display:flex;gap:5px}
+.proto-dot{width:9px;height:9px;border-radius:50%}
+.proto-url-bar{flex:1;background:var(--bg4);border-radius:3px;padding:5px 12px;font-size:11px;color:var(--muted);margin:0 16px}
+.proto-body{background:#090910}
+.proto-nav{background:#06060c;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:54px;border-bottom:1px solid rgba(108,99,255,.1)}
+.proto-nav-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--accent2)}
+.proto-nav-links{display:flex;gap:22px}
+.proto-nav-link{font-size:12px;color:rgba(255,255,255,.35)}
+.proto-nav-cta{background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:8px 18px}
+.proto-hero{padding:60px 28px 44px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(108,99,255,.08) 0%,transparent 70%);border-bottom:1px solid rgba(108,99,255,.08)}
+.proto-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--accent2);border:1px solid rgba(108,99,255,.2);padding:5px 12px;margin-bottom:16px;letter-spacing:.12em;text-transform:uppercase}
+.proto-h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:12px}
+.proto-sub{font-size:14px;color:rgba(255,255,255,.4);max-width:480px;margin:0 auto 24px}
+.proto-ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.proto-btn-p{background:var(--accent);color:#fff;font-size:12px;font-weight:700;padding:13px 26px}
+.proto-btn-s{border:1px solid rgba(108,99,255,.3);color:var(--accent2);font-size:12px;padding:13px 26px}
+.proto-trust{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.05);font-size:12px;color:rgba(255,255,255,.3);flex-wrap:wrap}
+.proto-stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(108,99,255,.08)}
+.proto-stat{padding:20px;text-align:center;border-right:1px solid rgba(255,255,255,.05)}
+.proto-stat:last-child{border-right:none}
+.proto-stat-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--accent2);line-height:1;margin-bottom:4px}
+.proto-stat-label{font-size:11px;color:rgba(255,255,255,.3)}
+.proto-tabs{background:#0c0c14;border-bottom:1px solid rgba(108,99,255,.08);display:flex}
+.proto-tab{padding:14px 22px;font-size:12px;font-weight:600;color:rgba(255,255,255,.35);cursor:pointer;border-bottom:2px solid transparent;transition:.2s}
+.proto-tab.sel{color:var(--accent2);border-bottom-color:var(--accent)}
+.proto-content-area{padding:32px 28px;display:grid;grid-template-columns:1fr 1fr;gap:24px;border-bottom:1px solid rgba(108,99,255,.08)}
+.proto-services{display:flex;flex-direction:column;gap:8px}
+.proto-service{background:#111118;border:1px solid rgba(108,99,255,.08);padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.2s}
+.proto-service:hover{border-color:var(--accent);background:rgba(108,99,255,.06)}
+.proto-service-icon{font-size:22px;flex-shrink:0}
+.proto-service-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px}
+.proto-service-sub{font-size:11px;color:rgba(255,255,255,.3)}
+.proto-calc{background:#111118;border:1px solid rgba(108,99,255,.1);padding:22px}
+.proto-calc-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:14px}
+.proto-input{width:100%;background:#06060c;border:1px solid rgba(108,99,255,.15);padding:10px 14px;font-size:13px;color:#fff;margin-bottom:8px;font-family:'Inter',sans-serif}
+.proto-calc-result{background:rgba(108,99,255,.08);border:1px solid rgba(108,99,255,.15);padding:14px;margin-top:12px;text-align:center}
+.proto-calc-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent2)}
+.proto-calc-label{font-size:11px;color:rgba(255,255,255,.4)}
+.proto-cta-bar{background:var(--accent);padding:28px;text-align:center}
+.proto-cta-h{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:5px}
+.proto-cta-s{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:14px}
+.proto-cta-btn{display:inline-block;background:#fff;color:var(--accent);font-size:12px;font-weight:700;padding:11px 22px;letter-spacing:.06em;text-transform:uppercase}
+
+/* CTA FINAL */
+.cta-final{background:linear-gradient(135deg,#6c63ff,#9d97ff);padding:52px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.cta-final h2{font-family:'Syne',sans-serif;font-size:clamp(20px,3vw,32px);font-weight:800;color:#fff;margin-bottom:6px}
+.cta-final p{color:rgba(255,255,255,.7);font-size:14px;margin:0}
+.cta-btn{display:inline-block;background:#fff;color:var(--accent);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:15px 30px;text-decoration:none;white-space:nowrap}
+.cta-btn:hover{transform:translateY(-2px)}
+
+footer{border-top:1px solid var(--border);padding:24px 0}
+.foot-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.foot-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--white)}
+.foot-contacts{display:flex;gap:22px;flex-wrap:wrap}
+.foot-contact{font-size:13px;color:var(--muted)}
+.foot-contact a{color:var(--text);text-decoration:none}
+.foot-contact a:hover{color:var(--accent2)}
+
+@media(max-width:768px){
+  .wrap,.nav-top,.nav-bottom{padding-left:16px;padding-right:16px}
+  .cover-grid,.cg2,.cg3,.cg4,.scenarios,.results,.pros-cons,.comp-row{grid-template-columns:1fr}
+  .funnel-row,.audit-item{grid-template-columns:1fr}
+  .proto-content-area,.proto-stats{grid-template-columns:1fr}
+  .cta-final{flex-direction:column}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.page.active .wrap>*{animation:fadeUp .3s ease both}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-top">
+    <div>
+      <span class="nav-logo-txt">SMart</span>
+      <span class="nav-logo-sep"></span>
+      <span class="nav-logo-name">× Павел Фролов — CMO</span>
+    </div>
+    <div class="nav-arrows">
+      <button class="nav-arrow" onclick="go(currentPage-1)">←</button>
+      <span class="nav-counter" id="nav-counter">1 / 12</span>
+      <button class="nav-arrow" onclick="go(currentPage+1)">→</button>
+    </div>
+  </div>
+  <div class="nav-bottom">
+    <button class="nav-link active" onclick="go(0)"><span class="nav-num">00</span>Обложка</button>
+    <button class="nav-link" onclick="go(1)"><span class="nav-num">01</span>Анализ ниши</button>
+    <button class="nav-link" onclick="go(2)"><span class="nav-num">02</span>Конкуренты</button>
+    <button class="nav-link" onclick="go(3)"><span class="nav-num">03</span>Позиц. конкурентов</button>
+    <button class="nav-link" onclick="go(4)"><span class="nav-num">04</span>Позиционирование</button>
+    <button class="nav-link" onclick="go(5)"><span class="nav-num">05</span>Стратегия</button>
+    <button class="nav-link" onclick="go(6)"><span class="nav-num">06</span>Маркетинг-план</button>
+    <button class="nav-link" onclick="go(7)"><span class="nav-num">07</span>UX/UI аудит</button>
+    <button class="nav-link" onclick="go(8)"><span class="nav-num">08</span>SEO аудит</button>
+    <button class="nav-link" onclick="go(9)"><span class="nav-num">09</span>Офферы</button>
+    <button class="nav-link" onclick="go(10)"><span class="nav-num">10</span>Объявления</button>
+    <button class="nav-link" onclick="go(11)"><span class="nav-num">11</span>Прототип сайта</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- 00 ОБЛОЖКА -->
+<div class="page active" id="p0"><div class="wrap"><div class="cover">
+  <div class="cover-grid">
+    <div>
+      <div class="cover-badge">План роста · Апрель 2026 · После встречи</div>
+      <h1 class="cover-h1">Удваиваю квал. лиды<br><em>SMart</em> за 3 месяца</h1>
+      <p class="cover-sub">После встречи — конкретный план. Фокус: ломбард-направление. Яндекс.Директ которого сейчас нет + SEO. Бюджет 600 000 ₽/мес. Цель: 3 000 → 6 000 квал. лидов.</p>
+      <div class="chips">
+        <span class="chip chip-p">19 лет в performance-маркетинге</span>
+        <span class="chip chip-p">8–12 часов настройки в день</span>
+        <span class="chip chip-g">Расцветай — 7 500 лидов / мес</span>
+        <span class="chip chip-g">Steam — 3 000 лидов / день</span>
+        <span class="chip">Опыт: микрозаймы, ломбарды</span>
+      </div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-cell"><span class="kpi-val">3 000</span><span class="kpi-label">текущих квал. лидов / мес</span></div>
+      <div class="kpi-cell"><span class="kpi-val green">6 000</span><span class="kpi-label">цель через 3 месяца</span></div>
+      <div class="kpi-cell"><span class="kpi-val">600 000 ₽</span><span class="kpi-label">бюджет / мес</span></div>
+      <div class="kpi-cell"><span class="kpi-val">400 ₽</span><span class="kpi-label">целевой CPL</span></div>
+      <div class="kpi-cell"><span class="kpi-val">3 нед</span><span class="kpi-label">до первых клиентов</span></div>
+    </div>
+  </div>
+  <div class="cover-bottom">
+    <div class="author">
+      <div class="avatar">ПФ</div>
+      <div><div class="author-name">Павел Фролов</div><div class="author-title">Директор по маркетингу / CMO · 100 000 ₽ фикс + KPI</div></div>
+    </div>
+    <div style="font-size:12px;color:var(--muted)">wwwfrolof@yandex.ru · +7 (905) 939-08-74 · frolofpavel.ru</div>
+  </div>
+</div></div></div>
+
+<!-- 01 АНАЛИЗ НИШИ -->
+<div class="page" id="p1"><div class="wrap sec-pad">
+  <div class="sec-tag">01 — Анализ ниши</div>
+  <h2>Ломбард + комиссионный магазин:<br>срочная ниша с высокой конверсией</h2>
+  <div class="hl">
+    <div class="hl-title">84 000 человек в месяц ищут «ломбард» в Новосибирске — и никто не перехватывает этот спрос</div>
+    <p>На встрече был разобран ключевой инсайт: запрос «ломбард Новосибирск» ищут 5 500 чел/мес, общий спрос по кластеру «ломбард» в регионе — 84 000 чел/мес. Срочная ниша: человек ищет деньги здесь и сейчас, конверсия в звонок 20%+. SMart не присутствует в Яндекс.Директ вообще — это и есть главная точка роста.</p>
+  </div>
+  <div class="cg4">
+    <div class="card"><div class="card-num">84 000</div><h3>Спрос / мес</h3><p>Общий объём запросов по кластеру «ломбард» в Новосибирской области</p></div>
+    <div class="card"><div class="card-num green">5 500</div><h3>«Ломбард НСК»</h3><p>Прямой запрос «ломбард Новосибирск» — горячая аудитория готовая к визиту</p></div>
+    <div class="card"><div class="card-num warn">20%+</div><h3>Конверсия в звонок</h3><p>Срочная ниша: человек ищет деньги прямо сейчас → конверсия выше среднего</p></div>
+    <div class="card"><div class="card-num">400 ₽</div><h3>Целевой CPL</h3><p>Стоимость квалифицированного лида при правильно настроенном Директ</p></div>
+  </div>
+  <div class="hl-warn">
+    <p>⚠️ <strong>Текущая ситуация:</strong> SMart тратит 500 000 ₽/мес (300к 2GIS + 200к офлайн) и получает 16 000 лидов, из которых только 3 000 квалифицированных. Яндекс.Директ — <strong>не используется совсем</strong>. Это означает что весь поисковый спрос (84 000 чел/мес) уходит к конкурентам.</p>
+  </div>
+  <div class="divider"><div class="div-line"></div><div class="div-text">Целевые сегменты</div><div class="div-line"></div></div>
+  <table class="dt">
+    <thead><tr><th>Сегмент</th><th>Запросы</th><th>Срочность</th><th>Конверсия</th><th>Приоритет</th></tr></thead>
+    <tbody>
+      <tr><td>Срочный залог техники</td><td>«ломбард телефон», «залог смартфон»</td><td>🔴 Очень высокая</td><td>25–30%</td><td><span class="tag tag-g">★★★★★</span></td></tr>
+      <tr><td>Скупка / выкуп техники</td><td>«продать телефон быстро», «скупка ноутбук»</td><td>🔴 Высокая</td><td>20–25%</td><td><span class="tag tag-g">★★★★★</span></td></tr>
+      <tr><td>Покупатели б/у</td><td>«купить б/у iPhone», «ноутбук б/у НСК»</td><td>🟡 Средняя</td><td>3–5%</td><td><span class="tag tag-p">★★★★☆</span></td></tr>
+      <tr><td>Trade-in</td><td>«обменять телефон», «сдать старый купить новый»</td><td>🟡 Средняя</td><td>8–12%</td><td><span class="tag tag-p">★★★☆☆</span></td></tr>
+    </tbody>
+  </table>
+</div></div>
+
+<!-- 02 КОНКУРЕНТЫ -->
+<div class="page" id="p2"><div class="wrap sec-pad">
+  <div class="sec-tag">02 — Анализ конкурентов</div>
+  <h2>Кто сейчас получает<br>весь поисковый трафик</h2>
+  <div class="hl">
+    <div class="hl-title">Конкуренты показывают лучшие цены на сайте — хотя по факту условия хуже</div>
+    <p>Ключевой инсайт встречи: конкурент по скупке лома показывает 6 500 ₽ за 585 пробу, SMart показывает 5 400 ₽ — хотя реальные условия SMart лучше. Это проблема сайта, не продукта. Решение: актуализировать цены на сайте + добавить конкурентный оффер в объявления.</p>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">Ломбарды Новосибирска (конкурентный кластер)</div><div class="comp-url">топ Яндекса по запросу «ломбард Новосибирск»</div></div>
+      <div><div class="comp-score-val">72</div><div class="comp-score-sub">/ 100 ср. балл</div></div>
+    </div>
+    <div class="hl" style="margin:0 0 14px"><div class="hl-title" style="font-size:15px">«Деньги под залог — быстро и выгодно»</div><p>Конкуренты активно используют Яндекс.Директ и занимают весь поисковый трафик пока SMart платит за офлайн-рекламу. Главная уязвимость: показывают завышенные цены выкупа на сайте (декларативные), реальные условия хуже. SMart может выиграть на честности.</p></div>
+    <div class="comp-row">
+      <div class="comp-cell"><div class="comp-cell-label">Директ</div><div class="comp-cell-val">Активно используют</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Цена на сайте</div><div class="comp-cell-val">6 500 ₽ / 585 проба</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Реальные условия</div><div class="comp-cell-val">Хуже чем у SMart</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Их сильные стороны</div><ul><li>Присутствие в Яндекс.Директ</li><li>Завышенные цены на сайте (маркетинг)</li><li>Больший трафик из поиска</li></ul></div>
+      <div class="cons"><div class="cons-title">Их слабые стороны</div><ul><li>Реальные условия хуже заявленных</li><li>Меньше точек чем у SMart</li><li>Нет режима 24/7 у многих</li><li>Нет гарантии на б/у товары</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">2GIS (текущий канал SMart)</div><div class="comp-url">2gis.ru — 300 000 ₽/мес</div></div>
+      <div><div class="comp-score-val">65</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <div class="hl" style="margin:0 0 14px"><div class="hl-title" style="font-size:15px">Работает — но ограничен географией и типом запросов</div><p>2GIS даёт трафик людей которые уже знают что ищут ломбард/комиссионку рядом. Это тёплый трафик, но ограниченный — только те кто уже находится в поиске места, а не в поиске решения (деньги срочно).</p></div>
+    <div class="comp-row">
+      <div class="comp-cell"><div class="comp-cell-label">Текущий бюджет</div><div class="comp-cell-val">300 000 ₽/мес</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Тип аудитории</div><div class="comp-cell-val">«Ближайший ломбард»</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Охват</div><div class="comp-cell-val">Только гео-запросы</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Оставляем и оптимизируем</div><ul><li>Работает — проверено данными</li><li>Гео-трафик конвертируется хорошо</li><li>10+ карточек по районам НСК</li></ul></div>
+      <div class="cons"><div class="cons-title">Ограничения</div><ul><li>Не охватывает «срочные» запросы</li><li>Нет масштаба за пределы 2GIS</li><li>Две карточки (ломбард + комиссионка) — нужно разделить стратегию</li></ul></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- 03 ПОЗИЦИОНИРОВАНИЕ КОНКУРЕНТОВ -->
+<div class="page" id="p3"><div class="wrap sec-pad">
+  <div class="sec-tag">03 — Позиционирование конкурентов</div>
+  <h2>Карта рынка ломбардов<br>Новосибирска</h2>
+  <p>Карта по осям: охват (одна точка → сеть 10+) и прозрачность/доверие (непрозрачные условия → честные цены + гарантия).</p>
+  <div class="pos-map">
+    <span class="pos-l top">Большая сеть / Федеральный</span>
+    <span class="pos-l bot">Один ломбард</span>
+    <span class="pos-l lft">Непрозрачные условия</span>
+    <span class="pos-l rgt">Честные цены + гарантия</span>
+    <div class="pos-dot comp" style="left:25%;top:55%" data-label="Мелкие ломбарды"></div>
+    <div class="pos-dot comp" style="left:40%;top:35%" data-label="Сетевые ломбарды"></div>
+    <div class="pos-dot comp" style="left:55%;top:22%" data-label="2GIS-конкуренты"></div>
+    <div class="pos-dot client" style="left:78%;top:30%" data-label="SMart (цель) ✦"></div>
+  </div>
+  <div class="hl">
+    <div class="hl-title">Незанятая позиция — «честный сетевой ломбард с 10+ точками»</div>
+    <p>На рынке НСК нет игрока который одновременно: <strong>сеть 10+ точек + честные цены на сайте + 24/7 + гарантия на б/у + официальный договор</strong>. Конкуренты либо единичные, либо непрозрачные. Задача — транслировать реальные преимущества SMart через рекламу и сайт.</p>
+  </div>
+  <div class="divider"><div class="div-line"></div><div class="div-text">Ключевое действие</div><div class="div-line"></div></div>
+  <div class="hl-warn">
+    <p>💡 <strong>Быстрая победа (неделя 1):</strong> Обновить цены на сайте — поставить конкурентные цифры по золоту/ювелирке. Сейчас SMart показывает 5 400 ₽, конкуренты 6 500 ₽. Клиент идёт к конкурентам, а там реальные условия хуже. Исправление цен на сайте + запуск Директ = немедленный рост трафика.</p>
+  </div>
+</div></div>
+
+<!-- 04 ПОЗИЦИОНИРОВАНИЕ -->
+<div class="page" id="p4"><div class="wrap sec-pad">
+  <div class="sec-tag">04 — Позиционирование SMart</div>
+  <h2>Как SMart должен<br>себя позиционировать</h2>
+  <div class="hl">
+    <div class="hl-title">Два бренда — две аудитории — два оффера</div>
+    <p>SMart — это две компании в одном: <strong>Ломбард SMart</strong> (срочные деньги под залог) и <strong>Магазин SMart</strong> (покупка/продажа б/у техники). Каждая аудитория приходит с разной болью и разным поисковым запросом. Нужны два отдельных оффера, две посадочные страницы, две рекламные кампании.</p>
+  </div>
+  <div class="cg2">
+    <div class="card" style="border-top:2px solid var(--warn)">
+      <span class="tag tag-w">Ломбард SMart</span>
+      <h3 style="margin-top:14px">Аудитория ломбарда</h3>
+      <p>Нужны деньги срочно. Не хочет продавать навсегда — хочет заложить и выкупить. Боль: непрозрачные условия, страх потерять вещь. Запросы: «ломбард телефон НСК», «займ под залог».</p>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <div style="font-family:'Syne',sans-serif;font-size:15px;color:var(--white);line-height:1.3">«Деньги за 15 минут под залог — официальный договор, честный курс»</div>
+      </div>
+    </div>
+    <div class="card" style="border-top:2px solid var(--accent)">
+      <span class="tag tag-p">Магазин SMart</span>
+      <h3 style="margin-top:14px">Аудитория комиссионки</h3>
+      <p>Хочет продать технику сегодня без торгов на Авито. Или купить б/у с гарантией. Боль: риск обмана на Авито, долгое ожидание. Запросы: «скупка телефонов НСК», «купить б/у iPhone».</p>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <div style="font-family:'Syne',sans-serif;font-size:15px;color:var(--white);line-height:1.3">«Продайте технику сегодня — деньги сразу. Или купите б/у с гарантией 12 мес»</div>
+      </div>
+    </div>
+  </div>
+  <div class="divider"><div class="div-line"></div><div class="div-text">Доказательства</div><div class="div-line"></div></div>
+  <div class="cg4">
+    <div class="card"><div style="font-size:28px;margin-bottom:8px">24/7</div><p>Работаем круглосуточно — деньги можно получить в любое время</p></div>
+    <div class="card"><div style="font-size:28px;margin-bottom:8px">10+</div><p>Точек в Новосибирске — ближайший ломбард всегда рядом</p></div>
+    <div class="card"><div style="font-size:28px;margin-bottom:8px">15 мин</div><p>Оценка и выдача денег — без долгого ожидания</p></div>
+    <div class="card"><div style="font-size:28px;margin-bottom:8px">12 мес</div><p>Гарантия на б/у технику — как в обычном магазине</p></div>
+  </div>
+</div></div>
+
+<!-- 05 СТРАТЕГИЯ -->
+<div class="page" id="p5"><div class="wrap sec-pad">
+  <div class="sec-tag">05 — Стратегия</div>
+  <h2>Фокус: Яндекс.Директ + SEO<br>на ломбард-направление</h2>
+  <div class="hl">
+    <div class="hl-title">Деньгами проблему не решить — нужен маркетинг. Директ + сайт — это и есть маркетинг.</div>
+    <p>Вывод встречи: текущий бюджет (500к) тратится неэффективно — офлайн даёт некачественные лиды, 2GIS ограничен. Яндекс.Директ по запросу «ломбард» — срочная ниша с высокой конверсией — <strong>не запущен вообще</strong>. Это главная точка роста. SEO — долгосрочный трафик бесплатно через 2–3 месяца.</p>
+  </div>
+
+  <div class="divider"><div class="div-line"></div><div class="div-text">Расчёт воронки (Яндекс.Директ)</div><div class="div-line"></div></div>
+
+  <div class="funnel">
+    <div class="funnel-row hdr"><div>Этап</div><div>Цифра</div><div>Логика</div></div>
+    <div class="funnel-row"><div class="f-stage">🔍 Спрос</div><div class="f-num">84 000</div><div class="f-desc">Общий объём запросов «ломбард» в НСО в месяц</div></div>
+    <div class="funnel-row"><div class="f-stage">👁 Показы</div><div class="f-num">42 000</div><div class="f-desc">50% охвата — реалистичная доля при бюджете 300к</div></div>
+    <div class="funnel-row"><div class="f-stage">🖱 Клики</div><div class="f-num">6 300</div><div class="f-desc">CTR 15% на поиске в срочной нише — выше среднего</div></div>
+    <div class="funnel-row"><div class="f-stage">📞 Звонки</div><div class="f-num">1 260</div><div class="f-desc">Конверсия в звонок 20% — срочная ниша конвертирует хорошо</div></div>
+    <div class="funnel-row"><div class="f-stage">🏪 Визиты</div><div class="f-num">378</div><div class="f-desc">30% от звонков доходят до офиса — остальные передумали или выбрали ближе</div></div>
+  </div>
+  <p style="font-size:12px;color:var(--muted);margin-top:-12px">* Расчёт по методике обсуждённой на встрече. CPL = 300 000 ₽ / 1 260 звонков = <strong style="color:var(--accent2)">238 ₽ за звонок</strong></p>
+
+  <div class="divider"><div class="div-line"></div><div class="div-text">3 фазы реализации</div><div class="div-line"></div></div>
+
+  <div class="cg3" style="margin-top:24px">
+    <div class="card" style="border-top:2px solid var(--accent)">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:12px">Неделя 1 — Подготовка</div>
+      <h4>Изучение и стратегия</h4>
+      <ul style="list-style:none;padding:0">
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--accent)">→</span>Глубокий анализ ниши и конкурентов</li>
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--accent)">→</span>Финальная стратегия и план работ</li>
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--accent)">→</span>Обновление цен на сайте (5 400→актуал)</li>
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--accent)">→</span>Постановка задач команде</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:2px solid var(--warn)">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--warn);margin-bottom:12px">Неделя 2 — Производство</div>
+      <h4>«Ураганное производство»</h4>
+      <ul style="list-style:none;padding:0">
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--warn)">→</span>Запуск Яндекс.Директ: ломбард-кластер</li>
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--warn)">→</span>Новые страницы на сайте под SEO</li>
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--warn)">→</span>Настройка аналитики и коллтрекинга</li>
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--warn)">→</span>Собственные программисты в работе</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:2px solid var(--green)">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin-bottom:12px">Неделя 3 — Результаты</div>
+      <h4>Первые клиенты из Директ</h4>
+      <ul style="list-style:none;padding:0">
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>Видимые результаты из поиска</li>
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>Оптимизация ставок и объявлений</li>
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>Первый отчёт по CPL и конверсиям</li>
+        <li style="font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative"><span style="position:absolute;left:0;color:var(--green)">→</span>Масштабирование рабочих связок</li>
+      </ul>
+    </div>
+  </div>
+</div></div>
+
+<!-- 06 МАРКЕТИНГ-ПЛАН -->
+<div class="page" id="p6"><div class="wrap sec-pad">
+  <div class="sec-tag">06 — Маркетинговый план</div>
+  <h2>Бюджет 600 000 ₽/мес:<br>три варианта прогноза</h2>
+
+  <div class="scenarios">
+    <div class="scenario">
+      <div class="scenario-label" style="color:var(--muted)">Бюджет 300 000 ₽</div>
+      <div class="scenario-budget" style="color:var(--muted)">300к ₽</div>
+      <div class="scenario-leads" style="color:var(--muted)">1 200–1 500 лидов</div>
+      <ul class="scenario-items">
+        <li>Директ: 200к (только поиск)</li>
+        <li>SEO: 100к (базовая оптимизация)</li>
+        <li>CPL ~200–250 ₽</li>
+        <li>Квал. лидов: +1 000–1 200</li>
+      </ul>
+    </div>
+    <div class="scenario">
+      <div class="scenario-label" style="color:var(--warn)">Бюджет 500 000 ₽</div>
+      <div class="scenario-budget" style="color:var(--warn)">500к ₽</div>
+      <div class="scenario-leads" style="color:var(--warn)">1 800–2 100 лидов</div>
+      <ul class="scenario-items">
+        <li>Директ: 350к (поиск + РСЯ)</li>
+        <li>SEO: 150к (страницы + контент)</li>
+        <li>CPL ~240–280 ₽</li>
+        <li>Квал. лидов: +1 500–1 800</li>
+      </ul>
+    </div>
+    <div class="scenario active-sc">
+      <div class="scenario-badge tag tag-g">Выбранный</div>
+      <div class="scenario-label" style="color:var(--green)">Бюджет 600 000 ₽</div>
+      <div class="scenario-budget" style="color:var(--green)">600к ₽</div>
+      <div class="scenario-leads" style="color:var(--green)">2 100–3 000 лидов</div>
+      <ul class="scenario-items">
+        <li>Директ: 300к (поиск + РСЯ + ретаргет)</li>
+        <li>SEO: 300к (агрессивный рост)</li>
+        <li>CPL ~200–285 ₽</li>
+        <li>Квал. лидов: +2 000–2 500</li>
+        <li><strong style="color:var(--white)">Итого квал: 5 000–6 000 / мес</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"><div class="div-line"></div><div class="div-text">Детальный медиаплан — 600 000 ₽</div><div class="div-line"></div></div>
+
+  <div class="budget-wrap">
+    <table class="budget-table">
+      <thead><tr><th>Статья</th><th>Бюджет / мес</th><th>Что делаем</th><th>Ожидаемо</th><th>Железно</th></tr></thead>
+      <tbody>
+        <tr class="section-hdr"><td colspan="5">Яндекс.Директ — 300 000 ₽</td></tr>
+        <tr><td>Поиск: ломбард-кластер</td><td class="val-p">150 000 ₽</td><td>«Ломбард НСК», «займ под залог», «деньги под технику» — 200+ ключей</td><td class="val-g">700 лидов</td><td class="val-g">500 лидов</td></tr>
+        <tr><td>Поиск: скупка-кластер</td><td class="val-p">80 000 ₽</td><td>«Продать телефон НСК», «скупка ноутбук», «выкуп техники» — 150+ ключей</td><td class="val-g">320 лидов</td><td class="val-g">220 лидов</td></tr>
+        <tr><td>РСЯ (ретаргетинг)</td><td class="val-p">50 000 ₽</td><td>Возврат посетителей сайта + look-alike по базе клиентов</td><td class="val-g">150 лидов</td><td class="val-g">80 лидов</td></tr>
+        <tr><td>Покупка б/у (поиск)</td><td class="val-p">20 000 ₽</td><td>«Купить б/у iPhone НСК», «ноутбук б/у Новосибирск» — тест сегмента</td><td class="val-g">60 лидов</td><td class="val-g">30 лидов</td></tr>
+        <tr class="section-hdr"><td colspan="5">SEO — 300 000 ₽</td></tr>
+        <tr><td>Технический SEO</td><td class="val-p">80 000 ₽</td><td>SSR/SSG (Next.js), скорость, мета-теги, структура — фундамент</td><td>—</td><td>—</td></tr>
+        <tr><td>Контент: ломбард-страницы</td><td class="val-p">80 000 ₽</td><td>«Ломбард в [район НСК]» × 10 районов + ювелирка, авто, техника</td><td class="val-g">200 лидов</td><td class="val-g">100 лидов</td></tr>
+        <tr><td>Контент: скупка-страницы</td><td class="val-p">80 000 ₽</td><td>«Продать iPhone НСК», «скупка ноутбуков» — коммерческий контент</td><td class="val-g">150 лидов</td><td class="val-g">70 лидов</td></tr>
+        <tr><td>Ссылочная масса</td><td class="val-p">60 000 ₽</td><td>Городские каталоги, тематические сайты, крауд-маркетинг</td><td>Рост позиций</td><td>Рост позиций</td></tr>
+        <tr class="total"><td>ИТОГО</td><td>600 000 ₽</td><td>—</td><td>2 580 лидов</td><td>1 500 лидов</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"><div class="div-line"></div><div class="div-text">Прогноз результатов vs текущий</div><div class="div-line"></div></div>
+
+  <div class="results">
+    <div class="results-col">
+      <div class="results-hdr" style="color:var(--muted)">Сейчас (без Директ)</div>
+      <div class="results-row"><span class="results-label">Бюджет маркетинга</span><span class="results-val">500 000 ₽</span></div>
+      <div class="results-row"><span class="results-label">Все лиды</span><span class="results-val">16 000 / мес</span></div>
+      <div class="results-row"><span class="results-label">Квалифицированных</span><span class="results-val" style="color:var(--danger)">3 000 / мес</span></div>
+      <div class="results-row"><span class="results-label">CPL квал.</span><span class="results-val">~167 ₽</span></div>
+      <div class="results-row"><span class="results-label">Яндекс.Директ</span><span class="results-val" style="color:var(--danger)">❌ Нет</span></div>
+    </div>
+    <div class="results-col">
+      <div class="results-hdr" style="color:var(--green)">Через 3 месяца (с планом)</div>
+      <div class="results-row"><span class="results-label">Бюджет маркетинга</span><span class="results-val">600 000 ₽</span></div>
+      <div class="results-row"><span class="results-label">Новых лидов из Директ</span><span class="results-val" style="color:var(--green)">+1 500–2 500 / мес</span></div>
+      <div class="results-row"><span class="results-label">Квалифицированных итого</span><span class="results-val" style="color:var(--green)">5 000–6 000 / мес</span></div>
+      <div class="results-row"><span class="results-label">CPL из Директ</span><span class="results-val" style="color:var(--green)">200–285 ₽</span></div>
+      <div class="results-row"><span class="results-label">Яндекс.Директ</span><span class="results-val" style="color:var(--green)">✅ Запущен</span></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- 07 UX АУДИТ -->
+<div class="page" id="p7"><div class="wrap sec-pad">
+  <div class="sec-tag">07 — UX/UI аудит</div>
+  <h2>Сайт smart25.ru —<br>критические проблемы</h2>
+  <div class="audit-ring">
+    <div class="ring">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="46" fill="none" stroke="var(--bg3)" stroke-width="9"/>
+        <circle cx="55" cy="55" r="46" fill="none" stroke="url(#gr1)" stroke-width="9" stroke-dasharray="289" stroke-dashoffset="202" stroke-linecap="round" transform="rotate(-90 55 55)"/>
+        <defs><linearGradient id="gr1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6c63ff"/><stop offset="100%" stop-color="#e05555"/></linearGradient></defs>
+      </svg>
+      <div class="ring-lbl"><span class="ring-val">30</span><span class="ring-sub">/ 100</span></div>
+    </div>
+    <div><h3>Общая UX-оценка</h3><p>Сайт SPA без серверного рендеринга — поисковики видят пустую страницу. Нет калькулятора цен (показывает устаревшие 5 400 ₽ при рыночных 6 500 ₽). Нет онлайн-формы для продавцов. Клиенты уходят к конкурентам у которых цены выглядят лучше на сайте — хотя реальные условия SMart лучше.</p></div>
+  </div>
+  <div class="audit-items">
+    <div class="audit-item audit-hdr"><div></div><div>Параметр</div><div>Замечание</div><div>Оценка</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Актуальность цен</div><div class="audit-note">5 400 ₽ / 585 при рынке 6 500 ₽ — клиенты уходят</div><div class="audit-score s-bad">0/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">SSR / Индексируемость</div><div class="audit-note">SPA без рендеринга — боты видят пустую страницу</div><div class="audit-score s-bad">1/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Онлайн-калькулятор залога</div><div class="audit-note">Нет — клиент не может оценить сколько получит онлайн</div><div class="audit-score s-bad">1/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Разделение ломбард / комиссионка</div><div class="audit-note">Два продукта смешаны — разная аудитория путается</div><div class="audit-score s-bad">2/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">CTA и путь к конверсии</div><div class="audit-note">Нет чёткого «получить деньги за 15 минут» на первом экране</div><div class="audit-score s-w">4/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Скорость загрузки мобильный</div><div class="audit-note">SPA — медленный первый рендер, ожидаемо 25–40/100</div><div class="audit-score s-w">4/10</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Информация о точках / адреса</div><div class="audit-note">Все 10+ точек есть, районы указаны</div><div class="audit-score s-ok">7/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Режим работы 24/7</div><div class="audit-note">Есть, но не вынесено как УТП на главную</div><div class="audit-score s-w">5/10</div></div>
+  </div>
+  <div class="hl">
+    <div class="hl-title">Приоритет №1 — обновить цены на этой неделе</div>
+    <p><strong>Немедленно:</strong> Обновить прайс на золото/ювелирку — с 5 400 до актуальных рыночных. Это единственное изменение которое даст клиентов на следующей неделе без рекламы. <strong>Неделя 2:</strong> Разделить сайт на два раздела (Ломбард / Магазин), добавить онлайн-калькулятор суммы залога. <strong>Месяц 2:</strong> Переход на SSR (Next.js) — фундамент для SEO.</p>
+  </div>
+</div></div>
+
+<!-- 08 SEO АУДИТ -->
+<div class="page" id="p8"><div class="wrap sec-pad">
+  <div class="sec-tag">08 — SEO аудит</div>
+  <h2>SEO-ситуация:<br>потенциал огромный, старт нулевой</h2>
+  <div class="audit-ring">
+    <div class="ring">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="46" fill="none" stroke="var(--bg3)" stroke-width="9"/>
+        <circle cx="55" cy="55" r="46" fill="none" stroke="url(#gr2)" stroke-width="9" stroke-dasharray="289" stroke-dashoffset="231" stroke-linecap="round" transform="rotate(-90 55 55)"/>
+        <defs><linearGradient id="gr2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6c63ff"/><stop offset="100%" stop-color="#f0b429"/></linearGradient></defs>
+      </svg>
+      <div class="ring-lbl"><span class="ring-val">20</span><span class="ring-sub">/ 100</span></div>
+    </div>
+    <div><h3>SEO-оценка</h3><p>SPA без SSR — это означает что весь поисковый органический трафик по запросам «ломбард НСК», «скупка телефонов НСК» и т.д. уходит конкурентам. Сайт не виден в поиске. При этом потенциал огромный: 84 000 запросов/мес в нише. Стратегия: 300к/мес на SEO даст первые органические лиды через 2–3 месяца.</p></div>
+  </div>
+  <div class="audit-items">
+    <div class="audit-item audit-hdr"><div></div><div>Параметр</div><div>Замечание</div><div>Приоритет</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">SSR / Рендеринг для ботов</div><div class="audit-note">Критично — без этого весь SEO бесполезен</div><div class="audit-score s-bad">🔴 П1</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Страницы по районам НСК</div><div class="audit-note">«Ломбард Ленинский район», «Ломбард Дзержинский» — нет</div><div class="audit-score s-bad">🔴 П1</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Страницы по категориям залога</div><div class="audit-note">«Ломбард телефонов», «залог золота», «займ под авто» — нет</div><div class="audit-score s-bad">🔴 П1</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Title / Meta / H1 оптимизация</div><div class="audit-note">SPA генерирует мета динамически — боты не видят</div><div class="audit-score s-bad">🔴 П1</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Sitemap / Robots.txt</div><div class="audit-note">Вероятно есть, но без контента бесполезен</div><div class="audit-score s-w">🟡 П2</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Ссылочная масса</div><div class="audit-note">Минимальная — нужно наращивать параллельно с контентом</div><div class="audit-score s-w">🟡 П2</div></div>
+  </div>
+  <div class="divider"><div class="div-line"></div><div class="div-text">Ключевые запросы под проработку</div><div class="div-line"></div></div>
+  <table class="dt">
+    <thead><tr><th>Запрос</th><th>Частотность / мес</th><th>Конкуренция</th><th>Позиция</th><th>Потенциал</th></tr></thead>
+    <tbody>
+      <tr><td>ломбард Новосибирск</td><td>~5 500</td><td><span class="tag tag-w">Средняя</span></td><td>нет в топ-50</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>ломбард телефонов НСК</td><td>~1 200</td><td><span class="tag tag-g">Низкая</span></td><td>нет в топ-50</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>залог золота Новосибирск</td><td>~900</td><td><span class="tag tag-g">Низкая</span></td><td>нет в топ-50</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>скупка телефонов Новосибирск</td><td>~1 800</td><td><span class="tag tag-w">Средняя</span></td><td>нет в топ-50</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>ломбард [район НСК] × 10 р-нов</td><td>~3 000 сумм.</td><td><span class="tag tag-g">Низкая</span></td><td>нет в топ-50</td><td><span class="tag tag-g">Высокий</span></td></tr>
+    </tbody>
+  </table>
+  <div class="hl">
+    <div class="hl-title">SEO-план: 300к/мес × 3 месяца</div>
+    <p><strong>Месяц 1 (80к техника + 80к контент):</strong> Переход на SSR. Создание 20+ страниц: ломбард × районы НСК, залог × категории (золото, телефоны, ноутбуки, авто). <strong>Месяц 2 (80к контент + 80к ссылки):</strong> Страницы под скупку и б/у покупку. Начало ссылочного продвижения. <strong>Месяц 3:</strong> Первые топ-позиции по низкочастотным запросам. Рост органики 200–400 лидов/мес.</p>
+  </div>
+</div></div>
+
+<!-- 09 ОФФЕРЫ -->
+<div class="page" id="p9"><div class="wrap sec-pad">
+  <div class="sec-tag">09 — Офферы</div>
+  <h2>5 вариантов главного<br>сообщения для тестирования</h2>
+  <div class="offer-card" data-n="01"><div class="offer-type">Ломбард · Срочность + Скорость</div><div class="offer-text">Деньги за 15 минут под залог техники — 24/7 в 10 точках НСК</div><div class="offer-sub">Главный оффер для поисковых кампаний ломбарда. Закрывает боль срочности — человек ищет деньги прямо сейчас. Для первого экрана сайта и объявлений Яндекс.</div></div>
+  <div class="offer-card" data-n="02"><div class="offer-type">Ломбард · Честность + Доверие</div><div class="offer-text">Честный курс 6 500 ₽ за 585 — официальный договор, выкуп гарантирован</div><div class="offer-sub">Прямой ответ на конкурентов которые обещают больше но дают меньше. Актуализация цен на сайте = немедленный рост. Для объявлений и посадочной страницы ломбарда.</div></div>
+  <div class="offer-card" data-n="03"><div class="offer-type">Скупка · Скорость + Без торгов</div><div class="offer-text">Продайте телефон сегодня — оценка 5 минут, деньги сразу без торгов</div><div class="offer-sub">Против главной боли при продаже на Авито — недели ожидания и торги. Для поисковых кампаний скупки и таргета ВКонтакте. Аудитория: хочет продать быстро.</div></div>
+  <div class="offer-card" data-n="04"><div class="offer-type">Покупка б/у · Безопасность</div><div class="offer-text">Б/у iPhone с гарантией 6 месяцев — от 5 000 ₽. Проверено мастером.</div><div class="offer-sub">Против страха купить «кота в мешке» на Авито. Гарантия = уникальное преимущество которого нет у конкурентов. Для кампаний покупки б/у техники.</div></div>
+  <div class="offer-card" data-n="05"><div class="offer-type">Районный · Близость</div><div class="offer-text">Ломбард в [вашем районе] — 2 минуты пешком, работаем до 23:00</div><div class="offer-sub">Персонализация по геолокации — разные объявления для каждого района НСК. 10 районных кампаний с конкретным адресом. Самая высокая кликабельность в гео-таргетинге.</div></div>
+</div></div>
+
+<!-- 10 ОБЪЯВЛЕНИЯ -->
+<div class="page" id="p10"><div class="wrap sec-pad">
+  <div class="sec-tag">10 — Рекламные объявления</div>
+  <h2>Готовые тексты<br>для запуска в Яндекс.Директ</h2>
+
+  <div class="ad-platform">Яндекс.Директ — Ломбард (горячий спрос)</div>
+  <div class="ad-card"><div class="ad-head">Ломбард НСК 24/7 | Деньги за 15 мин | SMart — 10 точек</div><div class="ad-body">Залог телефонов, золота, ноутбуков. Официальный договор. Выкуп гарантирован. 10 филиалов по всему Новосибирску — найдём ближайший.</div><div class="ad-cta">→ Узнать сумму залога онлайн</div></div>
+  <div class="ad-card"><div class="ad-head">Золото 585 — 6500 ₽/г | Честный курс | Ломбард SMart</div><div class="ad-body">Без скрытых комиссий. Выкуп гарантирован на весь срок. Принимаем в 10 офисах НСК. Работаем круглосуточно.</div><div class="ad-cta">→ Получить деньги сейчас</div></div>
+  <div class="ad-card"><div class="ad-head">Займ Под Залог Телефона НСК | За 15 Минут | Без Справок</div><div class="ad-body">Принимаем iPhone, Samsung, любые смартфоны. Официальный договор. Не нужен паспорт вещи — только паспорт РФ. Выдача наличными.</div><div class="ad-cta">→ Узнать сумму прямо сейчас</div></div>
+
+  <div class="ad-platform">Яндекс.Директ — Скупка / Выкуп</div>
+  <div class="ad-card"><div class="ad-head">Скупка Телефонов НСК | Деньги Сразу | SMart — 24/7</div><div class="ad-body">Выкупаем смартфоны, ноутбуки, планшеты — оценка 5 минут. Деньги наличными сразу. Официальный договор.</div><div class="ad-cta">→ Узнать цену вашего телефона</div></div>
+  <div class="ad-card"><div class="ad-head">Продать Ноутбук НСК Быстро | Без Торгов | SMart</div><div class="ad-body">Не ждите покупателей на Авито. Выкупаем сразу по честной цене. 10 точек по городу, работаем 24/7.</div><div class="ad-cta">→ Оценить ноутбук онлайн</div></div>
+
+  <div class="ad-platform">Яндекс.Директ — Районные кампании (пример)</div>
+  <div class="ad-card"><div class="ad-head">Ломбард Ленинский Район НСК | 2 Мин Пешком | 24/7</div><div class="ad-body">ул. [Адрес]. Деньги под залог за 15 минут. Золото, телефоны, ноутбуки. Официальный договор.</div><div class="ad-cta">→ Маршрут и время работы</div></div>
+
+  <div class="ad-platform">РСЯ — Ретаргетинг (не завершили заявку)</div>
+  <div class="ad-card"><div class="ad-head">Ещё нужны деньги? SMart ждёт вас 24/7</div><div class="ad-body">Вы смотрели наш ломбард. Деньги под залог за 15 минут — офис рядом с вами работает прямо сейчас.</div><div class="ad-cta">→ Получить деньги сегодня</div></div>
+
+  <div class="ad-platform">ВКонтакте — Таргет для продавцов</div>
+  <div class="ad-card">
+    <div class="ad-head">Надоело ждать покупателя на Авито по 2 недели?</div>
+    <div class="ad-body" style="white-space:pre-line">SMart выкупает телефоны, ноутбуки и любую технику — деньги в тот же день.
+
+Оценка за 5 минут. Официальный договор. Работаем круглосуточно.
+
+10 точек по Новосибирску — ближайший найдётся рядом с вами.</div>
+    <div class="ad-cta">→ Узнать цену вашей техники</div>
+  </div>
+</div></div>
+
+<!-- 11 ПРОТОТИП -->
+<div class="page" id="p11"><div class="wrap sec-pad">
+  <div class="sec-tag">11 — Прототип сайта</div>
+  <h2>Новый сайт SMart —<br>ломбард + комиссионный разделены</h2>
+  <p style="margin-bottom:22px">Исправлены все критические проблемы: актуальные цены, разделение аудиторий, калькулятор залога онлайн, CTA 24/7 на первом экране.</p>
+
+  <div class="proto-wrap">
+    <div class="proto-browser">
+      <div class="proto-dots">
+        <div class="proto-dot" style="background:#e05555"></div>
+        <div class="proto-dot" style="background:#f0b429"></div>
+        <div class="proto-dot" style="background:#3ecf8e"></div>
+      </div>
+      <div class="proto-url-bar">smart25.ru</div>
+    </div>
+    <div class="proto-body">
+      <div class="proto-nav">
+        <div class="proto-nav-logo">SMart</div>
+        <div class="proto-nav-links">
+          <span class="proto-nav-link" style="color:var(--warn)">Ломбард</span>
+          <span class="proto-nav-link">Купить б/у</span>
+          <span class="proto-nav-link">Продать</span>
+          <span class="proto-nav-link">Trade-in</span>
+          <span class="proto-nav-link">Адреса</span>
+        </div>
+        <div class="proto-nav-cta" style="background:var(--warn);color:#000">Деньги за 15 мин →</div>
+      </div>
+
+      <div class="proto-hero">
+        <div class="proto-badge" style="color:var(--warn);border-color:rgba(240,180,41,.2)">⚡ Работаем 24/7 · 10 точек в НСК · Деньги сразу</div>
+        <div class="proto-h1">Ломбард и комиссионный<br>магазин SMart</div>
+        <div class="proto-sub">Деньги под залог за 15 минут. Выкупаем технику сразу. Б/у с гарантией 12 мес.</div>
+        <div class="proto-ctas">
+          <div class="proto-btn-p" style="background:var(--warn);color:#000">💰 Получить деньги под залог</div>
+          <div class="proto-btn-s" style="border-color:rgba(240,180,41,.3);color:var(--warn)">📱 Продать / сдать технику</div>
+        </div>
+        <div class="proto-trust">
+          <span>🔒 Официальный договор</span>
+          <span>✅ Золото 585: 6 500 ₽/г</span>
+          <span>⚡ Оценка за 5 минут</span>
+          <span>🕐 Круглосуточно 24/7</span>
+          <span>📍 10 точек в НСК</span>
+        </div>
+      </div>
+
+      <div class="proto-stats">
+        <div class="proto-stat"><div class="proto-stat-val" style="color:var(--warn)">15 мин</div><div class="proto-stat-label">деньги под залог</div></div>
+        <div class="proto-stat"><div class="proto-stat-val" style="color:var(--warn)">6 500 ₽</div><div class="proto-stat-label">за грамм золота 585</div></div>
+        <div class="proto-stat"><div class="proto-stat-val" style="color:var(--warn)">24/7</div><div class="proto-stat-label">работаем без выходных</div></div>
+        <div class="proto-stat"><div class="proto-stat-val" style="color:var(--warn)">10+</div><div class="proto-stat-label">точек в Новосибирске</div></div>
+      </div>
+
+      <div class="proto-tabs">
+        <div class="proto-tab sel" onclick="selTab(this)">💰 Получить деньги под залог</div>
+        <div class="proto-tab" onclick="selTab(this)">📱 Продать / сдать технику</div>
+        <div class="proto-tab" onclick="selTab(this)">🛒 Купить б/у технику</div>
+      </div>
+
+      <div class="proto-content-area">
+        <div class="proto-services">
+          <h3 style="color:var(--warn);margin-bottom:14px">Принимаем под залог:</h3>
+          <div class="proto-service"><div class="proto-service-icon">💍</div><div><div class="proto-service-title">Золото и ювелирные украшения</div><div class="proto-service-sub">585, 750, 925 проба · от 6 500 ₽/г</div></div></div>
+          <div class="proto-service"><div class="proto-service-icon">📱</div><div><div class="proto-service-title">Смартфоны</div><div class="proto-service-sub">iPhone, Samsung, Xiaomi и другие</div></div></div>
+          <div class="proto-service"><div class="proto-service-icon">💻</div><div><div class="proto-service-title">Ноутбуки и планшеты</div><div class="proto-service-sub">Apple, Lenovo, ASUS, HP и другие</div></div></div>
+          <div class="proto-service"><div class="proto-service-icon">🎮</div><div><div class="proto-service-title">Игровые приставки</div><div class="proto-service-sub">PS5, PS4, Xbox, Nintendo Switch</div></div></div>
+        </div>
+        <div class="proto-calc">
+          <div class="proto-calc-title">Узнайте сумму залога онлайн</div>
+          <select style="width:100%;background:#06060c;border:1px solid rgba(108,99,255,.15);padding:10px 14px;font-size:13px;color:#fff;margin-bottom:8px;font-family:'Inter',sans-serif">
+            <option>Смартфон</option>
+            <option>Золото</option>
+            <option>Ноутбук</option>
+            <option>Планшет</option>
+          </select>
+          <input class="proto-input" placeholder="Модель устройства или вес (г)">
+          <input class="proto-input" placeholder="Состояние: отличное / хорошее / б/у">
+          <div class="proto-calc-result">
+            <div class="proto-calc-val" style="color:var(--warn)">от 8 000 ₽</div>
+            <div class="proto-calc-label">ориентировочная сумма · точную назовёт оценщик за 5 минут</div>
+          </div>
+          <div style="margin-top:12px">
+            <div class="proto-nav-cta" style="background:var(--warn);color:#000;display:block;text-align:center;padding:12px;font-size:12px;font-weight:700;letter-spacing:.06em">Получить точную оценку →</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proto-cta-bar" style="background:var(--warn)">
+        <div class="proto-cta-h" style="color:#000">Нужны деньги прямо сейчас?</div>
+        <div class="proto-cta-s" style="color:rgba(0,0,0,.6)">Ближайший офис SMart открыт — деньги под залог за 15 минут</div>
+        <div class="proto-cta-btns">
+          <div class="proto-cta-btn" style="color:var(--warn)">Найти ближайший офис →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hl">
+    <div class="hl-title">Ключевые изменения vs текущий сайт</div>
+    <p><strong>1. Актуальные цены</strong> — 6 500 ₽/г на первом экране (было 5 400). <strong>2. Онлайн-калькулятор</strong> — клиент узнаёт сумму не выходя из дома. <strong>3. Разделение аудиторий</strong> — ломбард и комиссионка разделены через вкладки. <strong>4. 24/7 как главный CTA</strong> — вынесено в шапку и hero. <strong>5. Социальные доказательства</strong> — 10 точек, официальный договор, цены на первом экране. Ни у одного конкурента нет калькулятора залога онлайн.</p>
+  </div>
+</div></div>
+
+</main>
+
+<div class="cta-final">
+  <div>
+    <h2>Готов приступить к работе —<br>первые клиенты через 3 недели</h2>
+    <p>100 000 ₽ фикс + KPI · Удалённо · Своя команда программистов и подрядчиков</p>
+  </div>
+  <a href="mailto:wwwfrolof@yandex.ru" class="cta-btn">Написать Павлу →</a>
+</div>
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <div class="foot-name">Павел Фролов — CMO / Head of Marketing</div>
+      <div class="foot-contacts">
+        <div class="foot-contact">📧 <a href="mailto:wwwfrolof@yandex.ru">wwwfrolof@yandex.ru</a></div>
+        <div class="foot-contact">📱 <a href="tel:+79059390874">+7 (905) 939-08-74</a></div>
+        <div class="foot-contact">🌐 <a href="https://frolofpavel.ru" target="_blank">frolofpavel.ru</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+let currentPage=0;
+const total=12;
+function go(i){
+  if(i<0||i>=total)return;
+  currentPage=i;
+  document.querySelectorAll('.page').forEach((p,j)=>p.classList.toggle('active',j===i));
+  document.querySelectorAll('.nav-link').forEach((l,j)=>l.classList.toggle('active',j===i));
+  document.getElementById('nav-counter').textContent=(i+1)+' / '+total;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')go(currentPage+1);
+  if(e.key==='ArrowLeft')go(currentPage-1);
+});
+function selTab(el){
+  document.querySelectorAll('.proto-tab').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+</script>
+</body>
+</html>
