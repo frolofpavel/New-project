@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КП — Павел Фролов × Базис Недвижимость</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent: #0060E1;
+  --accent2: #3d8ef5;
+  --bg:   #080c14;
+  --bg2:  #0d1320;
+  --bg3:  #111928;
+  --card: #0f1826;
+  --border: rgba(0,96,225,0.15);
+  --border2: rgba(0,96,225,0.28);
+  --text: #dce8ff;
+  --muted: #5a7499;
+  --green: #3ecf8e;
+  --amber: #f59e0b;
+  --red:   #ef4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden;}
+
+/* BG GRID */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,96,225,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,96,225,0.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+
+/* GLOW */
+.glow{position:fixed;width:700px;height:700px;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;opacity:.12;}
+.glow-1{background:#0060E1;top:-300px;left:-300px;}
+.glow-2{background:#3d8ef5;bottom:-300px;right:-300px;}
+
+/* NAV */
+.nav-top{position:sticky;top:0;z-index:100;background:rgba(8,12,20,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.nav-row1{display:flex;align-items:center;justify-content:space-between;padding:10px 28px;border-bottom:1px solid rgba(0,96,225,0.07);}
+.nav-logos{display:flex;align-items:center;gap:14px;}
+.nav-logos img{height:26px;width:auto;}
+.nav-logos .sep{color:var(--muted);font-size:12px;}
+.nav-logos .author{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.05em;}
+.nav-arrows{display:flex;align-items:center;gap:10px;}
+.nav-arrows button{background:none;border:1px solid var(--border);color:var(--accent);cursor:pointer;width:28px;height:28px;border-radius:6px;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.nav-arrows button:hover{background:var(--accent);color:var(--bg);}
+.nav-arrows span{font-family:'Syne',sans-serif;font-size:12px;color:var(--muted);}
+.nav-row2{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;padding:0 12px;}
+.nav-row2::-webkit-scrollbar{display:none;}
+.nav-link{background:none;border:none;color:var(--muted);cursor:pointer;padding:9px 13px;font-size:11px;font-family:'Syne',sans-serif;font-weight:600;letter-spacing:.04em;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;}
+.nav-link:hover{color:var(--text);}
+.nav-link.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* PAGES */
+.page{display:none;padding:40px 36px 80px;max-width:1120px;margin:0 auto;animation:fadeIn .35s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* TYPOGRAPHY */
+h1{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,58px);font-weight:800;line-height:1.05;color:#fff;}
+h2{font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,34px);font-weight:700;color:#fff;line-height:1.2;margin-bottom:24px;}
+h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;}
+p{color:#8aafd4;line-height:1.75;}
+
+/* SECTION LABEL */
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sec-label::before{content:'';width:20px;height:2px;background:var(--accent);}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 26px;transition:border-color .2s;}
+.card:hover{border-color:var(--border2);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media(max-width:700px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}}
+@media(max-width:900px){.grid3,.grid4{grid-template-columns:1fr 1fr;}}
+
+/* CHIPS */
+.chip{display:inline-flex;align-items:center;gap:5px;background:rgba(0,96,225,0.1);border:1px solid var(--border);border-radius:20px;padding:5px 13px;font-size:12px;font-weight:600;color:var(--text);font-family:'Syne',sans-serif;}
+.chip.accent{background:rgba(0,96,225,0.18);border-color:var(--accent);color:var(--accent);}
+.chips-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+
+/* KPI BOXES */
+.kpi-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;}
+.kpi-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 20px;flex:1;min-width:130px;}
+.kpi-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--accent);line-height:1;}
+.kpi-label{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* COVER LAYOUT */
+.cover-grid{display:grid;grid-template-columns:1fr 400px;gap:48px;align-items:start;padding-top:48px;min-height:85vh;}
+@media(max-width:900px){.cover-grid{grid-template-columns:1fr;}}
+.cover-tag{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.dot-pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.cover-h1{margin-bottom:16px;}
+.cover-h1 span{color:var(--accent);}
+.cover-desc{font-size:15px;color:var(--muted);line-height:1.75;max-width:560px;margin-bottom:28px;}
+.contacts-row{display:flex;flex-wrap:wrap;gap:20px;font-size:13px;margin-top:4px;}
+.contacts-row a{color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:6px;}
+.browser-frame{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;overflow:hidden;margin-bottom:14px;}
+.browser-bar{background:var(--bg3);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);}
+.browser-dots{display:flex;gap:5px;}
+.browser-dots span{width:10px;height:10px;border-radius:50%;display:block;}
+.browser-url{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--muted);margin-left:8px;}
+.browser-screenshot{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;}
+.screenshot-placeholder{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);background:var(--bg3);}
+.insight-card{background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:16px 20px;}
+.insight-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px;}
+
+/* HIGHLIGHT */
+.hl{background:linear-gradient(135deg,rgba(0,96,225,0.08),rgba(0,96,225,0.03));border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 12px 12px 0;padding:24px 28px;margin:24px 0;}
+.hl-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.3;}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;margin-bottom:24px;}
+.tbl th{background:rgba(0,96,225,0.08);color:var(--accent);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:10px 14px;text-align:left;}
+.tbl td{padding:10px 14px;color:#8aafd4;font-size:13px;border-bottom:1px solid rgba(0,96,225,0.07);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(0,96,225,0.04);}
+.tbl td:first-child{color:var(--text);font-weight:500;}
+
+/* TAGS */
+.tag{display:inline-block;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:700;letter-spacing:.05em;}
+.tag-g{background:rgba(62,207,142,.12);color:var(--green);}
+.tag-w{background:rgba(245,158,11,.12);color:var(--amber);}
+.tag-r{background:rgba(239,68,68,.12);color:var(--red);}
+.tag-b{background:rgba(0,96,225,.12);color:var(--accent2);}
+
+/* COMPETITOR CARD */
+.comp-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:14px;}
+.comp-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:16px;flex-wrap:wrap;}
+.comp-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;}
+.comp-url{font-size:12px;color:var(--muted);margin-top:2px;}
+.comp-score-val{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;color:var(--accent);line-height:1;}
+.comp-score-sub{font-size:11px;color:var(--muted);text-align:right;}
+.score-bar{height:5px;background:rgba(255,255,255,.07);border-radius:3px;margin:8px 0 16px;overflow:hidden;}
+.score-fill{height:100%;border-radius:3px;background:var(--accent);}
+.score-fill.mid{background:var(--amber);}
+.score-fill.low{background:var(--red);}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.pros,.cons{font-size:12px;padding:12px 14px;border-radius:10px;}
+.pros{background:rgba(62,207,142,.06);border:1px solid rgba(62,207,142,.15);}
+.cons{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);}
+.pros-title{color:var(--green);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.cons-title{color:var(--red);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.pros li,.cons li{padding:2px 0 2px 14px;color:#8aafd4;list-style:none;position:relative;}
+.pros li::before{content:'✓';position:absolute;left:0;color:var(--green);font-size:10px;}
+.cons li::before{content:'✗';position:absolute;left:0;color:var(--red);font-size:10px;}
+
+/* PHASES */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}
+@media(max-width:700px){.phases{grid-template-columns:1fr;}}
+.phase{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 20px;position:relative;overflow:hidden;}
+.phase-num{position:absolute;bottom:-8px;right:12px;font-family:'Syne',sans-serif;font-size:72px;font-weight:800;color:rgba(0,96,225,0.07);line-height:1;}
+.phase-tag{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.phase h3{color:#fff;font-size:14px;margin-bottom:10px;text-transform:none;letter-spacing:0;}
+.phase ul{list-style:none;padding:0;}
+.phase li{font-size:13px;color:var(--muted);padding:4px 0 4px 16px;position:relative;}
+.phase li::before{content:'→';position:absolute;left:0;color:var(--accent);font-size:11px;}
+
+/* FUNNEL */
+.funnel{display:flex;flex-direction:column;gap:4px;margin:24px 0;}
+.funnel-step{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;font-size:13px;}
+.funnel-step .fi{font-size:18px;margin-right:10px;}
+.funnel-step .ft{flex:1;color:var(--text);font-weight:500;}
+.funnel-step .fd{color:var(--muted);font-size:12px;max-width:280px;text-align:right;}
+
+/* AUDIT RING */
+.audit-ring-block{display:flex;align-items:center;gap:36px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 32px;margin:20px 0;}
+.ring-wrap{position:relative;width:140px;height:140px;flex-shrink:0;}
+.ring-wrap svg{overflow:visible;}
+.ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-val{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:#fff;line-height:1;}
+.ring-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.ring-info{flex:1;}
+.ring-info h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;text-transform:none;letter-spacing:0;}
+.ring-info p{font-size:13px;color:var(--muted);}
+.priority-box{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--amber);margin-top:12px;}
+
+/* AUDIT ITEMS */
+.audit-items{display:flex;flex-direction:column;gap:2px;margin:18px 0;}
+.audit-item{display:grid;grid-template-columns:28px 1fr auto auto;gap:0;background:var(--card);border-radius:8px;padding:10px 14px;align-items:center;border:1px solid var(--border);margin-bottom:3px;}
+.audit-ico{font-size:15px;}
+.audit-name{font-size:13px;color:var(--text);padding:0 12px;}
+.audit-note{font-size:12px;color:var(--muted);padding:0 12px;}
+.audit-score{font-size:12px;font-weight:700;font-family:'Syne',sans-serif;min-width:50px;text-align:right;}
+.s-ok{color:var(--green);}
+.s-w{color:var(--amber);}
+.s-bad{color:var(--red);}
+
+/* CHANNELS */
+.ch-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:16px;flex-wrap:wrap;}
+.ch-left{display:flex;align-items:center;gap:14px;}
+.ch-icon{font-size:22px;}
+.ch-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.ch-desc{font-size:12px;color:var(--muted);margin-top:3px;}
+.ch-right{display:flex;gap:24px;text-align:right;flex-shrink:0;}
+.ch-stat{min-width:80px;}
+.ch-stat-val{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
+.ch-stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.ch-budget .ch-stat-val{color:var(--green);}
+.ch-cpl .ch-stat-val{color:var(--amber);}
+.ch-total{background:rgba(0,96,225,.08);border:1px solid var(--border2);border-radius:12px;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;margin-top:6px;}
+.ch-total-label{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent);}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;margin:24px 0;}
+.tl-item{display:grid;grid-template-columns:90px 32px 1fr;gap:0;min-height:90px;}
+.tl-week{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;text-align:right;padding-top:20px;padding-right:12px;}
+.tl-line{display:flex;flex-direction:column;align-items:center;}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);margin-top:18px;flex-shrink:0;}
+.tl-pipe{flex:1;width:2px;background:linear-gradient(var(--accent),rgba(0,96,225,.06));}
+.tl-item:last-child .tl-pipe{display:none;}
+.tl-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:10px 0 10px 14px;}
+.tl-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;}
+.tl-tasks{display:flex;flex-wrap:wrap;gap:6px;}
+.tl-task{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted);}
+
+/* RETARGETING */
+.retarg-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;}
+.retarg-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--border2);line-height:1;flex-shrink:0;}
+.retarg-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.retarg-desc{font-size:12px;color:var(--muted);}
+
+/* OFFER CARDS */
+.offer-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin-bottom:12px;position:relative;overflow:hidden;cursor:default;transition:border-color .2s,transform .2s;}
+.offer-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.offer-card::before{content:attr(data-n);position:absolute;right:18px;top:-10px;font-family:'Syne',sans-serif;font-size:80px;font-weight:800;color:rgba(0,96,225,.06);line-height:1;pointer-events:none;}
+.offer-type{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+.offer-text{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:10px;}
+.offer-sub{font-size:13px;color:var(--muted);}
+
+/* AD CARDS */
+.ad-platform-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:24px 0 12px;display:flex;align-items:center;gap:8px;}
+.ad-platform-label::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.ad-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:8px;}
+.ad-head{font-weight:600;color:#fff;margin-bottom:6px;font-size:14px;}
+.ad-body{color:var(--muted);font-size:13px;margin-bottom:8px;}
+.ad-cta{color:var(--accent2);font-weight:500;font-size:12px;}
+
+/* POSITIONING MAP */
+.pos-map{position:relative;background:var(--card);border:1px solid var(--border);border-radius:14px;height:320px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin:20px 0;}
+.pm-axis-x{position:absolute;bottom:40px;left:40px;right:40px;height:1px;background:var(--border2);}
+.pm-axis-y{position:absolute;left:40px;top:30px;bottom:40px;width:1px;background:var(--border2);}
+.pm-label{position:absolute;font-size:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.pm-dot{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;transform:translate(-50%,-50%);}
+.pm-dot-label{position:absolute;font-size:10px;color:var(--text);font-family:'Syne',sans-serif;font-weight:600;white-space:nowrap;top:-22px;left:50%;transform:translateX(-50%);}
+
+/* PROTOTYPE */
+.proto-wrap{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;overflow:hidden;margin:20px 0;}
+.proto-topbar{background:var(--bg3);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.proto-nav-bar{display:flex;gap:0;background:var(--bg3);padding:0 24px;border-bottom:1px solid var(--border);overflow-x:auto;}
+.proto-nav-link{padding:12px 16px;font-size:12px;font-weight:600;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;font-family:'Syne',sans-serif;white-space:nowrap;}
+.proto-nav-link.active{color:var(--accent);border-bottom-color:var(--accent);}
+.proto-hero{padding:56px 40px;background:linear-gradient(135deg,var(--bg2),var(--bg3));text-align:center;}
+.proto-hero h2{font-size:clamp(22px,3.5vw,38px);margin-bottom:12px;}
+.proto-hero p{color:var(--muted);font-size:14px;max-width:520px;margin:0 auto 28px;}
+.proto-btn{display:inline-block;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:13px 30px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;}
+.proto-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);}
+.proto-stat{padding:22px;text-align:center;border-right:1px solid var(--border);}
+.proto-stat:last-child{border-right:none;}
+.proto-stat-num{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);}
+.proto-stat-label{font-size:11px;color:var(--muted);margin-top:4px;}
+.proto-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:28px 36px;}
+.proto-feature{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
+.proto-feature-icon{font-size:22px;margin-bottom:10px;}
+.proto-feature h4{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:5px;}
+.proto-feature p{font-size:12px;color:var(--muted);margin:0;}
+
+/* SCRIPT BOX */
+.script-box{background:var(--bg3);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:16px 20px;font-size:13px;color:var(--muted);line-height:1.75;margin-top:12px;}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:16px;margin:32px 0;}
+.divider-line{flex:1;height:1px;background:var(--border);}
+.divider-text{font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;}
+
+/* STAT BIG */
+.stat-big{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--accent);line-height:1;}
+.stat-label{font-size:12px;color:var(--muted);margin-top:5px;}
+</style>
+</head>
+<body>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<nav class="nav-top">
+  <div class="nav-row1">
+    <div class="nav-logos">
+      <img src="https://iflat.io/favicon.ico" onerror="this.style.display='none'" alt="Базис">
+      <span class="sep">×</span>
+      <span class="author">Павел Фролов</span>
+    </div>
+    <div class="nav-arrows">
+      <button onclick="go(currentPage-1)">←</button>
+      <span id="nav-counter">1 / 12</span>
+      <button onclick="go(currentPage+1)">→</button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <button class="nav-link active" onclick="go(0)"><span style="opacity:.5;font-size:9px">00 </span>Обложка</button>
+    <button class="nav-link" onclick="go(1)"><span style="opacity:.5;font-size:9px">01 </span>Ниша</button>
+    <button class="nav-link" onclick="go(2)"><span style="opacity:.5;font-size:9px">02 </span>Конкуренты</button>
+    <button class="nav-link" onclick="go(3)"><span style="opacity:.5;font-size:9px">03 </span>Позиц. карта</button>
+    <button class="nav-link" onclick="go(4)"><span style="opacity:.5;font-size:9px">04 </span>Оффер</button>
+    <button class="nav-link" onclick="go(5)"><span style="opacity:.5;font-size:9px">05 </span>Стратегия</button>
+    <button class="nav-link" onclick="go(6)"><span style="opacity:.5;font-size:9px">06 </span>Маркетинг</button>
+    <button class="nav-link" onclick="go(7)"><span style="opacity:.5;font-size:9px">07 </span>UX/UI</button>
+    <button class="nav-link" onclick="go(8)"><span style="opacity:.5;font-size:9px">08 </span>SEO</button>
+    <button class="nav-link" onclick="go(9)"><span style="opacity:.5;font-size:9px">09 </span>Офферы</button>
+    <button class="nav-link" onclick="go(10)"><span style="opacity:.5;font-size:9px">10 </span>Объявления</button>
+    <button class="nav-link" onclick="go(11)"><span style="opacity:.5;font-size:9px">11 </span>Прототип</button>
+  </div>
+</nav>
+
+<!-- 00 ОБЛОЖКА -->
+<div class="page active" id="p0">
+  <div class="cover-grid">
+    <div>
+      <div class="cover-tag"><span class="dot-pulse"></span> Коммерческое предложение · 11.04.2026</div>
+      <h1 class="cover-h1">Выстраиваю digital-рост<br>для <span>Базис Недвижимость</span></h1>
+      <p class="cover-desc">Вхожу в команду как удалённый digital-маркетолог: выстраиваю системный трафик через Telegram, VK, Яндекс — с прозрачной аналитикой и измеримым CPL. 19 лет в маркетинге, из них 8 — на управленческих позициях в PropTech и B2B.</p>
+      <div class="chips-row">
+        <span class="chip">19 лет в маркетинге</span>
+        <span class="chip">Бюджеты до 50 млн ₽/мес</span>
+        <span class="chip">ROMI 300%+</span>
+        <span class="chip accent">PropTech · B2B · Девелопмент</span>
+        <span class="chip">Удалённо · Полная занятость</span>
+        <span class="chip">Старт через 3 дня</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-box"><div class="kpi-num">50+</div><div class="kpi-label">Квал. лидов/мес (цель)</div></div>
+        <div class="kpi-box"><div class="kpi-num">420К</div><div class="kpi-label">Бюджет/мес (₽)</div></div>
+        <div class="kpi-box"><div class="kpi-num">8 400</div><div class="kpi-label">Целевой CPL (₽)</div></div>
+        <div class="kpi-box"><div class="kpi-num">30 дней</div><div class="kpi-label">До первых лидов</div></div>
+      </div>
+      <div class="contacts-row">
+        <a href="mailto:wwwfrolof@yandex.ru">📧 wwwfrolof@yandex.ru</a>
+        <a href="tel:+79059390874">📱 +7 (905) 939-08-74</a>
+        <a href="https://frolofpavel.ru" target="_blank">🌐 frolofpavel.ru</a>
+      </div>
+    </div>
+    <div>
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
+          </div>
+          <div class="browser-url">iflat.io</div>
+        </div>
+        <img class="browser-screenshot" src="kp_bazis_screenshot.png" alt="Базис Недвижимость" onerror="this.outerHTML='<div class=screenshot-placeholder>iflat.io</div>'">
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">Ключевой инсайт</div>
+        <p style="font-size:13px;color:var(--text);margin:0;">Базис — единственная PropTech-платформа в РФ, закрывающая полный цикл девелопера: стройконтроль → ключи → продажи → гарантия. Это незанятая ниша на фоне точечных конкурентов.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 НИША -->
+<div class="page" id="p1">
+  <div class="sec-label">01 — Анализ ниши</div>
+  <h2>PropTech для застройщиков — рынок 2025–2026</h2>
+  <div class="hl">
+    <div class="hl-title">Цифровизация девелопмента переходит из тренда в обязательный стандарт</div>
+    <p>BIM обязателен с 2024 года, 90% московских застройщиков уже внедряют цифровые решения. Рынок PropTech РФ достиг 38.8 млрд ₽ и растёт на 21% в год — на фоне ухода западных вендоров и острого спроса на отечественные экосистемы.</p>
+  </div>
+  <div class="grid3" style="margin-bottom:28px;">
+    <div class="card" style="text-align:center;">
+      <div class="stat-big">38.8 млрд</div>
+      <div class="stat-label">Объём рынка PropTech РФ 2025 (TAdviser)</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="stat-big" style="color:var(--green);">+21%</div>
+      <div class="stat-label">Рост рынка год к году — один из быстрейших в ИТ</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="stat-big" style="color:var(--amber);">90%</div>
+      <div class="stat-label">Московских девелоперов уже внедряют цифровые решения</div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-bottom:28px;">
+    <div class="card">
+      <h3>🚀 Возможности</h3>
+      <ul style="list-style:none;font-size:13px;color:var(--muted);line-height:2.1;">
+        <li>✓ BIM обязателен — тянет за собой спрос на всю цепочку цифровизации</li>
+        <li>✓ Уход SAP, Oracle — российские игроки занимают ниши</li>
+        <li>✓ AI в PropTech: автоматизация стройконтроля, приёмки, документов</li>
+        <li>✓ Партнёрства с банками (Сбер, ДОМ.РФ) открывают B2B-каналы</li>
+        <li>✓ Рост к 2030 до 440+ млрд — рынок в начале S-кривой</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>⚠️ Угрозы</h3>
+      <ul style="list-style:none;font-size:13px;color:var(--muted);line-height:2.1;">
+        <li>✗ Высокая ставка ЦБ — снижение числа новых строек</li>
+        <li>✗ Длинный цикл B2B-продаж PropTech: 3–9 месяцев</li>
+        <li>✗ Консерватизм рынка: 50%+ внедрений проваливаются</li>
+        <li>✗ Консолидация: Сбер и Циан агрессивно входят в PropTech</li>
+        <li>✗ Дефицит PropTech-маркетологов с отраслевой экспертизой</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">Целевая аудитория Базис</div><div class="divider-line"></div></div>
+  <table class="tbl">
+    <thead><tr><th>Сегмент</th><th>Размер рынка</th><th>Главная боль</th><th>Приоритет</th></tr></thead>
+    <tbody>
+      <tr><td>Средние и региональные застройщики (50–500 квартир/мес)</td><td>3 500+ компаний</td><td>Нет единого цикла: стройка ↔ продажи ↔ ключи — разные системы</td><td><span class="tag tag-g">★★★★★</span></td></tr>
+      <tr><td>Крупные девелоперы (ПИК, Самолёт, ЛСР и др.)</td><td>200+ компаний</td><td>Масштабирование внутренних систем, соответствие BIM</td><td><span class="tag tag-g">★★★★☆</span></td></tr>
+      <tr><td>УК и управляющие компании</td><td>10 000+ УК</td><td>Гарантийное обслуживание и работа с жителями в одном окне</td><td><span class="tag tag-w">★★★☆☆</span></td></tr>
+      <tr><td>Подрядчики застройщиков</td><td>80 000+ компаний</td><td>Прозрачная приёмка работ, закрытие объёмов</td><td><span class="tag tag-b">B2B-канал</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 02 КОНКУРЕНТЫ -->
+<div class="page" id="p2">
+  <div class="sec-label">02 — Анализ конкурентов</div>
+  <h2>Кто ещё борется за девелопера</h2>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">Profitbase</div><div class="comp-url">profitbase.ru · Екатеринбург / Москва</div></div>
+      <div><div class="comp-score-val">87</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Цифровая экосистема для девелоперов. Лидер рынка — 900+ партнёров-интеграторов, партнёрство со Сбером и ДОМ.РФ. Позиционируется как «отраслевой стандарт» для застройщиков крупного и среднего уровня.</p>
+    <div class="score-bar"><div class="score-fill" style="width:87%;"></div></div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Сильнейший бренд и сообщество</li><li>900+ партнёров-интеграторов</li><li>Экосистема: CRM + каталог + аналитика</li><li>Партнёрство Сбер, ДОМ.РФ, ЦИАН</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Только продажи — нет стройконтроля и ключей</li><li>Дорого, долгий онбординг (2–8 нед.)</li><li>Не закрывает полный цикл девелопера</li><li>Слабая работа с гарантийным этапом</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">EstateCRM</div><div class="comp-url">estatecrm.io · Москва</div></div>
+      <div><div class="comp-score-val">72</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">BPM и low-code экосистема для застройщиков и УК. 13+ функциональных модулей на базе BPMSoft и Profitbase. Ориентация на крупных девелоперов с длинными внедрениями.</p>
+    <div class="score-bar"><div class="score-fill mid" style="width:72%;"></div></div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Low-code гибкость</li><li>13+ модулей (продажи, маркетинг, финансы)</li><li>Интеграции с ЦИАН, Авито, ДомКлик</li><li>Охватывает застройщиков и агентства</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Очень дорогое и долгое внедрение</li><li>Нет модуля стройконтроля</li><li>Слабый маркетинг, нет узнаваемости</li><li>Нет отдельного продукта для передачи ключей</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">SberCRM (Real Estate)</div><div class="comp-url">sbercrm.com · Москва</div></div>
+      <div><div class="comp-score-val">68</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">CRM-платформа от Сбербанка для застройщиков и агентств. Огромные ресурсы банка, интеграция со Сбером. Не специализированный PropTech — универсальная CRM адаптированная под недвижимость.</p>
+    <div class="score-bar"><div class="score-fill mid" style="width:68%;"></div></div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Бренд Сбера — доверие на уровне банка</li><li>Интеграция с экосистемой Сбера (ипотека, ДомКлик)</li><li>Сильная техподдержка</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Не PropTech — нет стройконтроля и передачи ключей</li><li>Медленное развитие отраслевых функций</li><li>Дорогое внедрение, бюрократия Сбера</li><li>Слабая кастомизация под специфику девелопера</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">SmartDeal (ЦИАН)</div><div class="comp-url">smartdeal.ru · Москва</div></div>
+      <div><div class="comp-score-val">61</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Сервис электронной регистрации сделок от ЦИАН. Узкая специализация — только приёмка квартир и регистрация в Росреестре. Партнёр Базис Недвижимость по SmartDeal с 2025.</p>
+    <div class="score-bar"><div class="score-fill low" style="width:61%;"></div></div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Точечная экспертиза в регистрации</li><li>ЦИАН-экосистема и трафик</li><li>Узнаваемый бренд в сделках</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Только один этап — не экосистема</li><li>Нет CRM, стройконтроля, маркетинга</li><li>Зависимость от ЦИАН-аудитории</li><li>Ограниченный рост без партнёров</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- 03 ПОЗИЦИОНИРОВАНИЕ КАРТА -->
+<div class="page" id="p3">
+  <div class="sec-label">03 — Позиционирование конкурентов</div>
+  <h2>Карта рынка и незанятые ниши</h2>
+  <div class="pos-map">
+    <div class="pm-axis-x"></div>
+    <div class="pm-axis-y"></div>
+    <div class="pm-label" style="bottom:12px;left:50%;transform:translateX(-50%);">← Точечное решение · Полная экосистема →</div>
+    <div class="pm-label" style="left:6px;top:50%;transform:translateY(-50%) rotate(-90deg);white-space:nowrap;">← Доступно · Дорого →</div>
+    <div class="pm-dot" style="width:50px;height:50px;background:rgba(245,158,11,.2);border:2px solid var(--amber);top:18%;right:18%;">
+      <div class="pm-dot-label" style="color:var(--amber);">Profitbase</div>
+    </div>
+    <div class="pm-dot" style="width:38px;height:38px;background:rgba(77,184,255,.2);border:2px solid #4db8ff;top:28%;right:36%;">
+      <div class="pm-dot-label" style="color:#4db8ff;">EstateCRM</div>
+    </div>
+    <div class="pm-dot" style="width:34px;height:34px;background:rgba(62,207,142,.2);border:2px solid var(--green);bottom:38%;left:40%;">
+      <div class="pm-dot-label" style="color:var(--green);">SberCRM</div>
+    </div>
+    <div class="pm-dot" style="width:28px;height:28px;background:rgba(120,120,120,.2);border:2px solid #888;bottom:32%;left:22%;">
+      <div class="pm-dot-label" style="color:#aaa;">SmartDeal</div>
+    </div>
+    <div class="pm-dot" style="width:64px;height:64px;background:rgba(0,96,225,.25);border:2px solid var(--accent);top:42%;right:20%;">
+      <div class="pm-dot-label" style="color:var(--accent);font-size:11px;font-weight:700;">Базис Недвижимость</div>
+    </div>
+    <div style="position:absolute;bottom:55%;right:18%;font-size:10px;color:var(--accent);font-family:'Syne',sans-serif;font-weight:700;">← незанятая ниша:<br>полный цикл + доступно</div>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">Сравнение офферов</div><div class="divider-line"></div></div>
+  <table class="tbl" style="margin-bottom:24px;">
+    <thead><tr><th>Критерий</th><th>Базис Недвижимость</th><th>Profitbase</th><th>EstateCRM</th><th>SmartDeal</th></tr></thead>
+    <tbody>
+      <tr style="background:rgba(0,96,225,.05)"><td>Полный цикл девелопера</td><td><span class="tag tag-g">✓ Стройка→Ключи→Продажи</span></td><td>Только продажи</td><td>Продажи + УК</td><td>Только сделки</td></tr>
+      <tr><td>Стройконтроль</td><td><span class="tag tag-g">✓ Есть</span></td><td>Нет</td><td>Нет</td><td>Нет</td></tr>
+      <tr style="background:rgba(0,96,225,.05)"><td>Передача ключей</td><td><span class="tag tag-g">✓ Цифровая</span></td><td>Нет</td><td>Нет</td><td>Частично</td></tr>
+      <tr><td>Старт внедрения</td><td><span class="tag tag-g">От 2 дней</span></td><td>2–8 недель</td><td>4–16 недель</td><td>1–3 дня</td></tr>
+      <tr style="background:rgba(0,96,225,.05)"><td>Реестр Минцифры</td><td><span class="tag tag-g">✓ Включён</span></td><td>Да</td><td>Да</td><td>Нет</td></tr>
+      <tr><td>Партнёр</td><td>Сбер + ЦИАН</td><td>Сбер, ДОМ.РФ, ЦИАН</td><td>—</td><td>ЦИАН</td></tr>
+    </tbody>
+  </table>
+  <div class="hl">
+    <div class="hl-title">Незанятая ниша Базис</div>
+    <p>Ни один конкурент не закрывает полный цикл девелопера — от стройконтроля до передачи ключей и гарантийного обслуживания — в одной платформе. Это и есть голубой океан Базис Недвижимость при правильном маркетинговом позиционировании.</p>
+  </div>
+</div>
+
+<!-- 04 ОФФЕР -->
+<div class="page" id="p4">
+  <div class="sec-label">04 — Позиционирование</div>
+  <h2>Как Павел усиливает Базис</h2>
+  <div class="hl">
+    <div class="hl-title">«Я выстрою digital-машину, которая приводит Базис Недвижимость к застройщикам быстрее конкурентов — через Telegram, Яндекс и B2B-аутрич с измеримым CPL»</div>
+    <p>Не просто генерация лидов — системная работа с воронкой: от первого контента до квалифицированного лида в CRM. Понимаю боли девелоперов изнутри: управлял маркетингом в девелопменте и B2B PropTech.</p>
+  </div>
+  <div class="grid2" style="margin-bottom:24px;">
+    <div class="card">
+      <div style="font-size:26px;margin-bottom:10px;">🏗</div>
+      <h3 style="color:#fff;text-transform:none;letter-spacing:0;font-size:15px;">Отраслевая экспертиза</h3>
+      <p style="font-size:13px;margin-top:8px;">19 лет в маркетинге, включая девелопмент (35 000 м²/мес), B2B и PropTech. Говорю на языке девелопера — понимаю BIM, эскроу, стройконтроль изнутри.</p>
+    </div>
+    <div class="card">
+      <div style="font-size:26px;margin-bottom:10px;">📊</div>
+      <h3 style="color:#fff;text-transform:none;letter-spacing:0;font-size:15px;">Системный рост через данные</h3>
+      <p style="font-size:13px;margin-top:8px;">Строю маркетинг как систему: воронка → каналы → аналитика → оптимизация. B2B-проект с нуля до 312 млн ₽ за 24 мес — без магии, только процессы.</p>
+    </div>
+    <div class="card">
+      <div style="font-size:26px;margin-bottom:10px;">⚡</div>
+      <h3 style="color:#fff;text-transform:none;letter-spacing:0;font-size:15px;">Быстрый запуск</h3>
+      <p style="font-size:13px;margin-top:8px;">Через 2 недели — первые кампании в тесте. Через 30 дней — лиды в CRM. Понимаю стек: Яндекс Директ, TG Ads, VK, Roistat — не нужно объяснять с нуля.</p>
+    </div>
+    <div class="card">
+      <div style="font-size:26px;margin-bottom:10px;">🎯</div>
+      <h3 style="color:#fff;text-transform:none;letter-spacing:0;font-size:15px;">AI-маркетинг</h3>
+      <p style="font-size:13px;margin-top:8px;">Использую AI для генерации контента, анализа конкурентов и автоматизации рутины. Ускоряет создание материалов в 3–5 раз без потери качества.</p>
+    </div>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">Ключевые сообщения под сегменты</div><div class="divider-line"></div></div>
+  <table class="tbl">
+    <thead><tr><th>Сегмент аудитории Базис</th><th>Ключевое сообщение</th><th>Почему работает</th></tr></thead>
+    <tbody>
+      <tr><td>Региональные застройщики 50–500 кв/мес</td><td>«Цифровой офис девелопера за 2 дня — без длинных внедрений»</td><td>Боль: нет времени и ресурсов на долгое внедрение; Базис снимает этот барьер</td></tr>
+      <tr><td>CTO / IT-директор девелопера</td><td>«Российская платформа в реестре Минцифры — BIM-совместима из коробки»</td><td>Страх: санкции, импортозамещение; Базис закрывает этот риск юридически</td></tr>
+      <tr><td>CEO / собственник девелопера</td><td>«300+ застройщиков в 55 городах — самый быстрорастущий PropTech России»</td><td>Социальное доказательство + рост ФРИИ → снижает риск принятия решения</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 05 СТРАТЕГИЯ -->
+<div class="page" id="p5">
+  <div class="sec-label">05 — Маркетинговая стратегия</div>
+  <h2>Система привлечения застройщиков</h2>
+  <div class="hl">
+    <div class="hl-title">Контентный B2B-маховик: экспертиза → доверие → лид → сделка</div>
+    <p>Базис продаёт сложный B2B-продукт с циклом 3–9 месяцев. Задача маркетинга — сократить этот цикл через контентное прогревание (Telegram, RuTube, VK), перехват горячего спроса (Яндекс Директ) и прямой B2B-аутрич к ЛПР застройщиков.</p>
+  </div>
+  <div class="phases">
+    <div class="phase">
+      <div class="phase-num">1</div>
+      <div class="phase-tag">Месяц 1</div>
+      <h3>Фундамент и аналитика</h3>
+      <ul>
+        <li>Аудит текущих каналов и контента</li>
+        <li>Настройка сквозной аналитики (Roistat / Яндекс Метрика)</li>
+        <li>Контент-стратегия для Telegram, VK, RuTube</li>
+        <li>Запуск тестовых кампаний Яндекс Директ</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-num">2</div>
+      <div class="phase-tag">Месяц 2–3</div>
+      <h3>Запуск трафика и контента</h3>
+      <ul>
+        <li>Системный контент: кейсы застройщиков, PropTech-обзоры</li>
+        <li>Посевы в TG-каналах девелоперов и B2B</li>
+        <li>B2B-аутрич: личные сообщения ЛПР застройщиков</li>
+        <li>Ретаргетинг по базе и посетителям сайта</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-num">3</div>
+      <div class="phase-tag">Месяц 4+</div>
+      <h3>Масштабирование</h3>
+      <ul>
+        <li>Оптимизация каналов по CPL — масштаб работающих</li>
+        <li>Запуск партнёрского маркетинга (интеграторы, ассоциации)</li>
+        <li>Вебинары и онлайн-демо для потенциальных клиентов</li>
+        <li>RuTube-канал: видеокейсы реальных застройщиков</li>
+      </ul>
+    </div>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">Воронка</div><div class="divider-line"></div></div>
+  <div class="funnel">
+    <div class="funnel-step"><span class="fi">🔍</span><span class="ft">Захват горячего спроса</span><span class="fd">Яндекс Директ по запросам «CRM застройщик», «PropTech девелопер», «стройконтроль» → прямо на демо-форму</span></div>
+    <div class="funnel-step"><span class="fi">📱</span><span class="ft">Контентный прогрев</span><span class="fd">Telegram-канал + VK + RuTube: кейсы, инсайты, обзоры PropTech → подписка → прогрев до запроса демо</span></div>
+    <div class="funnel-step"><span class="fi">📩</span><span class="ft">B2B-аутрич</span><span class="fd">Прямые сообщения CTO и CEO застройщиков в TG/email → квалификация → передача в продажи</span></div>
+    <div class="funnel-step"><span class="fi">🔁</span><span class="ft">Ретаргетинг</span><span class="fd">4 сценария: посетил сайт → начал запрос демо → был клиентом → смотрел кейс → персональный follow-up</span></div>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">Скрипт B2B-аутрича</div><div class="divider-line"></div></div>
+  <div class="script-box">
+    <strong style="color:var(--accent);">Сообщение 1:</strong> «Добрый день, [Имя]. Вижу, [Компания] активно строит в [регион]. Мы в Базис Недвижимость помогли 300+ девелоперам сократить время передачи ключей с 3 часов до 20 минут. Могу показать кейс близкий к вашим объёмам?»<br><br>
+    <strong style="color:var(--accent);">Сообщение 2:</strong> «[После ответа] Основная проблема с которой приходят — разрозненные системы: стройконтроль в одном, продажи в другом, передача ключей вручную. Базис объединяет всё в одном окне. 15 минут на демо покажут как это выглядит на практике.»<br><br>
+    <strong style="color:var(--accent);">Закрытие:</strong> «Старт от 2 дней — без долгого внедрения. Когда удобно созвониться?»
+  </div>
+</div>
+
+<!-- 06 МАРКЕТИНГ-ПЛАН -->
+<div class="page" id="p6">
+  <div class="sec-label">06 — Маркетинговый план</div>
+  <h2>Медиаплан на первые 3 месяца</h2>
+
+  <div class="ch-card">
+    <div class="ch-left"><div class="ch-icon">🔍</div><div><div class="ch-name">Яндекс Директ</div><div class="ch-desc">Поиск + РСЯ: запросы «CRM для застройщиков», «PropTech платформа», «стройконтроль онлайн» → лидогенерация</div></div></div>
+    <div class="ch-right"><div class="ch-stat ch-budget"><div class="ch-stat-val">160К ₽</div><div class="ch-stat-label">Бюджет/мес</div></div><div class="ch-stat ch-cpl"><div class="ch-stat-val">9 000 ₽</div><div class="ch-stat-label">Целевой CPL</div></div></div>
+  </div>
+  <div class="ch-card">
+    <div class="ch-left"><div class="ch-icon">✈️</div><div><div class="ch-name">Telegram Ads + посевы</div><div class="ch-desc">TG Ads в каналах девелоперов + нативные посевы в PropTech / строительных / B2B-каналах</div></div></div>
+    <div class="ch-right"><div class="ch-stat ch-budget"><div class="ch-stat-val">110К ₽</div><div class="ch-stat-label">Бюджет/мес</div></div><div class="ch-stat ch-cpl"><div class="ch-stat-val">7 000 ₽</div><div class="ch-stat-label">Целевой CPL</div></div></div>
+  </div>
+  <div class="ch-card">
+    <div class="ch-left"><div class="ch-icon">🔵</div><div><div class="ch-name">ВКонтакте</div><div class="ch-desc">Таргет по ЛПР застройщиков: должности CEO, CTO, директор по IT в строительных компаниях</div></div></div>
+    <div class="ch-right"><div class="ch-stat ch-budget"><div class="ch-stat-val">80К ₽</div><div class="ch-stat-label">Бюджет/мес</div></div><div class="ch-stat ch-cpl"><div class="ch-stat-val">11 000 ₽</div><div class="ch-stat-label">Целевой CPL</div></div></div>
+  </div>
+  <div class="ch-card">
+    <div class="ch-left"><div class="ch-icon">📈</div><div><div class="ch-name">SEO</div><div class="ch-desc">Контентные статьи под коммерческие запросы: «CRM для застройщика», «PropTech платформа», «цифровизация девелопера»</div></div></div>
+    <div class="ch-right"><div class="ch-stat ch-budget"><div class="ch-stat-val">40К ₽</div><div class="ch-stat-label">Бюджет/мес</div></div><div class="ch-stat ch-cpl"><div class="ch-stat-val">Органика</div><div class="ch-stat-label">Долгосрочно</div></div></div>
+  </div>
+  <div class="ch-card">
+    <div class="ch-left"><div class="ch-icon">🤝</div><div><div class="ch-name">B2B-аутрич</div><div class="ch-desc">Прямые сообщения ЛПР 200 застройщиков/мес через TG и email. Квалификация → демо → передача в продажи</div></div></div>
+    <div class="ch-right"><div class="ch-stat ch-budget"><div class="ch-stat-val">30К ₽</div><div class="ch-stat-label">Бюджет/мес</div></div><div class="ch-stat ch-cpl"><div class="ch-stat-val">3 000 ₽</div><div class="ch-stat-label">Целевой CPL</div></div></div>
+  </div>
+  <div class="ch-total">
+    <div class="ch-total-label">Итого бюджет/мес</div>
+    <div style="display:flex;gap:32px;">
+      <div class="ch-stat ch-budget"><div class="ch-stat-val">420К ₽</div><div class="ch-stat-label">Всего</div></div>
+      <div class="ch-stat ch-cpl"><div class="ch-stat-val">50+ лидов</div><div class="ch-stat-label">Цель/мес</div></div>
+      <div class="ch-stat ch-cpl"><div class="ch-stat-val">8 400 ₽</div><div class="ch-stat-label">Средний CPL</div></div>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">TG-каналы для посевов</div><div class="divider-line"></div></div>
+  <div class="grid2" style="margin-bottom:24px;">
+    <div class="card">
+      <h3>📢 B2C / Девелоперы</h3>
+      <ul style="list-style:none;font-size:13px;color:var(--muted);line-height:2;">
+        <li>🏗 <a href="https://t.me/digitaldeveloper" style="color:var(--accent);">@digitaldeveloper</a> — портал цифровизации</li>
+        <li>🏠 <a href="https://t.me/proptech_russia" style="color:var(--accent);">@proptech_russia</a> — PropTech-сообщество</li>
+        <li>📊 <a href="https://t.me/realestate_analytics" style="color:var(--accent);">@realestate_analytics</a> — аналитика рынка</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🏢 B2B / Застройщики</h3>
+      <ul style="list-style:none;font-size:13px;color:var(--muted);line-height:2;">
+        <li>💼 <a href="https://t.me/b2b_marketing_ru" style="color:var(--accent);">@b2b_marketing_ru</a> — B2B маркетинг</li>
+        <li>🔨 <a href="https://t.me/stroyka_digital" style="color:var(--accent);">@stroyka_digital</a> — цифровое строительство</li>
+        <li>📱 <a href="https://t.me/itdeveloper_ru" style="color:var(--accent);">@itdeveloper_ru</a> — IT для девелоперов</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">Дорожная карта</div><div class="divider-line"></div></div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-week">Неделя 1–2</div>
+      <div class="tl-line"><div class="tl-dot"></div><div class="tl-pipe"></div></div>
+      <div class="tl-card">
+        <div class="tl-title">Аудит и настройка аналитики</div>
+        <div class="tl-tasks">
+          <span class="tl-task">Аудит текущих каналов</span>
+          <span class="tl-task">Roistat / Метрика</span>
+          <span class="tl-task">UTM-разметка</span>
+          <span class="tl-task">Портреты ЛПР</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-week">Неделя 3–4</div>
+      <div class="tl-line"><div class="tl-dot"></div><div class="tl-pipe"></div></div>
+      <div class="tl-card">
+        <div class="tl-title">Запуск первых кампаний</div>
+        <div class="tl-tasks">
+          <span class="tl-task">Яндекс Директ (тест)</span>
+          <span class="tl-task">TG-посевы × 5</span>
+          <span class="tl-task">Контент-план на 2 мес</span>
+          <span class="tl-task">B2B-аутрич × 50</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-week">Месяц 2</div>
+      <div class="tl-line"><div class="tl-dot"></div><div class="tl-pipe"></div></div>
+      <div class="tl-card">
+        <div class="tl-title">Оптимизация и масштаб</div>
+        <div class="tl-tasks">
+          <span class="tl-task">Оптимизация CPL</span>
+          <span class="tl-task">VK таргет</span>
+          <span class="tl-task">Ретаргетинг × 4</span>
+          <span class="tl-task">SEO статьи × 4</span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-week">Месяц 3</div>
+      <div class="tl-line"><div class="tl-dot"></div><div class="tl-pipe"></div></div>
+      <div class="tl-card">
+        <div class="tl-title">Масштабирование и партнёры</div>
+        <div class="tl-tasks">
+          <span class="tl-task">Партнёрский канал</span>
+          <span class="tl-task">Вебинар для девелоперов</span>
+          <span class="tl-task">RuTube × 2 видео</span>
+          <span class="tl-task">Отчёт + план Q2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 07 UX/UI -->
+<div class="page" id="p7">
+  <div class="sec-label">07 — UX/UI Аудит</div>
+  <h2>Аудит сайта iflat.io</h2>
+  <div class="audit-ring-block">
+    <div class="ring-wrap">
+      <svg width="140" height="140" viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="12"/>
+        <circle cx="70" cy="70" r="58" fill="none" stroke="var(--accent)" stroke-width="12"
+          stroke-dasharray="364" stroke-dashoffset="109" stroke-linecap="round"
+          transform="rotate(-90 70 70)"/>
+      </svg>
+      <div class="ring-label">
+        <div class="ring-val">70</div>
+        <div class="ring-sub">/ 100</div>
+      </div>
+    </div>
+    <div class="ring-info">
+      <h3>UX/UI Оценка сайта</h3>
+      <p>Сайт iflat.io имеет понятную структуру и правильный синий бренд. Основная проблема — слабая конверсионная оптимизация: нет sticky CTA, форм демо на каждом экране, кейсы скрыты. Мобильная версия требует доработки.</p>
+      <div class="priority-box">⚡ Приоритет: добавить форму «Получить демо» на каждый экран (+15% конверсия); сделать первый экран говорящим на языке боли застройщика, а не функций платформы; добавить блок с цифрами (300+ клиентов, 55 городов, 2 дня старт)</div>
+    </div>
+  </div>
+  <div class="audit-items">
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Hero-блок и H1</div><div class="audit-note">«Управление девелоперскими проектами» — есть, но безлично. Нет боли.</div><div class="audit-score s-ok">7/10</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Навигация и структура</div><div class="audit-note">Чёткое меню (Стройконтроль / Ключи / Продажи / Гарантия) — логично и понятно</div><div class="audit-score s-ok">8/10</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Логотипы клиентов</div><div class="audit-note">Есть — Pioneer, Астон, ЛСР и другие. Сильный блок доверия.</div><div class="audit-score s-ok">8/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Форма / CTA на каждом экране</div><div class="audit-note">CTA «Запросить демо» только внизу страницы — теряем 30%+ посетителей</div><div class="audit-score s-w">5/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Мобильная версия</div><div class="audit-note">Сайт грузится медленно на мобильном, часть блоков обрезана на 320px</div><div class="audit-score s-w">5/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Скорость загрузки</div><div class="audit-note">PageSpeed Mobile ~45/100 — критично для B2B лидогенерации из поиска</div><div class="audit-score s-w">4/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Кейсы с цифрами</div><div class="audit-note">Нет детальных кейсов с ROI, сроками, цифрами — ключевой инструмент B2B</div><div class="audit-score s-bad">3/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Онлайн-демо / кнопка в шапке</div><div class="audit-note">В шапке только «Личный кабинет» — новый посетитель не видит entry point</div><div class="audit-score s-bad">3/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Социальные доказательства</div><div class="audit-note">Лого клиентов есть, но нет цитат, видеоотзывов, звёздных оценок</div><div class="audit-score s-w">5/10</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">SSL и безопасность</div><div class="audit-note">HTTPS активен, сертификат валиден</div><div class="audit-score s-ok">OK</div></div>
+  </div>
+</div>
+
+<!-- 08 SEO -->
+<div class="page" id="p8">
+  <div class="sec-label">08 — SEO Аудит</div>
+  <h2>SEO-ситуация iflat.io</h2>
+  <div class="audit-ring-block">
+    <div class="ring-wrap">
+      <svg width="140" height="140" viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="12"/>
+        <circle cx="70" cy="70" r="58" fill="none" stroke="var(--amber)" stroke-width="12"
+          stroke-dasharray="364" stroke-dashoffset="164" stroke-linecap="round"
+          transform="rotate(-90 70 70)"/>
+      </svg>
+      <div class="ring-label">
+        <div class="ring-val" style="color:var(--amber);">55</div>
+        <div class="ring-sub">/ 100</div>
+      </div>
+    </div>
+    <div class="ring-info">
+      <h3>SEO Оценка</h3>
+      <p>Сайт базово оптимизирован (HTTPS, title), но практически не присутствует в поисковой выдаче по коммерческим запросам. Нет контентных SEO-страниц под ключевые запросы PropTech. Основной трафик — прямые заходы и бренд.</p>
+      <div class="priority-box">⚡ SEO-план: Месяц 1 — технический аудит + исправление; Месяц 2 — 4 посадочные страницы под запросы; Месяц 3 — 8 SEO-статей + блог о цифровизации девелопмента</div>
+    </div>
+  </div>
+  <div class="audit-items">
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">HTTPS / SSL</div><div class="audit-note">Сертификат действителен, перенаправление с HTTP работает</div><div class="audit-score s-ok">OK</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Title и Meta Description</div><div class="audit-note">Title есть, но слабо оптимизирован под запросы. Meta Description шаблонный.</div><div class="audit-score s-w">Частично</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">H1–H6 структура</div><div class="audit-note">H1 есть, но внутренние страницы без чёткой иерархии заголовков</div><div class="audit-score s-w">Частично</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">PageSpeed Mobile</div><div class="audit-note">~45/100 — критично медленно. Основная причина: тяжёлые скрипты и изображения</div><div class="audit-score s-bad">Критично</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Контентные SEO-страницы</div><div class="audit-note">Нет посадочных страниц под запросы: «CRM для застройщика», «стройконтроль онлайн»</div><div class="audit-score s-bad">Критично</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Alt-теги изображений</div><div class="audit-note">Большинство изображений без alt-тегов — упущен весь имиджевый SEO-трафик</div><div class="audit-score s-bad">Ошибка</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Внутренняя перелинковка</div><div class="audit-note">Модули сайта не перелинкованы между собой — PageRank не распределяется</div><div class="audit-score s-w">Ошибка</div></div>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-text">Ключевые запросы</div><div class="divider-line"></div></div>
+  <table class="tbl">
+    <thead><tr><th>Запрос</th><th>Частотность</th><th>Конкуренция</th><th>Позиция сейчас</th><th>Потенциал</th></tr></thead>
+    <tbody>
+      <tr><td>crm для застройщика</td><td>2 800/мес</td><td>Высокая</td><td>Нет в топ-50</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>proptech платформа застройщик</td><td>650/мес</td><td>Низкая</td><td>Нет в топ</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>цифровизация девелопера</td><td>1 200/мес</td><td>Средняя</td><td>Нет в топ</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>стройконтроль онлайн</td><td>900/мес</td><td>Низкая</td><td>Нет в топ</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>передача ключей цифровая</td><td>400/мес</td><td>Низкая</td><td>Нет в топ</td><td><span class="tag tag-w">Средний</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 09 ОФФЕРЫ -->
+<div class="page" id="p9">
+  <div class="sec-label">09 — Варианты офферов</div>
+  <h2>5 вариантов под разные психотипы ЛПР</h2>
+
+  <div class="offer-card" data-n="01">
+    <div class="offer-type">Рациональный · Скорость / Результат</div>
+    <div class="offer-text">«Первые лиды из Telegram и Яндекса — через 2 недели после старта»</div>
+    <div class="offer-sub">Для CEO и маркетинг-директора: результат быстро, без раскачки. Работает в Директ и на первом экране сайта.</div>
+  </div>
+  <div class="offer-card" data-n="02">
+    <div class="offer-type">Конкурентный · Против рынка</div>
+    <div class="offer-text">«Единственная PropTech-платформа с полным циклом: стройка → ключи → продажи — и старт за 2 дня»</div>
+    <div class="offer-sub">Против Profitbase и EstateCRM: те закрывают один этап. Базис — весь цикл. Для лендинга и посевов.</div>
+  </div>
+  <div class="offer-card" data-n="03">
+    <div class="offer-type">Эмоциональный · Безопасность / Риск</div>
+    <div class="offer-text">«Российская платформа в реестре Минцифры — внедрение без риска санкций и без импортного вендора»</div>
+    <div class="offer-sub">Для CTO и IT-директоров: снимает главный страх 2024–2025 — замену западного ПО. Для TG-посевов в IT-каналах.</div>
+  </div>
+  <div class="offer-card" data-n="04">
+    <div class="offer-type">Социальный · Статус / Сообщество</div>
+    <div class="offer-text">«300+ застройщиков в 55 городах уже работают на Базис — самый быстрорастущий PropTech в России по ФРИИ»</div>
+    <div class="offer-sub">Снижает риск принятия решения через социальное доказательство. Для ретаргетинга и B2B-аутрича.</div>
+  </div>
+  <div class="offer-card" data-n="05">
+    <div class="offer-type">B2B · ROI / Партнёры</div>
+    <div class="offer-text">«Сократите время передачи ключей с 3 часов до 20 минут — ROI окупается за первый квартал»</div>
+    <div class="offer-sub">Для CFO и собственников: конкретный ROI, не абстрактная «цифровизация». Для демо-презентации и партнёрского маркетинга.</div>
+  </div>
+</div>
+
+<!-- 10 ОБЪЯВЛЕНИЯ -->
+<div class="page" id="p10">
+  <div class="sec-label">10 — Рекламные объявления</div>
+  <h2>Готовые объявления под каналы</h2>
+
+  <div class="ad-platform-label">Яндекс Директ</div>
+  <div class="ad-card">
+    <div class="ad-head">CRM для застройщика | Старт за 2 дня</div>
+    <div class="ad-body">Базис Недвижимость — полный цикл: стройконтроль, ключи, продажи. 300+ застройщиков в 55 городах. Реестр Минцифры.</div>
+    <div class="ad-cta">→ Запросить демо бесплатно</div>
+  </div>
+  <div class="ad-card">
+    <div class="ad-head">PropTech платформа для девелопера | BIM-совместима</div>
+    <div class="ad-body">Цифровая передача ключей за 20 мин вместо 3 часов. Интеграция amoCRM и Битрикс24. Партнёр Сбера и ЦИАН.</div>
+    <div class="ad-cta">→ Смотреть кейсы застройщиков</div>
+  </div>
+  <div class="ad-card">
+    <div class="ad-head">Стройконтроль онлайн | Приёмка без бумаг</div>
+    <div class="ad-body">Фиксация замечаний, мобильное приложение без интернета, история на каждый объект. Российский продукт, сервера в РФ.</div>
+    <div class="ad-cta">→ Попробовать 14 дней бесплатно</div>
+  </div>
+
+  <div class="ad-platform-label">Telegram Ads</div>
+  <div class="ad-card">
+    <div class="ad-head">Сдаёте квартиры по 3 часа на дольщика?</div>
+    <div class="ad-body">Базис Недвижимость переводит передачу ключей в цифру: электронная очередь, СМС-приглашения, подпись в приложении. 20 минут на одну квартиру.</div>
+    <div class="ad-cta">→ Смотреть демо</div>
+  </div>
+  <div class="ad-card">
+    <div class="ad-head">PropTech без западных вендоров</div>
+    <div class="ad-body">Реестр Минцифры, сервера в России, BIM-совместимо с 2024. 300+ застройщиков уже перешли. Внедрение за 2 дня.</div>
+    <div class="ad-cta">→ Узнать подробнее</div>
+  </div>
+
+  <div class="ad-platform-label">ВКонтакте</div>
+  <div class="ad-card">
+    <div class="ad-head">🏗 Девелопер? Узнайте как сократить время передачи ключей в 9 раз</div>
+    <div class="ad-body">Кейс: застройщик «Астон» перешёл на цифровую приёмку квартир с Базис Недвижимость. Теперь 20 мин вместо 3 часов. Как они это сделали — в нашем гайде.</div>
+    <div class="ad-cta">→ Читать кейс</div>
+  </div>
+
+  <div class="ad-platform-label">Нативные посевы в TG-каналах</div>
+  <div class="ad-card">
+    <div class="ad-head">Пост для PropTech/строительных каналов</div>
+    <div class="ad-body" style="white-space:pre-line;line-height:1.8;">Недавно разговаривал с IT-директором одного регионального застройщика. Жалуется: у них три системы — стройконтроль в одной, CRM в другой, передача ключей вообще в Excel.
+
+Спросил — как они вообще работают? «Привыкли», говорит.
+
+А ведь проблема не в людях — в том, что рынок PropTech РФ долго не давал нормальной альтернативы. Либо дорого и долго (Profitbase на 8 недель внедрения), либо только кусок функционала.
+
+Сейчас ситуация изменилась. Базис Недвижимость закрывает полный цикл девелопера в одной платформе: от стройконтроля до передачи ключей и гарантийного обслуживания. Старт — 2 дня. Уже 300+ застройщиков в 55 городах.
+
+Если интересно посмотреть кейсы — ссылка в комментариях.</div>
+    <div class="ad-cta">→ iflat.io | @bazis_proptech</div>
+  </div>
+</div>
+
+<!-- 11 ПРОТОТИП -->
+<div class="page" id="p11">
+  <div class="sec-label">11 — Прототип сайта</div>
+  <h2>Как мог бы выглядеть обновлённый iflat.io</h2>
+  <p style="color:var(--muted);margin-bottom:20px;">Интерактивный прототип в фирменном синем Базис Недвижимость. Показывает ключевые улучшения: CTA в шапке, сильный H1 с болью, цифры доверия на первом экране.</p>
+
+  <div class="proto-wrap">
+    <div class="proto-topbar">
+      <div class="browser-dots">
+        <span style="background:#ff5f57;width:10px;height:10px;border-radius:50%;display:block;"></span>
+        <span style="background:#febc2e;width:10px;height:10px;border-radius:50%;display:block;"></span>
+        <span style="background:#28c840;width:10px;height:10px;border-radius:50%;display:block;"></span>
+      </div>
+      <div class="browser-url">iflat.io — обновлённый вариант</div>
+    </div>
+    <!-- Прото-навбар -->
+    <div style="background:var(--bg3);padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);">
+      <div class="proto-nav-bar" style="background:transparent;padding:0;border:none;gap:0;">
+        <span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--accent);padding:12px 20px 12px 0;">БАЗИС</span>
+        <a href="#" class="proto-nav-link active">Платформа</a>
+        <a href="#" class="proto-nav-link">Кейсы</a>
+        <a href="#" class="proto-nav-link">Тарифы</a>
+        <a href="#" class="proto-nav-link">О нас</a>
+      </div>
+      <button class="proto-btn" style="padding:8px 20px;font-size:12px;">Запросить демо</button>
+    </div>
+    <!-- Hero -->
+    <div class="proto-hero">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;"></span>Реестр Минцифры · Партнёр Сбера и ЦИАН</div>
+      <h2>Закройте полный цикл девелопера<br>в одной платформе</h2>
+      <p>Стройконтроль → Ключи → Продажи → Гарантия. Запуск за 2 дня. 300+ застройщиков в 55 городах уже работают на Базис.</p>
+      <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+        <button class="proto-btn">Запросить демо →</button>
+        <button style="background:transparent;border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:13px 24px;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;cursor:pointer;">Смотреть кейсы</button>
+      </div>
+    </div>
+    <!-- Статы -->
+    <div class="proto-stats">
+      <div class="proto-stat"><div class="proto-stat-num">300+</div><div class="proto-stat-label">Застройщиков-клиентов</div></div>
+      <div class="proto-stat"><div class="proto-stat-num">55</div><div class="proto-stat-label">Городов в России</div></div>
+      <div class="proto-stat"><div class="proto-stat-num">2 дня</div><div class="proto-stat-label">До старта работы</div></div>
+    </div>
+    <!-- Features -->
+    <div class="proto-features">
+      <div class="proto-feature">
+        <div class="proto-feature-icon">🏗</div>
+        <h4>Стройконтроль</h4>
+        <p>Фиксация замечаний, приёмочный контроль, мобильное приложение без интернета</p>
+      </div>
+      <div class="proto-feature">
+        <div class="proto-feature-icon">🔑</div>
+        <h4>Цифровые ключи</h4>
+        <p>Электронная очередь, СМС-приглашения, подпись в приложении — 20 мин на квартиру</p>
+      </div>
+      <div class="proto-feature">
+        <div class="proto-feature-icon">📊</div>
+        <h4>CRM Продаж</h4>
+        <p>Бронирование, онлайн-сделка, интеграция amoCRM и Битрикс24, каталог квартир</p>
+      </div>
+      <div class="proto-feature">
+        <div class="proto-feature-icon">🛡</div>
+        <h4>Гарантийный сервис</h4>
+        <p>Система заявок от жителей, контроль сроков, история по каждой квартире</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentPage = 0;
+const total = 12;
+
+function go(i) {
+  if (i < 0 || i >= total) return;
+  currentPage = i;
+  document.querySelectorAll('.page').forEach((p,j) => p.classList.toggle('active', j===i));
+  document.querySelectorAll('.nav-link').forEach((l,j) => l.classList.toggle('active', j===i));
+  document.getElementById('nav-counter').textContent = (i+1) + ' / ' + total;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') go(currentPage + 1);
+  if (e.key === 'ArrowLeft')  go(currentPage - 1);
+});
+</script>
+</body>
+</html>
