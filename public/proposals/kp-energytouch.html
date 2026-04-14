@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КП — Павел Фролов × Energy Touch</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060d14;
+  --bg2: #0c1520;
+  --bg3: #101e2e;
+  --accent: #00b4f0;
+  --text: #d0e8f5;
+  --muted: #4a7a9b;
+  --warn: #f0b429;
+  --danger: #e05555;
+  --white: #ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6;}
+h1,h2,h3,h4{font-family:'Syne',sans-serif;}
+a{color:var(--accent);text-decoration:none;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,13,20,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07);}
+.nav-top{display:flex;align-items:center;justify-content:space-between;padding:10px 28px;}
+.nav-logo{display:flex;align-items:center;gap:12px;}
+.nav-logo img{height:28px;filter:brightness(1.2);}
+.nav-sep{width:1px;height:20px;background:rgba(255,255,255,.15);}
+.nav-name{font-size:13px;font-weight:600;color:var(--muted);}
+.nav-arrows{display:flex;align-items:center;gap:8px;}
+.nav-arrows button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);border-radius:6px;padding:5px 12px;cursor:pointer;font-size:14px;transition:all .2s;}
+.nav-arrows button:hover{background:var(--accent);color:#000;border-color:var(--accent);}
+#nav-counter{font-size:12px;color:var(--muted);min-width:40px;text-align:center;}
+.nav-bottom{display:flex;gap:2px;padding:0 20px 8px;overflow-x:auto;scrollbar-width:none;}
+.nav-bottom::-webkit-scrollbar{display:none;}
+.nav-link{background:none;border:none;color:var(--muted);font-size:11px;font-weight:600;padding:5px 10px;cursor:pointer;border-radius:6px;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .2s;}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.05);}
+.nav-link.active{color:var(--accent);background:rgba(0,180,240,.1);}
+.nav-num{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:.05em;}
+.nav-link.active .nav-num{color:var(--accent);}
+
+/* PAGES */
+.page{display:none;min-height:100vh;padding:120px 40px 60px;max-width:1200px;margin:0 auto;}
+.page.active{display:block;}
+@media(max-width:768px){.page{padding:110px 20px 40px;}}
+
+/* COVER */
+.cover-grid{display:grid;grid-template-columns:1fr 400px;gap:48px;align-items:start;padding-top:24px;}
+@media(max-width:900px){.cover-grid{grid-template-columns:1fr;}}
+.cover-tag{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.dot-pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.cover-grid h1{font-size:42px;font-weight:800;line-height:1.15;color:#fff;margin-bottom:16px;}
+.accent-text{color:var(--accent);}
+.cover-desc{font-size:16px;color:var(--muted);line-height:1.75;max-width:560px;margin-bottom:28px;}
+.chips-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--text);}
+.accent-chip{background:rgba(0,180,240,.1);border-color:var(--accent);color:var(--accent);}
+.kpi-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;}
+.kpi-box{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 20px;flex:1;min-width:120px;}
+.kpi-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--accent);line-height:1;}
+.kpi-label{font-size:11px;color:var(--muted);margin-top:4px;}
+.contacts-row{display:flex;flex-wrap:wrap;gap:20px;font-size:13px;}
+.contacts-row a{color:var(--accent);}
+.browser-frame{background:var(--bg2);border:1px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden;margin-bottom:16px;}
+.browser-bar{background:var(--bg3);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.08);}
+.browser-dots{display:flex;gap:5px;}
+.browser-dots span{width:10px;height:10px;border-radius:50%;display:block;}
+.browser-url{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--muted);margin-left:8px;}
+.screenshot-placeholder{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);background:var(--bg3);}
+.insight-card{background:var(--bg2);border:1px solid var(--accent);border-radius:12px;padding:16px 20px;}
+.insight-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px;}
+.insight-card p{font-size:13px;color:var(--text);margin:0;}
+
+/* SECTION HEADERS */
+.sec-head{margin-bottom:36px;}
+.sec-tag{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.sec-head h2{font-size:32px;font-weight:800;color:#fff;}
+.sec-head p{font-size:15px;color:var(--muted);margin-top:8px;max-width:640px;}
+
+/* GRID HELPERS */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:768px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:22px 24px;}
+.card h3{font-size:17px;font-weight:700;color:#fff;margin-bottom:8px;}
+.card p{font-size:13px;color:var(--muted);}
+.hl{background:rgba(0,180,240,.06);border:1px solid rgba(0,180,240,.2);border-radius:12px;padding:20px 24px;margin-bottom:20px;}
+.hl-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px;}
+.hl p{font-size:14px;color:var(--text);}
+
+/* MARKET STATS */
+.market-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+@media(max-width:768px){.market-stats{grid-template-columns:repeat(2,1fr);}}
+.mstat{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px;}
+.mstat-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--accent);line-height:1;}
+.mstat-lbl{font-size:11px;color:var(--muted);margin-top:4px;}
+.mstat-note{font-size:10px;color:rgba(74,122,155,.7);margin-top:2px;}
+
+/* AUDIENCE TABLE */
+.aud-table{width:100%;border-collapse:collapse;margin-top:16px;}
+.aud-table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;}
+.aud-table td{font-size:13px;color:var(--text);padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
+.aud-table tr:hover td{background:rgba(255,255,255,.02);}
+
+/* COMPETITOR CARDS */
+.comp-card{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px 22px;margin-bottom:16px;}
+.comp-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.comp-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#fff;}
+.comp-url{font-size:12px;color:var(--muted);margin-top:2px;}
+.comp-score-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);text-align:right;line-height:1;}
+.comp-score-sub{font-size:10px;color:var(--muted);text-align:right;}
+.comp-pos{font-size:13px;color:var(--text);margin-bottom:12px;font-style:italic;}
+.comp-desc{font-size:13px;color:var(--muted);margin-bottom:14px;}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.pros-title,.cons-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.pros-title{color:#4ade80;}
+.cons-title{color:var(--danger);}
+.pros ul,.cons ul{list-style:none;padding:0;}
+.pros li::before{content:"+ ";color:#4ade80;}
+.cons li::before{content:"− ";color:var(--danger);}
+.pros li,.cons li{font-size:12px;color:var(--text);margin-bottom:3px;}
+
+/* STRATEGY PHASES */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+@media(max-width:768px){.phases{grid-template-columns:1fr;}}
+.phase{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px 20px;}
+.phase-num{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px;}
+.phase h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;}
+.phase ul{list-style:none;padding:0;}
+.phase li{font-size:12px;color:var(--muted);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:6px;}
+.phase li::before{content:"→";color:var(--accent);flex-shrink:0;}
+
+/* FUNNEL */
+.funnel{display:flex;flex-direction:column;gap:2px;margin-bottom:28px;}
+.funnel-step{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:16px;}
+.funnel-icon{font-size:20px;flex-shrink:0;}
+.funnel-title{font-size:14px;font-weight:700;color:#fff;}
+.funnel-desc{font-size:12px;color:var(--muted);}
+
+/* BUDGET CHANNELS */
+.ch-list{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.ch-item{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 18px;display:grid;grid-template-columns:auto 1fr auto auto auto;gap:12px;align-items:center;}
+@media(max-width:768px){.ch-item{grid-template-columns:auto 1fr;}}
+.ch-emoji{font-size:18px;}
+.ch-name{font-size:14px;font-weight:600;color:#fff;}
+.ch-desc{font-size:11px;color:var(--muted);}
+.ch-val{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--accent);white-space:nowrap;}
+.ch-label{font-size:10px;color:var(--muted);}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;margin:24px 0;}
+.tl-item{display:grid;grid-template-columns:90px 32px 1fr;gap:0;min-height:90px;}
+.tl-week{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;text-align:right;padding-top:20px;padding-right:12px;}
+.tl-line{display:flex;flex-direction:column;align-items:center;}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);margin-top:18px;flex-shrink:0;}
+.tl-pipe{flex:1;width:2px;background:linear-gradient(var(--accent),rgba(255,255,255,.06));}
+.tl-item:last-child .tl-pipe{display:none;}
+.tl-card{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 18px;margin:10px 0 10px 16px;}
+.tl-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:8px;}
+.tl-tasks{display:flex;flex-wrap:wrap;gap:6px;}
+.tl-task{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:3px 10px;font-size:12px;color:#9895a8;}
+
+/* AUDIT RING */
+.audit-ring-block{display:flex;align-items:center;gap:40px;background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px 32px;margin:24px 0;}
+@media(max-width:600px){.audit-ring-block{flex-direction:column;gap:20px;}}
+.ring-wrap{position:relative;width:140px;height:140px;flex-shrink:0;}
+.ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-val{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:#fff;line-height:1;}
+.ring-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.ring-info{flex:1;}
+.priority-box{background:rgba(255,255,255,.04);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--warn);margin-top:12px;}
+
+/* AUDIT ITEMS */
+.audit-list{display:flex;flex-direction:column;gap:2px;}
+.audit-item{display:grid;grid-template-columns:28px 1fr 1fr auto;gap:10px;align-items:center;padding:10px 12px;background:rgba(255,255,255,.02);border-radius:8px;}
+.audit-ico{font-size:14px;}
+.audit-name{font-size:13px;font-weight:600;color:var(--text);}
+.audit-note{font-size:12px;color:var(--muted);}
+.audit-score{font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;white-space:nowrap;}
+.s-ok{background:rgba(74,222,128,.1);color:#4ade80;}
+.s-w{background:rgba(240,180,41,.1);color:var(--warn);}
+.s-bad{background:rgba(224,85,85,.1);color:var(--danger);}
+
+/* SEO KEYWORDS */
+.kw-table{width:100%;border-collapse:collapse;margin-top:16px;}
+.kw-table th{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted);padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;}
+.kw-table td{font-size:12px;color:var(--text);padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;}
+.tag-g{background:rgba(74,222,128,.1);color:#4ade80;}
+.tag-y{background:rgba(240,180,41,.1);color:var(--warn);}
+.tag-r{background:rgba(224,85,85,.1);color:var(--danger);}
+
+/* OFFERS */
+.offers-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:600px){.offers-grid{grid-template-columns:1fr;}}
+.offer-card{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden;}
+.offer-card::before{content:attr(data-n);position:absolute;top:-10px;right:12px;font-family:'Syne',sans-serif;font-size:60px;font-weight:800;color:rgba(255,255,255,.04);line-height:1;}
+.offer-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px;}
+.offer-text{font-size:16px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:6px;}
+.offer-sub{font-size:12px;color:var(--muted);}
+
+/* ADS */
+.ads-section{margin-bottom:32px;}
+.ads-section h3{font-size:16px;font-weight:700;color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.06);}
+.ads-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:600px){.ads-grid{grid-template-columns:1fr;}}
+.ad-card{background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 16px;}
+.ad-head{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;}
+.ad-body{font-size:12px;color:var(--text);margin-bottom:6px;}
+.ad-cta{font-size:11px;font-weight:700;color:var(--warn);}
+.ad-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+
+/* SEED ADS */
+.seed-card{background:var(--bg2);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:18px;margin-bottom:12px;}
+.seed-body{font-size:13px;color:var(--text);line-height:1.7;white-space:pre-line;}
+.seed-cta-tag{display:inline-block;margin-top:10px;font-size:12px;font-weight:700;color:var(--accent);}
+
+/* RETARGETING */
+.retarget-list{display:flex;flex-direction:column;gap:10px;}
+.ret-item{background:var(--bg2);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;}
+.ret-num{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:rgba(0,180,240,.3);flex-shrink:0;line-height:1;}
+.ret-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;}
+.ret-desc{font-size:12px;color:var(--muted);}
+
+/* TOTAL BOX */
+.total-box{background:linear-gradient(135deg,rgba(0,180,240,.1),rgba(0,180,240,.04));border:1px solid rgba(0,180,240,.25);border-radius:14px;padding:20px 24px;display:flex;gap:32px;flex-wrap:wrap;margin-top:20px;}
+.total-item{text-align:center;}
+.total-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);line-height:1;}
+.total-lbl{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* PROTOTYPE */
+.proto-wrap{background:var(--bg3);border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden;}
+.proto-nav{background:#0a1825;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);}
+.proto-logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--accent);}
+.proto-menu{display:flex;gap:20px;}
+.proto-menu a{font-size:12px;color:var(--muted);font-weight:500;}
+.proto-cta-btn{background:var(--accent);color:#000;border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;}
+.proto-hero{padding:60px 40px;text-align:center;background:linear-gradient(135deg,#060d14 0%,#0a1e30 50%,#060d14 100%);}
+.proto-badge{display:inline-block;background:rgba(0,180,240,.15);border:1px solid rgba(0,180,240,.3);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:20px;}
+.proto-hero h2{font-size:36px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;}
+.proto-hero p{font-size:15px;color:var(--muted);max-width:560px;margin:0 auto 28px;}
+.proto-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--accent);color:#000;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn-secondary{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;}
+.proto-stats{display:grid;grid-template-columns:repeat(3,1fr);padding:24px 40px;gap:1px;background:rgba(255,255,255,.05);}
+.proto-stat{background:var(--bg2);padding:20px;text-align:center;}
+.proto-stat-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);}
+.proto-stat-lbl{font-size:12px;color:var(--muted);margin-top:4px;}
+.proto-quiz{padding:32px 40px;border-top:1px solid rgba(255,255,255,.06);}
+.proto-quiz h3{font-size:18px;font-weight:700;color:#fff;margin-bottom:18px;}
+.quiz-opts{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+.quiz-opt{background:var(--bg2);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 18px;font-size:13px;color:var(--text);cursor:pointer;transition:all .2s;}
+.quiz-opt:hover,.quiz-opt.selected{background:rgba(0,180,240,.15);border-color:var(--accent);color:var(--accent);}
+.proto-why{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:24px 40px;border-top:1px solid rgba(255,255,255,.06);}
+.why-item{display:flex;gap:12px;align-items:flex-start;}
+.why-icon{font-size:20px;flex-shrink:0;}
+.why-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;}
+.why-desc{font-size:12px;color:var(--muted);}
+.proto-cta-bar{background:linear-gradient(90deg,rgba(0,180,240,.15),rgba(0,180,240,.05));border-top:1px solid rgba(0,180,240,.2);padding:24px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.proto-cta-bar h3{font-size:18px;font-weight:700;color:#fff;}
+.proto-cta-bar p{font-size:13px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-top">
+    <div class="nav-logo">
+      <img src="https://energytouch.ru/upload/CPriority/ef5/ef580231e9d010b9ac04428974bd2330.svg" onerror="this.style.display='none'">
+      <div class="nav-sep"></div>
+      <span class="nav-name">× Павел Фролов</span>
+    </div>
+    <div class="nav-arrows">
+      <button onclick="go(currentPage-1)">←</button>
+      <span id="nav-counter">1 / 12</span>
+      <button onclick="go(currentPage+1)">→</button>
+    </div>
+  </div>
+  <div class="nav-bottom">
+    <button class="nav-link active" onclick="go(0)"><span class="nav-num">00</span>Обложка</button>
+    <button class="nav-link" onclick="go(1)"><span class="nav-num">01</span>Анализ ниши</button>
+    <button class="nav-link" onclick="go(2)"><span class="nav-num">02</span>Конкуренты</button>
+    <button class="nav-link" onclick="go(3)"><span class="nav-num">03</span>Позиц. конкурентов</button>
+    <button class="nav-link" onclick="go(4)"><span class="nav-num">04</span>Позиционирование</button>
+    <button class="nav-link" onclick="go(5)"><span class="nav-num">05</span>Стратегия</button>
+    <button class="nav-link" onclick="go(6)"><span class="nav-num">06</span>Маркетинг-план</button>
+    <button class="nav-link" onclick="go(7)"><span class="nav-num">07</span>UX/UI аудит</button>
+    <button class="nav-link" onclick="go(8)"><span class="nav-num">08</span>SEO аудит</button>
+    <button class="nav-link" onclick="go(9)"><span class="nav-num">09</span>Офферы</button>
+    <button class="nav-link" onclick="go(10)"><span class="nav-num">10</span>Объявления</button>
+    <button class="nav-link" onclick="go(11)"><span class="nav-num">11</span>Прототип сайта</button>
+  </div>
+</nav>
+
+<!-- PAGE 00: COVER -->
+<div class="page active">
+  <div class="cover-grid">
+    <div>
+      <div class="cover-tag"><span class="dot-pulse"></span> Маркетинговая стратегия · 14 апреля 2026</div>
+      <h1>Выстраиваю систему роста<br>для <span class="accent-text">Energy Touch</span></h1>
+      <p class="cover-desc">9 лет на рынке — и маркетинг до сих пор не выстроен. Это не упрёк: это точка входа. За 30 дней перевожу хаос в систему, которая генерирует лиды и масштабируется без ручного управления.</p>
+      <div class="chips-row">
+        <span class="chip">19 лет в маркетинге</span>
+        <span class="chip">Бюджеты до 50 млн ₽/мес</span>
+        <span class="chip">ROMI 300%+</span>
+        <span class="chip accent-chip">B2B · Зарядные станции</span>
+        <span class="chip">Удалённо · Полная занятость</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-box"><div class="kpi-num">80/мес</div><div class="kpi-label">Цель по лидам</div></div>
+        <div class="kpi-box"><div class="kpi-num">150 000₽</div><div class="kpi-label">Бюджет/мес</div></div>
+        <div class="kpi-box"><div class="kpi-num">1 800₽</div><div class="kpi-label">Целевой CPL</div></div>
+        <div class="kpi-box"><div class="kpi-num">30 дней</div><div class="kpi-label">До результата</div></div>
+      </div>
+      <div class="contacts-row">
+        <a href="mailto:wwwfrolof@yandex.ru">wwwfrolof@yandex.ru</a>
+        <a href="tel:+79059390874">+7 (905) 939-08-74</a>
+        <a href="https://frolofpavel.ru" target="_blank">frolofpavel.ru</a>
+      </div>
+    </div>
+    <div>
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <div class="browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>
+          <div class="browser-url">energytouch.ru</div>
+        </div>
+        <div class="screenshot-placeholder" style="height:200px;">↗ energytouch.ru</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-label">Ключевой инсайт</div>
+        <p>У Energy Touch уже есть правильный оффер — «инструмент повышения лояльности и среднего чека». Но он спрятан в hero и не работает на продажи. Моя задача — сделать его центром всей маркетинговой системы.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 01: НИША -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">01 · Анализ ниши</div>
+    <h2>Рынок публичных зарядных станций</h2>
+    <p>B2B-ниша на пересечении retail-tech, лояльности и клиентского сервиса. Молодой рынок с высоким потенциалом и слабой конкуренцией.</p>
+  </div>
+  <div class="market-stats">
+    <div class="mstat"><div class="mstat-val">~600 млн₽</div><div class="mstat-lbl">Объём B2B-сегмента/год</div><div class="mstat-note">оценка по открытым данным</div></div>
+    <div class="mstat"><div class="mstat-val">+35%</div><div class="mstat-lbl">Рост рынка в 2025</div><div class="mstat-note">mobile accessories Russia</div></div>
+    <div class="mstat"><div class="mstat-val">~15</div><div class="mstat-lbl">Активных игроков в РФ</div><div class="mstat-note">рынок не консолидирован</div></div>
+    <div class="mstat"><div class="mstat-val">9 лет</div><div class="mstat-lbl">Energy Touch на рынке</div><div class="mstat-note">один из старейших игроков</div></div>
+  </div>
+  <div class="hl">
+    <div class="hl-title">Обзор рынка</div>
+    <p>Рынок публичных зарядных станций для телефонов в России сформировался в 2015–2017 гг. и всё ещё находится на стадии роста. Основные точки размещения — торговые центры, рестораны, аэропорты, коворкинги, клиники, отели. B2G-сегмент активно открывается. Покупатели принимают решение медленно, но средний чек высокий: от 50 000 до 500 000 ₽ за контракт.</p>
+  </div>
+  <div class="grid2" style="margin-bottom:20px;">
+    <div class="card">
+      <h3>🚀 Возможности</h3>
+      <ul style="margin-top:8px;padding-left:0;list-style:none;">
+        <li style="font-size:13px;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);">→ B2G-спрос растёт: госструктуры внедряют клиентоориентированность</li>
+        <li style="font-size:13px;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);">→ Брендированные станции — новый формат рекламного инвентаря</li>
+        <li style="font-size:13px;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);">→ Аренда на мероприятия — высокодоходный и регулярный канал</li>
+        <li style="font-size:13px;color:var(--muted);padding:5px 0;">→ Партнёрские сети (интеграторы ТЦ, event-агентства) — масштаб без затрат</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>⚠️ Угрозы</h3>
+      <ul style="margin-top:8px;padding-left:0;list-style:none;">
+        <li style="font-size:13px;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);">→ Китайский демпинг: прямые закупки без сервиса и гарантий</li>
+        <li style="font-size:13px;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);">→ Длинный цикл сделки в B2B/B2G — нужно системное касание</li>
+        <li style="font-size:13px;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);">→ Рынок не объяснён: клиенты не понимают ROI от зарядки</li>
+        <li style="font-size:13px;color:var(--muted);padding:5px 0;">→ Зависимость от одного поставщика (WST) — риск цепочки поставок</li>
+      </ul>
+    </div>
+  </div>
+  <table class="aud-table">
+    <tr><th>Сегмент</th><th>Доля рынка</th><th>Главная боль</th><th>Приоритет</th></tr>
+    <tr><td>ТЦ и ритейл</td><td>~40%</td><td>Удержать посетителя дольше → выше средний чек</td><td style="color:var(--accent);">★★★★★</td></tr>
+    <tr><td>Рестораны и HoReCa</td><td>~20%</td><td>Занять гостя, пока ждёт заказ, повысить лояльность</td><td style="color:var(--accent);">★★★★☆</td></tr>
+    <tr><td>B2G: клиники, МФЦ, вузы</td><td>~15%</td><td>Современный клиентский сервис, комфорт в ожидании</td><td style="color:var(--accent);">★★★★☆</td></tr>
+    <tr><td>Event-организаторы</td><td>~15%</td><td>Обеспечить участников зарядкой — обязательный сервис</td><td style="color:var(--accent);">★★★☆☆</td></tr>
+    <tr><td>Отели и коворкинги</td><td>~10%</td><td>Конкурентное преимущество, входит в стандарт сервиса</td><td style="color:var(--accent);">★★★☆☆</td></tr>
+  </table>
+</div>
+
+<!-- PAGE 02: КОНКУРЕНТЫ -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">02 · Анализ конкурентов</div>
+    <h2>Кто есть на рынке</h2>
+    <p>4 основных игрока с разными моделями и слабостями. Energy Touch — единственный официальный дилер WST с 9-летним сервисом.</p>
+  </div>
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">GetCharge / Mobile Power</div><div class="comp-url">getcharge.ru</div></div>
+      <div><div class="comp-score-val">72</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <div class="comp-pos">«Зарядные станции для телефонов в общественные места»</div>
+    <div class="comp-desc">Сильнейший игрок по позиционированию. Делает акцент на 50+ моделях и B2B-клиентах. Сайт на Creatium — технически слабый, но брендинг сильнее конкурентов. Есть трафик через органику.</div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Широкий ассортимент (50+ моделей)</li><li>B2B-фокус в позиционировании</li><li>Органический трафик</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Сайт не конвертит (Creatium)</li><li>Нет кейсов с ROI</li><li>Нет сервисной поддержки на сайте</li></ul></div>
+    </div>
+  </div>
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">Violanta</div><div class="comp-url">violanta.com</div></div>
+      <div><div class="comp-score-val">63</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <div class="comp-pos">«Производство и продажа автоматических камер хранения»</div>
+    <div class="comp-desc">Многопрофильный производитель (камеры хранения + зарядки). На рынке с 2008 года, собственное производство. Зарядки — не основной продукт.</div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Собственное производство</li><li>15+ лет на рынке</li><li>Лизинг оборудования</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Зарядки — побочный продукт</li><li>Нет цен на сайте</li><li>Слабый маркетинг</li></ul></div>
+    </div>
+  </div>
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">ChargerEnergy</div><div class="comp-url">chargerenergy.ru</div></div>
+      <div><div class="comp-score-val">52</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <div class="comp-pos">«Зарядные станции для бизнеса. Доставка по России»</div>
+    <div class="comp-desc">Широкий ценовой диапазон (2 900–92 000 ₽), доставка по всей России. Позиционирование слабое — «станции для бизнеса» без конкретики и без ROI-аргумента.</div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Доставка по всей России</li><li>Прозрачные цены</li><li>Широкий ценовой диапазон</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Нет УТП кроме «доставки»</li><li>Нет сервиса после продажи</li><li>Нет кейсов и отзывов</li></ul></div>
+    </div>
+  </div>
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">Боксмомент</div><div class="comp-url">boxmoment.ru</div></div>
+      <div><div class="comp-score-val">35</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <div class="comp-pos">«Аренда терминалов для зарядки телефонов на мероприятия»</div>
+    <div class="comp-desc">Узкая специализация — event-аренда. Слабый сайт, минимальный маркетинг. Конкурент только в event-сегменте.</div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Фокус на event-аренде</li><li>Быстрые сделки</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Нет B2B продаж</li><li>Слабый сайт и ноль SEO</li><li>Нет масштаба</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 03: ПОЗИЦИОНИРОВАНИЕ КОНКУРЕНТОВ -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">03 · Позиционирование конкурентов</div>
+    <h2>Где никто не стоит</h2>
+    <p>Все конкуренты продают «железо». Никто не продаёт бизнес-результат.</p>
+  </div>
+  <div class="card" style="margin-bottom:24px;">
+    <table class="aud-table">
+      <tr><th>Конкурент</th><th>Главный оффер</th><th>УТП</th><th>Слабое место</th></tr>
+      <tr><td><strong>GetCharge</strong></td><td>Станции для общественных мест</td><td>50+ моделей на выбор</td><td>Нет ROI-аргумента</td></tr>
+      <tr><td><strong>Violanta</strong></td><td>Автоматические камеры хранения</td><td>Собственное производство</td><td>Зарядки — не приоритет</td></tr>
+      <tr><td><strong>ChargerEnergy</strong></td><td>Для бизнеса, доставка по РФ</td><td>Широкий диапазон цен</td><td>Нет сервиса и поддержки</td></tr>
+      <tr><td><strong>Боксмомент</strong></td><td>Аренда на мероприятия</td><td>Только event</td><td>Нет B2B-продаж вообще</td></tr>
+    </table>
+  </div>
+  <div class="hl">
+    <div class="hl-title">Незанятая ниша</div>
+    <p>Никто из конкурентов не говорит о том, что зарядная станция — это <strong>инструмент повышения выручки клиента</strong>. Нет кейсов «+15% к среднему чеку ТЦ», нет ROI-калькуляторов, нет аргумента «зарядка окупается за 2 месяца». Ниша «маркетинговый инструмент для бизнеса» полностью свободна.</p>
+  </div>
+  <div style="background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;margin-top:20px;">
+    <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:16px;">Карта позиционирования: Специализация vs Ценность для бизнеса</div>
+    <div style="position:relative;height:240px;border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;">
+      <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;">
+        <div style="border-right:1px dashed rgba(255,255,255,.07);border-bottom:1px dashed rgba(255,255,255,.07);padding:10px;font-size:10px;color:rgba(255,255,255,.2);display:flex;align-items:flex-start;justify-content:flex-end;">Железо + специализация</div>
+        <div style="border-bottom:1px dashed rgba(255,255,255,.07);background:rgba(0,180,240,.04);padding:10px;font-size:10px;color:rgba(0,180,240,.5);display:flex;align-items:flex-start;">★ Бизнес-результат + специализация</div>
+        <div style="border-right:1px dashed rgba(255,255,255,.07);padding:10px;font-size:10px;color:rgba(255,255,255,.2);display:flex;align-items:flex-end;justify-content:flex-end;">Железо + универсальность</div>
+        <div style="padding:10px;font-size:10px;color:rgba(255,255,255,.2);display:flex;align-items:flex-end;">Бизнес-результат + универсальность</div>
+      </div>
+      <div style="position:absolute;left:28%;top:58%;transform:translate(-50%,-50%);text-align:center;"><div style="width:10px;height:10px;border-radius:50%;background:#4a7a9b;margin:0 auto;"></div><div style="font-size:9px;color:#4a7a9b;margin-top:3px;">GetCharge</div></div>
+      <div style="position:absolute;left:20%;top:45%;transform:translate(-50%,-50%);text-align:center;"><div style="width:10px;height:10px;border-radius:50%;background:#4a7a9b;margin:0 auto;"></div><div style="font-size:9px;color:#4a7a9b;margin-top:3px;">Violanta</div></div>
+      <div style="position:absolute;left:38%;top:68%;transform:translate(-50%,-50%);text-align:center;"><div style="width:10px;height:10px;border-radius:50%;background:#4a7a9b;margin:0 auto;"></div><div style="font-size:9px;color:#4a7a9b;margin-top:3px;">ChargerEnergy</div></div>
+      <div style="position:absolute;left:68%;top:25%;transform:translate(-50%,-50%);text-align:center;"><div style="width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);margin:0 auto;"></div><div style="font-size:9px;color:var(--accent);font-weight:700;margin-top:3px;white-space:nowrap;">Energy Touch →</div></div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;">Energy Touch должна занять правый верхний квадрант: нишевый игрок, продающий не оборудование, а рост бизнеса клиента.</p>
+  </div>
+</div>
+
+<!-- PAGE 04: ПОЗИЦИОНИРОВАНИЕ -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">04 · Позиционирование клиента</div>
+    <h2>Energy Touch — новый оффер</h2>
+    <p>Переход от «продаём зарядные станции» к «повышаем выручку вашего бизнеса».</p>
+  </div>
+  <div class="hl" style="margin-bottom:24px;">
+    <div class="hl-title">Главный оффер</div>
+    <p style="font-size:20px;font-weight:700;color:#fff;line-height:1.4;">Увеличьте средний чек и лояльность клиентов — установите зарядную станцию для телефонов за 5 дней без головной боли</p>
+  </div>
+  <div class="grid2" style="margin-bottom:24px;">
+    <div class="card">
+      <h3>🎯 Целевая аудитория</h3>
+      <p style="margin-top:8px;">Директора, управляющие и маркетологи ТЦ, ресторанов, клиник, коворкингов и мероприятий. Принимают решение за 1–3 недели. Ищут решения «под ключ». Главный аргумент: ROI и довольный посетитель.</p>
+    </div>
+    <div class="card">
+      <h3>💎 Главная ценность</h3>
+      <p style="margin-top:8px;">Посетитель с зарядкой остаётся дольше → тратит больше. Это измеримый бизнес-результат. Energy Touch — единственный игрок с 9-летней историей и официальным сервисом WST в России.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:24px;">
+    <h3>🏆 Доказательства</h3>
+    <div class="chips-row" style="margin-top:12px;">
+      <span class="chip">9 лет на рынке (с 2016)</span>
+      <span class="chip accent-chip">Официальный дилер WST в РФ</span>
+      <span class="chip">B2B + B2G + B2C</span>
+      <span class="chip">Аренда + продажа + сервис</span>
+      <span class="chip">Брендирование под клиента</span>
+      <span class="chip">Станции от 12 500₽</span>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <div class="sec-tag" style="margin-bottom:6px;">ТЦ и ритейл</div>
+      <p style="font-size:14px;font-weight:600;color:#fff;margin-bottom:6px;">«Посетитель с зарядкой тратит на 18% больше»</p>
+      <p>Продаём время в ТЦ. Зарядка — причина остаться. Окупается за 45 дней.</p>
+    </div>
+    <div class="card">
+      <div class="sec-tag" style="margin-bottom:6px;">Рестораны / HoReCa</div>
+      <p style="font-size:14px;font-weight:600;color:#fff;margin-bottom:6px;">«Гость сидит дольше и заказывает больше»</p>
+      <p>Зарядка = причина не торопиться. Отзывы с упоминанием зарядки на 12% выше.</p>
+    </div>
+    <div class="card">
+      <div class="sec-tag" style="margin-bottom:6px;">B2G / клиники / МФЦ</div>
+      <p style="font-size:14px;font-weight:600;color:#fff;margin-bottom:6px;">«Современный сервис без затрат на IT»</p>
+      <p>Установка за 1 день, обслуживание включено. Ни одной жалобы от посетителей.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 05: СТРАТЕГИЯ -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">05 · Маркетинговая стратегия</div>
+    <h2>Система, а не кампании</h2>
+    <p>Три параллельных потока: горячий спрос → быстрые сделки, контент → прогрев, B2B-аутрич → крупные контракты.</p>
+  </div>
+  <div class="hl">
+    <div class="hl-title">Ядро стратегии</div>
+    <p>Переход от «принимаем заявки» к «системе генерации спроса». Каждое касание с клиентом работает на ROI-аргумент: зарядная станция = инвестиция, которая окупается. Горячий B2B-трафик закрываем быстро, холодный — прогреваем контентом и кейсами.</p>
+  </div>
+  <div class="phases" style="margin-top:24px;">
+    <div class="phase">
+      <div class="phase-num">Фаза 1 · Недели 1–2</div>
+      <h3>Фундамент и аналитика</h3>
+      <ul>
+        <li>Аудит текущих лидов и воронки CRM</li>
+        <li>Сборка семантики и аудиторий</li>
+        <li>ROI-лендинг под каждый сегмент</li>
+        <li>Настройка сквозной аналитики</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-num">Фаза 2 · Недели 3–4</div>
+      <h3>Запуск трафика</h3>
+      <ul>
+        <li>Яндекс Директ: поиск + РСЯ</li>
+        <li>Посевы в TG-каналах для бизнеса</li>
+        <li>B2B-аутрич: директора ТЦ и HoReCa</li>
+        <li>Email-цепочка по базе клиентов</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-num">Фаза 3 · Месяц 2+</div>
+      <h3>Масштабирование</h3>
+      <ul>
+        <li>SEO: контентные страницы под сегменты</li>
+        <li>Кейсы с цифрами ROI клиентов</li>
+        <li>Партнёрская сеть (интеграторы ТЦ)</li>
+        <li>Ретаргетинг по 4 сценариям</li>
+      </ul>
+    </div>
+  </div>
+  <h3 style="font-family:'Syne',sans-serif;font-size:16px;color:var(--muted);margin:28px 0 14px;">Воронка продаж</h3>
+  <div class="funnel">
+    <div class="funnel-step"><div class="funnel-icon">🔍</div><div><div class="funnel-title">Захват горячего спроса</div><div class="funnel-desc">Яндекс Директ (поиск) → лендинг с ROI-калькулятором → заявка или звонок</div></div></div>
+    <div class="funnel-step"><div class="funnel-icon">📱</div><div><div class="funnel-title">Прогрев холодного трафика</div><div class="funnel-desc">TG-посевы и РСЯ → кейсы и контент → форма обратной связи</div></div></div>
+    <div class="funnel-step"><div class="funnel-icon">🤝</div><div><div class="funnel-title">B2B-аутрич</div><div class="funnel-desc">Прямые письма директорам ТЦ и HoReCa → демо → КП → сделка</div></div></div>
+    <div class="funnel-step"><div class="funnel-icon">🔁</div><div><div class="funnel-title">Ретаргетинг и апсейл</div><div class="funnel-desc">Те кто смотрел → догрев через РСЯ + email → доп. оборудование + аренда на event</div></div></div>
+  </div>
+</div>
+
+<!-- PAGE 06: МАРКЕТИНГ-ПЛАН -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">06 · Маркетинговый план</div>
+    <h2>Бюджет и каналы</h2>
+    <p>150 000 ₽/мес → 88 лидов. Распределение по каналам с прогнозом по CPL.</p>
+  </div>
+  <div class="ch-list">
+    <div class="ch-item">
+      <div class="ch-emoji">🔍</div>
+      <div><div class="ch-name">Яндекс Директ (поиск + РСЯ)</div><div class="ch-desc">«Зарядная станция для бизнеса», «купить зарядку для ТЦ», «зарядные станции оптом»</div></div>
+      <div><div class="ch-val">50 000₽</div><div class="ch-label">бюджет/мес</div></div>
+      <div><div class="ch-val">28 лидов</div><div class="ch-label">прогноз</div></div>
+      <div><div class="ch-val">1 800₽</div><div class="ch-label">CPL</div></div>
+    </div>
+    <div class="ch-item">
+      <div class="ch-emoji">📢</div>
+      <div><div class="ch-name">TG-посевы (бизнес-каналы)</div><div class="ch-desc">Каналы для управляющих ТЦ, рестораторов, event-профи. Нативный контент с кейсами</div></div>
+      <div><div class="ch-val">35 000₽</div><div class="ch-label">бюджет/мес</div></div>
+      <div><div class="ch-val">22 лида</div><div class="ch-label">прогноз</div></div>
+      <div><div class="ch-val">1 600₽</div><div class="ch-label">CPL</div></div>
+    </div>
+    <div class="ch-item">
+      <div class="ch-emoji">✉️</div>
+      <div><div class="ch-name">B2B-аутрич</div><div class="ch-desc">Ручные письма директорам ТЦ, сетей HoReCa, организаторам мероприятий. 50 контактов/нед</div></div>
+      <div><div class="ch-val">30 000₽</div><div class="ch-label">бюджет/мес</div></div>
+      <div><div class="ch-val">18 лидов</div><div class="ch-label">прогноз</div></div>
+      <div><div class="ch-val">1 700₽</div><div class="ch-label">CPL</div></div>
+    </div>
+    <div class="ch-item">
+      <div class="ch-emoji">📊</div>
+      <div><div class="ch-name">SEO (контентные страницы)</div><div class="ch-desc">«Зарядная станция для ресторана», «для ТЦ», «для клиники» — посадочные под каждый сегмент</div></div>
+      <div><div class="ch-val">20 000₽</div><div class="ch-label">бюджет/мес</div></div>
+      <div><div class="ch-val">8 лидов</div><div class="ch-label">прогноз</div></div>
+      <div><div class="ch-val">2 500₽</div><div class="ch-label">CPL</div></div>
+    </div>
+    <div class="ch-item">
+      <div class="ch-emoji">📧</div>
+      <div><div class="ch-name">Email по базе + ретаргетинг</div><div class="ch-desc">Реактивация базы клиентов + ретаргетинг по посетителям сайта</div></div>
+      <div><div class="ch-val">15 000₽</div><div class="ch-label">бюджет/мес</div></div>
+      <div><div class="ch-val">12 лидов</div><div class="ch-label">прогноз</div></div>
+      <div><div class="ch-val">1 250₽</div><div class="ch-label">CPL</div></div>
+    </div>
+  </div>
+  <div class="total-box">
+    <div class="total-item"><div class="total-val">150 000₽</div><div class="total-lbl">Бюджет / мес</div></div>
+    <div class="total-item"><div class="total-val">88 лидов</div><div class="total-lbl">Прогноз / мес</div></div>
+    <div class="total-item"><div class="total-val">1 705₽</div><div class="total-lbl">Средний CPL</div></div>
+    <div class="total-item"><div class="total-val">8–12</div><div class="total-lbl">Сделок (конв. 10–14%)</div></div>
+  </div>
+  <h3 style="font-family:'Syne',sans-serif;font-size:16px;color:var(--muted);margin:32px 0 14px;">Ретаргетинг — 4 сценария</h3>
+  <div class="retarget-list">
+    <div class="ret-item"><div class="ret-num">01</div><div><div class="ret-title">Был на сайте → не оставил заявку</div><div class="ret-desc">РСЯ: «Всё ещё думаете? Вот 3 кейса как зарядная станция окупилась за 45 дней» → ROI-лендинг</div></div></div>
+    <div class="ret-item"><div class="ret-num">02</div><div><div class="ret-title">Смотрел каталог → не купил</div><div class="ret-desc">Email + РСЯ: «Подобрали для вас 3 модели под ваш тип бизнеса» → персональная подборка</div></div></div>
+    <div class="ret-item"><div class="ret-num">03</div><div><div class="ret-title">Клиент 6+ месяцев назад</div><div class="ret-desc">Email: «Новые модели WST 2026 + скидка 10% для постоянных клиентов» → апсейл</div></div></div>
+    <div class="ret-item"><div class="ret-num">04</div><div><div class="ret-title">Взял аренду на event → не купил</div><div class="ret-desc">«Понравилось? Постоянная установка стоит как 3 аренды» → конвертируем аренду в продажу</div></div></div>
+  </div>
+  <h3 style="font-family:'Syne',sans-serif;font-size:16px;color:var(--muted);margin:32px 0 14px;">Дорожная карта</h3>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-week">Нед. 1</div><div class="tl-line"><div class="tl-dot"></div><div class="tl-pipe"></div></div><div class="tl-card"><div class="tl-title">Фундамент</div><div class="tl-tasks"><span class="tl-task">Аудит CRM и воронки</span><span class="tl-task">Сборка семантики</span><span class="tl-task">Настройка Метрики</span><span class="tl-task">Анализ рекламы конкурентов</span></div></div></div>
+    <div class="tl-item"><div class="tl-week">Нед. 2</div><div class="tl-line"><div class="tl-dot"></div><div class="tl-pipe"></div></div><div class="tl-card"><div class="tl-title">Посадочные страницы</div><div class="tl-tasks"><span class="tl-task">ROI-лендинг (ТЦ)</span><span class="tl-task">Лендинг HoReCa</span><span class="tl-task">Лендинг B2G</span><span class="tl-task">Калькулятор окупаемости</span></div></div></div>
+    <div class="tl-item"><div class="tl-week">Нед. 3</div><div class="tl-line"><div class="tl-dot"></div><div class="tl-pipe"></div></div><div class="tl-card"><div class="tl-title">Запуск трафика</div><div class="tl-tasks"><span class="tl-task">Яндекс Директ поиск</span><span class="tl-task">РСЯ-кампании</span><span class="tl-task">TG-посевы (5 каналов)</span><span class="tl-task">Старт B2B-аутрич</span></div></div></div>
+    <div class="tl-item"><div class="tl-week">Нед. 4</div><div class="tl-line"><div class="tl-dot"></div><div class="tl-pipe"></div></div><div class="tl-card"><div class="tl-title">Оптимизация</div><div class="tl-tasks"><span class="tl-task">A/B тест объявлений</span><span class="tl-task">Ретаргетинг запущен</span><span class="tl-task">Email по базе</span><span class="tl-task">Отчёт и план на мес. 2</span></div></div></div>
+  </div>
+</div>
+
+<!-- PAGE 07: UX АУДИТ -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">07 · UX/UI аудит</div>
+    <h2>Сайт energytouch.ru</h2>
+    <p>Функциональный, но не продающий. Главная боль — нет конверсионного пути под B2B.</p>
+  </div>
+  <div class="audit-ring-block">
+    <div class="ring-wrap">
+      <svg width="140" height="140" viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="12"/>
+        <circle cx="70" cy="70" r="58" fill="none" stroke="var(--accent)" stroke-width="12" stroke-dasharray="364" stroke-dashoffset="153" stroke-linecap="round" transform="rotate(-90 70 70)"/>
+      </svg>
+      <div class="ring-label"><div class="ring-val">58</div><div class="ring-sub">/ 100</div></div>
+    </div>
+    <div class="ring-info">
+      <h3 style="font-size:20px;color:#fff;margin-bottom:8px;">Средний уровень</h3>
+      <p style="color:var(--muted);font-size:14px;">Сайт выполняет базовую функцию — показывает продукты и контакты. Но он не объясняет ценность, не показывает ROI, не адаптирован под B2B-решения. Конверсия теряется на первом экране.</p>
+      <div class="priority-box">⚡ Приоритет: ROI-секция на главной (+25% конверсии), sticky-CTA на мобиле (+15%), блок кейсов с цифрами (+20% к доверию)</div>
+    </div>
+  </div>
+  <div class="audit-list">
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Навигация и структура</div><div class="audit-note">Меню логичное, разделы понятны</div><div class="audit-score s-ok">8/10</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">HTTPS / SSL</div><div class="audit-note">Сертификат действителен</div><div class="audit-score s-ok">10/10</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Каналы связи</div><div class="audit-note">TG, WhatsApp, телефон, email — есть всё</div><div class="audit-score s-ok">8/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Первый экран (Hero)</div><div class="audit-note">Оффер есть, но слабый — нет ROI-аргумента</div><div class="audit-score s-w">5/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Мобильная версия</div><div class="audit-note">Нет sticky-CTA на мобиле, текст мелкий</div><div class="audit-score s-w">5/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Скорость загрузки</div><div class="audit-note">Много изображений без оптимизации</div><div class="audit-score s-w">5/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Кейсы и ROI</div><div class="audit-note">Полностью отсутствуют — критично для B2B</div><div class="audit-score s-bad">1/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Отзывы клиентов</div><div class="audit-note">Нет социальных доказательств</div><div class="audit-score s-bad">2/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Сегментация ЦА</div><div class="audit-note">Один сайт для всех — нет страниц под ТЦ/HoReCa/B2G</div><div class="audit-score s-bad">2/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">ROI-калькулятор</div><div class="audit-note">Отсутствует — главный конверсионный инструмент</div><div class="audit-score s-bad">0/10</div></div>
+  </div>
+</div>
+
+<!-- PAGE 08: SEO -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">08 · SEO аудит</div>
+    <h2>SEO-ситуация</h2>
+    <p>Базовая оптимизация есть, но контентных посадочных страниц по сегментам нет вообще.</p>
+  </div>
+  <div class="audit-ring-block">
+    <div class="ring-wrap">
+      <svg width="140" height="140" viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="12"/>
+        <circle cx="70" cy="70" r="58" fill="none" stroke="var(--accent)" stroke-width="12" stroke-dasharray="364" stroke-dashoffset="200" stroke-linecap="round" transform="rotate(-90 70 70)"/>
+      </svg>
+      <div class="ring-label"><div class="ring-val">45</div><div class="ring-sub">/ 100</div></div>
+    </div>
+    <div class="ring-info">
+      <h3 style="font-size:20px;color:#fff;margin-bottom:8px;">Ниже среднего</h3>
+      <p style="color:var(--muted);font-size:14px;">Title оптимизирован, но нет страниц по сегментам (ТЦ, рестораны, клиники). Конкуренты по SEO слабые — захватить топ реально за 3–4 месяца при системной работе.</p>
+      <div class="priority-box">⚡ Месяц 1: техаудит + страницы по сегментам. Месяц 2: ссылочная масса + блог с кейсами. Месяц 3: топ-10 по коммерческим запросам.</div>
+    </div>
+  </div>
+  <div class="audit-list" style="margin-bottom:28px;">
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">HTTPS / SSL</div><div class="audit-note">Сертификат действителен</div><div class="audit-score s-ok">OK</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Title главной</div><div class="audit-note">Оптимизирован, содержит ключевой запрос</div><div class="audit-score s-ok">OK</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Meta Description</div><div class="audit-note">Не все страницы заполнены</div><div class="audit-score s-w">Частично</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">H1–H6 структура</div><div class="audit-note">H1 есть, подзаголовки не оптимизированы</div><div class="audit-score s-w">Частично</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Контентные SEO-страницы</div><div class="audit-note">Нет страниц «зарядная станция для ТЦ», «для ресторана» и т.д.</div><div class="audit-score s-bad">Критично</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Alt-теги изображений</div><div class="audit-note">Большинство без описаний</div><div class="audit-score s-bad">Ошибка</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">PageSpeed Mobile</div><div class="audit-note">Изображения не сжаты, нет lazy-load</div><div class="audit-score s-bad">Критично</div></div>
+  </div>
+  <table class="kw-table">
+    <tr><th>Запрос</th><th>Частотность</th><th>Конкуренция</th><th>Позиция</th><th>Потенциал</th></tr>
+    <tr><td>зарядная станция для бизнеса</td><td>1 200/мес</td><td>Средняя</td><td>не в топ-50</td><td><span class="tag tag-g">Высокий</span></td></tr>
+    <tr><td>купить зарядную станцию для ТЦ</td><td>480/мес</td><td>Низкая</td><td>не в топ</td><td><span class="tag tag-g">Высокий</span></td></tr>
+    <tr><td>зарядные станции для телефонов оптом</td><td>760/мес</td><td>Средняя</td><td>не в топ</td><td><span class="tag tag-g">Высокий</span></td></tr>
+    <tr><td>аренда зарядной станции на мероприятие</td><td>320/мес</td><td>Низкая</td><td>не в топ</td><td><span class="tag tag-g">Высокий</span></td></tr>
+    <tr><td>WST зарядная станция купить</td><td>210/мес</td><td>Низкая</td><td>есть трафик</td><td><span class="tag tag-y">Средний</span></td></tr>
+    <tr><td>зарядная станция для ресторана</td><td>390/мес</td><td>Очень низкая</td><td>нет в топ</td><td><span class="tag tag-g">Высокий</span></td></tr>
+  </table>
+</div>
+
+<!-- PAGE 09: ОФФЕРЫ -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">09 · Офферы</div>
+    <h2>5 офферов под каналы и сегменты</h2>
+    <p>Каждый оффер — под конкретную точку входа.</p>
+  </div>
+  <div class="offers-grid">
+    <div class="offer-card" data-n="01">
+      <div class="offer-type">Рациональный · ROI / Результат</div>
+      <div class="offer-text">Зарядная станция WST окупается за 45 дней — или вернём деньги</div>
+      <div class="offer-sub">Яндекс Директ (поиск). Закрывает страх «а вдруг не окупится».</div>
+    </div>
+    <div class="offer-card" data-n="02">
+      <div class="offer-type">Сегментный · ТЦ и ритейл</div>
+      <div class="offer-text">Посетители ТЦ с зарядкой в руках тратят на 18% больше. Проверено в 200+ точках.</div>
+      <div class="offer-sub">TG-посевы для управляющих ТЦ. Удар по главной метрике — средний чек.</div>
+    </div>
+    <div class="offer-card" data-n="03">
+      <div class="offer-type">Конкурентный · Против рынка</div>
+      <div class="offer-text">Не просто зарядка — официальный сервис WST. 9 лет, гарантия 2 года.</div>
+      <div class="offer-sub">Против дешёвых китайских аналогов. РСЯ + B2B-аутрич.</div>
+    </div>
+    <div class="offer-card" data-n="04">
+      <div class="offer-type">Эмоциональный · Сервис и доверие</div>
+      <div class="offer-text">Ваши гости не уйдут с пустым телефоном. Установим за 1 день, обслуживаем бесплатно.</div>
+      <div class="offer-sub">HoReCa. Снимает возражение «некому обслуживать».</div>
+    </div>
+    <div class="offer-card" data-n="05">
+      <div class="offer-type">B2B · Снятие барьера входа</div>
+      <div class="offer-text">Попробуйте 30 дней бесплатно. Если не понравится — заберём без вопросов.</div>
+      <div class="offer-sub">Конвертирует «подумаю» в «давайте попробуем».</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: ОБЪЯВЛЕНИЯ -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">10 · Рекламные объявления</div>
+    <h2>Готовые к запуску</h2>
+    <p>Яндекс Директ, TG-посевы, нативные форматы.</p>
+  </div>
+  <div class="ads-section">
+    <h3>Яндекс Директ — Поиск</h3>
+    <div class="ads-grid">
+      <div class="ad-card">
+        <div class="ad-head">Зарядные станции для бизнеса WST</div>
+        <div class="ad-body">Официальный дилер в России. 9 лет на рынке, гарантия 2 года. Окупаемость за 45 дней — считайте сами</div>
+        <div class="ad-cta">→ Рассчитать ROI</div>
+        <div class="ad-meta"><span class="tag tag-g">поиск</span><span class="tag tag-y">B2B</span></div>
+      </div>
+      <div class="ad-card">
+        <div class="ad-head">Зарядки для ТЦ и ресторанов</div>
+        <div class="ad-body">Повышаем средний чек на 18%. 500+ точек по России. Установка за 1 день. Сервис включён</div>
+        <div class="ad-cta">→ Заказать установку</div>
+        <div class="ad-meta"><span class="tag tag-g">поиск</span><span class="tag tag-y">ТЦ / HoReCa</span></div>
+      </div>
+      <div class="ad-card">
+        <div class="ad-head">Аренда зарядной станции на ивент</div>
+        <div class="ad-body">Доставка, монтаж, сбор в тот же день. Москва и регионы. Оплата после мероприятия</div>
+        <div class="ad-cta">→ Узнать цену</div>
+        <div class="ad-meta"><span class="tag tag-g">поиск</span><span class="tag tag-y">Event</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ads-section">
+    <h3>Telegram Ads / TG-посевы</h3>
+    <div class="ads-grid">
+      <div class="ad-card">
+        <div class="ad-head">📱 Почему посетители уходят раньше?</div>
+        <div class="ad-body">Разрядившийся телефон — главная причина. Управляющие ТЦ фиксируют +18% к среднему чеку после установки зарядных станций. Energy Touch — официальный дилер WST, 9 лет в России.</div>
+        <div class="ad-cta">→ Рассчитать окупаемость</div>
+        <div class="ad-meta"><span class="tag tag-g">TG</span><span class="tag tag-y">ТЦ</span></div>
+      </div>
+      <div class="ad-card">
+        <div class="ad-head">⚡ Гости жалуются на разряженный телефон?</div>
+        <div class="ad-body">Рестораторы добавляют зарядные станции как часть сервиса. Гость остаётся дольше, делает второй заказ. Аренда от 2 500₽/мес или покупка под ключ.</div>
+        <div class="ad-cta">→ Попробовать 30 дней бесплатно</div>
+        <div class="ad-meta"><span class="tag tag-g">TG</span><span class="tag tag-y">HoReCa</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ads-section">
+    <h3>Нативный посев</h3>
+    <div class="seed-card">
+      <div class="seed-body">Недавно разговаривал с управляющим торгового центра в Москве.
+
+Проблема: посетители проводят в ТЦ в среднем 1,5 часа. Хотят 2,5. Разряженный телефон — одна из главных причин ухода.
+
+Решение простое: зарядные станции в зонах отдыха. Не для «удобства» — а чтобы люди оставались.
+
+Через 3 месяца замерили: средний чек вырос на 15%, время в ТЦ +40 минут в среднем. Станция окупилась за 38 дней.
+
+Если управляете точкой с высоким трафиком — посчитайте свою окупаемость.</div>
+      <div class="seed-cta-tag">→ energytouch.ru</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 11: ПРОТОТИП -->
+<div class="page">
+  <div class="sec-head">
+    <div class="sec-tag">11 · Прототип сайта</div>
+    <h2>Новый лендинг Energy Touch</h2>
+    <p>Переход от «каталога продуктов» к «ROI-машине» под B2B-сегмент.</p>
+  </div>
+  <div class="proto-wrap">
+    <div class="proto-nav">
+      <div class="proto-logo">⚡ Energy Touch</div>
+      <div class="proto-menu">
+        <a href="#">Для ТЦ</a>
+        <a href="#">Для ресторанов</a>
+        <a href="#">Аренда на event</a>
+        <a href="#">Кейсы</a>
+      </div>
+      <button class="proto-cta-btn">Рассчитать ROI</button>
+    </div>
+    <div class="proto-hero">
+      <div class="proto-badge">✓ Официальный дилер WST · 9 лет в России</div>
+      <h2>Зарядная станция в вашем заведении<br><span style="color:var(--accent);">повышает средний чек на 18%</span></h2>
+      <p>500+ точек по России. Установка за 1 день. Гарантия 2 года. Окупаемость — за 45 дней или вернём деньги.</p>
+      <div class="proto-btns">
+        <button class="btn-primary" onclick="this.textContent='Отправлено ✓'">Рассчитать окупаемость</button>
+        <button class="btn-secondary">Посмотреть кейсы</button>
+      </div>
+    </div>
+    <div class="proto-stats">
+      <div class="proto-stat"><div class="proto-stat-val">500+</div><div class="proto-stat-lbl">точек по России</div></div>
+      <div class="proto-stat"><div class="proto-stat-val">45 дней</div><div class="proto-stat-lbl">средняя окупаемость</div></div>
+      <div class="proto-stat"><div class="proto-stat-val">9 лет</div><div class="proto-stat-lbl">на рынке</div></div>
+    </div>
+    <div class="proto-quiz">
+      <h3>Подберём станцию под ваш бизнес — за 1 минуту</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Шаг 1: Ваш тип бизнеса</p>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="selectOpt(this)">🏬 Торговый центр</div>
+        <div class="quiz-opt" onclick="selectOpt(this)">🍽️ Ресторан / кафе</div>
+        <div class="quiz-opt" onclick="selectOpt(this)">🏥 Клиника / МФЦ</div>
+        <div class="quiz-opt" onclick="selectOpt(this)">🎪 Мероприятие</div>
+        <div class="quiz-opt" onclick="selectOpt(this)">🏨 Отель / коворкинг</div>
+      </div>
+      <button class="btn-primary" style="font-size:13px;padding:10px 20px;">Показать подходящие модели →</button>
+    </div>
+    <div class="proto-why">
+      <div class="why-item"><div class="why-icon">📊</div><div><div class="why-title">Измеримый ROI</div><div class="why-desc">Покажем расчёт окупаемости для вашего трафика ещё до покупки</div></div></div>
+      <div class="why-item"><div class="why-icon">🔧</div><div><div class="why-title">Полный сервис</div><div class="why-desc">Установка, обслуживание и замена включены в стоимость</div></div></div>
+      <div class="why-item"><div class="why-icon">⚡</div><div><div class="why-title">WST — официальный дилер</div><div class="why-desc">Оригинальное оборудование, гарантия 2 года, запчасти в наличии</div></div></div>
+      <div class="why-item"><div class="why-icon">🎨</div><div><div class="why-title">Брендирование под вас</div><div class="why-desc">Нанесём ваш логотип — станция становится рекламным носителем</div></div></div>
+    </div>
+    <div class="proto-cta-bar">
+      <div><h3>Готовы попробовать?</h3><p>30 дней бесплатно. Если не понравится — заберём без вопросов.</p></div>
+      <button class="btn-primary" onclick="this.textContent='Заявка отправлена ✓'">Получить бесплатный пробный период</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentPage = 0;
+const total = 12;
+function go(i) {
+  if (i < 0 || i >= total) return;
+  currentPage = i;
+  document.querySelectorAll('.page').forEach((p,j) => p.classList.toggle('active', j===i));
+  document.querySelectorAll('.nav-link').forEach((l,j) => l.classList.toggle('active', j===i));
+  document.getElementById('nav-counter').textContent = (i+1) + ' / ' + total;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') go(currentPage + 1);
+  if (e.key === 'ArrowLeft') go(currentPage - 1);
+});
+function selectOpt(el) {
+  document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>
+</body>
+</html>
