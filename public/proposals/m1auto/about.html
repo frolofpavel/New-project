@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>О компании — М1 АВТО</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{brand:'#F97316',dark:'#0F1117',card:'#181C27',border:'#2A2F3E'},fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{background:#0F1117;color:#F0F2F7;font-family:'Inter',sans-serif;overflow-x:hidden}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0F1117}::-webkit-scrollbar-thumb{background:#F97316;border-radius:3px}
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-left{opacity:0;transform:translateX(-30px);transition:opacity .65s ease,transform .65s ease}.reveal-left.visible{opacity:1;transform:translateX(0)}
+    .reveal-right{opacity:0;transform:translateX(30px);transition:opacity .65s ease,transform .65s ease}.reveal-right.visible{opacity:1;transform:translateX(0)}
+    .nav-link{position:relative;color:#9ca3af;transition:color .15s;font-size:.875rem;font-weight:500;text-decoration:none}
+    .nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:#F97316;transition:width .2s;border-radius:1px}
+    .nav-link:hover,.nav-link.active{color:#fff}.nav-link:hover::after,.nav-link.active::after{width:100%}
+    .btn-orange{background:#F97316;color:#fff;font-weight:700;border-radius:14px;padding:14px 28px;transition:background .15s,transform .1s,box-shadow .2s;box-shadow:0 4px 16px rgba(249,115,22,.3);display:inline-block;text-decoration:none}
+    .btn-orange:hover{background:#ea6d10;transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,115,22,.4)}
+    .btn-ghost{border:1.5px solid #2A2F3E;color:#fff;font-weight:600;border-radius:14px;padding:14px 28px;transition:border-color .15s,background .15s;display:inline-block;text-decoration:none}
+    .btn-ghost:hover{border-color:#F97316;background:rgba(249,115,22,.06)}
+
+    .team-card{background:#181C27;border:1px solid #2A2F3E;border-radius:20px;padding:24px;transition:border-color .25s,transform .25s,box-shadow .25s}
+    .team-card:hover{border-color:rgba(249,115,22,.4);transform:translateY(-5px);box-shadow:0 20px 50px rgba(249,115,22,.08)}
+
+    .timeline-dot{width:14px;height:14px;border-radius:50%;background:#F97316;flex-shrink:0;margin-top:4px;box-shadow:0 0 0 4px rgba(249,115,22,.15)}
+
+    .cert-card{background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:20px;text-align:center;transition:border-color .2s,transform .2s}
+    .cert-card:hover{border-color:rgba(249,115,22,.4);transform:translateY(-3px)}
+
+    .review-card{background:#181C27;border:1px solid #2A2F3E;border-radius:20px;padding:24px;transition:transform .25s,border-color .25s,box-shadow .25s}
+    .review-card:hover{transform:translateY(-4px);border-color:rgba(249,115,22,.35);box-shadow:0 16px 40px rgba(249,115,22,.08)}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 border-b border-border" style="background:rgba(15,17,23,.92);backdrop-filter:blur(18px);">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between h-16">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div style="width:36px;height:36px;background:#F97316;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.85rem;box-shadow:0 4px 16px rgba(249,115,22,.45);">M1</div>
+      <span style="font-weight:800;font-size:1.15rem;color:#fff;letter-spacing:-.02em;">АВТО</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-7">
+      <a href="index.html" class="nav-link">Главная</a>
+      <a href="catalog.html" class="nav-link">Каталог</a>
+      <a href="directions.html" class="nav-link">Направления</a>
+      <a href="how.html" class="nav-link">Как работаем</a>
+      <a href="about.html" class="nav-link active">О нас</a>
+      <a href="contact.html" class="nav-link">Контакты</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="tel:+74950237203" class="hidden md:block text-sm font-semibold text-white">+7 (495) 023-72-03</a>
+      <a href="contact.html" class="btn-orange text-sm" style="padding:10px 20px;border-radius:10px;">Подобрать авто</a>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<div style="background:linear-gradient(135deg,rgba(249,115,22,.1) 0%,transparent 60%);padding:80px 24px 60px;position:relative;overflow:hidden;">
+  <div style="position:absolute;right:-100px;top:-100px;width:500px;height:500px;background:radial-gradient(ellipse,rgba(249,115,22,.06) 0%,transparent 70%);pointer-events:none;"></div>
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center gap-2 mb-5" style="font-size:.8rem;color:#6b7280;">
+      <a href="index.html" style="color:#6b7280;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Главная</a>
+      <span>/</span><span style="color:#F97316;">О компании</span>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+      <div>
+        <h1 style="font-size:clamp(2rem,5vw,3.2rem);font-weight:900;color:#fff;letter-spacing:-.025em;margin-bottom:16px;">О компании М1 АВТО</h1>
+        <p style="color:#9ca3af;font-size:1rem;line-height:1.75;margin-bottom:20px;">
+          Мы специализируемся на параллельном импорте автомобилей с 2019 года. За это время доставили более 500 автомобилей клиентам по всей России — от Калининграда до Хабаровска.
+        </p>
+        <p style="color:#9ca3af;font-size:1rem;line-height:1.75;margin-bottom:32px;">
+          Наша цель — сделать покупку авто из-за рубежа такой же простой, как покупка в местном автосалоне. Только дешевле и с лучшей комплектацией.
+        </p>
+        <div class="flex gap-4 flex-wrap">
+          <a href="contact.html" class="btn-orange">Связаться с нами</a>
+          <a href="catalog.html" class="btn-ghost">Смотреть каталог →</a>
+        </div>
+      </div>
+      <div>
+        <div class="grid grid-cols-2 gap-4">
+          <div style="background:#181C27;border:1px solid rgba(249,115,22,.25);border-radius:20px;padding:28px 20px;text-align:center;">
+            <div style="font-size:2.5rem;font-weight:900;color:#F97316;" class="counter" data-target="500">0</div>
+            <div style="font-size:.8rem;color:#6b7280;margin-top:6px;">автомобилей доставлено</div>
+          </div>
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:20px;padding:28px 20px;text-align:center;">
+            <div style="font-size:2.5rem;font-weight:900;color:#fff;">5 лет</div>
+            <div style="font-size:.8rem;color:#6b7280;margin-top:6px;">на рынке с 2019 года</div>
+          </div>
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:20px;padding:28px 20px;text-align:center;">
+            <div style="font-size:2.5rem;font-weight:900;color:#fff;">4</div>
+            <div style="font-size:.8rem;color:#6b7280;margin-top:6px;">страны импорта</div>
+          </div>
+          <div style="background:#181C27;border:1px solid rgba(249,115,22,.25);border-radius:20px;padding:28px 20px;text-align:center;">
+            <div style="font-size:2.5rem;font-weight:900;color:#F97316;" class="counter" data-target="97">0</div>
+            <div style="font-size:.8rem;color:#6b7280;margin-top:6px;">% клиентов довольны</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OUR MISSION -->
+<section style="padding:80px 24px;border-top:1px solid #2A2F3E;">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal-left">
+        <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;">Наша миссия</p>
+        <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:20px;">
+          Сделать авто из-за рубежа доступным каждому
+        </h2>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.75;margin-bottom:16px;">
+          Когда в 2019 году мы только начинали, параллельный импорт казался уделом специалистов. Нужно было разбираться в таможне, логистике, проверке авто — это пугало обычных людей.
+        </p>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.75;margin-bottom:16px;">
+          Мы создали систему, которая берёт все эти сложности на себя. Клиент просто говорит что хочет — и через 20–45 дней получает ключи.
+        </p>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.75;">
+          Сегодня 97% наших клиентов говорят «рекомендую». Большинство возвращаются снова.
+        </p>
+      </div>
+      <div class="reveal-right">
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:20px;padding:32px;">
+          <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px;">Наши принципы</p>
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="width:40px;height:40px;background:rgba(249,115,22,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:1.2rem;">🔍</span>
+              </div>
+              <div>
+                <h4 style="font-weight:800;color:#fff;margin-bottom:4px;">Прозрачность</h4>
+                <p style="color:#6b7280;font-size:.85rem;line-height:1.6;">Показываем всё: фото, видео, историю, реальную стоимость до копейки.</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="width:40px;height:40px;background:rgba(249,115,22,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:1.2rem;">🤝</span>
+              </div>
+              <div>
+                <h4 style="font-weight:800;color:#fff;margin-bottom:4px;">Честность</h4>
+                <p style="color:#6b7280;font-size:.85rem;line-height:1.6;">Если авто не подходит — скажем прямо. Не продаём ради продажи.</p>
+              </div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="width:40px;height:40px;background:rgba(249,115,22,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:1.2rem;">⚡</span>
+              </div>
+              <div>
+                <h4 style="font-weight:800;color:#fff;margin-bottom:4px;">Скорость</h4>
+                <p style="color:#6b7280;font-size:.85rem;line-height:1.6;">Отвечаем в течение 15 минут, не тянем процессы, держим дедлайны.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORY TIMELINE -->
+<section style="padding:80px 24px;background:rgba(24,28,39,.4);border-top:1px solid #2A2F3E;">
+  <div class="max-w-3xl mx-auto">
+    <div class="reveal text-center mb-14">
+      <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">История</p>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Как мы выросли</h2>
+    </div>
+    <div style="position:relative;">
+      <div style="position:absolute;left:6px;top:8px;bottom:0;width:2px;background:linear-gradient(to bottom,#F97316,rgba(249,115,22,.1));"></div>
+      <div style="display:flex;flex-direction:column;gap:32px;">
+
+        <div class="reveal" style="display:flex;gap:20px;padding-left:0;">
+          <div class="timeline-dot" style="margin-left:0;"></div>
+          <div>
+            <div style="font-size:.8rem;color:#F97316;font-weight:700;margin-bottom:6px;">2019</div>
+            <h4 style="font-weight:800;color:#fff;margin-bottom:6px;">Старт с нуля</h4>
+            <p style="color:#6b7280;font-size:.875rem;line-height:1.65;">Первые 3 автомобиля из Германии для знакомых. Убедились, что схема работает — качество выше, цена ниже.</p>
+          </div>
+        </div>
+
+        <div class="reveal" style="display:flex;gap:20px;" style="transition-delay:.1s;">
+          <div class="timeline-dot"></div>
+          <div>
+            <div style="font-size:.8rem;color:#F97316;font-weight:700;margin-bottom:6px;">2020</div>
+            <h4 style="font-weight:800;color:#fff;margin-bottom:6px;">Открытие юридического лица</h4>
+            <p style="color:#6b7280;font-size:.875rem;line-height:1.65;">Зарегистрировали ООО, получили брокерскую лицензию на таможенное оформление. Первые 30 клиентов по сарафанному радио.</p>
+          </div>
+        </div>
+
+        <div class="reveal" style="display:flex;gap:20px;" style="transition-delay:.2s;">
+          <div class="timeline-dot"></div>
+          <div>
+            <div style="font-size:.8rem;color:#F97316;font-weight:700;margin-bottom:6px;">2021</div>
+            <h4 style="font-weight:800;color:#fff;margin-bottom:6px;">Запуск корейского направления</h4>
+            <p style="color:#6b7280;font-size:.875rem;line-height:1.65;">Подписали контракт с агентом в Сеуле. Первые Hyundai и Kia из Кореи. 100 сделок за год.</p>
+          </div>
+        </div>
+
+        <div class="reveal" style="display:flex;gap:20px;" style="transition-delay:.3s;">
+          <div class="timeline-dot"></div>
+          <div>
+            <div style="font-size:.8rem;color:#F97316;font-weight:700;margin-bottom:6px;">2022</div>
+            <h4 style="font-weight:800;color:#fff;margin-bottom:6px;">Выход на Китай и Бишкек</h4>
+            <p style="color:#6b7280;font-size:.875rem;line-height:1.65;">Добавили два новых направления. Взрывной рост спроса: 200 сделок за год. Расширили команду до 12 человек.</p>
+          </div>
+        </div>
+
+        <div class="reveal" style="display:flex;gap:20px;" style="transition-delay:.4s;">
+          <div class="timeline-dot" style="background:#fff;box-shadow:0 0 0 4px rgba(249,115,22,.3);"></div>
+          <div>
+            <div style="font-size:.8rem;color:#F97316;font-weight:700;margin-bottom:6px;">2024</div>
+            <h4 style="font-weight:800;color:#fff;margin-bottom:6px;">500+ автомобилей</h4>
+            <p style="color:#6b7280;font-size:.875rem;line-height:1.65;">Перешли отметку 500 доставленных автомобилей. NPS 97%, партнёры в 8 городах России. Работаем дальше.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section style="padding:80px 24px;">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal text-center mb-14">
+      <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">Команда</p>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Люди за сделками</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <div class="team-card reveal">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#F97316,#ff9a4c);border-radius:20px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.5rem;color:#fff;margin-bottom:16px;">МК</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:4px;">Михаил Козлов</h4>
+        <p style="color:#F97316;font-size:.8rem;font-weight:600;margin-bottom:10px;">Основатель / CEO</p>
+        <p style="color:#6b7280;font-size:.82rem;line-height:1.6;">10 лет в автобизнесе. Лично проверяет каждый новый маршрут доставки.</p>
+      </div>
+
+      <div class="team-card reveal" style="transition-delay:.1s;">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:20px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.5rem;color:#fff;margin-bottom:16px;">АН</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:4px;">Анна Новикова</h4>
+        <p style="color:#F97316;font-size:.8rem;font-weight:600;margin-bottom:10px;">Руководитель отдела продаж</p>
+        <p style="color:#6b7280;font-size:.82rem;line-height:1.6;">Персональный менеджер для VIP-клиентов. 300+ закрытых сделок.</p>
+      </div>
+
+      <div class="team-card reveal" style="transition-delay:.2s;">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#10b981,#059669);border-radius:20px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.5rem;color:#fff;margin-bottom:16px;">ДП</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:4px;">Денис Петров</h4>
+        <p style="color:#F97316;font-size:.8rem;font-weight:600;margin-bottom:10px;">Таможенный брокер</p>
+        <p style="color:#6b7280;font-size:.82rem;line-height:1.6;">Аккредитованный брокер. За 5 лет — ни одного отказа на таможне.</p>
+      </div>
+
+      <div class="team-card reveal" style="transition-delay:.3s;">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:20px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.5rem;color:#fff;margin-bottom:16px;">ОЛ</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:4px;">Ольга Лебедева</h4>
+        <p style="color:#F97316;font-size:.8rem;font-weight:600;margin-bottom:10px;">Логистика и доставка</p>
+        <p style="color:#6b7280;font-size:.82rem;line-height:1.6;">Координирует доставку по 4 направлениям. Каждый автомобиль приходит в срок.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section style="padding:80px 24px;background:rgba(24,28,39,.4);border-top:1px solid #2A2F3E;">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal text-center mb-12">
+      <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">Документы</p>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Работаем официально</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="cert-card reveal">
+        <div style="font-size:2.5rem;margin-bottom:12px;">📋</div>
+        <h4 style="font-weight:700;color:#fff;font-size:.9rem;margin-bottom:6px;">ООО «М1 АВТО»</h4>
+        <p style="color:#6b7280;font-size:.78rem;">ИНН 7712345678</p>
+      </div>
+      <div class="cert-card reveal" style="transition-delay:.1s;">
+        <div style="font-size:2.5rem;margin-bottom:12px;">🏛️</div>
+        <h4 style="font-weight:700;color:#fff;font-size:.9rem;margin-bottom:6px;">Таможенный брокер</h4>
+        <p style="color:#6b7280;font-size:.78rem;">Аккредитация ФТС России</p>
+      </div>
+      <div class="cert-card reveal" style="transition-delay:.2s;">
+        <div style="font-size:2.5rem;margin-bottom:12px;">🤝</div>
+        <h4 style="font-weight:700;color:#fff;font-size:.9rem;margin-bottom:6px;">Договор купли-продажи</h4>
+        <p style="color:#6b7280;font-size:.78rem;">Работаем официально с НДС</p>
+      </div>
+      <div class="cert-card reveal" style="transition-delay:.3s;">
+        <div style="font-size:2.5rem;margin-bottom:12px;">🛡️</div>
+        <h4 style="font-weight:700;color:#fff;font-size:.9rem;margin-bottom:6px;">Страхование грузов</h4>
+        <p style="color:#6b7280;font-size:.78rem;">Авто застраховано при перевозке</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section style="padding:80px 24px;">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal text-center mb-14">
+      <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">Отзывы</p>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#fff;letter-spacing:-.02em;">500+ довольных клиентов</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+      <div class="review-card reveal">
+        <div style="color:#F97316;font-size:.95rem;margin-bottom:12px;">★★★★★</div>
+        <p style="color:#d1d5db;font-size:.875rem;line-height:1.7;margin-bottom:18px;">"Взял BMW 5 из Германии. Вся сделка прошла онлайн — приехал только забирать машину. Цена, которую назвали в начале, совпала до рубля. Рекомендую без оговорок."</p>
+        <div style="display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid #2A2F3E;">
+          <div style="width:38px;height:38px;background:rgba(249,115,22,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#F97316;font-size:.82rem;">АК</div>
+          <div><div style="font-weight:700;color:#fff;font-size:.875rem;">Алексей К.</div><div style="font-size:.72rem;color:#6b7280;">BMW 520d · Европа · Москва</div></div>
+        </div>
+      </div>
+
+      <div class="review-card reveal" style="transition-delay:.1s;">
+        <div style="color:#F97316;font-size:.95rem;margin-bottom:12px;">★★★★★</div>
+        <p style="color:#d1d5db;font-size:.875rem;line-height:1.7;margin-bottom:18px;">"Менеджер был на связи каждый день — присылал фото с таможни, из порта, с автовоза. Такой уровень прозрачности я нигде раньше не видел. Спасибо команде!"</p>
+        <div style="display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid #2A2F3E;">
+          <div style="width:38px;height:38px;background:rgba(249,115,22,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#F97316;font-size:.82rem;">МВ</div>
+          <div><div style="font-weight:700;color:#fff;font-size:.875rem;">Марина В.</div><div style="font-size:.72rem;color:#6b7280;">Hyundai Tucson · Корея · СПб</div></div>
+        </div>
+      </div>
+
+      <div class="review-card reveal" style="transition-delay:.2s;">
+        <div style="color:#F97316;font-size:.95rem;margin-bottom:12px;">★★★★★</div>
+        <p style="color:#d1d5db;font-size:.875rem;line-height:1.7;margin-bottom:18px;">"Toyota Land Cruiser через Бишкек — сэкономил больше 2 миллионов. Думал, будет какой-то подвох. Никакого подвоха — всё чисто, ПТС, СТС, всё в порядке."</p>
+        <div style="display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid #2A2F3E;">
+          <div style="width:38px;height:38px;background:rgba(249,115,22,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#F97316;font-size:.82rem;">РА</div>
+          <div><div style="font-weight:700;color:#fff;font-size:.875rem;">Роман А.</div><div style="font-size:.72rem;color:#6b7280;">Toyota LC 300 · Бишкек · Екб</div></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="text-center mt-10 reveal">
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:16px;padding:20px 28px;display:inline-block;">
+        <span style="color:#6b7280;font-size:.85rem;">Все отзывы на </span>
+        <span style="color:#F97316;font-weight:700;font-size:.875rem;">Яндекс.Картах · 4.9 ⭐</span>
+        <span style="color:#6b7280;font-size:.85rem;"> · </span>
+        <span style="color:#F97316;font-weight:700;font-size:.875rem;">2ГИС · 4.8 ⭐</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:80px 24px;background:linear-gradient(135deg,rgba(249,115,22,.08) 0%,rgba(249,115,22,.02) 100%);border-top:1px solid #2A2F3E;">
+  <div class="max-w-2xl mx-auto text-center reveal">
+    <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;color:#fff;margin-bottom:14px;">Присоединяйтесь к 500+ клиентам</h2>
+    <p style="color:#9ca3af;font-size:.95rem;margin-bottom:28px;line-height:1.7;">Бесплатная консультация — расскажем об актуальных вариантах под ваш бюджет</p>
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="contact.html" class="btn-orange">Получить консультацию</a>
+      <a href="catalog.html" class="btn-ghost">Смотреть каталог →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#0a0d14;border-top:1px solid #2A2F3E;padding:40px 24px 24px;">
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-between gap-6 items-center">
+    <div class="flex items-center gap-2.5">
+      <div style="width:32px;height:32px;background:#F97316;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.75rem;">M1</div>
+      <span style="font-weight:800;color:#fff;">АВТО</span>
+    </div>
+    <div class="flex gap-6 flex-wrap">
+      <a href="index.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Главная</a>
+      <a href="catalog.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Каталог</a>
+      <a href="how.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Как работаем</a>
+      <a href="contact.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Контакты</a>
+    </div>
+    <span style="color:#4b5563;font-size:.8rem;">© 2024 М1 АВТО</span>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, {threshold: 0.08});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => observer.observe(el));
+
+function animateCounter(el, target, duration=1800) {
+  let start=null;
+  const step=ts=>{
+    if(!start)start=ts;
+    const prog=Math.min((ts-start)/duration,1);
+    const ease=1-Math.pow(1-prog,3);
+    el.textContent=Math.floor(ease*target);
+    if(prog<1)requestAnimationFrame(step);else el.textContent=target;
+  };
+  requestAnimationFrame(step);
+}
+const cObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){animateCounter(e.target,parseInt(e.target.dataset.target));cObs.unobserve(e.target);}});
+},{threshold:.5});
+document.querySelectorAll('.counter[data-target]').forEach(el=>cObs.observe(el));
+</script>
+</body>
+</html>

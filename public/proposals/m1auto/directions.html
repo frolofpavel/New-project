@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Направления импорта — М1 АВТО</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{brand:'#F97316',dark:'#0F1117',card:'#181C27',border:'#2A2F3E'},fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{background:#0F1117;color:#F0F2F7;font-family:'Inter',sans-serif;overflow-x:hidden}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0F1117}::-webkit-scrollbar-thumb{background:#F97316;border-radius:3px}
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-left{opacity:0;transform:translateX(-30px);transition:opacity .65s ease,transform .65s ease}.reveal-left.visible{opacity:1;transform:translateX(0)}
+    .reveal-right{opacity:0;transform:translateX(30px);transition:opacity .65s ease,transform .65s ease}.reveal-right.visible{opacity:1;transform:translateX(0)}
+    .nav-link{position:relative;color:#9ca3af;transition:color .15s;font-size:.875rem;font-weight:500;text-decoration:none}
+    .nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:#F97316;transition:width .2s;border-radius:1px}
+    .nav-link:hover,.nav-link.active{color:#fff}.nav-link:hover::after,.nav-link.active::after{width:100%}
+    .btn-orange{background:#F97316;color:#fff;font-weight:700;border-radius:14px;padding:14px 28px;transition:background .15s,transform .1s,box-shadow .2s;box-shadow:0 4px 16px rgba(249,115,22,.3);display:inline-block;text-decoration:none}
+    .btn-orange:hover{background:#ea6d10;transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,115,22,.4)}
+    .btn-ghost{border:1.5px solid #2A2F3E;color:#fff;font-weight:600;border-radius:14px;padding:14px 28px;transition:border-color .15s,background .15s;display:inline-block;text-decoration:none}
+    .btn-ghost:hover{border-color:#F97316;background:rgba(249,115,22,.06)}
+
+    .dir-section{padding:80px 24px;border-bottom:1px solid #2A2F3E}
+    .dir-section:last-of-type{border-bottom:none}
+    .dir-alt{background:rgba(24,28,39,.4)}
+
+    .brand-chip{background:#181C27;border:1px solid #2A2F3E;color:#d1d5db;font-size:.82rem;font-weight:600;padding:6px 14px;border-radius:10px;transition:border-color .15s,color .15s;display:inline-block}
+    .brand-chip:hover{border-color:rgba(249,115,22,.5);color:#F97316}
+
+    .pro-con{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:.875rem}
+    .pro-con .icon{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.75rem;margin-top:1px}
+    .pro{color:#4ade80}.pro .icon{background:rgba(34,197,94,.1);color:#4ade80}
+    .con{color:#9ca3af}.con .icon{background:rgba(107,114,128,.1);color:#6b7280}
+
+    .nav-anchor{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px}
+    .nav-anchor a{background:#181C27;border:1.5px solid #2A2F3E;color:#9ca3af;font-size:.82rem;font-weight:600;padding:8px 16px;border-radius:10px;text-decoration:none;transition:all .2s}
+    .nav-anchor a:hover,.nav-anchor a.active{background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.5);color:#F97316}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 border-b border-border" style="background:rgba(15,17,23,.92);backdrop-filter:blur(18px);">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between h-16">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div style="width:36px;height:36px;background:#F97316;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.85rem;box-shadow:0 4px 16px rgba(249,115,22,.45);">M1</div>
+      <span style="font-weight:800;font-size:1.15rem;color:#fff;letter-spacing:-.02em;">АВТО</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-7">
+      <a href="index.html" class="nav-link">Главная</a>
+      <a href="catalog.html" class="nav-link">Каталог</a>
+      <a href="directions.html" class="nav-link active">Направления</a>
+      <a href="how.html" class="nav-link">Как работаем</a>
+      <a href="about.html" class="nav-link">О нас</a>
+      <a href="contact.html" class="nav-link">Контакты</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="tel:+74950237203" class="hidden md:block text-sm font-semibold text-white">+7 (495) 023-72-03</a>
+      <a href="contact.html" class="btn-orange text-sm" style="padding:10px 20px;border-radius:10px;">Подобрать авто</a>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<div style="background:linear-gradient(135deg,rgba(249,115,22,.08) 0%,transparent 60%);border-bottom:1px solid #2A2F3E;padding:60px 24px 40px;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center gap-2 mb-5" style="font-size:.8rem;color:#6b7280;">
+      <a href="index.html" style="color:#6b7280;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Главная</a>
+      <span>/</span><span style="color:#F97316;">Направления</span>
+    </div>
+    <h1 style="font-size:clamp(2rem,5vw,3.2rem);font-weight:900;color:#fff;letter-spacing:-.025em;margin-bottom:14px;">Направления импорта</h1>
+    <p style="color:#9ca3af;font-size:1rem;max-width:580px;line-height:1.7;margin-bottom:28px;">
+      Работаем с четырьмя направлениями — у каждого свои преимущества, марки и ценовые категории. Поможем выбрать.
+    </p>
+    <div class="nav-anchor">
+      <a href="#europe">🇩🇪 Европа</a>
+      <a href="#korea">🇰🇷 Корея</a>
+      <a href="#china">🇨🇳 Китай</a>
+      <a href="#bishkek">🇰🇬 Бишкек</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EUROPE ═══ -->
+<section id="europe" class="dir-section">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal-left">
+        <div style="font-size:3.5rem;margin-bottom:20px;">🇩🇪</div>
+        <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:#fff;letter-spacing:-.025em;margin-bottom:14px;">Европа</h2>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.75;margin-bottom:24px;">
+          Немецкое качество, реальный пробег и комплектации, которых нет в России — вот главный аргумент. BMW, Mercedes, Audi с заводскими опциями: вентиляция сидений, Head-Up Display, массаж, матричные фары.
+        </p>
+        <div class="grid grid-cols-2 gap-5 mb-6">
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Плюсы</p>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Реальный пробег, не скрученный</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Уникальные опции под заказ</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Подробная сервисная история</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Нет ограничений ОСАГО</span></div>
+          </div>
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Нюансы</p>
+            <div class="pro-con con"><div class="icon">!</div><span>Дольше доставка (30–45 дней)</span></div>
+            <div class="pro-con con"><div class="icon">!</div><span>Таможня по полной ставке</span></div>
+            <div class="pro-con con"><div class="icon">!</div><span>Цена выше, чем из Кореи</span></div>
+          </div>
+        </div>
+        <div style="margin-bottom:24px;">
+          <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Популярные марки</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span class="brand-chip">BMW</span><span class="brand-chip">Mercedes-Benz</span><span class="brand-chip">Audi</span>
+            <span class="brand-chip">Volkswagen</span><span class="brand-chip">Volvo</span><span class="brand-chip">Skoda</span>
+            <span class="brand-chip">Porsche</span><span class="brand-chip">Land Rover</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;">
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 18px;flex:1;min-width:120px;">
+            <div style="font-size:1.4rem;font-weight:900;color:#F97316;">30–45</div>
+            <div style="font-size:.75rem;color:#6b7280;">дней доставки</div>
+          </div>
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 18px;flex:1;min-width:120px;">
+            <div style="font-size:1.4rem;font-weight:900;color:#fff;">от 2.5 млн</div>
+            <div style="font-size:.75rem;color:#6b7280;">минимальный бюджет</div>
+          </div>
+        </div>
+        <a href="contact.html" class="btn-orange">Подобрать авто из Европы</a>
+      </div>
+      <div class="reveal-right">
+        <img src="img/car2.jpg" alt="BMW из Европы" style="width:100%;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.5);">
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:16px 20px;margin-top:16px;">
+          <p style="color:#6b7280;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Пример расчёта</p>
+          <div style="display:flex;justify-content:space-between;color:#d1d5db;font-size:.875rem;margin-bottom:6px;"><span>BMW 520d (2022, Германия)</span><span style="color:#fff;font-weight:700;">4 200 000 ₽</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;color:#6b7280;"><span>У официального дилера</span><span style="text-decoration:line-through;">5 900 000 ₽</span></div>
+          <div style="background:rgba(34,197,94,.1);color:#4ade80;font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:8px;margin-top:10px;display:inline-block;">Экономия: 1 700 000 ₽</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ KOREA ═══ -->
+<section id="korea" class="dir-section dir-alt">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal-right order-2 lg:order-1">
+        <img src="img/car1.jpg" alt="Hyundai из Кореи" style="width:100%;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.5);">
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:16px 20px;margin-top:16px;">
+          <p style="color:#6b7280;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Пример расчёта</p>
+          <div style="display:flex;justify-content:space-between;color:#d1d5db;font-size:.875rem;margin-bottom:6px;"><span>Hyundai Tucson (2023, Корея)</span><span style="color:#fff;font-weight:700;">2 850 000 ₽</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;color:#6b7280;"><span>У официального дилера</span><span style="text-decoration:line-through;">3 400 000 ₽</span></div>
+          <div style="background:rgba(34,197,94,.1);color:#4ade80;font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:8px;margin-top:10px;display:inline-block;">Экономия: 550 000 ₽</div>
+        </div>
+      </div>
+      <div class="reveal-left order-1 lg:order-2">
+        <div style="font-size:3.5rem;margin-bottom:20px;">🇰🇷</div>
+        <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:#fff;letter-spacing:-.025em;margin-bottom:14px;">Корея</h2>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.75;margin-bottom:24px;">
+          Оптимальный выбор по соотношению цена/качество. Корейские автомобили имеют богатые комплектации с завода, небольшой реальный пробег и отличную надёжность.
+        </p>
+        <div class="grid grid-cols-2 gap-5 mb-6">
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Плюсы</p>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Небольшой пробег (30–80 тыс.)</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Топовые комплектации</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Надёжность и запчасти</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Лучший выбор в бюджете 2–4 млн</span></div>
+          </div>
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Нюансы</p>
+            <div class="pro-con con"><div class="icon">!</div><span>Праворульных нет</span></div>
+            <div class="pro-con con"><div class="icon">!</div><span>Доставка морем 20–30 дней</span></div>
+          </div>
+        </div>
+        <div style="margin-bottom:24px;">
+          <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Популярные марки</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span class="brand-chip">Hyundai</span><span class="brand-chip">Kia</span><span class="brand-chip">Genesis</span>
+            <span class="brand-chip">Hyundai IONIQ</span><span class="brand-chip">Kia EV6</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;">
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 18px;flex:1;min-width:120px;">
+            <div style="font-size:1.4rem;font-weight:900;color:#F97316;">25–40</div>
+            <div style="font-size:.75rem;color:#6b7280;">дней доставки</div>
+          </div>
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 18px;flex:1;min-width:120px;">
+            <div style="font-size:1.4rem;font-weight:900;color:#fff;">от 1.6 млн</div>
+            <div style="font-size:.75rem;color:#6b7280;">минимальный бюджет</div>
+          </div>
+        </div>
+        <a href="contact.html" class="btn-orange">Подобрать авто из Кореи</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CHINA ═══ -->
+<section id="china" class="dir-section">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal-left">
+        <div style="font-size:3.5rem;margin-bottom:20px;">🇨🇳</div>
+        <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:#fff;letter-spacing:-.025em;margin-bottom:14px;">Китай</h2>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.75;margin-bottom:24px;">
+          Технологический прорыв по доступной цене. Китайские автомобили 2022–2024 годов предлагают: 12″ экраны, панорамные крыши, ADAS системы, электромобили с запасом 500+ км — за стоимость бюджетного авто.
+        </p>
+        <div class="grid grid-cols-2 gap-5 mb-6">
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Плюсы</p>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Лучшее оснащение за деньги</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Новые авто 2024 года</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Много электро и гибридов</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Быстрое пополнение ассортимента</span></div>
+          </div>
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Нюансы</p>
+            <div class="pro-con con"><div class="icon">!</div><span>Молодые бренды — статистика надёжности</span></div>
+            <div class="pro-con con"><div class="icon">!</div><span>Запчасти только начинают появляться</span></div>
+          </div>
+        </div>
+        <div style="margin-bottom:24px;">
+          <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Популярные марки</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span class="brand-chip">JETOUR</span><span class="brand-chip">Haval</span><span class="brand-chip">Tank</span>
+            <span class="brand-chip">BYD</span><span class="brand-chip">Li Auto</span><span class="brand-chip">Nio</span>
+            <span class="brand-chip">Chery</span><span class="brand-chip">Geely</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;">
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 18px;flex:1;min-width:120px;">
+            <div style="font-size:1.4rem;font-weight:900;color:#F97316;">20–35</div>
+            <div style="font-size:.75rem;color:#6b7280;">дней доставки</div>
+          </div>
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 18px;flex:1;min-width:120px;">
+            <div style="font-size:1.4rem;font-weight:900;color:#fff;">от 1.2 млн</div>
+            <div style="font-size:.75rem;color:#6b7280;">минимальный бюджет</div>
+          </div>
+        </div>
+        <a href="contact.html" class="btn-orange">Подобрать авто из Китая</a>
+      </div>
+      <div class="reveal-right">
+        <img src="img/car3.jpg" alt="JETOUR из Китая" style="width:100%;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.5);">
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:16px 20px;margin-top:16px;">
+          <p style="color:#6b7280;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Пример расчёта</p>
+          <div style="display:flex;justify-content:space-between;color:#d1d5db;font-size:.875rem;margin-bottom:6px;"><span>JETOUR X70 Plus (2024, Китай)</span><span style="color:#fff;font-weight:700;">1 790 000 ₽</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;color:#6b7280;"><span>Аналог у дилера</span><span style="text-decoration:line-through;">2 250 000 ₽</span></div>
+          <div style="background:rgba(34,197,94,.1);color:#4ade80;font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:8px;margin-top:10px;display:inline-block;">Экономия: 460 000 ₽</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BISHKEK ═══ -->
+<section id="bishkek" class="dir-section dir-alt">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal-right order-2 lg:order-1">
+        <img src="img/car9.jpg" alt="Toyota через Бишкек" style="width:100%;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.5);" onerror="this.style.background='#1e2540';this.style.minHeight='250px'">
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:16px 20px;margin-top:16px;">
+          <p style="color:#6b7280;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Пример расчёта</p>
+          <div style="display:flex;justify-content:space-between;color:#d1d5db;font-size:.875rem;margin-bottom:6px;"><span>Toyota Land Cruiser 300 (2021)</span><span style="color:#fff;font-weight:700;">6 900 000 ₽</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;color:#6b7280;"><span>У дилера</span><span style="text-decoration:line-through;">9 800 000 ₽</span></div>
+          <div style="background:rgba(34,197,94,.1);color:#4ade80;font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:8px;margin-top:10px;display:inline-block;">Экономия: 2 900 000 ₽</div>
+        </div>
+      </div>
+      <div class="reveal-left order-1 lg:order-2">
+        <div style="font-size:3.5rem;margin-bottom:20px;">🇰🇬</div>
+        <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:#fff;letter-spacing:-.025em;margin-bottom:14px;">Бишкек (Кыргызстан)</h2>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.75;margin-bottom:24px;">
+          Самый быстрый и выгодный маршрут для японских и американских автомобилей. Через Кыргызстан идут праворульные Toyota, Lexus, а также американские Jeep, Ford, Cadillac — с экономией до 3 миллионов.
+        </p>
+        <div class="grid grid-cols-2 gap-5 mb-6">
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Плюсы</p>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Самая быстрая доставка (7–20 дней)</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Максимальная экономия на топ-авто</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Японская надёжность</span></div>
+            <div class="pro-con pro"><div class="icon">✓</div><span>Редкие комплектации</span></div>
+          </div>
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Нюансы</p>
+            <div class="pro-con con"><div class="icon">!</div><span>Пробег 80–120 тыс. км</span></div>
+            <div class="pro-con con"><div class="icon">!</div><span>Важно проверять историю</span></div>
+          </div>
+        </div>
+        <div style="margin-bottom:24px;">
+          <p style="font-size:.75rem;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Популярные марки</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span class="brand-chip">Toyota</span><span class="brand-chip">Lexus</span><span class="brand-chip">Honda</span>
+            <span class="brand-chip">Nissan</span><span class="brand-chip">Jeep</span><span class="brand-chip">Ford</span>
+            <span class="brand-chip">Cadillac</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;">
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 18px;flex:1;min-width:120px;">
+            <div style="font-size:1.4rem;font-weight:900;color:#F97316;">7–20</div>
+            <div style="font-size:.75rem;color:#6b7280;">дней доставки</div>
+          </div>
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 18px;flex:1;min-width:120px;">
+            <div style="font-size:1.4rem;font-weight:900;color:#fff;">от 1.4 млн</div>
+            <div style="font-size:.75rem;color:#6b7280;">минимальный бюджет</div>
+          </div>
+        </div>
+        <a href="contact.html" class="btn-orange">Подобрать авто через Бишкек</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section style="padding:80px 24px;border-top:1px solid #2A2F3E;">
+  <div class="max-w-5xl mx-auto">
+    <div class="reveal text-center mb-12">
+      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Сравнение направлений</h2>
+    </div>
+    <div class="reveal" style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:.875rem;">
+        <thead>
+          <tr style="border-bottom:2px solid #2A2F3E;">
+            <th style="text-align:left;padding:14px 16px;color:#6b7280;font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;">Параметр</th>
+            <th style="padding:14px 16px;color:#fff;font-weight:700;text-align:center;">🇩🇪 Европа</th>
+            <th style="padding:14px 16px;color:#fff;font-weight:700;text-align:center;">🇰🇷 Корея</th>
+            <th style="padding:14px 16px;color:#fff;font-weight:700;text-align:center;">🇨🇳 Китай</th>
+            <th style="padding:14px 16px;color:#fff;font-weight:700;text-align:center;">🇰🇬 Бишкек</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #2A2F3E;">
+            <td style="padding:14px 16px;color:#9ca3af;">Срок доставки</td>
+            <td style="padding:14px 16px;text-align:center;color:#fbbf24;">30–45 дней</td>
+            <td style="padding:14px 16px;text-align:center;color:#fbbf24;">25–40 дней</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;">20–35 дней</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;font-weight:700;">7–20 дней ⚡</td>
+          </tr>
+          <tr style="border-bottom:1px solid #2A2F3E;background:rgba(24,28,39,.3);">
+            <td style="padding:14px 16px;color:#9ca3af;">Цена от</td>
+            <td style="padding:14px 16px;text-align:center;color:#fbbf24;">2.5 млн ₽</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;">1.6 млн ₽</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;font-weight:700;">1.2 млн ₽ 💰</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;">1.4 млн ₽</td>
+          </tr>
+          <tr style="border-bottom:1px solid #2A2F3E;">
+            <td style="padding:14px 16px;color:#9ca3af;">Пробег</td>
+            <td style="padding:14px 16px;text-align:center;color:#fff;">60–150 тыс.</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;font-weight:700;">30–80 тыс. ✓</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;font-weight:700;">0–10 тыс. (новые) ✓</td>
+            <td style="padding:14px 16px;text-align:center;color:#fff;">80–120 тыс.</td>
+          </tr>
+          <tr style="border-bottom:1px solid #2A2F3E;background:rgba(24,28,39,.3);">
+            <td style="padding:14px 16px;color:#9ca3af;">Надёжность</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;font-weight:700;">Высокая ★★★★★</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;font-weight:700;">Высокая ★★★★★</td>
+            <td style="padding:14px 16px;text-align:center;color:#fbbf24;">Средняя ★★★☆☆</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;font-weight:700;">Высокая ★★★★★</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px;color:#9ca3af;">Экономия vs дилер</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;">до 2.5 млн ₽</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;">до 800 тыс. ₽</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;">до 600 тыс. ₽</td>
+            <td style="padding:14px 16px;text-align:center;color:#4ade80;font-weight:700;">до 3 млн ₽ ⭐</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:80px 24px;background:linear-gradient(135deg,rgba(249,115,22,.08) 0%,rgba(249,115,22,.02) 100%);border-top:1px solid #2A2F3E;">
+  <div class="max-w-2xl mx-auto text-center reveal">
+    <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;color:#fff;margin-bottom:14px;">Не знаете что выбрать?</h2>
+    <p style="color:#9ca3af;font-size:.95rem;margin-bottom:28px;line-height:1.7;">Менеджер расскажет, какое направление подходит под ваш бюджет и предпочтения — бесплатно, без навязывания</p>
+    <a href="contact.html" class="btn-orange">Получить бесплатную консультацию</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#0a0d14;border-top:1px solid #2A2F3E;padding:40px 24px 24px;">
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-between gap-6 items-center">
+    <div class="flex items-center gap-2.5">
+      <div style="width:32px;height:32px;background:#F97316;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.75rem;">M1</div>
+      <span style="font-weight:800;color:#fff;">АВТО</span>
+    </div>
+    <div class="flex gap-6 flex-wrap">
+      <a href="index.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Главная</a>
+      <a href="catalog.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Каталог</a>
+      <a href="how.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Как работаем</a>
+      <a href="contact.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Контакты</a>
+    </div>
+    <span style="color:#4b5563;font-size:.8rem;">© 2024 М1 АВТО</span>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, {threshold: 0.08});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => observer.observe(el));
+
+// Highlight anchor
+const anchors = document.querySelectorAll('.nav-anchor a');
+const sections = ['europe','korea','china','bishkek'];
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) current = id;
+  });
+  anchors.forEach(a => {
+    a.classList.toggle('active', a.href.endsWith('#'+current));
+  });
+});
+</script>
+</body>
+</html>

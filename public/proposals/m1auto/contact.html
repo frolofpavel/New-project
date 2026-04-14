@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Контакты — М1 АВТО</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{brand:'#F97316',dark:'#0F1117',card:'#181C27',border:'#2A2F3E'},fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{background:#0F1117;color:#F0F2F7;font-family:'Inter',sans-serif;overflow-x:hidden}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0F1117}::-webkit-scrollbar-thumb{background:#F97316;border-radius:3px}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+    .nav-link{position:relative;color:#9ca3af;transition:color .15s;font-size:.875rem;font-weight:500;text-decoration:none}
+    .nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:#F97316;transition:width .2s;border-radius:1px}
+    .nav-link:hover,.nav-link.active{color:#fff}.nav-link:hover::after,.nav-link.active::after{width:100%}
+    .btn-orange{background:#F97316;color:#fff;font-weight:700;border-radius:14px;padding:14px 28px;transition:background .15s,transform .1s,box-shadow .2s;box-shadow:0 4px 16px rgba(249,115,22,.3);display:inline-block;text-decoration:none;cursor:pointer;border:none;width:100%;text-align:center}
+    .btn-orange:hover{background:#ea6d10;transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,115,22,.4)}
+
+    .form-input{background:#0F1117;border:1.5px solid #2A2F3E;color:#fff;font-size:.9rem;font-family:'Inter',sans-serif;border-radius:12px;padding:14px 16px;width:100%;outline:none;transition:border-color .2s,box-shadow .2s}
+    .form-input:focus{border-color:#F97316;box-shadow:0 0 0 3px rgba(249,115,22,.1)}
+    .form-input::placeholder{color:#4b5563}
+    textarea.form-input{resize:vertical;min-height:120px}
+
+    .contact-card{background:#181C27;border:1px solid #2A2F3E;border-radius:20px;padding:24px;transition:border-color .2s,transform .2s,box-shadow .2s;text-decoration:none;display:block}
+    .contact-card:hover{border-color:rgba(249,115,22,.4);transform:translateY(-4px);box-shadow:0 16px 40px rgba(249,115,22,.08)}
+
+    .messenger-btn{display:flex;align-items:center;gap:12px;background:#181C27;border:1.5px solid #2A2F3E;border-radius:14px;padding:14px 20px;text-decoration:none;transition:all .2s}
+    .messenger-btn:hover{border-color:rgba(249,115,22,.5);background:rgba(249,115,22,.05)}
+
+    .step-mini{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+    .step-mini-num{width:28px;height:28px;background:rgba(249,115,22,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.75rem;color:#F97316;flex-shrink:0;margin-top:1px}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 border-b border-border" style="background:rgba(15,17,23,.92);backdrop-filter:blur(18px);">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between h-16">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div style="width:36px;height:36px;background:#F97316;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.85rem;box-shadow:0 4px 16px rgba(249,115,22,.45);">M1</div>
+      <span style="font-weight:800;font-size:1.15rem;color:#fff;letter-spacing:-.02em;">АВТО</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-7">
+      <a href="index.html" class="nav-link">Главная</a>
+      <a href="catalog.html" class="nav-link">Каталог</a>
+      <a href="directions.html" class="nav-link">Направления</a>
+      <a href="how.html" class="nav-link">Как работаем</a>
+      <a href="about.html" class="nav-link">О нас</a>
+      <a href="contact.html" class="nav-link active">Контакты</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="tel:+74950237203" class="hidden md:block text-sm font-semibold text-white">+7 (495) 023-72-03</a>
+      <a href="#form" class="btn-orange text-sm" style="width:auto;padding:10px 20px;border-radius:10px;">Оставить заявку</a>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<div style="background:linear-gradient(135deg,rgba(249,115,22,.08) 0%,transparent 60%);border-bottom:1px solid #2A2F3E;padding:60px 24px 50px;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center gap-2 mb-5" style="font-size:.8rem;color:#6b7280;">
+      <a href="index.html" style="color:#6b7280;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Главная</a>
+      <span>/</span><span style="color:#F97316;">Контакты</span>
+    </div>
+    <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#fff;letter-spacing:-.025em;margin-bottom:14px;">Свяжитесь с нами</h1>
+    <p style="color:#9ca3af;font-size:1rem;line-height:1.7;max-width:520px;">
+      Отвечаем в течение 15 минут в рабочее время. В нерабочее — перезваниваем утром. Выберите удобный способ связи.
+    </p>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 md:px-6 py-12">
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-10">
+
+    <!-- LEFT: Contact info -->
+    <div class="lg:col-span-2" style="display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Phone -->
+      <a href="tel:+74950237203" class="contact-card">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:48px;height:48px;background:rgba(249,115,22,.1);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#F97316"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          </div>
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;margin-bottom:4px;">Телефон (звонок, WhatsApp)</p>
+            <p style="font-weight:800;color:#fff;font-size:1.15rem;">+7 (495) 023-72-03</p>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid #2A2F3E;display:flex;align-items:center;justify-content:space-between;">
+          <span style="color:#6b7280;font-size:.82rem;">Пн–Пт: 9:00–20:00, Сб: 10:00–18:00</span>
+          <span style="color:#F97316;font-size:.8rem;font-weight:700;">Позвонить →</span>
+        </div>
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:info@m1auto.pro" class="contact-card">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:48px;height:48px;background:rgba(249,115,22,.1);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;margin-bottom:4px;">Email</p>
+            <p style="font-weight:800;color:#fff;font-size:1rem;">info@m1auto.pro</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Messengers -->
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:20px;padding:20px;">
+        <p style="font-size:.75rem;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;">Мессенджеры</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="#" class="messenger-btn">
+            <div style="width:36px;height:36px;background:#25D366;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.75rem;flex-shrink:0;">WA</div>
+            <div>
+              <p style="font-weight:700;color:#fff;font-size:.875rem;">WhatsApp</p>
+              <p style="font-size:.75rem;color:#6b7280;">Отвечаем в течение 15 мин</p>
+            </div>
+          </a>
+          <a href="#" class="messenger-btn">
+            <div style="width:36px;height:36px;background:#229ED9;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.75rem;flex-shrink:0;">TG</div>
+            <div>
+              <p style="font-weight:700;color:#fff;font-size:.875rem;">Telegram</p>
+              <p style="font-size:.75rem;color:#6b7280;">@m1auto_bot</p>
+            </div>
+          </a>
+          <a href="#" class="messenger-btn">
+            <div style="width:36px;height:36px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.75rem;flex-shrink:0;">IG</div>
+            <div>
+              <p style="font-weight:700;color:#fff;font-size:.875rem;">Instagram</p>
+              <p style="font-size:.75rem;color:#6b7280;">@m1auto.pro</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Address -->
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:20px;padding:20px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:40px;height:40px;background:rgba(249,115,22,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div>
+            <p style="font-size:.75rem;color:#6b7280;margin-bottom:4px;">Офис</p>
+            <p style="font-weight:700;color:#fff;font-size:.9rem;line-height:1.5;">г. Москва, ул. Автомобильная 12, офис 304</p>
+            <p style="font-size:.78rem;color:#6b7280;margin-top:4px;">Пн–Пт: 9:00–20:00</p>
+          </div>
+        </div>
+        <!-- Map placeholder -->
+        <div style="margin-top:14px;border-radius:12px;overflow:hidden;height:140px;background:linear-gradient(135deg,#1a1f30 0%,#141829 100%);display:flex;align-items:center;justify-content:center;border:1px solid #2A2F3E;position:relative;">
+          <div style="text-align:center;">
+            <div style="font-size:2rem;margin-bottom:6px;">📍</div>
+            <p style="color:#6b7280;font-size:.78rem;">Карта откроется на сайте</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="lg:col-span-3" id="form">
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:24px;padding:36px;">
+        <h2 style="font-weight:900;color:#fff;font-size:1.4rem;margin-bottom:6px;">Оставить заявку</h2>
+        <p style="color:#6b7280;font-size:.875rem;margin-bottom:28px;">Менеджер свяжется в течение 15 минут и расскажет о подходящих вариантах</p>
+
+        <!-- What interested in -->
+        <div style="margin-bottom:20px;">
+          <p style="font-size:.78rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Что интересует</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;" id="interest-group">
+            <button type="button" class="int-btn active" onclick="toggleInterest(this)" style="background:rgba(249,115,22,.12);border:1.5px solid rgba(249,115,22,.4);color:#F97316;font-size:.82rem;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all .2s;">Подбор авто</button>
+            <button type="button" class="int-btn" onclick="toggleInterest(this)" style="background:#0F1117;border:1.5px solid #2A2F3E;color:#9ca3af;font-size:.82rem;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all .2s;">Конкретная модель</button>
+            <button type="button" class="int-btn" onclick="toggleInterest(this)" style="background:#0F1117;border:1.5px solid #2A2F3E;color:#9ca3af;font-size:.82rem;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all .2s;">Узнать цену</button>
+            <button type="button" class="int-btn" onclick="toggleInterest(this)" style="background:#0F1117;border:1.5px solid #2A2F3E;color:#9ca3af;font-size:.82rem;font-weight:600;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all .2s;">Стать партнёром</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div>
+            <label style="display:block;font-size:.78rem;color:#6b7280;margin-bottom:6px;">Ваше имя *</label>
+            <input type="text" placeholder="Иван" class="form-input">
+          </div>
+          <div>
+            <label style="display:block;font-size:.78rem;color:#6b7280;margin-bottom:6px;">Телефон *</label>
+            <input type="tel" placeholder="+7 (___) ___-__-__" class="form-input" id="phone-input">
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:.78rem;color:#6b7280;margin-bottom:6px;">Email</label>
+          <input type="email" placeholder="your@email.com" class="form-input">
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:.78rem;color:#6b7280;margin-bottom:6px;">Какой автомобиль ищете?</label>
+          <input type="text" placeholder="Например: BMW X5 2022, до 5 000 000 ₽, из Европы" class="form-input">
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="display:block;font-size:.78rem;color:#6b7280;margin-bottom:6px;">Дополнительно</label>
+          <textarea class="form-input" placeholder="Уточнения по комплектации, бюджету, срокам..." rows="3"></textarea>
+        </div>
+
+        <!-- Budget quick select -->
+        <div style="margin-bottom:20px;">
+          <p style="font-size:.78rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;">Бюджет</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;" id="budget-group">
+            <button type="button" class="budget-btn" onclick="toggleBudget(this)" style="background:#0F1117;border:1.5px solid #2A2F3E;color:#9ca3af;font-size:.8rem;padding:7px 14px;border-radius:10px;cursor:pointer;transition:all .2s;">До 2 млн</button>
+            <button type="button" class="budget-btn" onclick="toggleBudget(this)" style="background:#0F1117;border:1.5px solid #2A2F3E;color:#9ca3af;font-size:.8rem;padding:7px 14px;border-radius:10px;cursor:pointer;transition:all .2s;">2–3.5 млн</button>
+            <button type="button" class="budget-btn" onclick="toggleBudget(this)" style="background:#0F1117;border:1.5px solid #2A2F3E;color:#9ca3af;font-size:.8rem;padding:7px 14px;border-radius:10px;cursor:pointer;transition:all .2s;">3.5–5 млн</button>
+            <button type="button" class="budget-btn" onclick="toggleBudget(this)" style="background:#0F1117;border:1.5px solid #2A2F3E;color:#9ca3af;font-size:.8rem;padding:7px 14px;border-radius:10px;cursor:pointer;transition:all .2s;">От 5 млн</button>
+          </div>
+        </div>
+
+        <button class="btn-orange" onclick="submitForm()" style="font-size:1rem;">
+          Отправить заявку
+        </button>
+        <p style="color:#4b5563;font-size:.75rem;margin-top:12px;text-align:center;">
+          Нажимая кнопку, вы соглашаетесь с <a href="#" style="color:#6b7280;text-decoration:underline;">политикой обработки персональных данных</a>
+        </p>
+      </div>
+
+      <!-- Trust signals -->
+      <div class="grid grid-cols-3 gap-3 mt-5">
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:1.4rem;margin-bottom:6px;">⚡</div>
+          <p style="color:#fff;font-size:.78rem;font-weight:700;">15 минут</p>
+          <p style="color:#6b7280;font-size:.72rem;">до ответа</p>
+        </div>
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:1.4rem;margin-bottom:6px;">🔒</div>
+          <p style="color:#fff;font-size:.78rem;font-weight:700;">Конфиденциально</p>
+          <p style="color:#6b7280;font-size:.72rem;">данные защищены</p>
+        </div>
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:1.4rem;margin-bottom:6px;">🎁</div>
+          <p style="color:#fff;font-size:.78rem;font-weight:700;">Бесплатно</p>
+          <p style="color:#6b7280;font-size:.72rem;">консультация</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HOW WE RESPOND -->
+<section style="padding:60px 24px;background:rgba(24,28,39,.4);border-top:1px solid #2A2F3E;">
+  <div class="max-w-5xl mx-auto">
+    <div class="reveal text-center mb-10">
+      <h2 style="font-size:1.8rem;font-weight:900;color:#fff;letter-spacing:-.02em;">Что будет после заявки</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:18px;padding:24px;">
+        <div style="font-size:2rem;margin-bottom:14px;">📞</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:8px;">Шаг 1 — Звонок</h4>
+        <p style="color:#6b7280;font-size:.85rem;line-height:1.65;">Менеджер перезванивает в течение 15 минут. Задаёт уточняющие вопросы, рассказывает о вариантах.</p>
+        <div style="background:rgba(249,115,22,.08);border-radius:8px;padding:8px 12px;margin-top:12px;display:inline-block;">
+          <span style="color:#F97316;font-size:.78rem;font-weight:700;">⏱ 15 минут</span>
+        </div>
+      </div>
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:18px;padding:24px;">
+        <div style="font-size:2rem;margin-bottom:14px;">📋</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:8px;">Шаг 2 — Подборка</h4>
+        <p style="color:#6b7280;font-size:.85rem;line-height:1.65;">В течение 24 часов присылаем подборку из 3–5 вариантов с фото, ценой и описанием.</p>
+        <div style="background:rgba(249,115,22,.08);border-radius:8px;padding:8px 12px;margin-top:12px;display:inline-block;">
+          <span style="color:#F97316;font-size:.78rem;font-weight:700;">⏱ 24 часа</span>
+        </div>
+      </div>
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:18px;padding:24px;">
+        <div style="font-size:2rem;margin-bottom:14px;">🚗</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:8px;">Шаг 3 — Сделка</h4>
+        <p style="color:#6b7280;font-size:.85rem;line-height:1.65;">Выбираете понравившийся вариант, подписываем договор и запускаем процесс доставки.</p>
+        <div style="background:rgba(34,197,94,.08);border-radius:8px;padding:8px 12px;margin-top:12px;display:inline-block;">
+          <span style="color:#4ade80;font-size:.78rem;font-weight:700;">Ваш авто едет к вам</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUCCESS MODAL -->
+<div id="success-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#181C27;border:1px solid rgba(34,197,94,.3);border-radius:24px;padding:40px;max-width:400px;width:100%;text-align:center;">
+    <div style="font-size:3rem;margin-bottom:16px;">✅</div>
+    <h3 style="font-weight:900;color:#fff;font-size:1.3rem;margin-bottom:10px;">Заявка отправлена!</h3>
+    <p style="color:#9ca3af;font-size:.9rem;line-height:1.7;margin-bottom:24px;">Менеджер перезвонит вам в течение 15 минут. Пока — посмотрите наш каталог!</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a href="catalog.html" style="background:#F97316;color:#fff;font-weight:700;border-radius:12px;padding:12px 24px;text-decoration:none;display:block;">Смотреть каталог</a>
+      <button onclick="closeSuccess()" style="background:transparent;border:1px solid #2A2F3E;color:#9ca3af;border-radius:12px;padding:12px 24px;cursor:pointer;font-size:.875rem;">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer style="background:#0a0d14;border-top:1px solid #2A2F3E;padding:40px 24px 24px;">
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-between gap-6 items-center">
+    <div class="flex items-center gap-2.5">
+      <div style="width:32px;height:32px;background:#F97316;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.75rem;">M1</div>
+      <span style="font-weight:800;color:#fff;">АВТО</span>
+    </div>
+    <div class="flex gap-6 flex-wrap">
+      <a href="index.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Главная</a>
+      <a href="catalog.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Каталог</a>
+      <a href="how.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Как работаем</a>
+      <a href="about.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">О нас</a>
+    </div>
+    <span style="color:#4b5563;font-size:.8rem;">© 2024 М1 АВТО · info@m1auto.pro</span>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, {threshold: 0.1});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function toggleInterest(btn) {
+  document.querySelectorAll('.int-btn').forEach(b => {
+    b.style.background='#0F1117'; b.style.borderColor='#2A2F3E'; b.style.color='#9ca3af';
+  });
+  btn.style.background='rgba(249,115,22,.12)'; btn.style.borderColor='rgba(249,115,22,.4)'; btn.style.color='#F97316';
+}
+function toggleBudget(btn) {
+  document.querySelectorAll('.budget-btn').forEach(b => {
+    b.style.background='#0F1117'; b.style.borderColor='#2A2F3E'; b.style.color='#9ca3af';
+  });
+  btn.style.background='rgba(249,115,22,.12)'; btn.style.borderColor='rgba(249,115,22,.4)'; btn.style.color='#F97316';
+}
+
+// Phone mask
+document.getElementById('phone-input').addEventListener('input', function(e) {
+  let v = e.target.value.replace(/\D/g, '');
+  if (v.startsWith('8')) v = '7' + v.slice(1);
+  if (v.startsWith('7')) {
+    const m = v.match(/^7(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})$/);
+    if (m) e.target.value = '+7' + (m[1] ? ' ('+m[1] : '') + (m[2] ? ') '+m[2] : '') + (m[3] ? '-'+m[3] : '') + (m[4] ? '-'+m[4] : '');
+  }
+});
+
+function submitForm() {
+  const modal = document.getElementById('success-modal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeSuccess() {
+  document.getElementById('success-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('success-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeSuccess();
+});
+</script>
+</body>
+</html>

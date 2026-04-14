@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Как работаем — М1 АВТО</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{brand:'#F97316',dark:'#0F1117',card:'#181C27',border:'#2A2F3E'},fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{background:#0F1117;color:#F0F2F7;font-family:'Inter',sans-serif;overflow-x:hidden}
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0F1117}::-webkit-scrollbar-thumb{background:#F97316;border-radius:3px}
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+    .nav-link{position:relative;color:#9ca3af;transition:color .15s;font-size:.875rem;font-weight:500;text-decoration:none}
+    .nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:#F97316;transition:width .2s;border-radius:1px}
+    .nav-link:hover,.nav-link.active{color:#fff}.nav-link:hover::after,.nav-link.active::after{width:100%}
+    .btn-orange{background:#F97316;color:#fff;font-weight:700;border-radius:14px;padding:14px 28px;transition:background .15s,transform .1s,box-shadow .2s;box-shadow:0 4px 16px rgba(249,115,22,.3);display:inline-block;text-decoration:none}
+    .btn-orange:hover{background:#ea6d10;transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,115,22,.4)}
+    .btn-ghost{border:1.5px solid #2A2F3E;color:#fff;font-weight:600;border-radius:14px;padding:14px 28px;transition:border-color .15s,background .15s;display:inline-block;text-decoration:none}
+    .btn-ghost:hover{border-color:#F97316;background:rgba(249,115,22,.06)}
+
+    .step-line{position:absolute;left:27px;top:60px;bottom:0;width:2px;background:linear-gradient(to bottom,#F97316,rgba(249,115,22,.1));z-index:0}
+    .step-num{width:56px;height:56px;background:#F97316;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;color:#fff;position:relative;z-index:1;flex-shrink:0;box-shadow:0 4px 20px rgba(249,115,22,.4)}
+
+    .faq-item{border:1px solid #2A2F3E;border-radius:16px;overflow:hidden;background:#181C27;margin-bottom:12px;transition:border-color .2s}
+    .faq-item:hover{border-color:rgba(249,115,22,.3)}
+    .faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;font-weight:700;color:#fff;font-size:.95rem;gap:12px}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;color:#9ca3af;font-size:.875rem;line-height:1.7;padding:0 24px}
+    .faq-a.open{max-height:200px;padding:0 24px 20px}
+    .faq-icon{width:28px;height:28px;background:rgba(249,115,22,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#F97316;font-size:1.1rem;flex-shrink:0;transition:transform .3s}
+    .faq-icon.open{transform:rotate(45deg)}
+
+    .doc-card{background:#181C27;border:1px solid #2A2F3E;border-radius:16px;padding:20px 24px;transition:border-color .2s,transform .2s}
+    .doc-card:hover{border-color:rgba(249,115,22,.4);transform:translateY(-3px)}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 border-b border-border" style="background:rgba(15,17,23,.92);backdrop-filter:blur(18px);">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between h-16">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div style="width:36px;height:36px;background:#F97316;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.85rem;box-shadow:0 4px 16px rgba(249,115,22,.45);">M1</div>
+      <span style="font-weight:800;font-size:1.15rem;color:#fff;letter-spacing:-.02em;">АВТО</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-7">
+      <a href="index.html" class="nav-link">Главная</a>
+      <a href="catalog.html" class="nav-link">Каталог</a>
+      <a href="directions.html" class="nav-link">Направления</a>
+      <a href="how.html" class="nav-link active">Как работаем</a>
+      <a href="about.html" class="nav-link">О нас</a>
+      <a href="contact.html" class="nav-link">Контакты</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="tel:+74950237203" class="hidden md:block text-sm font-semibold text-white">+7 (495) 023-72-03</a>
+      <a href="contact.html" class="btn-orange text-sm" style="padding:10px 20px;border-radius:10px;">Подобрать авто</a>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<div style="background:linear-gradient(135deg,rgba(249,115,22,.08) 0%,transparent 60%);border-bottom:1px solid #2A2F3E;padding:60px 24px;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center gap-2 mb-5" style="font-size:.8rem;color:#6b7280;">
+      <a href="index.html" style="color:#6b7280;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Главная</a>
+      <span>/</span><span style="color:#F97316;">Как работаем</span>
+    </div>
+    <h1 style="font-size:clamp(2rem,5vw,3.2rem);font-weight:900;color:#fff;letter-spacing:-.025em;margin-bottom:16px;">Как мы привозим автомобиль</h1>
+    <p style="color:#9ca3af;font-size:1.05rem;max-width:600px;line-height:1.7;">
+      От первого звонка до ключей в руках — полный цикл под контролем персонального менеджера. Прозрачно, быстро, без сюрпризов.
+    </p>
+  </div>
+</div>
+
+<!-- STEPS -->
+<section style="padding:80px 24px;">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Step 1 -->
+    <div class="reveal flex gap-6 mb-14 relative">
+      <div class="step-line"></div>
+      <div class="step-num">1</div>
+      <div style="padding-top:10px;padding-left:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <h3 style="font-weight:900;color:#fff;font-size:1.25rem;">Заявка и консультация</h3>
+          <span style="background:rgba(34,197,94,.1);color:#4ade80;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">День 1</span>
+        </div>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.7;margin-bottom:16px;">
+          Оставляете заявку на сайте, звоните или пишете в мессенджер. Менеджер перезванивает в течение 15 минут. Обсуждаем ваши требования: марка, модель, год, комплектация, бюджет, сроки.
+        </p>
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:16px 20px;display:inline-block;">
+          <p style="color:#6b7280;font-size:.8rem;margin-bottom:8px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;">Что нам нужно знать</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span style="background:#0F1117;border:1px solid #2A2F3E;color:#d1d5db;font-size:.78rem;padding:4px 10px;border-radius:8px;">Желаемая марка/модель</span>
+            <span style="background:#0F1117;border:1px solid #2A2F3E;color:#d1d5db;font-size:.78rem;padding:4px 10px;border-radius:8px;">Бюджет</span>
+            <span style="background:#0F1117;border:1px solid #2A2F3E;color:#d1d5db;font-size:.78rem;padding:4px 10px;border-radius:8px;">Город доставки</span>
+            <span style="background:#0F1117;border:1px solid #2A2F3E;color:#d1d5db;font-size:.78rem;padding:4px 10px;border-radius:8px;">Нужна ли рассрочка</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="reveal flex gap-6 mb-14 relative" style="transition-delay:.1s;">
+      <div class="step-line"></div>
+      <div class="step-num">2</div>
+      <div style="padding-top:10px;padding-left:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <h3 style="font-weight:900;color:#fff;font-size:1.25rem;">Подбор и подтверждение</h3>
+          <span style="background:rgba(234,179,8,.1);color:#fbbf24;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">День 2–5</span>
+        </div>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.7;margin-bottom:16px;">
+          Наши агенты на местах подбирают варианты на торговых площадках Европы, Кореи, Китая или Кыргызстана. Вы получаете подборку с фото, видео, полным описанием и предварительной стоимостью доставки.
+        </p>
+        <div style="background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.2);border-radius:14px;padding:16px 20px;">
+          <p style="color:#F97316;font-size:.85rem;font-weight:700;margin-bottom:6px;">✓ Что входит в подборку</p>
+          <ul style="color:#9ca3af;font-size:.85rem;line-height:1.8;list-style:none;padding:0;margin:0;">
+            <li>• Фото 30–50 снимков + видеообзор</li>
+            <li>• Полная история автомобиля (ДТП, пробег, сервис)</li>
+            <li>• Итоговая цена с учётом таможни и доставки</li>
+            <li>• Срок доставки до вашего города</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="reveal flex gap-6 mb-14 relative" style="transition-delay:.2s;">
+      <div class="step-line"></div>
+      <div class="step-num">3</div>
+      <div style="padding-top:10px;padding-left:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <h3 style="font-weight:900;color:#fff;font-size:1.25rem;">Предоплата и договор</h3>
+          <span style="background:rgba(249,115,22,.1);color:#F97316;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">День 5–7</span>
+        </div>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.7;margin-bottom:16px;">
+          Вы выбираете понравившийся вариант, подписываем договор купли-продажи. Предоплата 20–30% фиксирует автомобиль за вами. Полная стоимость — по факту растаможки.
+        </p>
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:16px 20px;">
+          <p style="color:#6b7280;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Гарантии</p>
+          <p style="color:#9ca3af;font-size:.85rem;line-height:1.7;">Если автомобиль не соответствует описанию при получении — возвращаем 100% предоплаты. Работаем официально, с НДС.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="reveal flex gap-6 mb-14 relative" style="transition-delay:.3s;">
+      <div class="step-line"></div>
+      <div class="step-num">4</div>
+      <div style="padding-top:10px;padding-left:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <h3 style="font-weight:900;color:#fff;font-size:1.25rem;">Закупка и логистика</h3>
+          <span style="background:rgba(99,102,241,.1);color:#818cf8;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">День 7–25</span>
+        </div>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.7;margin-bottom:16px;">
+          Выкупаем автомобиль у продавца. Организуем перегон до порта или погрузку на автовоз. Все риски с момента покупки — на нас.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 16px;text-align:center;">
+            <div style="font-size:1.4rem;margin-bottom:6px;">🇩🇪</div>
+            <p style="font-size:.8rem;color:#6b7280;">Европа</p>
+            <p style="font-size:.85rem;color:#fff;font-weight:700;">Автовоз → Россия</p>
+          </div>
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 16px;text-align:center;">
+            <div style="font-size:1.4rem;margin-bottom:6px;">🇰🇷</div>
+            <p style="font-size:.8rem;color:#6b7280;">Корея/Китай</p>
+            <p style="font-size:.85rem;color:#fff;font-weight:700;">Контейнер → порт</p>
+          </div>
+          <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:12px;padding:14px 16px;text-align:center;">
+            <div style="font-size:1.4rem;margin-bottom:6px;">🇰🇬</div>
+            <p style="font-size:.8rem;color:#6b7280;">Бишкек</p>
+            <p style="font-size:.85rem;color:#fff;font-weight:700;">Перегон → граница</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="reveal flex gap-6 mb-14 relative" style="transition-delay:.4s;">
+      <div class="step-line"></div>
+      <div class="step-num">5</div>
+      <div style="padding-top:10px;padding-left:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <h3 style="font-weight:900;color:#fff;font-size:1.25rem;">Таможенное оформление</h3>
+          <span style="background:rgba(249,115,22,.1);color:#F97316;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">День 25–35</span>
+        </div>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.7;margin-bottom:16px;">
+          Наш таможенный брокер оформляет все документы. Уплачиваем таможенные пошлины, получаем СБКТС и ПТС. Вы не стоите ни в каких очередях.
+        </p>
+        <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:14px;padding:16px 20px;">
+          <p style="color:#6b7280;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Документы, которые вы получаете</p>
+          <div class="grid grid-cols-2 gap-6px flex-wrap" style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span style="background:#0F1117;border:1px solid #2A2F3E;color:#d1d5db;font-size:.78rem;padding:4px 10px;border-radius:8px;">ПТС</span>
+            <span style="background:#0F1117;border:1px solid #2A2F3E;color:#d1d5db;font-size:.78rem;padding:4px 10px;border-radius:8px;">СБКТС</span>
+            <span style="background:#0F1117;border:1px solid #2A2F3E;color:#d1d5db;font-size:.78rem;padding:4px 10px;border-radius:8px;">Таможенная декларация</span>
+            <span style="background:#0F1117;border:1px solid #2A2F3E;color:#d1d5db;font-size:.78rem;padding:4px 10px;border-radius:8px;">Договор купли-продажи</span>
+            <span style="background:#0F1117;border:1px solid #2A2F3E;color:#d1d5db;font-size:.78rem;padding:4px 10px;border-radius:8px;">Сертификат соответствия</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="reveal flex gap-6 mb-14 relative" style="transition-delay:.5s;">
+      <div class="step-line" style="display:none;"></div>
+      <div class="step-num">6</div>
+      <div style="padding-top:10px;padding-left:8px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <h3 style="font-weight:900;color:#fff;font-size:1.25rem;">Доставка и передача</h3>
+          <span style="background:rgba(34,197,94,.1);color:#4ade80;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">День 35–45</span>
+        </div>
+        <p style="color:#9ca3af;font-size:.95rem;line-height:1.7;margin-bottom:16px;">
+          Доставляем автомобиль до вашего города. Проводим итоговый осмотр вместе с вами, объясняем все особенности. Помогаем поставить на учёт в ГИБДД.
+        </p>
+        <div style="background:linear-gradient(135deg,rgba(249,115,22,.1),rgba(249,115,22,.04));border:1px solid rgba(249,115,22,.25);border-radius:14px;padding:20px 24px;">
+          <p style="color:#F97316;font-size:1rem;font-weight:800;margin-bottom:6px;">🎉 Ключи у вас!</p>
+          <p style="color:#d1d5db;font-size:.875rem;line-height:1.7;">Наш менеджер остаётся на связи ещё 30 дней после передачи — отвечаем на любые вопросы по автомобилю.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TIMELINE INFOGRAPHIC -->
+<section style="padding:20px 24px 80px;background:rgba(24,28,39,.4);border-top:1px solid #2A2F3E;">
+  <div class="max-w-4xl mx-auto">
+    <div class="reveal text-center mb-12">
+      <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Сроки по направлениям</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 reveal">
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:16px;padding:20px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:10px;">🇩🇪</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:6px;">Европа</h4>
+        <div style="font-size:1.8rem;font-weight:900;color:#F97316;">30–45</div>
+        <p style="font-size:.8rem;color:#6b7280;">дней</p>
+      </div>
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:16px;padding:20px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:10px;">🇰🇷</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:6px;">Корея</h4>
+        <div style="font-size:1.8rem;font-weight:900;color:#F97316;">25–40</div>
+        <p style="font-size:.8rem;color:#6b7280;">дней</p>
+      </div>
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:16px;padding:20px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:10px;">🇨🇳</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:6px;">Китай</h4>
+        <div style="font-size:1.8rem;font-weight:900;color:#F97316;">20–35</div>
+        <p style="font-size:.8rem;color:#6b7280;">дней</p>
+      </div>
+      <div style="background:#181C27;border:1px solid #2A2F3E;border-radius:16px;padding:20px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:10px;">🇰🇬</div>
+        <h4 style="font-weight:800;color:#fff;margin-bottom:6px;">Бишкек</h4>
+        <div style="font-size:1.8rem;font-weight:900;color:#F97316;">7–20</div>
+        <p style="font-size:.8rem;color:#6b7280;">дней</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="padding:80px 24px;">
+  <div class="max-w-3xl mx-auto">
+    <div class="reveal text-center mb-14">
+      <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">Ответы</p>
+      <h2 style="font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:#fff;letter-spacing:-.025em;">Часто задаваемые вопросы</h2>
+    </div>
+
+    <div id="faq" class="reveal">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Какую сумму нужно внести для старта работы?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">Для начала работы достаточно предоплаты 20–30% от стоимости автомобиля. Остаток оплачивается по факту готовности к выдаче. Возможна оплата в рублях, долларах или евро.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Что если автомобиль не понравится при получении?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">Если автомобиль кардинально отличается от описания и согласованных фото — возвращаем 100% предоплаты. За 5 лет работы таких случаев было менее 1%. Каждая машина проходит детальную инспекцию до отправки.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Можно ли взять авто в кредит или рассрочку?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">Да, мы работаем с партнёрскими банками. Возможна рассрочка 0% на 6 месяцев или автокредит от 6% годовых. Расскажем подробности при консультации.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Как происходит таможенное оформление?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">Полностью берём на себя. Наш аккредитованный таможенный брокер оформляет декларацию, СБКТС и все сопроводительные документы. Вы просто ждёте звонка о готовности.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Доставляете ли вы в регионы?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">Доставляем по всей России. Стоимость доставки до вашего города рассчитывается индивидуально и включается в итоговую стоимость. Доставка до Урала обычно включена в стоимость бесплатно.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Какой пробег обычно у автомобилей из Европы/Кореи?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">Из Европы — реальный пробег 60 000–150 000 км. Из Кореи — 30 000–80 000 км (корейцы ездят меньше). Из Китая — как правило новые авто. Из Бишкека — японские авто 80 000–120 000 км.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Нужна ли мне доверенность или личное присутствие за рубежом?</span>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">Нет. Мы действуем от своего лица как агент. Вы подписываете договор и получаете автомобиль с полным пакетом документов. Ехать никуда не нужно.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:80px 24px;background:linear-gradient(135deg,rgba(249,115,22,.08) 0%,rgba(249,115,22,.02) 100%);border-top:1px solid #2A2F3E;">
+  <div class="max-w-2xl mx-auto text-center reveal">
+    <h2 style="font-size:clamp(1.5rem,3vw,2.4rem);font-weight:900;color:#fff;margin-bottom:14px;">Готовы начать?</h2>
+    <p style="color:#9ca3af;font-size:.95rem;margin-bottom:28px;line-height:1.7;">Оставьте заявку и менеджер перезвонит в течение 15 минут — расскажем о вариантах под ваш бюджет</p>
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="contact.html" class="btn-orange">Оставить заявку</a>
+      <a href="catalog.html" class="btn-ghost">Смотреть каталог →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#0a0d14;border-top:1px solid #2A2F3E;padding:40px 24px 24px;">
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-between gap-6 items-center">
+    <div class="flex items-center gap-2.5">
+      <div style="width:32px;height:32px;background:#F97316;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.75rem;">M1</div>
+      <span style="font-weight:800;color:#fff;">АВТО</span>
+    </div>
+    <div class="flex gap-6 flex-wrap">
+      <a href="index.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Главная</a>
+      <a href="catalog.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Каталог</a>
+      <a href="directions.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Направления</a>
+      <a href="contact.html" style="color:#6b7280;font-size:.85rem;text-decoration:none;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Контакты</a>
+    </div>
+    <span style="color:#4b5563;font-size:.8rem;">© 2024 М1 АВТО</span>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, {threshold: 0.1});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function toggleFaq(el) {
+  const answer = el.nextElementSibling;
+  const icon = el.querySelector('.faq-icon');
+  const isOpen = answer.classList.contains('open');
+  document.querySelectorAll('.faq-a.open').forEach(a => { a.classList.remove('open'); a.previousElementSibling.querySelector('.faq-icon').classList.remove('open'); });
+  if (!isOpen) { answer.classList.add('open'); icon.classList.add('open'); }
+}
+</script>
+</body>
+</html>
