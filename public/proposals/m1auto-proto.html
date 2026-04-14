@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>М1 АВТО — Автомобили из Европы, Кореи, Китая, Бишкека</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { brand: '#F97316', dark: '#0F1117', card: '#181C27', border: '#2A2F3E' },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #0F1117; color: #F0F2F7; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #0F1117; }
+    ::-webkit-scrollbar-thumb { background: #F97316; border-radius: 3px; }
+
+    /* ── Reveal animations ── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-50px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(50px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* ── Hero ── */
+    .hero-bg {
+      background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(249,115,22,.13) 0%, transparent 60%),
+                  radial-gradient(ellipse 50% 40% at 10% 80%, rgba(249,115,22,.07) 0%, transparent 60%),
+                  #0F1117;
+      position: relative; overflow: hidden; min-height: 100vh;
+    }
+    /* animated grid lines */
+    .grid-lines {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(249,115,22,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(249,115,22,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 20s linear infinite;
+    }
+    @keyframes gridMove { from { background-position: 0 0; } to { background-position: 60px 60px; } }
+
+    /* Hero car silhouette */
+    .hero-car { animation: carFloat 4s ease-in-out infinite; filter: drop-shadow(0 20px 60px rgba(249,115,22,.3)); }
+    @keyframes carFloat {
+      0%, 100% { transform: translateY(0px) rotateY(0deg); }
+      50% { transform: translateY(-12px) rotateY(1deg); }
+    }
+    .hero-glow {
+      position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+      width: 400px; height: 40px;
+      background: radial-gradient(ellipse, rgba(249,115,22,.4) 0%, transparent 70%);
+      animation: glowPulse 4s ease-in-out infinite;
+      filter: blur(10px);
+    }
+    @keyframes glowPulse {
+      0%, 100% { opacity: .6; transform: translateX(-50%) scaleX(1); }
+      50% { opacity: 1; transform: translateX(-50%) scaleX(1.1); }
+    }
+
+    /* Speed lines */
+    .speed-lines { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .speed-line {
+      position: absolute; height: 1px; background: linear-gradient(90deg, transparent, rgba(249,115,22,.3), transparent);
+      animation: speedLine 2.5s linear infinite;
+      opacity: 0;
+    }
+    @keyframes speedLine {
+      0% { transform: translateX(-100%); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateX(100vw); opacity: 0; }
+    }
+
+    /* ── 3D Card flip ── */
+    .card-3d { perspective: 1000px; }
+    .card-3d-inner {
+      transition: transform .6s cubic-bezier(.25,.8,.25,1), box-shadow .3s;
+      transform-style: preserve-3d;
+    }
+    .card-3d:hover .card-3d-inner {
+      transform: rotateY(-8deg) rotateX(4deg) scale(1.04);
+      box-shadow: 20px 20px 60px rgba(0,0,0,.5), -4px -4px 20px rgba(249,115,22,.1);
+    }
+
+    /* ── Car card ── */
+    .car-card { transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+    .car-card:hover {
+      transform: translateY(-6px);
+      border-color: #F97316;
+      box-shadow: 0 20px 60px rgba(249,115,22,.15);
+    }
+    .car-img-wrap {
+      position: relative; overflow: hidden; height: 180px;
+      background: linear-gradient(145deg, #1a1f30 0%, #0f1320 100%);
+    }
+    .car-img-wrap svg { transition: transform .4s ease; }
+    .car-card:hover .car-img-wrap svg { transform: scale(1.05) translateX(5px); }
+
+    /* ── Direction cards 3D ── */
+    .dir-card {
+      transition: transform .3s ease, border-color .3s, box-shadow .3s;
+      transform-style: preserve-3d;
+    }
+    .dir-card:hover {
+      transform: translateY(-8px) rotateX(5deg);
+      border-color: #F97316;
+      box-shadow: 0 30px 60px rgba(0,0,0,.4), 0 0 30px rgba(249,115,22,.1);
+    }
+    .dir-flag { transition: transform .3s; font-size: 2.5rem; display: block; }
+    .dir-card:hover .dir-flag { transform: scale(1.2) rotate(-5deg); }
+
+    /* ── Steps ── */
+    .step-card {
+      position: relative;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .step-card:hover { transform: translateY(-4px); border-color: rgba(249,115,22,.5); box-shadow: 0 20px 40px rgba(249,115,22,.08); }
+    .step-num {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1.25rem;
+      background: rgba(249,115,22,.12); color: #F97316;
+      transition: background .25s, color .25s;
+    }
+    .step-card:hover .step-num { background: #F97316; color: #fff; }
+
+    /* ── Number counter ── */
+    .counter { font-variant-numeric: tabular-nums; }
+
+    /* ── Buttons ── */
+    .btn-orange {
+      background: #F97316; color: #fff; font-weight: 700;
+      border-radius: 14px; padding: 14px 28px;
+      transition: background .15s, transform .1s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(249,115,22,.3);
+    }
+    .btn-orange:hover { background: #ea6d10; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(249,115,22,.4); }
+    .btn-ghost { border: 1.5px solid #2A2F3E; color: #fff; font-weight: 600; border-radius: 14px; padding: 14px 28px; transition: border-color .15s, background .15s; }
+    .btn-ghost:hover { border-color: #F97316; background: rgba(249,115,22,.06); }
+
+    /* ── Nav link ── */
+    .nav-link { position: relative; color: #9ca3af; transition: color .15s; font-size: .875rem; font-weight: 500; }
+    .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #F97316; transition: width .2s; border-radius: 1px; }
+    .nav-link:hover { color: #fff; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── Orange tag ── */
+    .otag { background: rgba(249,115,22,.12); color: #F97316; font-size: .75rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+
+    /* ── Stat shine ── */
+    .stat-shine {
+      position: relative; overflow: hidden;
+    }
+    .stat-shine::after {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.04), transparent);
+      animation: shine 3s ease-in-out infinite;
+    }
+    @keyframes shine { 0% { left: -100%; } 100% { left: 200%; } }
+
+    /* ── Road ── */
+    .road-line {
+      width: 40px; height: 4px; background: #F97316; border-radius: 2px;
+      animation: roadBlink 1.2s ease-in-out infinite;
+    }
+    @keyframes roadBlink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+
+    /* ── Particle dots ── */
+    .particle {
+      position: absolute; border-radius: 50%;
+      background: rgba(249,115,22,.4);
+      animation: particleFloat linear infinite;
+      pointer-events: none;
+    }
+    @keyframes particleFloat {
+      0% { transform: translateY(0) translateX(0) scale(1); opacity: .6; }
+      100% { transform: translateY(-100vh) translateX(20px) scale(.3); opacity: 0; }
+    }
+
+    /* ── Review card ── */
+    .review-card { transition: transform .25s, border-color .25s, box-shadow .25s; }
+    .review-card:hover { transform: translateY(-4px); border-color: rgba(249,115,22,.3); box-shadow: 0 16px 40px rgba(249,115,22,.08); }
+
+    /* ── Form input ── */
+    .form-input {
+      background: #0F1117; border: 1.5px solid #2A2F3E; color: #fff; font-size: .875rem;
+      border-radius: 12px; padding: 12px 16px; width: 100%; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-input:focus { border-color: #F97316; box-shadow: 0 0 0 3px rgba(249,115,22,.1); }
+
+    /* ── Parallax ── */
+    .parallax-slow { will-change: transform; }
+
+    /* brand pulse ring */
+    @keyframes ring { 0% { transform: scale(1); opacity: .6; } 100% { transform: scale(2.5); opacity: 0; } }
+    .pulse-ring::before, .pulse-ring::after {
+      content: ''; position: absolute; inset: -8px; border-radius: 50%;
+      border: 2px solid rgba(249,115,22,.4);
+      animation: ring 2s ease-out infinite;
+    }
+    .pulse-ring::after { animation-delay: 1s; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ HEADER -->
+<header class="sticky top-0 z-50 border-b border-border" style="background: rgba(15,17,23,.92); backdrop-filter: blur(16px);">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between h-16">
+    <a href="#" class="flex items-center gap-2.5">
+      <div style="width:34px;height:34px;background:#F97316;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.8rem;box-shadow:0 4px 14px rgba(249,115,22,.4);">M1</div>
+      <span style="font-weight:800;font-size:1.125rem;color:#fff;letter-spacing:-.02em;">АВТО</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-7">
+      <a href="#catalog" class="nav-link">Каталог</a>
+      <a href="#directions" class="nav-link">Направления</a>
+      <a href="#how" class="nav-link">Как работаем</a>
+      <a href="#reviews" class="nav-link">Отзывы</a>
+      <a href="#contact" class="nav-link">Контакты</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="tel:+74950237203" class="hidden md:block text-sm font-semibold text-white">+7 (495) 023-72-03</a>
+      <a href="#contact" class="btn-orange text-sm" style="padding:10px 20px;border-radius:10px;">Подобрать авто</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════ HERO -->
+<section class="hero-bg flex flex-col justify-center pt-16 pb-20 px-4 md:px-6" style="min-height:100vh;">
+  <div class="grid-lines"></div>
+
+  <!-- Speed lines -->
+  <div class="speed-lines">
+    <div class="speed-line" style="top:25%;width:35%;animation-delay:0s;animation-duration:2.8s;"></div>
+    <div class="speed-line" style="top:40%;width:45%;animation-delay:.6s;animation-duration:2.2s;"></div>
+    <div class="speed-line" style="top:60%;width:30%;animation-delay:1.2s;animation-duration:3s;"></div>
+    <div class="speed-line" style="top:75%;width:50%;animation-delay:1.8s;animation-duration:2.5s;"></div>
+  </div>
+
+  <!-- Particles -->
+  <div class="particle" style="width:4px;height:4px;left:10%;top:80%;animation-duration:8s;animation-delay:0s;"></div>
+  <div class="particle" style="width:3px;height:3px;left:20%;top:90%;animation-duration:10s;animation-delay:2s;"></div>
+  <div class="particle" style="width:5px;height:5px;left:80%;top:70%;animation-duration:7s;animation-delay:1s;"></div>
+  <div class="particle" style="width:3px;height:3px;left:60%;top:85%;animation-duration:9s;animation-delay:3s;"></div>
+
+  <div class="max-w-7xl mx-auto w-full relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Left text -->
+      <div>
+        <div class="otag inline-flex items-center gap-2 mb-6" style="border:1px solid rgba(249,115,22,.25);">
+          <span style="width:6px;height:6px;background:#F97316;border-radius:50%;display:inline-block;animation:glowPulse 2s ease-in-out infinite;"></span>
+          Работаем с 2019 года · 500+ авто доставлено
+        </div>
+
+        <h1 style="font-size:clamp(2.4rem,5vw,3.8rem);font-weight:900;line-height:1.07;letter-spacing:-.03em;color:#fff;margin-bottom:20px;">
+          Автомобили из<br>
+          <span style="background:linear-gradient(90deg,#F97316,#ff9a4c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Европы, Кореи,</span><br>
+          Китая и Бишкека
+        </h1>
+
+        <p style="color:#9ca3af;font-size:1.1rem;line-height:1.7;margin-bottom:32px;max-width:460px;">
+          Подберём, проверим, доставим и оформим — под ключ.<br>
+          Бюджет от <strong style="color:#fff;">1 000 000 ₽</strong> · авто от 2019 года
+        </p>
+
+        <div class="flex gap-3 flex-wrap mb-10">
+          <a href="#contact" class="btn-orange">Получить каталог</a>
+          <a href="#how" class="btn-ghost">Как это работает →</a>
+        </div>
+
+        <!-- Mini stats -->
+        <div class="flex gap-6 flex-wrap">
+          <div>
+            <div style="font-size:1.6rem;font-weight:900;color:#F97316;" class="counter" data-target="500">0</div>
+            <div style="font-size:.75rem;color:#6b7280;">авто доставлено</div>
+          </div>
+          <div style="width:1px;background:#2A2F3E;"></div>
+          <div>
+            <div style="font-size:1.6rem;font-weight:900;color:#fff;" class="counter" data-target="4">0</div>
+            <div style="font-size:.75rem;color:#6b7280;">направления</div>
+          </div>
+          <div style="width:1px;background:#2A2F3E;"></div>
+          <div>
+            <div style="font-size:1.6rem;font-weight:900;color:#fff;"><span class="counter" data-target="45">0</span> дн</div>
+            <div style="font-size:.75rem;color:#6b7280;">до ключей</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right 3D car -->
+      <div class="flex items-center justify-center relative">
+        <div class="hero-car relative" style="width:100%;max-width:560px;">
+          <!-- SUV SVG -->
+          <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;filter:drop-shadow(0 0 40px rgba(249,115,22,.2));">
+            <!-- Road reflection -->
+            <ellipse cx="280" cy="245" rx="230" ry="14" fill="rgba(249,115,22,0.08)"/>
+            <ellipse cx="280" cy="245" rx="160" ry="8" fill="rgba(249,115,22,0.06)"/>
+            <!-- Car body shadow -->
+            <ellipse cx="280" cy="238" rx="200" ry="10" fill="rgba(0,0,0,0.5)"/>
+
+            <!-- Main body -->
+            <rect x="60" y="130" width="440" height="90" rx="12" fill="#1a2035"/>
+            <!-- Cabin -->
+            <path d="M140 130 L175 72 Q185 60 210 58 L360 58 Q385 60 395 72 L420 130 Z" fill="#1e2540"/>
+            <!-- Cabin darker -->
+            <path d="M155 130 L185 78 Q193 68 215 66 L355 66 Q378 68 386 78 L415 130 Z" fill="#141829"/>
+            <!-- Window left -->
+            <path d="M168 128 L195 82 Q202 73 218 71 L278 71 L278 128 Z" fill="#0d1424" stroke="rgba(249,115,22,.3)" stroke-width="1.5"/>
+            <!-- Window right -->
+            <path d="M282 71 L352 71 Q368 73 375 82 L402 128 L282 128 Z" fill="#0d1424" stroke="rgba(249,115,22,.3)" stroke-width="1.5"/>
+            <!-- Window center pillar -->
+            <rect x="277" y="68" width="6" height="62" fill="#1a2035" rx="2"/>
+            <!-- Window reflection left -->
+            <path d="M175 110 L190 82 L195 82 L180 110 Z" fill="rgba(255,255,255,.06)"/>
+
+            <!-- Body highlight top -->
+            <path d="M60 138 Q280 128 500 138 L500 148 Q280 140 60 150 Z" fill="rgba(255,255,255,.04)"/>
+            <!-- Body side line -->
+            <path d="M65 175 L500 175" stroke="rgba(249,115,22,.25)" stroke-width="1.5" stroke-dasharray="none"/>
+
+            <!-- Door lines -->
+            <line x1="260" y1="130" x2="255" y2="220" stroke="rgba(255,255,255,.06)" stroke-width="1.5"/>
+            <line x1="370" y1="130" x2="368" y2="220" stroke="rgba(255,255,255,.06)" stroke-width="1.5"/>
+
+            <!-- Door handles -->
+            <rect x="200" y="168" width="40" height="6" rx="3" fill="rgba(249,115,22,.5)"/>
+            <rect x="310" y="168" width="40" height="6" rx="3" fill="rgba(249,115,22,.5)"/>
+
+            <!-- Front bumper -->
+            <path d="M60 185 Q45 195 42 210 L65 215 Q65 200 72 195 Z" fill="#141829"/>
+            <path d="M60 215 L65 215 L65 220 L60 220 Z" fill="#111622"/>
+
+            <!-- Rear bumper -->
+            <path d="M500 185 Q515 195 518 210 L495 215 Q495 200 490 195 Z" fill="#141829"/>
+
+            <!-- Front grille -->
+            <path d="M58 195 L62 200 L62 215 L58 215 Z" fill="#F97316" opacity=".8"/>
+            <rect x="62" y="196" width="30" height="19" rx="4" fill="#0a0d14"/>
+            <line x1="65" y1="200" x2="89" y2="200" stroke="rgba(249,115,22,.4)" stroke-width="1.2"/>
+            <line x1="65" y1="205" x2="89" y2="205" stroke="rgba(249,115,22,.4)" stroke-width="1.2"/>
+            <line x1="65" y1="210" x2="89" y2="210" stroke="rgba(249,115,22,.4)" stroke-width="1.2"/>
+
+            <!-- Headlight left -->
+            <path d="M60 155 L100 152 L105 170 L62 172 Z" fill="#0a0d14" rx="4"/>
+            <path d="M64 157 L98 154 L102 168 L65 170 Z" fill="rgba(249,180,80,.15)"/>
+            <line x1="68" y1="158" x2="99" y2="156" stroke="rgba(249,180,80,.5)" stroke-width="1.5"/>
+            <!-- DRL -->
+            <rect x="62" y="172" width="44" height="4" rx="2" fill="rgba(249,180,80,.7)"/>
+            <!-- Headlight beam -->
+            <path d="M60 163 L0 140 L0 190 L60 163 Z" fill="rgba(249,180,80,.04)"/>
+
+            <!-- Taillight right -->
+            <path d="M498 155 L460 152 L456 170 L496 172 Z" fill="#0a0d14"/>
+            <path d="M495 157 L462 154 L458 168 L494 170 Z" fill="rgba(220,30,30,.25)"/>
+            <rect x="456" y="172" width="44" height="4" rx="2" fill="rgba(220,30,30,.7)"/>
+
+            <!-- Wheels -->
+            <!-- Front wheel -->
+            <circle cx="155" cy="222" r="38" fill="#0d1020"/>
+            <circle cx="155" cy="222" r="33" fill="#111525"/>
+            <circle cx="155" cy="222" r="26" fill="#0a0d18"/>
+            <!-- Rim spokes -->
+            <g stroke="rgba(249,115,22,.7)" stroke-width="2.5" stroke-linecap="round">
+              <line x1="155" y1="196" x2="155" y2="204"/>
+              <line x1="155" y1="240" x2="155" y2="248"/>
+              <line x1="129" y1="222" x2="137" y2="222"/>
+              <line x1="173" y1="222" x2="181" y2="222"/>
+              <line x1="136" y1="203" x2="141" y2="211"/>
+              <line x1="165" y1="233" x2="170" y2="241"/>
+              <line x1="174" y1="203" x2="169" y2="211"/>
+              <line x1="136" y1="241" x2="141" y2="233"/>
+            </g>
+            <circle cx="155" cy="222" r="8" fill="rgba(249,115,22,.8)"/>
+            <circle cx="155" cy="222" r="4" fill="#F97316"/>
+            <!-- Tire highlight -->
+            <path d="M122 205 Q118 222 122 239" stroke="rgba(255,255,255,.06)" stroke-width="3" fill="none"/>
+
+            <!-- Rear wheel -->
+            <circle cx="405" cy="222" r="38" fill="#0d1020"/>
+            <circle cx="405" cy="222" r="33" fill="#111525"/>
+            <circle cx="405" cy="222" r="26" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.7)" stroke-width="2.5" stroke-linecap="round">
+              <line x1="405" y1="196" x2="405" y2="204"/>
+              <line x1="405" y1="240" x2="405" y2="248"/>
+              <line x1="379" y1="222" x2="387" y2="222"/>
+              <line x1="423" y1="222" x2="431" y2="222"/>
+              <line x1="386" y1="203" x2="391" y2="211"/>
+              <line x1="415" y1="233" x2="420" y2="241"/>
+              <line x1="424" y1="203" x2="419" y2="211"/>
+              <line x1="386" y1="241" x2="391" y2="233"/>
+            </g>
+            <circle cx="405" cy="222" r="8" fill="rgba(249,115,22,.8)"/>
+            <circle cx="405" cy="222" r="4" fill="#F97316"/>
+            <path d="M372 205 Q368 222 372 239" stroke="rgba(255,255,255,.06)" stroke-width="3" fill="none"/>
+
+            <!-- Exhaust -->
+            <rect x="486" y="215" width="18" height="7" rx="3.5" fill="#0a0d14" stroke="rgba(249,115,22,.3)" stroke-width="1"/>
+          </svg>
+          <div class="hero-glow"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="reveal mt-14" style="background:rgba(24,28,39,.9);border:1px solid #2A2F3E;border-radius:20px;padding:20px 24px;max-width:860px;backdrop-filter:blur(8px);">
+      <p style="font-size:.7rem;color:#6b7280;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;">Быстрый подбор</p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+        <div>
+          <label style="font-size:.7rem;color:#6b7280;display:block;margin-bottom:6px;">Регион</label>
+          <select class="form-input" style="padding:10px 14px;">
+            <option>Любой</option><option>Европа</option><option>Корея</option><option>Китай</option><option>Бишкек</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:.7rem;color:#6b7280;display:block;margin-bottom:6px;">Тип кузова</label>
+          <select class="form-input" style="padding:10px 14px;">
+            <option>Любой</option><option>Внедорожник</option><option>Седан</option><option>Хэтчбек</option><option>Минивэн</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:.7rem;color:#6b7280;display:block;margin-bottom:6px;">Бюджет</label>
+          <select class="form-input" style="padding:10px 14px;">
+            <option>До 2 000 000 ₽</option><option>2–3 500 000 ₽</option><option>3,5–5 млн</option><option>От 5 000 000 ₽</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:.7rem;color:#6b7280;display:block;margin-bottom:6px;">Год</label>
+          <select class="form-input" style="padding:10px 14px;">
+            <option>2019–2026</option><option>2021–2026</option><option>2023–2026</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-orange w-full md:w-auto" style="font-size:.875rem;padding:12px 28px;border-radius:12px;">Показать авто</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ STATS -->
+<div style="border-top:1px solid #2A2F3E;border-bottom:1px solid #2A2F3E;background:#181C27;padding:28px 24px;">
+  <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div class="stat-shine"><div style="font-size:2rem;font-weight:900;color:#F97316;">500+</div><div style="font-size:.75rem;color:#6b7280;margin-top:4px;">Авто доставлено</div></div>
+    <div class="stat-shine"><div style="font-size:2rem;font-weight:900;color:#fff;">4</div><div style="font-size:.75rem;color:#6b7280;margin-top:4px;">Направления импорта</div></div>
+    <div class="stat-shine"><div style="font-size:2rem;font-weight:900;color:#fff;">20–45</div><div style="font-size:.75rem;color:#6b7280;margin-top:4px;">Дней до ключей</div></div>
+    <div class="stat-shine"><div style="font-size:2rem;font-weight:900;color:#F97316;">Под ключ</div><div style="font-size:.75rem;color:#6b7280;margin-top:4px;">Подбор → оформление</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ DIRECTIONS -->
+<section id="directions" style="padding:96px 24px;">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal mb-12">
+      <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Откуда привозим</p>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Направления импорта</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+
+      <!-- Europe -->
+      <div class="dir-card reveal bg-card border border-border rounded-2xl p-6 cursor-pointer" style="transition-delay:.0s;">
+        <span class="dir-flag">🇩🇪</span>
+        <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin:14px 0 8px;">Европа</h3>
+        <p style="color:#6b7280;font-size:.8rem;line-height:1.6;">BMW, Mercedes, VW, Audi. Комплектации недоступные в РФ.</p>
+        <div style="color:#F97316;font-size:.8rem;font-weight:700;margin-top:14px;">Смотреть →</div>
+        <!-- Car mini icon -->
+        <svg viewBox="0 0 100 40" style="width:80px;margin-top:12px;opacity:.4;" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="80" height="16" rx="3" fill="#F97316"/>
+          <path d="M22 20 L30 8 L70 8 L78 20" fill="#F97316" opacity=".7"/>
+          <circle cx="25" cy="36" r="6" fill="#0F1117" stroke="#F97316" stroke-width="1.5"/>
+          <circle cx="75" cy="36" r="6" fill="#0F1117" stroke="#F97316" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <!-- Korea -->
+      <div class="dir-card reveal bg-card border border-border rounded-2xl p-6 cursor-pointer" style="transition-delay:.1s;">
+        <span class="dir-flag">🇰🇷</span>
+        <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin:14px 0 8px;">Корея</h3>
+        <p style="color:#6b7280;font-size:.8rem;line-height:1.6;">Hyundai, Kia, Genesis. Баланс цены, качества, надёжности.</p>
+        <div style="color:#F97316;font-size:.8rem;font-weight:700;margin-top:14px;">Смотреть →</div>
+        <svg viewBox="0 0 100 40" style="width:80px;margin-top:12px;opacity:.4;" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="22" width="80" height="14" rx="3" fill="#F97316"/>
+          <path d="M20 22 L26 10 L74 10 L80 22" fill="#F97316" opacity=".7"/>
+          <circle cx="25" cy="36" r="6" fill="#0F1117" stroke="#F97316" stroke-width="1.5"/>
+          <circle cx="75" cy="36" r="6" fill="#0F1117" stroke="#F97316" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <!-- China -->
+      <div class="dir-card reveal bg-card border border-border rounded-2xl p-6 cursor-pointer" style="transition-delay:.2s;">
+        <span class="dir-flag">🇨🇳</span>
+        <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin:14px 0 8px;">Китай</h3>
+        <p style="color:#6b7280;font-size:.8rem;line-height:1.6;">JETOUR, Haval, Tank, BYD. Технологии по доступной цене.</p>
+        <div style="color:#F97316;font-size:.8rem;font-weight:700;margin-top:14px;">Смотреть →</div>
+        <svg viewBox="0 0 100 40" style="width:80px;margin-top:12px;opacity:.4;" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="18" width="84" height="18" rx="4" fill="#F97316"/>
+          <path d="M18 18 L24 6 L76 6 L82 18" fill="#F97316" opacity=".7"/>
+          <circle cx="26" cy="36" r="6" fill="#0F1117" stroke="#F97316" stroke-width="1.5"/>
+          <circle cx="74" cy="36" r="6" fill="#0F1117" stroke="#F97316" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <!-- Bishkek -->
+      <div class="dir-card reveal bg-card border border-border rounded-2xl p-6 cursor-pointer" style="transition-delay:.3s;">
+        <span class="dir-flag">🇰🇬</span>
+        <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin:14px 0 8px;">Бишкек</h3>
+        <p style="color:#6b7280;font-size:.8rem;line-height:1.6;">Японские и американские авто. Выгода до 500 000 ₽.</p>
+        <div style="color:#F97316;font-size:.8rem;font-weight:700;margin-top:14px;">Смотреть →</div>
+        <svg viewBox="0 0 100 40" style="width:80px;margin-top:12px;opacity:.4;" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="20" width="80" height="16" rx="3" fill="#F97316"/>
+          <path d="M22 20 L30 8 L70 8 L78 20" fill="#F97316" opacity=".7"/>
+          <circle cx="25" cy="36" r="6" fill="#0F1117" stroke="#F97316" stroke-width="1.5"/>
+          <circle cx="75" cy="36" r="6" fill="#0F1117" stroke="#F97316" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ CATALOG -->
+<section id="catalog" style="padding:96px 24px;background:rgba(24,28,39,.5);">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-5">
+      <div class="reveal-left">
+        <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Каталог</p>
+        <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Популярные модели</h2>
+      </div>
+      <div class="reveal-right flex gap-2 flex-wrap">
+        <button onclick="filterCars('all')" id="tab-all" style="background:#F97316;color:#fff;font-size:.8rem;font-weight:700;padding:8px 18px;border-radius:10px;border:none;cursor:pointer;">Все</button>
+        <button onclick="filterCars('suv')" id="tab-suv" style="background:#181C27;border:1px solid #2A2F3E;color:#9ca3af;font-size:.8rem;font-weight:600;padding:8px 18px;border-radius:10px;cursor:pointer;transition:all .2s;">Внедорожники</button>
+        <button onclick="filterCars('budget')" id="tab-budget" style="background:#181C27;border:1px solid #2A2F3E;color:#9ca3af;font-size:.8rem;font-weight:600;padding:8px 18px;border-radius:10px;cursor:pointer;transition:all .2s;">До 2 млн</button>
+        <button onclick="filterCars('bishkek')" id="tab-bishkek" style="background:#181C27;border:1px solid #2A2F3E;color:#9ca3af;font-size:.8rem;font-weight:600;padding:8px 18px;border-radius:10px;cursor:pointer;transition:all .2s;">Из Бишкека</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="cars-grid">
+
+      <!-- Car 1: Hyundai Tucson -->
+      <div class="car-card reveal bg-card border border-border rounded-2xl overflow-hidden" data-cat="suv korea">
+        <div class="car-img-wrap">
+          <svg viewBox="0 0 380 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <defs>
+              <radialGradient id="g1" cx="60%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#1e2a4a"/>
+                <stop offset="100%" stop-color="#0a0d18"/>
+              </radialGradient>
+            </defs>
+            <rect width="380" height="180" fill="url(#g1)"/>
+            <!-- Grid floor -->
+            <line x1="0" y1="155" x2="380" y2="155" stroke="rgba(249,115,22,.15)" stroke-width="1"/>
+            <line x1="190" y1="155" x2="50" y2="180" stroke="rgba(249,115,22,.08)" stroke-width="1"/>
+            <line x1="190" y1="155" x2="330" y2="180" stroke="rgba(249,115,22,.08)" stroke-width="1"/>
+            <!-- SUV Body -->
+            <rect x="40" y="90" width="300" height="62" rx="8" fill="#1c2540"/>
+            <path d="M85 90 L105 48 Q112 38 128 36 L252 36 Q268 38 275 48 L295 90 Z" fill="#1e2845"/>
+            <!-- Windows -->
+            <path d="M95 88 L112 52 Q117 44 130 42 L185 42 L185 88 Z" fill="#0a1020" stroke="rgba(100,150,255,.2)" stroke-width="1"/>
+            <path d="M189 42 L250 42 Q263 44 268 52 L285 88 L189 88 Z" fill="#0a1020" stroke="rgba(100,150,255,.2)" stroke-width="1"/>
+            <!-- Window pillar -->
+            <rect x="183" y="40" width="4" height="50" fill="#1c2540" rx="1"/>
+            <!-- Headlights -->
+            <path d="M40 100 L80 97 L83 115 L42 117 Z" fill="#0a1020"/>
+            <path d="M43 102 L78 99 L81 113 L44 115 Z" fill="rgba(200,160,50,.12)"/>
+            <rect x="42" y="115" width="42" height="3" rx="1.5" fill="rgba(200,160,50,.6)"/>
+            <!-- Beam -->
+            <path d="M40 108 L0 90 L0 126 Z" fill="rgba(200,160,50,.04)"/>
+            <!-- Taillights -->
+            <path d="M340 100 L300 97 L298 115 L338 117 Z" fill="#0a1020"/>
+            <rect x="298" y="115" width="42" height="3" rx="1.5" fill="rgba(200,50,50,.6)"/>
+            <!-- Wheels -->
+            <circle cx="108" cy="155" r="28" fill="#0a0d18"/><circle cx="108" cy="155" r="23" fill="#111525"/><circle cx="108" cy="155" r="17" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.6)" stroke-width="2" stroke-linecap="round">
+              <line x1="108" y1="138" x2="108" y2="144"/><line x1="108" y1="166" x2="108" y2="172"/>
+              <line x1="91" y1="155" x2="97" y2="155"/><line x1="119" y1="155" x2="125" y2="155"/>
+              <line x1="96" y1="143" x2="100" y2="149"/><line x1="116" y1="161" x2="120" y2="167"/>
+              <line x1="120" y1="143" x2="116" y2="149"/><line x1="96" y1="167" x2="100" y2="161"/>
+            </g>
+            <circle cx="108" cy="155" r="5" fill="#F97316"/>
+            <circle cx="272" cy="155" r="28" fill="#0a0d18"/><circle cx="272" cy="155" r="23" fill="#111525"/><circle cx="272" cy="155" r="17" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.6)" stroke-width="2" stroke-linecap="round">
+              <line x1="272" y1="138" x2="272" y2="144"/><line x1="272" y1="166" x2="272" y2="172"/>
+              <line x1="255" y1="155" x2="261" y2="155"/><line x1="283" y1="155" x2="289" y2="155"/>
+              <line x1="260" y1="143" x2="264" y2="149"/><line x1="280" y1="161" x2="284" y2="167"/>
+              <line x1="284" y1="143" x2="280" y2="149"/><line x1="260" y1="167" x2="264" y2="161"/>
+            </g>
+            <circle cx="272" cy="155" r="5" fill="#F97316"/>
+            <!-- Reflection -->
+            <ellipse cx="190" cy="160" rx="140" ry="6" fill="rgba(249,115,22,.06)"/>
+            <!-- Brand badge -->
+            <text x="20" y="30" font-family="Inter" font-size="11" fill="rgba(249,115,22,.5)" font-weight="700">HYUNDAI</text>
+          </svg>
+        </div>
+        <div style="padding:20px;">
+          <div class="flex gap-2 mb-3">
+            <span class="otag">Корея</span>
+            <span style="background:rgba(34,197,94,.1);color:#4ade80;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;">В наличии</span>
+          </div>
+          <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin-bottom:4px;">Hyundai Tucson</h3>
+          <p style="color:#6b7280;font-size:.8rem;margin-bottom:14px;">2023 · 1.6T · AWD · Prestige</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <div style="font-size:1.3rem;font-weight:900;color:#F97316;">2 850 000 ₽</div>
+              <div style="font-size:.7rem;color:#4b5563;text-decoration:line-through;">3 400 000 ₽ у дилера</div>
+            </div>
+            <button style="background:rgba(249,115,22,.1);color:#F97316;font-size:.8rem;font-weight:700;padding:8px 16px;border-radius:10px;border:1px solid rgba(249,115,22,.2);cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#F97316';this.style.color='#fff';" onmouseout="this.style.background='rgba(249,115,22,.1)';this.style.color='#F97316';">Подробнее</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Car 2: BMW -->
+      <div class="car-card reveal bg-card border border-border rounded-2xl overflow-hidden" data-cat="sedan europe" style="transition-delay:.1s;">
+        <div class="car-img-wrap">
+          <svg viewBox="0 0 380 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <defs><radialGradient id="g2" cx="40%" cy="40%" r="70%"><stop offset="0%" stop-color="#1a2235"/><stop offset="100%" stop-color="#080b14"/></radialGradient></defs>
+            <rect width="380" height="180" fill="url(#g2)"/>
+            <line x1="0" y1="152" x2="380" y2="152" stroke="rgba(249,115,22,.12)" stroke-width="1"/>
+            <!-- Sedan body (lower, longer) -->
+            <rect x="30" y="96" width="320" height="56" rx="6" fill="#1a2035"/>
+            <path d="M80 96 L100 62 Q108 52 122 50 L258 50 Q272 52 280 62 L300 96 Z" fill="#1c2340"/>
+            <!-- Windows sedan style -->
+            <path d="M88 94 L104 66 Q110 58 122 56 L178 56 L178 94 Z" fill="#090e1e" stroke="rgba(100,150,255,.15)" stroke-width="1"/>
+            <path d="M182 56 L258 56 Q272 58 278 66 L292 94 L182 94 Z" fill="#090e1e" stroke="rgba(100,150,255,.15)" stroke-width="1"/>
+            <rect x="180" y="54" width="4" height="42" fill="#1a2035" rx="1"/>
+            <!-- BMW headlights -->
+            <path d="M30 104 L74 101 L76 118 L31 120 Z" fill="#0a1020"/>
+            <rect x="31" y="118" width="46" height="3" rx="1.5" fill="rgba(200,160,50,.7)"/>
+            <path d="M30 111 L0 95 L0 127 Z" fill="rgba(200,160,50,.03)"/>
+            <!-- Taillights -->
+            <path d="M350 104 L306 101 L304 118 L349 120 Z" fill="#0a1020"/>
+            <rect x="305" y="118" width="46" height="3" rx="1.5" fill="rgba(200,50,50,.7)"/>
+            <!-- Wheels -->
+            <circle cx="100" cy="152" r="26" fill="#0a0d18"/><circle cx="100" cy="152" r="21" fill="#111525"/><circle cx="100" cy="152" r="15" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.6)" stroke-width="2" stroke-linecap="round">
+              <line x1="100" y1="137" x2="100" y2="143"/><line x1="100" y1="161" x2="100" y2="167"/>
+              <line x1="85" y1="152" x2="91" y2="152"/><line x1="109" y1="152" x2="115" y2="152"/>
+            </g>
+            <circle cx="100" cy="152" r="5" fill="#F97316"/>
+            <circle cx="280" cy="152" r="26" fill="#0a0d18"/><circle cx="280" cy="152" r="21" fill="#111525"/><circle cx="280" cy="152" r="15" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.6)" stroke-width="2" stroke-linecap="round">
+              <line x1="280" y1="137" x2="280" y2="143"/><line x1="280" y1="161" x2="280" y2="167"/>
+              <line x1="265" y1="152" x2="271" y2="152"/><line x1="289" y1="152" x2="295" y2="152"/>
+            </g>
+            <circle cx="280" cy="152" r="5" fill="#F97316"/>
+            <ellipse cx="190" cy="158" rx="130" ry="5" fill="rgba(249,115,22,.05)"/>
+            <text x="20" y="28" font-family="Inter" font-size="11" fill="rgba(249,115,22,.5)" font-weight="700">BMW</text>
+          </svg>
+        </div>
+        <div style="padding:20px;">
+          <div class="flex gap-2 mb-3">
+            <span class="otag">Европа</span>
+            <span style="background:rgba(234,179,8,.1);color:#fbbf24;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;">Под заказ</span>
+          </div>
+          <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin-bottom:4px;">BMW 520d</h3>
+          <p style="color:#6b7280;font-size:.8rem;margin-bottom:14px;">2022 · 2.0d · RWD · M-Sport</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <div style="font-size:1.3rem;font-weight:900;color:#F97316;">4 200 000 ₽</div>
+              <div style="font-size:.7rem;color:#4b5563;text-decoration:line-through;">5 900 000 ₽ у дилера</div>
+            </div>
+            <button style="background:rgba(249,115,22,.1);color:#F97316;font-size:.8rem;font-weight:700;padding:8px 16px;border-radius:10px;border:1px solid rgba(249,115,22,.2);cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#F97316';this.style.color='#fff';" onmouseout="this.style.background='rgba(249,115,22,.1)';this.style.color='#F97316';">Подробнее</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Car 3: JETOUR -->
+      <div class="car-card reveal bg-card border border-border rounded-2xl overflow-hidden" data-cat="suv china budget" style="transition-delay:.2s;">
+        <div class="car-img-wrap">
+          <svg viewBox="0 0 380 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <defs><radialGradient id="g3" cx="55%" cy="45%" r="65%"><stop offset="0%" stop-color="#1d2a3a"/><stop offset="100%" stop-color="#080c14"/></radialGradient></defs>
+            <rect width="380" height="180" fill="url(#g3)"/>
+            <line x1="0" y1="155" x2="380" y2="155" stroke="rgba(249,115,22,.12)" stroke-width="1"/>
+            <!-- SUV tall body -->
+            <rect x="35" y="85" width="310" height="68" rx="9" fill="#1c2538"/>
+            <path d="M80 85 L100 44 Q108 33 125 31 L255 31 Q272 33 280 44 L300 85 Z" fill="#1e2845"/>
+            <!-- Windows -->
+            <path d="M90 83 L108 48 Q114 39 126 37 L182 37 L182 83 Z" fill="#090e1e" stroke="rgba(100,180,255,.15)" stroke-width="1"/>
+            <path d="M187 37 L254 37 Q267 39 273 48 L291 83 L187 83 Z" fill="#090e1e" stroke="rgba(100,180,255,.15)" stroke-width="1"/>
+            <rect x="183" y="35" width="5" height="50" fill="#1c2538" rx="1.5"/>
+            <!-- LED headlights -->
+            <path d="M35 94 L80 91 L83 108 L37 110 Z" fill="#0a1020"/>
+            <rect x="36" y="108" width="48" height="3" rx="1.5" fill="rgba(200,160,50,.7)"/>
+            <!-- Rear -->
+            <path d="M345 94 L300 91 L298 108 L343 110 Z" fill="#0a1020"/>
+            <rect x="298" y="108" width="48" height="3" rx="1.5" fill="rgba(200,50,50,.7)"/>
+            <!-- Roof rails -->
+            <rect x="100" y="30" width="180" height="3" rx="1.5" fill="rgba(249,115,22,.4)"/>
+            <!-- Wheels -->
+            <circle cx="106" cy="155" r="29" fill="#0a0d18"/><circle cx="106" cy="155" r="24" fill="#111525"/><circle cx="106" cy="155" r="17" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.65)" stroke-width="2.2" stroke-linecap="round">
+              <line x1="106" y1="138" x2="106" y2="144"/><line x1="106" y1="166" x2="106" y2="172"/>
+              <line x1="89" y1="155" x2="95" y2="155"/><line x1="117" y1="155" x2="123" y2="155"/>
+              <line x1="94" y1="143" x2="98" y2="149"/><line x1="114" y1="161" x2="118" y2="167"/>
+              <line x1="118" y1="143" x2="114" y2="149"/><line x1="94" y1="167" x2="98" y2="161"/>
+            </g>
+            <circle cx="106" cy="155" r="5" fill="#F97316"/>
+            <circle cx="274" cy="155" r="29" fill="#0a0d18"/><circle cx="274" cy="155" r="24" fill="#111525"/><circle cx="274" cy="155" r="17" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.65)" stroke-width="2.2" stroke-linecap="round">
+              <line x1="274" y1="138" x2="274" y2="144"/><line x1="274" y1="166" x2="274" y2="172"/>
+              <line x1="257" y1="155" x2="263" y2="155"/><line x1="285" y1="155" x2="291" y2="155"/>
+            </g>
+            <circle cx="274" cy="155" r="5" fill="#F97316"/>
+            <ellipse cx="190" cy="161" rx="140" ry="6" fill="rgba(249,115,22,.06)"/>
+            <text x="20" y="25" font-family="Inter" font-size="10" fill="rgba(249,115,22,.5)" font-weight="700">JETOUR</text>
+          </svg>
+        </div>
+        <div style="padding:20px;">
+          <div class="flex gap-2 mb-3">
+            <span class="otag">Китай</span>
+            <span style="background:rgba(34,197,94,.1);color:#4ade80;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;">В наличии</span>
+          </div>
+          <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin-bottom:4px;">JETOUR X70 Plus</h3>
+          <p style="color:#6b7280;font-size:.8rem;margin-bottom:14px;">2024 · 1.5T · AWD · Premium</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <div style="font-size:1.3rem;font-weight:900;color:#F97316;">1 790 000 ₽</div>
+              <div style="font-size:.7rem;color:#4b5563;text-decoration:line-through;">2 250 000 ₽ у дилера</div>
+            </div>
+            <button style="background:rgba(249,115,22,.1);color:#F97316;font-size:.8rem;font-weight:700;padding:8px 16px;border-radius:10px;border:1px solid rgba(249,115,22,.2);cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#F97316';this.style.color='#fff';" onmouseout="this.style.background='rgba(249,115,22,.1)';this.style.color='#F97316';">Подробнее</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Car 4: Kia Sportage (Bishkek) -->
+      <div class="car-card reveal bg-card border border-border rounded-2xl overflow-hidden" data-cat="suv bishkek" style="transition-delay:.3s;">
+        <div class="car-img-wrap">
+          <svg viewBox="0 0 380 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <defs><radialGradient id="g4" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#1a2840"/><stop offset="100%" stop-color="#080c18"/></radialGradient></defs>
+            <rect width="380" height="180" fill="url(#g4)"/>
+            <line x1="0" y1="154" x2="380" y2="154" stroke="rgba(249,115,22,.1)" stroke-width="1"/>
+            <rect x="38" y="88" width="304" height="64" rx="8" fill="#1c2540"/>
+            <path d="M82 88 L102 50 Q110 40 126 38 L254 38 Q270 40 278 50 L298 88 Z" fill="#1e2845"/>
+            <path d="M91 86 L109 53 Q115 45 127 43 L182 43 L182 86 Z" fill="#090e1e" stroke="rgba(100,150,255,.15)" stroke-width="1"/>
+            <path d="M186 43 L253 43 Q266 45 272 53 L290 86 L186 86 Z" fill="#090e1e" stroke="rgba(100,150,255,.15)" stroke-width="1"/>
+            <rect x="183" y="41" width="4" height="47" fill="#1c2540" rx="1"/>
+            <path d="M38 97 L80 94 L82 112 L40 114 Z" fill="#0a1020"/>
+            <rect x="39" y="112" width="44" height="3" rx="1.5" fill="rgba(200,160,50,.65)"/>
+            <path d="M342 97 L300 94 L298 112 L340 114 Z" fill="#0a1020"/>
+            <rect x="298" y="112" width="44" height="3" rx="1.5" fill="rgba(200,50,50,.65)"/>
+            <circle cx="104" cy="154" r="27" fill="#0a0d18"/><circle cx="104" cy="154" r="22" fill="#111525"/><circle cx="104" cy="154" r="15" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.6)" stroke-width="2" stroke-linecap="round">
+              <line x1="104" y1="139" x2="104" y2="145"/><line x1="104" y1="163" x2="104" y2="169"/>
+              <line x1="89" y1="154" x2="95" y2="154"/><line x1="113" y1="154" x2="119" y2="154"/>
+            </g>
+            <circle cx="104" cy="154" r="5" fill="#F97316"/>
+            <circle cx="276" cy="154" r="27" fill="#0a0d18"/><circle cx="276" cy="154" r="22" fill="#111525"/><circle cx="276" cy="154" r="15" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.6)" stroke-width="2" stroke-linecap="round">
+              <line x1="276" y1="139" x2="276" y2="145"/><line x1="276" y1="163" x2="276" y2="169"/>
+              <line x1="261" y1="154" x2="267" y2="154"/><line x1="285" y1="154" x2="291" y2="154"/>
+            </g>
+            <circle cx="276" cy="154" r="5" fill="#F97316"/>
+            <ellipse cx="190" cy="159" rx="132" ry="5" fill="rgba(249,115,22,.05)"/>
+            <text x="20" y="27" font-family="Inter" font-size="10" fill="rgba(249,115,22,.5)" font-weight="700">KIA</text>
+          </svg>
+        </div>
+        <div style="padding:20px;">
+          <div class="flex gap-2 mb-3">
+            <span class="otag">Бишкек</span>
+            <span style="background:rgba(34,197,94,.1);color:#4ade80;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;">В наличии</span>
+          </div>
+          <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin-bottom:4px;">Kia Sportage</h3>
+          <p style="color:#6b7280;font-size:.8rem;margin-bottom:14px;">2023 · 2.0 · AWD · Luxury</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <div style="font-size:1.3rem;font-weight:900;color:#F97316;">2 550 000 ₽</div>
+              <div style="font-size:.7rem;color:#4b5563;text-decoration:line-through;">3 100 000 ₽ у дилера</div>
+            </div>
+            <button style="background:rgba(249,115,22,.1);color:#F97316;font-size:.8rem;font-weight:700;padding:8px 16px;border-radius:10px;border:1px solid rgba(249,115,22,.2);cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#F97316';this.style.color='#fff';" onmouseout="this.style.background='rgba(249,115,22,.1)';this.style.color='#F97316';">Подробнее</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Car 5: Mercedes -->
+      <div class="car-card reveal bg-card border border-border rounded-2xl overflow-hidden" data-cat="sedan europe" style="transition-delay:.4s;">
+        <div class="car-img-wrap">
+          <svg viewBox="0 0 380 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <defs><radialGradient id="g5" cx="45%" cy="38%" r="65%"><stop offset="0%" stop-color="#1c2238"/><stop offset="100%" stop-color="#07090f"/></radialGradient></defs>
+            <rect width="380" height="180" fill="url(#g5)"/>
+            <line x1="0" y1="152" x2="380" y2="152" stroke="rgba(249,115,22,.1)" stroke-width="1"/>
+            <!-- Low coupe-style sedan -->
+            <rect x="28" y="100" width="324" height="52" rx="6" fill="#191f35"/>
+            <path d="M78 100 L96 66 Q104 56 118 54 L262 54 Q276 56 284 66 L302 100 Z" fill="#1b2140"/>
+            <path d="M86 98 L102 68 Q108 60 120 58 L178 58 L178 98 Z" fill="#08101f" stroke="rgba(100,150,255,.12)" stroke-width="1"/>
+            <path d="M182 58 L260 58 Q272 60 278 68 L294 98 L182 98 Z" fill="#08101f" stroke="rgba(100,150,255,.12)" stroke-width="1"/>
+            <rect x="180" y="56" width="4" height="44" fill="#191f35" rx="1"/>
+            <!-- Star -->
+            <circle cx="190" cy="54" r="5" fill="none" stroke="rgba(249,115,22,.5)" stroke-width="1.5"/>
+            <!-- Headlights sleek -->
+            <path d="M28 107 L76 104 L78 120 L29 122 Z" fill="#0a1020"/>
+            <rect x="29" y="120" width="50" height="3" rx="1.5" fill="rgba(200,160,50,.7)"/>
+            <path d="M352 107 L304 104 L302 120 L351 122 Z" fill="#0a1020"/>
+            <rect x="303" y="120" width="50" height="3" rx="1.5" fill="rgba(200,50,50,.7)"/>
+            <!-- Wheels -->
+            <circle cx="98" cy="152" r="25" fill="#0a0d18"/><circle cx="98" cy="152" r="20" fill="#111525"/><circle cx="98" cy="152" r="14" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.6)" stroke-width="2" stroke-linecap="round">
+              <line x1="98" y1="138" x2="98" y2="143"/><line x1="98" y1="161" x2="98" y2="166"/>
+              <line x1="84" y1="152" x2="89" y2="152"/><line x1="107" y1="152" x2="112" y2="152"/>
+              <line x1="88" y1="142" x2="92" y2="147"/><line x1="104" y1="157" x2="108" y2="162"/>
+              <line x1="108" y1="142" x2="104" y2="147"/><line x1="88" y1="162" x2="92" y2="157"/>
+            </g>
+            <circle cx="98" cy="152" r="5" fill="#F97316"/>
+            <circle cx="282" cy="152" r="25" fill="#0a0d18"/><circle cx="282" cy="152" r="20" fill="#111525"/><circle cx="282" cy="152" r="14" fill="#0a0d18"/>
+            <g stroke="rgba(249,115,22,.6)" stroke-width="2" stroke-linecap="round">
+              <line x1="282" y1="138" x2="282" y2="143"/><line x1="282" y1="161" x2="282" y2="166"/>
+              <line x1="268" y1="152" x2="273" y2="152"/><line x1="291" y1="152" x2="296" y2="152"/>
+            </g>
+            <circle cx="282" cy="152" r="5" fill="#F97316"/>
+            <ellipse cx="190" cy="157" rx="125" ry="5" fill="rgba(249,115,22,.05)"/>
+            <text x="20" y="26" font-family="Inter" font-size="10" fill="rgba(249,115,22,.5)" font-weight="700">MERCEDES</text>
+          </svg>
+        </div>
+        <div style="padding:20px;">
+          <div class="flex gap-2 mb-3">
+            <span class="otag">Европа</span>
+            <span style="background:rgba(234,179,8,.1);color:#fbbf24;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:20px;">Под заказ</span>
+          </div>
+          <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin-bottom:4px;">Mercedes C 200</h3>
+          <p style="color:#6b7280;font-size:.8rem;margin-bottom:14px;">2022 · 1.5T · RWD · AMG Line</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <div style="font-size:1.3rem;font-weight:900;color:#F97316;">3 600 000 ₽</div>
+              <div style="font-size:.7rem;color:#4b5563;text-decoration:line-through;">5 100 000 ₽ у дилера</div>
+            </div>
+            <button style="background:rgba(249,115,22,.1);color:#F97316;font-size:.8rem;font-weight:700;padding:8px 16px;border-radius:10px;border:1px solid rgba(249,115,22,.2);cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#F97316';this.style.color='#fff';" onmouseout="this.style.background='rgba(249,115,22,.1)';this.style.color='#F97316';">Подробнее</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA card -->
+      <div class="reveal car-card" style="background:linear-gradient(135deg,rgba(249,115,22,.15),rgba(249,115,22,.05));border:1px solid rgba(249,115,22,.25);border-radius:20px;padding:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition-delay:.5s;">
+        <div style="width:60px;height:60px;background:rgba(249,115,22,.15);border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg viewBox="0 0 24 24" fill="none" style="width:28px;height:28px;"><path d="M12 5v14M5 12h14" stroke="#F97316" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3 style="font-weight:800;color:#fff;font-size:1.05rem;margin-bottom:8px;">Нужен другой авто?</h3>
+        <p style="color:#6b7280;font-size:.8rem;line-height:1.6;margin-bottom:20px;">Опишите что хотите — найдём варианты под ваш бюджет</p>
+        <a href="#contact" class="btn-orange" style="font-size:.85rem;padding:12px 24px;border-radius:12px;">Оставить заявку</a>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:32px;">
+      <button class="btn-ghost">Смотреть все авто →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ HOW IT WORKS -->
+<section id="how" style="padding:96px 24px;">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center reveal mb-14">
+      <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Процесс</p>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Как мы работаем</h2>
+      <p style="color:#6b7280;margin-top:10px;max-width:440px;margin-left:auto;margin-right:auto;">От первого звонка до ключей — 20–45 дней</p>
+    </div>
+
+    <!-- Timeline with connecting line -->
+    <div class="relative">
+      <div class="hidden md:block" style="position:absolute;top:26px;left:calc(12.5% + 26px);right:calc(12.5% + 26px);height:2px;background:linear-gradient(90deg,#F97316,rgba(249,115,22,.3));z-index:0;"></div>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
+        <div class="step-card reveal bg-card border border-border rounded-2xl p-6" style="transition-delay:.0s;">
+          <div class="step-num mb-5">1</div>
+          <h3 style="font-weight:800;color:#fff;margin-bottom:8px;">Заявка</h3>
+          <p style="color:#6b7280;font-size:.82rem;line-height:1.65;">Расскажите о желаемом авто, бюджете и сроках. Звонок или Telegram.</p>
+        </div>
+        <div class="step-card reveal bg-card border border-border rounded-2xl p-6" style="transition-delay:.12s;">
+          <div class="step-num mb-5">2</div>
+          <h3 style="font-weight:800;color:#fff;margin-bottom:8px;">Подбор</h3>
+          <p style="color:#6b7280;font-size:.82rem;line-height:1.65;">3–5 вариантов с аукционов и партнёров. Фото, история, пробег.</p>
+        </div>
+        <div class="step-card reveal bg-card border border-border rounded-2xl p-6" style="transition-delay:.24s;">
+          <div class="step-num mb-5">3</div>
+          <h3 style="font-weight:800;color:#fff;margin-bottom:8px;">Доставка</h3>
+          <p style="color:#6b7280;font-size:.82rem;line-height:1.65;">Выкупаем, проверяем на площадке, готовим документы, везём.</p>
+        </div>
+        <div class="step-card reveal border rounded-2xl p-6" style="background:#181C27;border-color:rgba(249,115,22,.4);transition-delay:.36s;">
+          <div class="step-num mb-5" style="background:#F97316;color:#fff;">4</div>
+          <h3 style="font-weight:800;color:#fff;margin-bottom:8px;">Оформление</h3>
+          <p style="color:#6b7280;font-size:.82rem;line-height:1.65;">Растаможка, СБКТС, ГИБДД. Ключи с чистыми документами.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment options -->
+    <div class="reveal mt-10 bg-card border border-border rounded-2xl p-6 md:p-8">
+      <h3 style="font-weight:800;color:#fff;font-size:1.1rem;margin-bottom:20px;">Варианты оплаты</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div style="text-align:center;padding:20px 16px;background:#0F1117;border-radius:14px;border:1px solid #2A2F3E;transition:border-color .2s;" onmouseover="this.style.borderColor='#F97316'" onmouseout="this.style.borderColor='#2A2F3E'">
+          <svg viewBox="0 0 40 40" style="width:36px;height:36px;margin:0 auto 10px;" fill="none"><rect x="4" y="10" width="32" height="20" rx="4" stroke="#F97316" stroke-width="2"/><line x1="4" y1="17" x2="36" y2="17" stroke="#F97316" stroke-width="2"/><rect x="8" y="22" width="8" height="3" rx="1.5" fill="#F97316"/></svg>
+          <div style="font-weight:700;color:#fff;font-size:.85rem;">Наличные</div><div style="font-size:.7rem;color:#6b7280;margin-top:4px;">Любая сумма</div>
+        </div>
+        <div style="text-align:center;padding:20px 16px;background:#0F1117;border-radius:14px;border:1px solid #2A2F3E;transition:border-color .2s;" onmouseover="this.style.borderColor='#F97316'" onmouseout="this.style.borderColor='#2A2F3E'">
+          <svg viewBox="0 0 40 40" style="width:36px;height:36px;margin:0 auto 10px;" fill="none"><rect x="4" y="6" width="32" height="28" rx="4" stroke="#F97316" stroke-width="2"/><line x1="4" y1="14" x2="36" y2="14" stroke="#F97316" stroke-width="2"/><circle cx="12" cy="22" r="2" fill="#F97316"/><circle cx="20" cy="22" r="2" fill="#F97316"/><circle cx="28" cy="22" r="2" fill="#F97316"/></svg>
+          <div style="font-weight:700;color:#fff;font-size:.85rem;">Рассрочка</div><div style="font-size:.7rem;color:#6b7280;margin-top:4px;">0% на 6–12 мес</div>
+        </div>
+        <div style="text-align:center;padding:20px 16px;background:#0F1117;border-radius:14px;border:1px solid #2A2F3E;transition:border-color .2s;" onmouseover="this.style.borderColor='#F97316'" onmouseout="this.style.borderColor='#2A2F3E'">
+          <svg viewBox="0 0 40 40" style="width:36px;height:36px;margin:0 auto 10px;" fill="none"><path d="M8 32 L8 14 Q8 10 12 10 L28 10 Q32 10 32 14 L32 32" stroke="#F97316" stroke-width="2"/><line x1="4" y1="32" x2="36" y2="32" stroke="#F97316" stroke-width="2"/><rect x="16" y="22" width="8" height="10" rx="2" fill="#F97316" opacity=".4"/></svg>
+          <div style="font-weight:700;color:#fff;font-size:.85rem;">Лизинг</div><div style="font-size:.7rem;color:#6b7280;margin-top:4px;">Для бизнеса</div>
+        </div>
+        <div style="text-align:center;padding:20px 16px;background:#0F1117;border-radius:14px;border:1px solid #2A2F3E;transition:border-color .2s;" onmouseover="this.style.borderColor='#F97316'" onmouseout="this.style.borderColor='#2A2F3E'">
+          <svg viewBox="0 0 40 40" style="width:36px;height:36px;margin:0 auto 10px;" fill="none"><rect x="4" y="8" width="32" height="24" rx="4" stroke="#F97316" stroke-width="2"/><path d="M14 20 Q14 15 20 15 Q26 15 26 20 Q26 25 20 25" stroke="#F97316" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="26" r="1.5" fill="#F97316"/></svg>
+          <div style="font-weight:700;color:#fff;font-size:.85rem;">Кредит</div><div style="font-size:.7rem;color:#6b7280;margin-top:4px;">От 9,9% годовых</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ ADVANTAGES -->
+<section style="padding:96px 24px;background:rgba(24,28,39,.5);">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center reveal mb-12">
+      <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Преимущества</p>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Почему выбирают М1 АВТО</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="card-3d reveal" style="transition-delay:.0s;"><div class="card-3d-inner bg-card border border-border rounded-2xl p-6"><div style="font-size:2rem;margin-bottom:14px;">🔍</div><h3 style="font-weight:800;color:#fff;font-size:1rem;margin-bottom:8px;">Полная проверка</h3><p style="color:#6b7280;font-size:.82rem;line-height:1.65;">Проверяем историю по CarFax. Осматриваем перед выкупом. Фото и видео-отчёт для вас.</p></div></div>
+      <div class="card-3d reveal" style="transition-delay:.1s;"><div class="card-3d-inner bg-card border border-border rounded-2xl p-6"><div style="font-size:2rem;margin-bottom:14px;">📞</div><h3 style="font-weight:800;color:#fff;font-size:1rem;margin-bottom:8px;">Личный менеджер</h3><p style="color:#6b7280;font-size:.82rem;line-height:1.65;">Один человек ведёт вас от заявки до ключей. Доступен в Telegram 7 дней.</p></div></div>
+      <div class="card-3d reveal" style="transition-delay:.2s;"><div class="card-3d-inner bg-card border border-border rounded-2xl p-6"><div style="font-size:2rem;margin-bottom:14px;">📄</div><h3 style="font-weight:800;color:#fff;font-size:1rem;margin-bottom:8px;">Прозрачные расходы</h3><p style="color:#6b7280;font-size:.82rem;line-height:1.65;">Считаем полную стоимость заранее: авто + доставка + растаможка. Никаких сюрпризов.</p></div></div>
+      <div class="card-3d reveal" style="transition-delay:.3s;"><div class="card-3d-inner bg-card border border-border rounded-2xl p-6"><div style="font-size:2rem;margin-bottom:14px;">⚡</div><h3 style="font-weight:800;color:#fff;font-size:1rem;margin-bottom:8px;">Быстро</h3><p style="color:#6b7280;font-size:.82rem;line-height:1.65;">20–45 дней с аванса до ключей. Отслеживайте статус в Telegram-боте.</p></div></div>
+      <div class="card-3d reveal" style="transition-delay:.4s;"><div class="card-3d-inner bg-card border border-border rounded-2xl p-6"><div style="font-size:2rem;margin-bottom:14px;">💰</div><h3 style="font-weight:800;color:#fff;font-size:1rem;margin-bottom:8px;">Выгода до 500 000 ₽</h3><p style="color:#6b7280;font-size:.82rem;line-height:1.65;">Авто из-за рубежа на 20–40% дешевле дилера. Особенно — Корея и Бишкек.</p></div></div>
+      <div class="card-3d reveal" style="transition-delay:.5s;"><div class="card-3d-inner bg-card border border-border rounded-2xl p-6"><div style="font-size:2rem;margin-bottom:14px;">🛡</div><h3 style="font-weight:800;color:#fff;font-size:1rem;margin-bottom:8px;">Безопасность сделки</h3><p style="color:#6b7280;font-size:.82rem;line-height:1.65;">Работаем по договору. Аванс только после согласования авто. Гарантия чистоты.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ REVIEWS -->
+<section id="reviews" style="padding:96px 24px;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+      <div class="reveal-left">
+        <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Отзывы</p>
+        <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;letter-spacing:-.02em;">Что говорят клиенты</h2>
+      </div>
+      <div class="reveal-right flex items-center gap-3 mt-4 md:mt-0">
+        <div style="font-size:2.5rem;font-weight:900;color:#fff;">4.9</div>
+        <div><div style="color:#F97316;font-size:1.1rem;">★★★★★</div><div style="font-size:.7rem;color:#6b7280;">217 отзывов</div></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="review-card reveal bg-card border border-border rounded-2xl p-6" style="transition-delay:.0s;">
+        <div style="color:#F97316;font-size:.9rem;margin-bottom:14px;">★★★★★</div>
+        <p style="color:#d1d5db;font-size:.85rem;line-height:1.7;margin-bottom:18px;">"Взяли BMW 5 из Германии. Всё чётко — за 32 дня машина у меня, документы в порядке, цена на 1,2 млн ниже дилера. Работаю с М1 уже второй раз."</p>
+        <div class="flex items-center gap-3">
+          <div style="width:38px;height:38px;background:rgba(249,115,22,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#F97316;font-size:.9rem;">А</div>
+          <div><div style="color:#fff;font-size:.875rem;font-weight:700;">Алексей К.</div><div style="color:#6b7280;font-size:.7rem;">BMW 520d · Европа</div></div>
+        </div>
+      </div>
+      <div class="review-card reveal bg-card border border-border rounded-2xl p-6" style="transition-delay:.1s;">
+        <div style="color:#F97316;font-size:.9rem;margin-bottom:14px;">★★★★★</div>
+        <p style="color:#d1d5db;font-size:.85rem;line-height:1.7;margin-bottom:18px;">"Брал Hyundai Tucson из Кореи. Менеджер на связи каждый день, присылал фото с площадки. Никакого стресса — всё сделали за меня. Рекомендую!"</p>
+        <div class="flex items-center gap-3">
+          <div style="width:38px;height:38px;background:rgba(249,115,22,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#F97316;font-size:.9rem;">М</div>
+          <div><div style="color:#fff;font-size:.875rem;font-weight:700;">Михаил Р.</div><div style="color:#6b7280;font-size:.7rem;">Hyundai Tucson · Корея</div></div>
+        </div>
+      </div>
+      <div class="review-card reveal bg-card border border-border rounded-2xl p-6" style="transition-delay:.2s;">
+        <div style="color:#F97316;font-size:.9rem;margin-bottom:14px;">★★★★★</div>
+        <p style="color:#d1d5db;font-size:.85rem;line-height:1.7;margin-bottom:18px;">"JETOUR X70 из Китая взяла для семьи. Бюджет был 2 млн — уложились с запасом, комплектация топовая. Детям нравится, мне нравится цена."</p>
+        <div class="flex items-center gap-3">
+          <div style="width:38px;height:38px;background:rgba(249,115,22,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#F97316;font-size:.9rem;">Е</div>
+          <div><div style="color:#fff;font-size:.875rem;font-weight:700;">Елена В.</div><div style="color:#6b7280;font-size:.7rem;">JETOUR X70 · Китай</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ CONTACT -->
+<section id="contact" style="padding:96px 24px;background:rgba(24,28,39,.5);">
+  <div class="max-w-7xl mx-auto">
+    <div style="background:linear-gradient(135deg,#181C27,#0F1117);border:1px solid #2A2F3E;border-radius:28px;padding:clamp(28px,5vw,60px);overflow:hidden;position:relative;">
+      <!-- BG decoration -->
+      <div style="position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(249,115,22,.08),transparent 70%);pointer-events:none;"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
+        <div class="reveal-left">
+          <p style="color:#F97316;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">Бесплатно</p>
+          <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:16px;line-height:1.15;">Получите каталог<br>под ваш бюджет</h2>
+          <p style="color:#6b7280;line-height:1.7;margin-bottom:28px;font-size:.9rem;">Расскажите о желаемом авто — пришлём 5–10 вариантов с ценами, фото и расчётом доставки.</p>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:.875rem;color:#9ca3af;">
+              <div style="width:22px;height:22px;background:rgba(249,115,22,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:6px;height:6px;background:#F97316;border-radius:50%;"></div></div>Ответим в течение 30 минут
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:.875rem;color:#9ca3af;">
+              <div style="width:22px;height:22px;background:rgba(249,115,22,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:6px;height:6px;background:#F97316;border-radius:50%;"></div></div>Никакого спама и навязывания
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:.875rem;color:#9ca3af;">
+              <div style="width:22px;height:22px;background:rgba(249,115,22,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:6px;height:6px;background:#F97316;border-radius:50%;"></div></div>Консультация бесплатна
+            </div>
+          </div>
+        </div>
+        <div class="reveal-right">
+          <form onsubmit="return false;" style="display:flex;flex-direction:column;gap:16px;">
+            <div><label style="font-size:.7rem;color:#6b7280;font-weight:600;display:block;margin-bottom:6px;">Ваше имя</label><input type="text" placeholder="Иван" class="form-input"/></div>
+            <div><label style="font-size:.7rem;color:#6b7280;font-weight:600;display:block;margin-bottom:6px;">Телефон</label><input type="tel" placeholder="+7 (___) ___-__-__" class="form-input"/></div>
+            <div><label style="font-size:.7rem;color:#6b7280;font-weight:600;display:block;margin-bottom:6px;">Желаемый авто / бюджет</label><input type="text" placeholder="Внедорожник до 3 млн, из Кореи" class="form-input"/></div>
+            <div>
+              <label style="font-size:.7rem;color:#6b7280;font-weight:600;display:block;margin-bottom:10px;">Способ связи</label>
+              <div style="display:flex;gap:16px;">
+                <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.85rem;color:#d1d5db;"><input type="radio" name="ch" checked style="accent-color:#F97316;"/>Telegram</label>
+                <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.85rem;color:#d1d5db;"><input type="radio" name="ch" style="accent-color:#F97316;"/>WhatsApp</label>
+                <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.85rem;color:#d1d5db;"><input type="radio" name="ch" style="accent-color:#F97316;"/>Звонок</label>
+              </div>
+            </div>
+            <button type="submit" class="btn-orange" style="font-size:.95rem;margin-top:6px;">Получить каталог →</button>
+            <p style="font-size:.7rem;color:#4b5563;text-align:center;">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ FOOTER -->
+<footer style="border-top:1px solid #2A2F3E;padding:48px 24px 32px;">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+      <div style="grid-column:span 2 / span 2;" class="md:col-span-1">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <div style="width:34px;height:34px;background:#F97316;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.8rem;">M1</div>
+          <span style="font-weight:800;color:#fff;font-size:1.1rem;">АВТО</span>
+        </div>
+        <p style="color:#6b7280;font-size:.8rem;line-height:1.65;max-width:200px;">Автомобили из Европы, Кореи, Китая и Бишкека. Под ключ.</p>
+      </div>
+      <div>
+        <div style="font-weight:700;color:#fff;font-size:.85rem;margin-bottom:12px;">Каталог</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="#" style="color:#6b7280;font-size:.8rem;transition:color .15s;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Внедорожники</a>
+          <a href="#" style="color:#6b7280;font-size:.8rem;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">До 2 000 000 ₽</a>
+          <a href="#" style="color:#6b7280;font-size:.8rem;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Из Бишкека</a>
+          <a href="#" style="color:#6b7280;font-size:.8rem;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Все авто</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:700;color:#fff;font-size:.85rem;margin-bottom:12px;">Контакты</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="tel:+74950237203" style="color:#6b7280;font-size:.8rem;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">+7 (495) 023-72-03</a>
+          <a href="#" style="color:#6b7280;font-size:.8rem;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">Telegram</a>
+          <a href="#" style="color:#6b7280;font-size:.8rem;" onmouseover="this.style.color='#F97316'" onmouseout="this.style.color='#6b7280'">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid #2A2F3E;padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div style="color:#4b5563;font-size:.75rem;">© 2024 М1 АВТО. Все права защищены.</div>
+      <div style="color:#4b5563;font-size:.75rem;">Политика конфиденциальности</div>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile sticky CTA -->
+<div class="md:hidden" style="position:fixed;bottom:16px;left:16px;right:16px;z-index:40;">
+  <a href="#contact" class="btn-orange" style="display:block;text-align:center;border-radius:18px;font-size:.95rem;">Подобрать авто →</a>
+</div>
+
+<script>
+  // ── Scroll reveal ──
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), (parseFloat(e.target.style.transitionDelay || '0') * 1000));
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // ── Counter animation ──
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target);
+    const duration = 1800;
+    const start = performance.now();
+    const update = (time) => {
+      const elapsed = time - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target);
+      if (progress < 1) requestAnimationFrame(update);
+      else el.textContent = target + (el.dataset.target == '500' ? '+' : '');
+    };
+    requestAnimationFrame(update);
+  }
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { animateCounter(e.target); counterObserver.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+  // ── Catalog filter ──
+  function filterCars(cat) {
+    const cards = document.querySelectorAll('#cars-grid > div[data-cat]');
+    cards.forEach(c => {
+      const cats = c.dataset.cat.split(' ');
+      c.style.display = (cat === 'all' || cats.includes(cat)) ? '' : 'none';
+    });
+    // tab styles
+    document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+      btn.style.background = '#181C27'; btn.style.color = '#9ca3af'; btn.style.border = '1px solid #2A2F3E';
+    });
+    const active = document.getElementById('tab-' + cat);
+    if (active) { active.style.background = '#F97316'; active.style.color = '#fff'; active.style.border = 'none'; }
+  }
+
+  // ── Parallax on hero ──
+  window.addEventListener('scroll', () => {
+    const car = document.querySelector('.hero-car');
+    if (car) car.style.transform = `translateY(${window.scrollY * 0.08}px)`;
+  });
+
+  // ── Tilt effect on car cards ──
+  document.querySelectorAll('.car-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `translateY(-6px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg)`;
+      card.style.transformStyle = 'preserve-3d';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+</script>
+</body>
+</html>
