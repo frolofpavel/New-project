@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>План работ — SMart × Павел Фролов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a10;--bg2:#111118;--bg3:#18181f;--bg4:#1f1f28;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
+  --text:#e0e0f0;--muted:#6a6a88;
+  --accent:#6c63ff;--accent2:#9d97ff;
+  --green:#3ecf8e;--warn:#f0b429;--danger:#e05555;--white:#fff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.6;overflow-x:hidden}
+
+.wrap{max-width:960px;margin:0 auto;padding:0 28px}
+
+/* HEADER */
+header{padding:48px 0 36px;border-bottom:1px solid var(--border)}
+.header-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent2);border:1px solid rgba(108,99,255,.22);padding:6px 14px;margin-bottom:20px}
+.header-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;color:var(--white);line-height:1.1;letter-spacing:-.02em;margin-bottom:12px}
+h1 em{font-style:normal;background:linear-gradient(135deg,#6c63ff,#9d97ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header-sub{font-size:15px;color:var(--muted);margin-bottom:28px}
+.header-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.hstat{background:var(--bg2);padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.hstat-val{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--accent2);line-height:1}
+.hstat-val.green{color:var(--green)}
+.hstat-label{font-size:11px;color:var(--muted)}
+
+/* LEGEND */
+.legend{display:flex;gap:20px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--border)}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+/* WEEK */
+.week{margin:40px 0}
+.week-header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.week-num{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.2);padding:6px 14px}
+.week-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white)}
+.week-goal{font-size:13px;color:var(--muted);margin-top:2px}
+.week-result{margin-left:auto;font-size:12px;font-weight:600;padding:5px 12px;border-radius:2px}
+
+/* DAYS GRID */
+.days{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border)}
+.day{background:var(--bg2);display:grid;grid-template-columns:90px 1fr;gap:0;transition:.15s}
+.day:hover{background:var(--bg3)}
+.day-label{padding:16px 18px;border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;gap:3px}
+.day-name{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.day-date{font-size:10px;color:var(--muted)}
+.day-content{padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.day-tasks{display:flex;flex-direction:column;gap:6px}
+.task{display:flex;align-items:flex-start;gap:10px;font-size:13px}
+.task-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.task-text{color:var(--text);line-height:1.4}
+.task-text span{color:var(--muted);font-size:12px}
+.day-result{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg3);border-left:2px solid;font-size:12px;margin-top:4px}
+.day-result.green{border-color:var(--green);color:var(--green)}
+.day-result.warn{border-color:var(--warn);color:var(--warn)}
+.day-result.accent{border-color:var(--accent);color:var(--accent2)}
+
+/* TASK TYPES */
+.t-dir{background:#6c63ff}.t-seo{background:#3ecf8e}.t-site{background:#f0b429}.t-anal{background:#e05555}.t-meet{background:#9d97ff}
+
+/* DAY TYPES */
+.day.weekend{opacity:.5}
+.day.weekend .day-name{color:var(--muted)}
+.day.focus .day-label{background:rgba(108,99,255,.05)}
+
+/* WEEK SUMMARY */
+.week-summary{background:var(--bg3);border:1px solid var(--border2);padding:20px 24px;margin-top:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.ws-item{display:flex;flex-direction:column;gap:4px}
+.ws-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ws-val{font-size:15px;font-weight:600;color:var(--white)}
+.ws-val.green{color:var(--green)}
+.ws-val.warn{color:var(--warn)}
+
+/* MONTH SUMMARY */
+.month-summary{margin:40px 0;background:linear-gradient(135deg,rgba(108,99,255,.08),rgba(62,207,142,.05));border:1px solid rgba(108,99,255,.2);border-left:3px solid var(--accent);padding:28px 32px}
+.ms-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--white);margin-bottom:20px}
+.ms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.ms-col h4{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.ms-col.dir h4{color:var(--accent2)}
+.ms-col.seo h4{color:var(--green)}
+.ms-col.site h4{color:var(--warn)}
+.ms-col ul{list-style:none;padding:0}
+.ms-col ul li{font-size:13px;color:#8080a8;padding:3px 0 3px 14px;position:relative}
+.ms-col ul li::before{content:'✓';position:absolute;left:0;font-size:10px}
+.ms-col.dir ul li::before{color:var(--accent2)}
+.ms-col.seo ul li::before{color:var(--green)}
+.ms-col.site ul li::before{color:var(--warn)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:24px 0;margin-top:48px}
+.foot-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--white)}
+.foot-contacts{display:flex;gap:20px;flex-wrap:wrap}
+.foot-c{font-size:12px;color:var(--muted)}
+.foot-c a{color:var(--text);text-decoration:none}
+
+@media(max-width:640px){
+  .wrap{padding:0 16px}
+  .header-stats,.week-summary,.ms-grid{grid-template-columns:1fr 1fr}
+  .day{grid-template-columns:1fr}
+  .day-label{border-right:none;border-bottom:1px solid var(--border);flex-direction:row;align-items:center;gap:12px;padding:12px 16px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="wrap">
+  <div class="header-badge">План работ · SMart × Павел Фролов · Апрель–Май 2026</div>
+  <h1>28 дней до <em>удвоения</em><br>квалифицированных лидов</h1>
+  <p class="header-sub">Детальный план по дням — что делается, когда и какой результат ожидается</p>
+  <div class="header-stats">
+    <div class="hstat"><span class="hstat-val">3 000</span><span class="hstat-label">квал. лидов сейчас</span></div>
+    <div class="hstat"><span class="hstat-val green">6 000</span><span class="hstat-label">цель через 3 мес</span></div>
+    <div class="hstat"><span class="hstat-val">600 000 ₽</span><span class="hstat-label">бюджет / мес</span></div>
+    <div class="hstat"><span class="hstat-val">400 ₽</span><span class="hstat-label">целевой CPL</span></div>
+  </div>
+</div>
+</header>
+
+<div class="wrap" style="padding-top:24px">
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot t-dir"></div>Яндекс.Директ</div>
+  <div class="legend-item"><div class="legend-dot t-seo"></div>SEO</div>
+  <div class="legend-item"><div class="legend-dot t-site"></div>Сайт / контент</div>
+  <div class="legend-item"><div class="legend-dot t-anal"></div>Аналитика</div>
+  <div class="legend-item"><div class="legend-dot t-meet"></div>Встреча / отчёт</div>
+</div>
+
+<!-- ══════ НЕДЕЛЯ 1 ══════ -->
+<div class="week">
+  <div class="week-header">
+    <div class="week-num">Неделя 1</div>
+    <div>
+      <div class="week-title">Изучение, стратегия, подготовка</div>
+      <div class="week-goal">Цель: полное погружение в бизнес, настройка аналитики, обновление цен на сайте</div>
+    </div>
+    <div class="week-result tag-p" style="background:rgba(108,99,255,.15);color:var(--accent2)">Старт: Пн 14 апр</div>
+  </div>
+
+  <div class="days">
+
+    <div class="day focus">
+      <div class="day-label"><span class="day-name" style="color:var(--accent2)">Пн</span><span class="day-date">14 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-meet"></div><div class="task-text">Установочный созвон с командой SMart — цели, KPI, доступы <span>(09:00–10:30)</span></div></div>
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Получение доступов: Яндекс.Метрика, рекламный кабинет, сайт, CRM</div></div>
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Аудит текущей Яндекс.Метрики — цели, воронки, источники трафика</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Сбор семантического ядра: кластер «ломбард» — 200+ ключей</div></div>
+        </div>
+        <div class="day-result accent">📋 Результат: все доступы получены, семантика ломбарда готова</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Вт</span><span class="day-date">15 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-site"></div><div class="task-text"><strong>Обновление цен на сайте</strong> — золото 585 с 5 400 до актуального курса. Это приоритет №0.</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Сбор семантики: кластер «скупка / выкуп» — 150+ ключей</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Анализ конкурентов в Директ: объявления, ставки, посадочные страницы</div></div>
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Настройка коллтрекинга — отслеживание звонков по каналам</div></div>
+        </div>
+        <div class="day-result warn">⚡ Результат: цены обновлены — первые клиенты пойдут уже с этого дня</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Ср</span><span class="day-date">16 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Написание объявлений для кампании «Ломбард» — 20 вариантов заголовков и текстов</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Написание объявлений для кампании «Скупка» — 15 вариантов</div></div>
+          <div class="task"><div class="task-dot t-site"></div><div class="task-text">ТЗ программистам: страница ломбарда с калькулятором залога</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Аудит SEO-ситуации: позиции, индексация, техническое состояние сайта</div></div>
+        </div>
+        <div class="day-result accent">📝 Результат: объявления готовы к загрузке, ТЗ сайта передано</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Чт</span><span class="day-date">17 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Создание кампании «Ломбард — Поиск» в Яндекс.Директ, настройка структуры</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Настройка минус-слов, геотаргетинга (Новосибирск + пригороды), расписания</div></div>
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Настройка целей в Метрике: звонок, форма, переход в Telegram</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">ТЗ на SEO: список 20+ страниц (ломбард × районы НСК)</div></div>
+        </div>
+        <div class="day-result accent">🔧 Результат: кампания «Ломбард» готова к запуску, аналитика настроена</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Пт</span><span class="day-date">18 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Создание кампании «Скупка — Поиск», загрузка объявлений</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Финальная проверка всех кампаний перед стартом</div></div>
+          <div class="task"><div class="task-dot t-meet"></div><div class="task-text">Еженедельный отчёт Павлу: что сделано, что запускаем в понедельник</div></div>
+          <div class="task"><div class="task-dot t-site"></div><div class="task-text">Контроль выполнения ТЗ программистами (обновление сайта)</div></div>
+        </div>
+        <div class="day-result green">✅ Результат: всё готово к запуску Директ в понедельник</div>
+      </div>
+    </div>
+
+    <div class="day weekend">
+      <div class="day-label"><span class="day-name">Сб–Вс</span><span class="day-date">19–20 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Мониторинг — если кампании запустятся раньше, слежу за первыми показателями</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="week-summary">
+    <div class="ws-item"><div class="ws-label">Директ</div><div class="ws-val">2 кампании готовы</div></div>
+    <div class="ws-item"><div class="ws-label">Сайт</div><div class="ws-val warn">Цены обновлены</div></div>
+    <div class="ws-item"><div class="ws-label">Первые лиды</div><div class="ws-val green">С обновления цен</div></div>
+  </div>
+</div>
+
+<!-- ══════ НЕДЕЛЯ 2 ══════ -->
+<div class="week">
+  <div class="week-header">
+    <div class="week-num">Неделя 2</div>
+    <div>
+      <div class="week-title">Запуск Яндекс.Директ — «ураганное производство»</div>
+      <div class="week-goal">Цель: все кампании в работе, первые звонки из Директ, старт SEO-работ</div>
+    </div>
+    <div class="week-result" style="background:rgba(240,180,41,.12);color:var(--warn)">Старт: Пн 21 апр</div>
+  </div>
+
+  <div class="days">
+
+    <div class="day focus">
+      <div class="day-label"><span class="day-name" style="color:var(--warn)">Пн</span><span class="day-date">21 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text"><strong>🚀 Запуск кампании «Ломбард — Поиск»</strong> — бюджет 5 000 ₽/день для старта</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Запуск кампании «Скупка — Поиск» — бюджет 2 500 ₽/день</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Старт технического SEO: исправление индексации, мета-теги, H1</div></div>
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Мониторинг первых показов и кликов каждые 2 часа</div></div>
+        </div>
+        <div class="day-result warn">🔥 Результат: первые клики и звонки из Яндекс.Директ</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Вт</span><span class="day-date">22 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Анализ первых данных — CTR, цена клика, конверсии. Чистка неэффективных ключей</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Создание кампании «Ломбард — Районы» — 10 объявлений под каждый район НСК</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Написание первых 5 страниц: «Ломбард [район]» × Ленинский, Дзержинский, Октябрьский, Калининский, Центральный</div></div>
+        </div>
+        <div class="day-result accent">📊 Результат: первая оптимизация, районные кампании готовы</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Ср</span><span class="day-date">23 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Запуск кампании «Ломбард — Районы» (10 районов НСК)</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Создание кампании «Золото и ювелирка» — отдельная кампания под залог драгметаллов</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Написание страниц: «Ломбард [район]» × Советский, Заельцовский, Первомайский, Кировский, Железнодорожный</div></div>
+          <div class="task"><div class="task-dot t-site"></div><div class="task-text">Приёмка калькулятора залога от программистов, тестирование</div></div>
+        </div>
+        <div class="day-result accent">📝 Результат: 10 районных страниц написаны, кампания золота запущена</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Чт</span><span class="day-date">24 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">A/B тест объявлений: тестируем 3 варианта заголовка для ломбарда</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Настройка РСЯ-кампании (ретаргетинг) — возврат посетителей сайта</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Публикация 10 страниц «Ломбард × районы» на сайте</div></div>
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Первый промежуточный анализ: CPL по каждой кампании</div></div>
+        </div>
+        <div class="day-result green">📈 Результат: 20–30 звонков из Директ за первые 4 дня</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Пт</span><span class="day-date">25 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Оптимизация ставок по всем кампаниям по первым данным</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Написание страниц: залог телефонов, ноутбуков, золота, авто — 4 страницы</div></div>
+          <div class="task"><div class="task-dot t-meet"></div><div class="task-text">Еженедельный отчёт: звонки, CPL, что работает лучше, план на нед. 3</div></div>
+        </div>
+        <div class="day-result green">✅ Результат: все кампании работают, первый недельный отчёт отправлен</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="week-summary">
+    <div class="ws-item"><div class="ws-label">Кампаний в работе</div><div class="ws-val">4 кампании</div></div>
+    <div class="ws-item"><div class="ws-label">Звонков из Директ</div><div class="ws-val warn">30–50 / нед</div></div>
+    <div class="ws-item"><div class="ws-label">SEO-страниц</div><div class="ws-val green">14 опубликовано</div></div>
+  </div>
+</div>
+
+<!-- ══════ НЕДЕЛЯ 3 ══════ -->
+<div class="week">
+  <div class="week-header">
+    <div class="week-num">Неделя 3</div>
+    <div>
+      <div class="week-title">Видимые результаты — первые клиенты из поиска</div>
+      <div class="week-goal">Цель: стабильный поток из Директ, оптимизация по данным, масштабирование</div>
+    </div>
+    <div class="week-result" style="background:rgba(62,207,142,.1);color:var(--green)">Старт: Пн 28 апр</div>
+  </div>
+
+  <div class="days">
+
+    <div class="day focus">
+      <div class="day-label"><span class="day-name" style="color:var(--green)">Пн</span><span class="day-date">28 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Глубокая оптимизация по данным 2 недель: отключение неэффективных ключей, перераспределение бюджета</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Масштабирование: увеличение бюджета на рабочие кампании на 20–30%</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Публикация страниц по категориям залога (телефоны, ноутбуки, золото, авто)</div></div>
+        </div>
+        <div class="day-result green">📈 Результат: бюджет перераспределён в пользу лучших кампаний</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Вт</span><span class="day-date">29 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Запуск РСЯ — ретаргетинг: «Вы смотрели наш ломбард — деньги ещё нужны?»</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Создание кампании «Покупка б/у» — тест сегмента покупателей</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Начало ссылочного продвижения: регистрация в 20 городских каталогах НСК</div></div>
+        </div>
+        <div class="day-result accent">🔄 Результат: ретаргетинг запущен, ссылочная масса растёт</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Ср</span><span class="day-date">30 апр</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Анализ качества лидов: какой % звонков конвертируется в визит (цель 30%)</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Корректировка объявлений по итогам A/B теста — внедрение победителей</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Написание информационных статей: «Как работает ломбард», «Сколько дадут за iPhone 14» — 3 статьи</div></div>
+        </div>
+        <div class="day-result accent">📊 Результат: понимаем качество лидов, лучшие объявления масштабированы</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Чт</span><span class="day-date">1 мая</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Праздничный день — сниженная активность конкурентов → возможность снизить CPL. Мониторинг кампаний.</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Публикация информационных статей на сайте</div></div>
+        </div>
+        <div class="day-result warn">⚡ 1 мая — конкуренты снижают активность, CPL падает. Используем.</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Пт</span><span class="day-date">2 мая</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Оптимизация по данным праздничной недели</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Проверка индексации новых страниц в Яндексе</div></div>
+          <div class="task"><div class="task-dot t-meet"></div><div class="task-text">Еженедельный отчёт: звонки, визиты, CPL, первые данные по конверсии в сделку</div></div>
+        </div>
+        <div class="day-result green">✅ Результат: 80–120 звонков из Директ за 2 недели работы</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="week-summary">
+    <div class="ws-item"><div class="ws-label">Звонков из Директ</div><div class="ws-val green">80–120 / нед</div></div>
+    <div class="ws-item"><div class="ws-label">CPL (цель)</div><div class="ws-val green">200–300 ₽</div></div>
+    <div class="ws-item"><div class="ws-label">SEO-страниц</div><div class="ws-val">20+ опубл.</div></div>
+  </div>
+</div>
+
+<!-- ══════ НЕДЕЛЯ 4 ══════ -->
+<div class="week">
+  <div class="week-header">
+    <div class="week-num">Неделя 4</div>
+    <div>
+      <div class="week-title">Масштабирование и выход на плановые показатели</div>
+      <div class="week-goal">Цель: стабильный CPL < 400 ₽, 400–500 квал. лидов / мес из Директ</div>
+    </div>
+    <div class="week-result" style="background:rgba(62,207,142,.1);color:var(--green)">Старт: Пн 5 мая</div>
+  </div>
+
+  <div class="days">
+
+    <div class="day focus">
+      <div class="day-label"><span class="day-name" style="color:var(--green)">Пн</span><span class="day-date">5 мая</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Анализ месячных данных: топ-10 ключей которые дают лиды, остальные — в минус</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Масштабирование: увеличение бюджета рабочих кампаний до плановых значений</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Первые позиции в Яндексе по низкочастотным запросам — проверка</div></div>
+        </div>
+        <div class="day-result green">📈 Результат: бюджет на полную мощность, рабочие связки масштабированы</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Вт</span><span class="day-date">6 мая</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Запуск кампании «Смарт-баннер» — динамические объявления по каталогу</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Анализ первых органических визитов с SEO-страниц</div></div>
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Настройка сквозной аналитики: связка Директ → Метрика → CRM → сделка</div></div>
+        </div>
+        <div class="day-result accent">🔗 Результат: сквозная аналитика работает, видим путь от клика до сделки</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Ср</span><span class="day-date">7 мая</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Финальная оптимизация ставок — автостратегии на основе конверсий</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Написание страниц месяц 2: скупка × модели телефонов (iPhone 14, 13, 12...)</div></div>
+          <div class="task"><div class="task-dot t-site"></div><div class="task-text">Внедрение онлайн-калькулятора залога на главную страницу</div></div>
+        </div>
+        <div class="day-result green">⚡ Результат: калькулятор залога на сайте — конверсия вырастет</div>
+      </div>
+    </div>
+
+    <div class="day">
+      <div class="day-label"><span class="day-name" style="color:var(--text)">Чт</span><span class="day-date">8 мая</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Подготовка итогового месячного отчёта: план vs факт по каждому показателю</div></div>
+          <div class="task"><div class="task-dot t-dir"></div><div class="task-text">Прогноз на месяц 2: бюджеты, KPI, новые гипотезы для тестирования</div></div>
+          <div class="task"><div class="task-dot t-seo"></div><div class="task-text">Ссылочная масса: крауд-маркетинг в форумах НСК</div></div>
+        </div>
+        <div class="day-result accent">📋 Результат: месячный отчёт готов</div>
+      </div>
+    </div>
+
+    <div class="day focus">
+      <div class="day-label"><span class="day-name" style="color:var(--green)">Пт</span><span class="day-date">9 мая</span></div>
+      <div class="day-content">
+        <div class="day-tasks">
+          <div class="task"><div class="task-dot t-meet"></div><div class="task-text"><strong>Итоговая встреча / созвон с Павлом</strong> — результаты месяца, план на мес. 2, KPI</div></div>
+          <div class="task"><div class="task-dot t-anal"></div><div class="task-text">Финальные данные: звонки, визиты, сделки, CPL, ROMI по каждому каналу</div></div>
+        </div>
+        <div class="day-result green">🏆 Итог месяца: 400–600 новых квал. лидов из Директ при CPL 200–400 ₽</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="week-summary">
+    <div class="ws-item"><div class="ws-label">Квал. лидов / мес</div><div class="ws-val green">+400–600 новых</div></div>
+    <div class="ws-item"><div class="ws-label">CPL итог</div><div class="ws-val green">200–400 ₽</div></div>
+    <div class="ws-item"><div class="ws-label">SEO-страниц</div><div class="ws-val">30+ опубл.</div></div>
+  </div>
+</div>
+
+<!-- ИТОГ МЕСЯЦА -->
+<div class="month-summary">
+  <div class="ms-title">📊 Итог первого месяца — что будет сделано</div>
+  <div class="ms-grid">
+    <div class="ms-col dir">
+      <h4>Яндекс.Директ</h4>
+      <ul>
+        <li>4–5 кампаний в работе</li>
+        <li>Ломбард: поиск + районы + золото</li>
+        <li>Скупка: поиск + ретаргетинг</li>
+        <li>A/B тест объявлений завершён</li>
+        <li>400–600 квал. звонков / мес</li>
+        <li>CPL 200–400 ₽</li>
+      </ul>
+    </div>
+    <div class="ms-col seo">
+      <h4>SEO</h4>
+      <ul>
+        <li>30+ страниц опубликовано</li>
+        <li>Ломбард × 10 районов НСК</li>
+        <li>Залог × 5 категорий</li>
+        <li>Скупка × модели телефонов</li>
+        <li>Первые позиции в топ-50</li>
+        <li>Ссылочная масса: 20+ источников</li>
+      </ul>
+    </div>
+    <div class="ms-col site">
+      <h4>Сайт</h4>
+      <ul>
+        <li>Цены обновлены (золото актуал)</li>
+        <li>Калькулятор залога онлайн</li>
+        <li>Разделение: ломбард / комиссионка</li>
+        <li>Коллтрекинг настроен</li>
+        <li>Сквозная аналитика работает</li>
+        <li>Мета-теги и H1 оптимизированы</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ЕЖЕДНЕВНЫЙ ОТЧЁТ -->
+<div style="background:var(--bg2);border:1px solid var(--border);padding:24px 28px;margin:32px 0">
+  <h3 style="margin-bottom:16px">📱 Формат ежедневного отчёта (в Telegram)</h3>
+  <div style="background:var(--bg3);border-left:2px solid var(--accent);padding:16px 20px;font-size:13px;color:var(--text);line-height:1.7;font-family:monospace">
+    📊 SMart · [дата]<br><br>
+    🔍 Директ сегодня:<br>
+    — Показы: X<br>
+    — Клики: X (CTR X%)<br>
+    — Звонки: X<br>
+    — Расход: X ₽ / CPL X ₽<br><br>
+    📝 SEO: [что сделано]<br>
+    🌐 Сайт: [что обновлено]<br><br>
+    ⚡ Завтра: [план на следующий день]<br>
+    ❗ Вопросы: [если нужно что-то от команды]
+  </div>
+</div>
+
+<!-- ЕЖЕНЕДЕЛЬНЫЙ ОТЧЁТ -->
+<div style="background:var(--bg2);border:1px solid var(--border);padding:24px 28px;margin:16px 0 40px">
+  <h3 style="margin-bottom:16px">📋 Формат еженедельного отчёта (каждую пятницу)</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+    <div style="background:var(--bg3);padding:14px 16px;font-size:13px">
+      <div style="color:var(--accent2);font-weight:600;margin-bottom:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase">Факт за неделю</div>
+      <div style="color:var(--text)">Звонки / лиды из Директ<br>CPL по каждой кампании<br>Расход vs план<br>SEO: страниц опубликовано</div>
+    </div>
+    <div style="background:var(--bg3);padding:14px 16px;font-size:13px">
+      <div style="color:var(--green);font-weight:600;margin-bottom:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase">План на следующую неделю</div>
+      <div style="color:var(--text)">Что запускаем<br>Гипотезы для теста<br>Что отключаем<br>Бюджет на следующую неделю</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <div class="foot-name">Павел Фролов — CMO / Head of Marketing</div>
+      <div class="foot-contacts">
+        <div class="foot-c">📧 <a href="mailto:wwwfrolof@yandex.ru">wwwfrolof@yandex.ru</a></div>
+        <div class="foot-c">📱 <a href="tel:+79059390874">+7 (905) 939-08-74</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
