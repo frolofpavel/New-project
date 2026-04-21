@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion, useReducedMotion, Variants } from "framer-motion";
 import { ReactNode } from "react";
 
 type Props = {
@@ -39,8 +39,14 @@ export function SplitText({
   as = "span",
   once = true,
 }: Props) {
+  const reduceMotion = useReducedMotion();
   const Wrapper = motion[as];
   const words = text.split(/(\s+)/);
+
+  if (reduceMotion) {
+    const Tag = as;
+    return <Tag className={className}>{text}</Tag>;
+  }
 
   return (
     <Wrapper

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion, useReducedMotion, Variants } from "framer-motion";
 import { ReactNode } from "react";
 
 type RevealProps = {
@@ -20,18 +20,24 @@ export function Reveal({
   as = "div",
   once = true,
 }: RevealProps) {
-  const variants: Variants = {
-    hidden: { opacity: 0, y },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1],
-        delay,
-      },
-    },
-  };
+  const reduceMotion = useReducedMotion();
+  const variants: Variants = reduceMotion
+    ? {
+        hidden: { opacity: 1, y: 0 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0 } },
+      }
+    : {
+        hidden: { opacity: 0, y },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+            delay,
+          },
+        },
+      };
 
   const MotionTag = motion[as];
 
@@ -56,12 +62,13 @@ type StaggerProps = {
 };
 
 export function Stagger({ children, className, stagger = 0.08, delay = 0 }: StaggerProps) {
+  const reduceMotion = useReducedMotion();
   const variants: Variants = {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: stagger,
-        delayChildren: delay,
+        staggerChildren: reduceMotion ? 0 : stagger,
+        delayChildren: reduceMotion ? 0 : delay,
       },
     },
   };
@@ -88,14 +95,20 @@ export function StaggerItem({
   className?: string;
   y?: number;
 }) {
-  const variants: Variants = {
-    hidden: { opacity: 0, y },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-    },
-  };
+  const reduceMotion = useReducedMotion();
+  const variants: Variants = reduceMotion
+    ? {
+        hidden: { opacity: 1, y: 0 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0 } },
+      }
+    : {
+        hidden: { opacity: 0, y },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+        },
+      };
 
   return (
     <motion.div className={className} variants={variants}>

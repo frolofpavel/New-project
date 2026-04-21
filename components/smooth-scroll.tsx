@@ -9,6 +9,9 @@ export function SmoothScroll() {
     let cancelled = false;
 
     (async () => {
+      if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
       const { default: Lenis } = await import("lenis");
       if (cancelled) return;
       lenis = new Lenis({

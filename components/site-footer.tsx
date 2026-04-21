@@ -26,7 +26,7 @@ export function SiteFooter() {
           </p>
           <div className="site-footer__status">
             <span className="status-dot" aria-hidden="true" />
-            <span>Свободен для новых проектов · Q2 2026</span>
+            <span>Приём проектов · ответ до 24 ч в рабочие дни</span>
           </div>
         </div>
 

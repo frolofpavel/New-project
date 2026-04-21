@@ -69,7 +69,7 @@ export function SiteHeader() {
           <div className="live-status" aria-hidden="true">
             <span className="status-dot" />
             <span>{time || "Нск"}</span>
-            <span className="live-status__text">· открыт к обсуждениям</span>
+            <span className="live-status__text">· ответ в рабочий день</span>
           </div>
           <Link href="/contact" className="button button--primary button--sm">
             → обсудить

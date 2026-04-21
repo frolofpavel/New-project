@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform, Variants } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import Link from "next/link";
 import { MouseEvent as ReactMouseEvent, useEffect, useRef, useState } from "react";
 
@@ -23,11 +29,16 @@ const TERMINAL_LINES: Array<{ type: "prompt" | "arrow" | "folder" | "comment" | 
   { type: "comment", text: "# CPL −35% · ROMI 300%+ · B2B с 0 до 312M" },
 ];
 
-function useTypedTerminal() {
+function useTypedTerminal(instant: boolean) {
   const [visibleLines, setVisibleLines] = useState(0);
   const [typedChars, setTypedChars] = useState(0);
 
   useEffect(() => {
+    if (instant) {
+      setVisibleLines(TERMINAL_LINES.length);
+      setTypedChars(0);
+      return;
+    }
     let raf: number;
     let start = performance.now();
     const totalLines = TERMINAL_LINES.length;
@@ -64,19 +75,10 @@ function useTypedTerminal() {
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [instant]);
 
   return { visibleLines, typedChars };
 }
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.5 + i * 0.1 },
-  }),
-};
 
 function useTerminalTilt() {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -102,7 +104,9 @@ function useTerminalTilt() {
 }
 
 export function HeroBlock() {
-  const { visibleLines, typedChars } = useTypedTerminal();
+  const reduceMotion = useReducedMotion();
+  const instantMotion = !!reduceMotion;
+  const { visibleLines, typedChars } = useTypedTerminal(instantMotion);
   const tilt = useTerminalTilt();
 
   return (
@@ -115,9 +119,12 @@ export function HeroBlock() {
         <div>
           <motion.div
             className="hero__eyebrow"
-            initial={{ opacity: 0, y: 8 }}
+            initial={instantMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: instantMotion ? 0 : 0.6,
+              ease: [0.22, 1, 0.36, 1],
+            }}
           >
             <span className="eyebrow-tag">{siteConfig.hero.eyebrow}</span>
             <span className="eyebrow-sep" aria-hidden="true">·</span>
@@ -148,20 +155,26 @@ export function HeroBlock() {
 
           <motion.p
             className="hero__sub"
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={0}
+            initial={instantMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: instantMotion ? 0 : 0.7,
+              ease: [0.22, 1, 0.36, 1],
+              delay: instantMotion ? 0 : 0.5,
+            }}
           >
             {siteConfig.hero.description}
           </motion.p>
 
           <motion.div
             className="hero__ctas"
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={1}
+            initial={instantMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: instantMotion ? 0 : 0.7,
+              ease: [0.22, 1, 0.36, 1],
+              delay: instantMotion ? 0 : 0.6,
+            }}
           >
             <MagneticLink href={siteConfig.hero.primaryCta.href} className="button button--primary">
               {siteConfig.hero.primaryCta.label}
@@ -175,19 +188,27 @@ export function HeroBlock() {
         <motion.div
           className="terminal-wrap"
           ref={tilt.ref}
-          onMouseMove={tilt.onMove}
-          onMouseLeave={tilt.onLeave}
-          initial={{ opacity: 0, y: 40, scale: 0.97 }}
+          onMouseMove={instantMotion ? undefined : tilt.onMove}
+          onMouseLeave={instantMotion ? undefined : tilt.onLeave}
+          initial={instantMotion ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-          style={{
-            rotateX: tilt.rx,
-            rotateY: tilt.ry,
-            x: tilt.tx,
-            y: tilt.ty,
-            transformPerspective: 1200,
-            transformStyle: "preserve-3d",
+          transition={{
+            duration: instantMotion ? 0 : 0.9,
+            ease: [0.22, 1, 0.36, 1],
+            delay: instantMotion ? 0 : 0.2,
           }}
+          style={
+            instantMotion
+              ? { transformPerspective: 1200 }
+              : {
+                  rotateX: tilt.rx,
+                  rotateY: tilt.ry,
+                  x: tilt.tx,
+                  y: tilt.ty,
+                  transformPerspective: 1200,
+                  transformStyle: "preserve-3d",
+                }
+          }
           aria-hidden="true"
         >
           <div className="terminal">

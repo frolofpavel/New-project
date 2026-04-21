@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ReactNode } from "react";
 
 type HugeMarqueeProps = {
@@ -22,6 +22,8 @@ export function HugeMarquee({
   variant = "solid",
   className,
 }: HugeMarqueeProps) {
+  const reduceMotion = useReducedMotion();
+
   const loopItems: ReactNode = (
     <div className={`huge-marquee__row huge-marquee__row--${variant}`}>
       {items.map((item, i) => (
@@ -37,6 +39,14 @@ export function HugeMarquee({
 
   const from = direction === "left" ? "0%" : "-50%";
   const to = direction === "left" ? "-50%" : "0%";
+
+  if (reduceMotion) {
+    return (
+      <div className={`huge-marquee huge-marquee--static ${className ?? ""}`} aria-hidden="true">
+        <div className="huge-marquee__track huge-marquee__track--static">{loopItems}</div>
+      </div>
+    );
+  }
 
   return (
     <div className={`huge-marquee ${className ?? ""}`} aria-hidden="true">

@@ -14,6 +14,7 @@ export function CustomCursor() {
     if (typeof window === "undefined") return;
     const mqFine = window.matchMedia("(pointer: fine)");
     if (!mqFine.matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     setMounted(true);
     document.documentElement.classList.add("has-custom-cursor");
