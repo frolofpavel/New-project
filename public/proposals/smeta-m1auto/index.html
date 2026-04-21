@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Смета — м1 АВТО · 350 000 ₽</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#0f1117; color:#e2e8f0; line-height:1.6; }
+
+  .header { background:linear-gradient(135deg,#1a1f2e,#0f1117); border-bottom:1px solid #2d3748; padding:36px 60px 28px; }
+  .header-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; }
+  .brand { font-size:12px; color:#718096; letter-spacing:.12em; text-transform:uppercase; }
+  .date-badge { background:#2d3748; border-radius:20px; padding:3px 14px; font-size:12px; color:#a0aec0; }
+  h1 { font-size:26px; font-weight:700; color:#fff; margin-bottom:4px; }
+  .subtitle { color:#718096; font-size:14px; }
+  .meta-row { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  .pill { border-radius:20px; padding:3px 12px; font-size:12px; }
+  .pill-blue { background:#1a2744; border:1px solid #2b6cb0; color:#63b3ed; }
+  .pill-green { background:#0f2010; border:1px solid #276749; color:#68d391; }
+
+  .container { max-width:1000px; margin:0 auto; padding:36px 40px; }
+
+  /* Итог вверху */
+  .hero-total { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:14px; margin-bottom:36px; }
+  .ht-card { background:#1a1f2e; border:1px solid #2d3748; border-radius:12px; padding:20px 22px; }
+  .ht-card.main { background:linear-gradient(135deg,#1a2744,#1a1f2e); border-color:#2b6cb0; }
+  .ht-label { font-size:11px; color:#718096; text-transform:uppercase; letter-spacing:.09em; margin-bottom:8px; }
+  .ht-val { font-size:28px; font-weight:800; color:#fff; line-height:1; }
+  .ht-val.accent { color:#63b3ed; }
+  .ht-sub { font-size:12px; color:#718096; margin-top:5px; }
+
+  /* Секции */
+  .section { margin-bottom:32px; }
+  .section-title { font-size:14px; font-weight:600; color:#a0aec0; text-transform:uppercase; letter-spacing:.09em; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid #2d3748; }
+
+  /* Блоки сметы */
+  .block { background:#1a1f2e; border:1px solid #2d3748; border-radius:12px; margin-bottom:14px; overflow:hidden; }
+  .block-header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid #2d3748; cursor:pointer; }
+  .block-left { display:flex; align-items:center; gap:12px; }
+  .block-num { width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+  .bn1 { background:#1a2744; color:#63b3ed; }
+  .bn2 { background:#0f2010; color:#68d391; }
+  .bn3 { background:#2d1e0a; color:#f6ad55; }
+  .bn4 { background:#1a1030; color:#b794f4; }
+  .bn5 { background:#1a2030; color:#76e4f7; }
+  .bn6 { background:#200f0f; color:#fc8181; }
+  .bn7 { background:#1e1a10; color:#fbd38d; }
+  .block-name { font-size:15px; font-weight:700; color:#fff; }
+  .block-desc { font-size:12px; color:#718096; margin-top:2px; }
+  .block-price { font-size:18px; font-weight:800; color:#fff; white-space:nowrap; }
+
+  /* Строки внутри блока */
+  table { width:100%; border-collapse:collapse; }
+  th { background:#141820; color:#4a5568; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; padding:7px 20px; text-align:left; border-bottom:1px solid #1e2533; }
+  th.r { text-align:right; }
+  td { padding:10px 20px; border-bottom:1px solid #1e2533; font-size:13px; color:#cbd5e0; vertical-align:top; }
+  td.r { text-align:right; font-weight:600; color:#e2e8f0; white-space:nowrap; }
+  td.hrs { text-align:center; color:#718096; font-size:12px; }
+  td.rate { text-align:right; color:#4a5568; font-size:12px; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#1a1f2e; }
+  .task-name { font-weight:500; color:#e2e8f0; }
+  .task-desc { font-size:11px; color:#718096; margin-top:2px; }
+  .subtotal-row td { background:#141820; font-size:13px; font-weight:700; color:#a0aec0; padding:9px 20px; }
+  .subtotal-row td.r { color:#e2e8f0; }
+
+  /* Итоговая таблица */
+  .summary-table { background:#1a1f2e; border:1px solid #2d3748; border-radius:12px; overflow:hidden; margin-bottom:32px; }
+  .summary-table table th { background:#1a1f2e; }
+  .summary-row td { padding:13px 20px; }
+  .summary-row.total-row td { background:#1a2744; border-top:2px solid #2b6cb0; font-size:16px; font-weight:800; }
+  .summary-row.total-row td.r { color:#63b3ed; font-size:22px; }
+
+  /* Timeline */
+  .timeline { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:32px; }
+  .tl { background:#1a1f2e; border:1px solid #2d3748; border-radius:10px; padding:14px 16px; }
+  .tl-w { font-size:10px; color:#718096; text-transform:uppercase; letter-spacing:.08em; margin-bottom:5px; }
+  .tl-t { font-size:13px; font-weight:700; color:#fff; margin-bottom:8px; }
+  .tl-i { font-size:11px; color:#718096; padding:2px 0; padding-left:10px; position:relative; }
+  .tl-i::before { content:'·'; position:absolute; left:3px; }
+
+  /* Ставки */
+  .rates-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:32px; }
+  .rate-card { background:#1a1f2e; border:1px solid #2d3748; border-radius:8px; padding:12px 14px; }
+  .rc-role { font-size:11px; color:#718096; margin-bottom:4px; }
+  .rc-rate { font-size:17px; font-weight:700; color:#fff; }
+  .rc-unit { font-size:11px; color:#4a5568; }
+
+  /* Условия */
+  .terms { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:32px; }
+  .term { background:#1a1f2e; border:1px solid #2d3748; border-radius:8px; padding:14px 16px; }
+  .term-icon { font-size:18px; margin-bottom:7px; }
+  .term-t { font-size:13px; font-weight:600; color:#fff; margin-bottom:4px; }
+  .term-d { font-size:12px; color:#718096; line-height:1.6; }
+
+  /* CTA */
+  .cta-block { background:linear-gradient(135deg,#1a2744,#1a1f2e); border:2px solid #2b6cb0; border-radius:14px; padding:30px 36px; display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; }
+  .cta-left h2 { font-size:22px; font-weight:800; color:#fff; margin-bottom:6px; }
+  .cta-left p { font-size:14px; color:#718096; }
+  .cta-right { text-align:right; }
+  .cta-price { font-size:42px; font-weight:900; color:#63b3ed; line-height:1; }
+  .cta-deadline { font-size:14px; color:#718096; margin-top:6px; }
+
+  .footer { border-top:1px solid #2d3748; padding:18px 60px; display:flex; justify-content:space-between; margin-top:20px; }
+  .footer div { font-size:11px; color:#4a5568; }
+
+  .note { background:#1a2020; border:1px solid #276749; border-radius:6px; padding:8px 14px; font-size:12px; color:#68d391; margin-top:6px; display:inline-block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="brand">Смета на разработку · м1 АВТО</div>
+    <div class="date-badge">21 апреля 2026</div>
+  </div>
+  <h1>Полноценный сайт м1 АВТО — под ключ</h1>
+  <div class="subtitle">Автоимпорт: Европа, Корея, Китай, Бишкек · Москва · Прототип главной готов</div>
+  <div class="meta-row">
+    <span class="pill pill-blue">Проект-менеджер: Руслан</span>
+    <span class="pill pill-blue">ЛПР: Алина @ab_m1auto</span>
+    <span class="pill pill-green">Прототип: pavelfrolof.ru/proposals/m1auto</span>
+    <span class="pill pill-blue">Срок: 30 рабочих дней</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Итог сверху -->
+  <div class="hero-total">
+    <div class="ht-card main">
+      <div class="ht-label">Стоимость проекта</div>
+      <div class="ht-val accent">350 000 ₽</div>
+      <div class="ht-sub">Всё включено · под ключ</div>
+    </div>
+    <div class="ht-card">
+      <div class="ht-label">Срок разработки</div>
+      <div class="ht-val">30 дн.</div>
+      <div class="ht-sub">Рабочих · 6 недель</div>
+    </div>
+    <div class="ht-card">
+      <div class="ht-label">Трудоёмкость</div>
+      <div class="ht-val">~102 ч</div>
+      <div class="ht-sub">Специалисты 5 ролей</div>
+    </div>
+    <div class="ht-card">
+      <div class="ht-label">Страниц сайта</div>
+      <div class="ht-val">12+</div>
+      <div class="ht-sub">Уникальных шаблонов</div>
+    </div>
+  </div>
+
+  <!-- Рыночные ставки -->
+  <div class="section">
+    <div class="section-title">Ставки специалистов · Москва 2026</div>
+    <div class="rates-grid">
+      <div class="rate-card">
+        <div class="rc-role">UX/UI Дизайнер</div>
+        <div class="rc-rate">4 500 ₽<span class="rc-unit">/час</span></div>
+      </div>
+      <div class="rate-card">
+        <div class="rc-role">Frontend-разработчик</div>
+        <div class="rc-rate">5 000 ₽<span class="rc-unit">/час</span></div>
+      </div>
+      <div class="rate-card">
+        <div class="rc-role">Backend-разработчик</div>
+        <div class="rc-rate">5 500 ₽<span class="rc-unit">/час</span></div>
+      </div>
+      <div class="rate-card">
+        <div class="rc-role">SEO / Аналитик</div>
+        <div class="rc-rate">3 500 ₽<span class="rc-unit">/час</span></div>
+      </div>
+      <div class="rate-card">
+        <div class="rc-role">Копирайтер</div>
+        <div class="rc-rate">2 500 ₽<span class="rc-unit">/час</span></div>
+      </div>
+      <div class="rate-card">
+        <div class="rc-role">QA-тестировщик</div>
+        <div class="rc-rate">3 000 ₽<span class="rc-unit">/час</span></div>
+      </div>
+      <div class="rate-card">
+        <div class="rc-role">Project Manager</div>
+        <div class="rc-rate">3 500 ₽<span class="rc-unit">/час</span></div>
+      </div>
+      <div class="rate-card">
+        <div class="rc-role">DevOps / Деплой</div>
+        <div class="rc-rate">4 000 ₽<span class="rc-unit">/час</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Блоки сметы -->
+  <div class="section">
+    <div class="section-title">Детальная смета по блокам</div>
+
+    <!-- БЛОК 1 -->
+    <div class="block">
+      <div class="block-header">
+        <div class="block-left">
+          <div class="block-num bn1">1</div>
+          <div>
+            <div class="block-name">UX/UI Дизайн</div>
+            <div class="block-desc">Дизайн-система, все страницы, адаптивные макеты</div>
+          </div>
+        </div>
+        <div class="block-price">65 000 ₽</div>
+      </div>
+      <table>
+        <thead><tr><th>Задача</th><th class="r">Часы</th><th class="r">Ставка</th><th class="r">Сумма</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="task-name">UI Kit / Дизайн-система</div><div class="task-desc">Цветовая палитра, типографика, кнопки, карточки, формы — единый стиль</div></td>
+            <td class="hrs">4 ч</td><td class="rate">4 500 ₽</td><td class="r">18 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Главная страница — финальный макет</div><div class="task-desc">Доработка прототипа до продакшн-качества, все состояния</div></td>
+            <td class="hrs">3 ч</td><td class="rate">4 500 ₽</td><td class="r">13 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Каталог автомобилей</div><div class="task-desc">Список с фильтрами, карточка авто в каталоге, пагинация, пустой экран</div></td>
+            <td class="hrs">3 ч</td><td class="rate">4 500 ₽</td><td class="r">13 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Карточка автомобиля</div><div class="task-desc">Фотогалерея, характеристики, блок CTA, форма заявки, похожие авто</div></td>
+            <td class="hrs">2 ч</td><td class="rate">4 500 ₽</td><td class="r">9 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Страницы направлений × 4</div><div class="task-desc">Европа, Корея, Китай, Бишкек — уникальный шаблон × 4</div></td>
+            <td class="hrs">2 ч</td><td class="rate">4 500 ₽</td><td class="r">9 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">О нас, Контакты, 404, Спасибо</div><div class="task-desc">Статичные страницы + страница после отправки формы</div></td>
+            <td class="hrs">1 ч</td><td class="rate">4 500 ₽</td><td class="r">4 500 ₽</td>
+          </tr>
+          <tr class="subtotal-row"><td colspan="3">Итого блок: Дизайн</td><td class="r">65 000 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- БЛОК 2 -->
+    <div class="block">
+      <div class="block-header">
+        <div class="block-left">
+          <div class="block-num bn2">2</div>
+          <div>
+            <div class="block-name">Frontend-разработка</div>
+            <div class="block-desc">Адаптивная вёрстка всех страниц, анимации, интерактив</div>
+          </div>
+        </div>
+        <div class="block-price">75 000 ₽</div>
+      </div>
+      <table>
+        <thead><tr><th>Задача</th><th class="r">Часы</th><th class="r">Ставка</th><th class="r">Сумма</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="task-name">Главная страница</div><div class="task-desc">Адаптивная вёрстка, CSS-анимации, счётчики, фильтр подбора, параллакс</div></td>
+            <td class="hrs">5 ч</td><td class="rate">5 000 ₽</td><td class="r">25 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Каталог + карточка авто</div><div class="task-desc">Фильтры с JS, фотогалерея, лайтбокс, ленивая загрузка изображений</div></td>
+            <td class="hrs">4 ч</td><td class="rate">5 000 ₽</td><td class="r">20 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Страницы направлений × 4</div><div class="task-desc">Анимированные блоки, карты брендов, список авто по направлению</div></td>
+            <td class="hrs">2 ч</td><td class="rate">5 000 ₽</td><td class="r">10 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Общие компоненты</div><div class="task-desc">Шапка, футер, мобильное меню, всплывающая форма заявки, кнопки, иконки</div></td>
+            <td class="hrs">2 ч</td><td class="rate">5 000 ₽</td><td class="r">10 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Мобильная версия (320–768px)</div><div class="task-desc">Полный адаптив под смартфоны и планшеты, touch-события</div></td>
+            <td class="hrs">2 ч</td><td class="rate">5 000 ₽</td><td class="r">10 000 ₽</td>
+          </tr>
+          <tr class="subtotal-row"><td colspan="3">Итого блок: Frontend</td><td class="r">75 000 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- БЛОК 3 -->
+    <div class="block">
+      <div class="block-header">
+        <div class="block-left">
+          <div class="block-num bn3">3</div>
+          <div>
+            <div class="block-name">Backend-разработка и CMS</div>
+            <div class="block-desc">База данных, API, панель управления, кабинет менеджера</div>
+          </div>
+        </div>
+        <div class="block-price">80 000 ₽</div>
+      </div>
+      <table>
+        <thead><tr><th>Задача</th><th class="r">Часы</th><th class="r">Ставка</th><th class="r">Сумма</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="task-name">Архитектура БД + API</div><div class="task-desc">Структура базы данных: автомобили, заявки, направления, настройки</div></td>
+            <td class="hrs">3 ч</td><td class="rate">5 500 ₽</td><td class="r">16 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">CMS — управление каталогом авто</div><div class="task-desc">Добавление/редактирование/удаление авто, загрузка фото, статус (продан/доступен)</div></td>
+            <td class="hrs">4 ч</td><td class="rate">5 500 ₽</td><td class="r">22 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Кабинет менеджера — заявки</div><div class="task-desc">Список входящих заявок, статусы, фильтры по направлению/бюджету/дате</div></td>
+            <td class="hrs">3 ч</td><td class="rate">5 500 ₽</td><td class="r">16 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Управление контентом страниц</div><div class="task-desc">Редактирование текстов, блоков, отзывов — без программиста</div></td>
+            <td class="hrs">2 ч</td><td class="rate">5 500 ₽</td><td class="r">11 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">API для форм и заявок</div><div class="task-desc">Обработка форм, валидация, защита от спама, API endpoint</div></td>
+            <td class="hrs">2 ч</td><td class="rate">5 500 ₽</td><td class="r">11 000 ₽</td>
+          </tr>
+          <tr class="subtotal-row"><td colspan="3">Итого блок: Backend + CMS</td><td class="r">80 000 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- БЛОК 4 -->
+    <div class="block">
+      <div class="block-header">
+        <div class="block-left">
+          <div class="block-num bn4">4</div>
+          <div>
+            <div class="block-name">Интеграции</div>
+            <div class="block-desc">CRM, Telegram, аналитика, карты, коллтрекинг</div>
+          </div>
+        </div>
+        <div class="block-price">45 000 ₽</div>
+      </div>
+      <table>
+        <thead><tr><th>Задача</th><th class="r">Часы</th><th class="r">Ставка</th><th class="r">Сумма</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="task-name">AmoCRM — интеграция заявок</div><div class="task-desc">Автоматическое создание сделки при каждой заявке с сайта, поля + UTM-метки</div></td>
+            <td class="hrs">3 ч</td><td class="rate">5 500 ₽</td><td class="r">16 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Telegram-бот — уведомления</div><div class="task-desc">Мгновенные уведомления менеджеру при новой заявке, с данными клиента</div></td>
+            <td class="hrs">1,5 ч</td><td class="rate">5 000 ₽</td><td class="r">7 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Яндекс.Карты — 3 филиала</div><div class="task-desc">Карта с метками офисов на странице контактов</div></td>
+            <td class="hrs">1 ч</td><td class="rate">5 000 ₽</td><td class="r">5 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Яндекс.Метрика + цели</div><div class="task-desc">Счётчик, Вебвизор, цели: заявка / клик по телефону / кнопка CTA</div></td>
+            <td class="hrs">1 ч</td><td class="rate">3 500 ₽</td><td class="r">3 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Google Analytics 4</div><div class="task-desc">Счётчик, события, конверсии, связка с Яндекс.Метрикой</div></td>
+            <td class="hrs">0,5 ч</td><td class="rate">3 500 ₽</td><td class="r">1 750 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Коллтрекинг (Callibri / CoMagic)</div><div class="task-desc">Подмена номеров, связка звонков с рекламными источниками</div></td>
+            <td class="hrs">2 ч</td><td class="rate">3 500 ₽</td><td class="r">7 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Email-уведомления + SMTP</div><div class="task-desc">Отправка копии заявки на почту менеджера и автоответ клиенту</div></td>
+            <td class="hrs">0,75 ч</td><td class="rate">5 000 ₽</td><td class="r">3 750 ₽</td>
+          </tr>
+          <tr class="subtotal-row"><td colspan="3">Итого блок: Интеграции</td><td class="r">45 000 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- БЛОК 5 -->
+    <div class="block">
+      <div class="block-header">
+        <div class="block-left">
+          <div class="block-num bn5">5</div>
+          <div>
+            <div class="block-name">SEO и контент</div>
+            <div class="block-desc">Техническая оптимизация, семантика, тексты, медиа</div>
+          </div>
+        </div>
+        <div class="block-price">40 000 ₽</div>
+      </div>
+      <table>
+        <thead><tr><th>Задача</th><th class="r">Часы</th><th class="r">Ставка</th><th class="r">Сумма</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="task-name">Техническое SEO</div><div class="task-desc">Meta-теги, canonical, Schema.org AutoDealer+LocalBusiness, sitemap, robots, OG-теги</div></td>
+            <td class="hrs">3 ч</td><td class="rate">3 500 ₽</td><td class="r">10 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Семантическое ядро</div><div class="task-desc">Сбор и кластеризация запросов: импорт авто + 4 направления + услуги</div></td>
+            <td class="hrs">3 ч</td><td class="rate">3 500 ₽</td><td class="r">10 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Тексты для 6 страниц</div><div class="task-desc">Главная, О нас, 4 направления — SEO-оптимизированные, 700–1000 слов</div></td>
+            <td class="hrs">6 ч</td><td class="rate">2 500 ₽</td><td class="r">15 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Обработка фото и медиа</div><div class="task-desc">Сжатие, WebP-конвертация, alt-теги, именование файлов</div></td>
+            <td class="hrs">1 ч</td><td class="rate">2 500 ₽</td><td class="r">4 000 ₽</td>
+          </tr>
+          <tr class="subtotal-row"><td colspan="3">Итого блок: SEO и контент</td><td class="r">40 000 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- БЛОК 6 -->
+    <div class="block">
+      <div class="block-header">
+        <div class="block-left">
+          <div class="block-num bn6">6</div>
+          <div>
+            <div class="block-name">Тестирование и запуск</div>
+            <div class="block-desc">QA, кросс-браузерность, деплой, SSL, производительность</div>
+          </div>
+        </div>
+        <div class="block-price">25 000 ₽</div>
+      </div>
+      <table>
+        <thead><tr><th>Задача</th><th class="r">Часы</th><th class="r">Ставка</th><th class="r">Сумма</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="task-name">Функциональное тестирование</div><div class="task-desc">Формы, фильтры, CMS, CRM, уведомления — все сценарии</div></td>
+            <td class="hrs">2 ч</td><td class="rate">3 000 ₽</td><td class="r">6 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Кросс-браузерное тестирование</div><div class="task-desc">Chrome, Firefox, Safari, Edge · iOS Safari, Android Chrome</div></td>
+            <td class="hrs">1,5 ч</td><td class="rate">3 000 ₽</td><td class="r">4 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">PageSpeed оптимизация</div><div class="task-desc">Минификация, lazy load, кэширование, WebP — цель 80+ мобайл</div></td>
+            <td class="hrs">2 ч</td><td class="rate">4 000 ₽</td><td class="r">8 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Деплой + SSL + хостинг</div><div class="task-desc">Настройка сервера, HTTPS, домен, резервное копирование</div></td>
+            <td class="hrs">1 ч</td><td class="rate">4 000 ₽</td><td class="r">4 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Передача и документация</div><div class="task-desc">Инструкция по CMS, передача доступов, обучение работе с каталогом</div></td>
+            <td class="hrs">0,75 ч</td><td class="rate">3 500 ₽</td><td class="r">2 500 ₽</td>
+          </tr>
+          <tr class="subtotal-row"><td colspan="3">Итого блок: Тестирование и запуск</td><td class="r">25 000 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- БЛОК 7 -->
+    <div class="block">
+      <div class="block-header">
+        <div class="block-left">
+          <div class="block-num bn7">7</div>
+          <div>
+            <div class="block-name">Управление проектом</div>
+            <div class="block-desc">PM: планирование, согласования, риски, коммуникация</div>
+          </div>
+        </div>
+        <div class="block-price">20 000 ₽</div>
+      </div>
+      <table>
+        <thead><tr><th>Задача</th><th class="r">Часы</th><th class="r">Ставка</th><th class="r">Сумма</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="task-name">Планирование и постановка задач</div><div class="task-desc">Декомпозиция, таймлайн, распределение по исполнителям</div></td>
+            <td class="hrs">2 ч</td><td class="rate">3 500 ₽</td><td class="r">7 000 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Еженедельные синки с клиентом</div><div class="task-desc">5 встреч × 1 час — демо, правки, согласование следующего этапа</div></td>
+            <td class="hrs">5 ч</td><td class="rate">2 500 ₽</td><td class="r">12 500 ₽</td>
+          </tr>
+          <tr>
+            <td><div class="task-name">Риски и контроль качества</div><div class="task-desc">Код-ревью, проверка соответствия дизайну, финальная приёмка</div></td>
+            <td class="hrs">0,14 ч</td><td class="rate">3 500 ₽</td><td class="r">500 ₽</td>
+          </tr>
+          <tr class="subtotal-row"><td colspan="3">Итого блок: PM</td><td class="r">20 000 ₽</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Сводная таблица -->
+  <div class="section">
+    <div class="section-title">Сводная таблица</div>
+    <div class="summary-table">
+      <table>
+        <thead><tr><th>#</th><th>Блок работ</th><th class="r">Сумма</th><th class="r">Доля</th></tr></thead>
+        <tbody>
+          <tr class="summary-row"><td>1</td><td>UX/UI Дизайн</td><td class="r">65 000 ₽</td><td class="r">18,6%</td></tr>
+          <tr class="summary-row"><td>2</td><td>Frontend-разработка</td><td class="r">75 000 ₽</td><td class="r">21,4%</td></tr>
+          <tr class="summary-row"><td>3</td><td>Backend + CMS</td><td class="r">80 000 ₽</td><td class="r">22,9%</td></tr>
+          <tr class="summary-row"><td>4</td><td>Интеграции (CRM, Telegram, аналитика)</td><td class="r">45 000 ₽</td><td class="r">12,9%</td></tr>
+          <tr class="summary-row"><td>5</td><td>SEO и контент</td><td class="r">40 000 ₽</td><td class="r">11,4%</td></tr>
+          <tr class="summary-row"><td>6</td><td>Тестирование и запуск</td><td class="r">25 000 ₽</td><td class="r">7,1%</td></tr>
+          <tr class="summary-row"><td>7</td><td>Управление проектом</td><td class="r">20 000 ₽</td><td class="r">5,7%</td></tr>
+          <tr class="summary-row total-row"><td colspan="2">ИТОГО · Полный сайт под ключ</td><td class="r">350 000 ₽</td><td class="r">100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Таймлайн -->
+  <div class="section">
+    <div class="section-title">Этапы · 6 недель</div>
+    <div class="timeline">
+      <div class="tl">
+        <div class="tl-w">Нед. 1</div>
+        <div class="tl-t">Дизайн</div>
+        <div class="tl-i">UI Kit и дизайн-система</div>
+        <div class="tl-i">Макеты главной</div>
+        <div class="tl-i">Макеты каталога</div>
+        <div class="tl-i">Согласование</div>
+      </div>
+      <div class="tl">
+        <div class="tl-w">Нед. 2</div>
+        <div class="tl-t">Frontend</div>
+        <div class="tl-i">Вёрстка главной</div>
+        <div class="tl-i">Анимации + фильтр</div>
+        <div class="tl-i">Мобильная версия</div>
+        <div class="tl-i">Общие компоненты</div>
+      </div>
+      <div class="tl">
+        <div class="tl-w">Нед. 3</div>
+        <div class="tl-t">Каталог + Backend</div>
+        <div class="tl-i">Каталог + карточки</div>
+        <div class="tl-i">Страницы направлений</div>
+        <div class="tl-i">API + БД</div>
+        <div class="tl-i">CMS (каталог авто)</div>
+      </div>
+      <div class="tl">
+        <div class="tl-w">Нед. 4</div>
+        <div class="tl-t">Интеграции</div>
+        <div class="tl-i">AmoCRM</div>
+        <div class="tl-i">Telegram-бот</div>
+        <div class="tl-i">Аналитика + цели</div>
+        <div class="tl-i">Коллтрекинг</div>
+      </div>
+      <div class="tl">
+        <div class="tl-w">Нед. 5–6</div>
+        <div class="tl-t">SEO + Запуск</div>
+        <div class="tl-i">Тексты + SEO</div>
+        <div class="tl-i">QA-тестирование</div>
+        <div class="tl-i">PageSpeed</div>
+        <div class="tl-i">Деплой + сдача</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA блок -->
+  <div class="cta-block">
+    <div class="cta-left">
+      <h2>Полный сайт под ключ</h2>
+      <p>Дизайн · Разработка · CMS · CRM · SEO · Запуск<br>Гарантия 30 дней бесплатной поддержки после сдачи</p>
+    </div>
+    <div class="cta-right">
+      <div class="cta-price">350 000 ₽</div>
+      <div class="cta-deadline">30 рабочих дней · оплата 50/50</div>
+    </div>
+  </div>
+
+  <!-- Условия -->
+  <div class="section">
+    <div class="section-title">Условия</div>
+    <div class="terms">
+      <div class="term">
+        <div class="term-icon">💳</div>
+        <div class="term-t">Оплата 50/50</div>
+        <div class="term-d">175 000 ₽ — предоплата при старте<br>175 000 ₽ — после приёмки сайта</div>
+      </div>
+      <div class="term">
+        <div class="term-icon">🔄</div>
+        <div class="term-t">Правки включены</div>
+        <div class="term-d">До 3 раундов правок по каждому этапу. Структурные изменения — по доп. смете.</div>
+      </div>
+      <div class="term">
+        <div class="term-icon">🛡</div>
+        <div class="term-t">Гарантия 30 дней</div>
+        <div class="term-d">Бесплатное исправление багов в течение месяца после запуска.</div>
+      </div>
+      <div class="term">
+        <div class="term-icon">📦</div>
+        <div class="term-t">Что нужно от клиента</div>
+        <div class="term-d">Фото авто, логотип в SVG, доступ к домену и хостингу, контакт ЛПР для согласований.</div>
+      </div>
+      <div class="term">
+        <div class="term-icon">📞</div>
+        <div class="term-t">Отчётность</div>
+        <div class="term-d">Еженедельные демо в Telegram. Доступ к задачам в Notion или Битрикс24.</div>
+      </div>
+      <div class="term">
+        <div class="term-icon">🚀</div>
+        <div class="term-t">Поддержка после запуска</div>
+        <div class="term-d">Тариф сопровождения — 25 000 ₽/мес: обновления, новые авто, правки.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>Смета действительна 30 дней · м1 АВТО · Агентство Павла Фролова · 21.04.2026</div>
+  <div>Менеджер: Руслан · ЛПР: @ab_m1auto</div>
+</div>
+
+</body>
+</html>
