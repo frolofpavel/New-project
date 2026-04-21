@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КП — Monomount — Павел Фролов</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b14;
+  --surface:#0e1220;
+  --surface2:#131928;
+  --border:#1e2638;
+  --border2:#263044;
+  --text:#eef0f7;
+  --muted:#6b7594;
+  --accent:#b8922a;
+  --al:#d4aa3a;
+  --al2:#f0cc6a;
+  --abg:rgba(212,170,58,0.08);
+  --abg2:rgba(212,170,58,0.15);
+  --glow:rgba(212,170,58,0.25);
+  --grad:linear-gradient(135deg,#b8922a,#f0cc6a,#b8922a);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* — СТРАНИЦЫ — */
+.page{display:none;min-height:100vh;padding:106px 32px 80px;max-width:1120px;margin:0 auto;opacity:0;transform:translateY(12px);transition:opacity .3s ease,transform .3s ease}
+.page.active{display:block;animation:fadeUp .35s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* — НАВИГАЦИЯ — */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,11,20,.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nr1{display:flex;align-items:center;justify-content:space-between;padding:13px 28px}
+.nlogo{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.06em}
+.ntit{font-size:12px;color:var(--muted);margin-left:14px;letter-spacing:.02em}
+.nleft{display:flex;align-items:center}
+.nctl{display:flex;align-items:center;gap:8px}
+.nbtn{background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:6px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-family:'Inter',sans-serif;transition:all .2s ease;font-weight:500}
+.nbtn:hover{background:var(--abg2);border-color:var(--accent);color:var(--al)}
+.nctr{font-size:12px;color:var(--muted);min-width:48px;text-align:center;font-variant-numeric:tabular-nums}
+.nr2{display:flex;flex-wrap:wrap;gap:2px;padding:8px 28px 10px;border-top:1px solid var(--border)}
+.nl{font-size:11px;padding:4px 11px;border-radius:6px;cursor:pointer;color:var(--muted);border:1px solid transparent;white-space:nowrap;transition:all .18s ease;letter-spacing:.01em}
+.nl.active{color:var(--al2);border-color:rgba(212,170,58,.35);background:var(--abg2);font-weight:600}
+.nl:hover:not(.active){color:var(--text);background:var(--surface2)}
+.nn{color:var(--border2);margin-right:5px;font-size:10px}
+
+/* — ТИПОГРАФИКА — */
+h1{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1.1;letter-spacing:-.01em}
+h2{font-family:'Syne',sans-serif;font-size:clamp(20px,2.6vw,30px);font-weight:800;margin-bottom:28px;letter-spacing:-.01em}
+h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px;color:var(--text)}
+p{line-height:1.7;color:var(--text)}
+
+/* — КАРТОЧКИ — */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.csm{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px;transition:border-color .2s}
+.csm:hover{border-color:var(--border2)}
+
+/* — ГРИДЫ — */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+/* — ЧИПЫ — */
+.chip{display:inline-block;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--abg);color:var(--al);border:1px solid rgba(212,170,58,.25);margin:4px 4px 4px 0;letter-spacing:.02em;transition:all .2s}
+.chip:hover{background:var(--abg2);border-color:rgba(212,170,58,.5)}
+
+/* — УТИЛИТЫ — */
+.lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.ac{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* — ТАБЛИЦЫ — */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:11px 14px;border-bottom:1px solid var(--border);background:var(--surface2)}
+td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(212,170,58,.03)}
+.tw{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:16px;overflow-x:auto}
+
+/* — KPI КАРТОЧКИ — */
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:32px 0}
+.kcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 16px;text-align:center;position:relative;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.kcard::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(212,170,58,.07) 0%,transparent 70%);pointer-events:none}
+.kcard:hover{transform:translateY(-3px);border-color:rgba(212,170,58,.3);box-shadow:0 12px 32px rgba(0,0,0,.4),0 0 0 1px rgba(212,170,58,.1)}
+.kval{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;line-height:1}
+.klbl{font-size:11px;color:var(--muted);line-height:1.45;letter-spacing:.02em}
+
+/* — ПРОЧИЕ КОМПОНЕНТЫ — */
+.ph{border-left:2px solid var(--al);padding-left:18px;margin-bottom:22px}
+.pht{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--al2);margin-bottom:8px}
+.sbar{height:5px;background:var(--border2);border-radius:3px;margin-top:8px}
+.sfill{height:5px;background:var(--grad);border-radius:3px}
+.tok{color:#4ade80;font-size:13px;margin-bottom:3px}
+.twarn{color:#fbbf24;font-size:13px;margin-bottom:3px}
+.tbad{color:#f87171;font-size:13px;margin-bottom:3px}
+.wh{background:var(--abg);border:1px solid rgba(212,170,58,.3);border-radius:10px;padding:14px 18px;margin:20px 0 12px}
+.wtit{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--al2)}
+.wkpi{font-size:12px;color:var(--muted);margin-top:5px}
+.dr{display:grid;grid-template-columns:54px 1fr auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;transition:background .15s}
+.dr:hover{background:rgba(255,255,255,.015);margin:0 -8px;padding:10px 8px}
+.dn{font-family:'Syne',sans-serif;font-weight:700;color:var(--al)}
+
+/* — БЕЙДЖИ — */
+.tdir{background:rgba(74,222,128,.1);color:#4ade80;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;border:1px solid rgba(74,222,128,.2)}
+.tseo{background:rgba(96,165,250,.1);color:#60a5fa;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;border:1px solid rgba(96,165,250,.2)}
+.tsite{background:rgba(251,191,36,.1);color:#fbbf24;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;border:1px solid rgba(251,191,36,.2)}
+.tanal{background:rgba(192,132,252,.1);color:#c084fc;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;border:1px solid rgba(192,132,252,.2)}
+.tmeet{background:rgba(248,113,113,.1);color:#f87171;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;border:1px solid rgba(248,113,113,.2)}
+.tb2b{background:var(--abg2);color:var(--al2);padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;border:1px solid rgba(212,170,58,.3)}
+
+/* — ОФФЕР / AD КАРТОЧКИ — */
+.offe-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:12px;transition:border-color .2s}
+.offe-card:hover{border-color:var(--border2)}
+.offe-type{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--al);margin-bottom:10px}
+.offe-head{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.ad-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px;transition:border-color .2s}
+.ad-card:hover{border-color:var(--border2)}
+.ad-pl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--al);margin-bottom:12px}
+.ad-cta{display:inline-block;background:var(--abg);color:var(--al2);border:1px solid rgba(212,170,58,.3);padding:5px 13px;border-radius:6px;font-size:12px;font-weight:600;transition:all .2s}
+.ad-cta:hover{background:var(--abg2)}
+
+/* — КОНТАКТЫ — */
+.cbar{display:flex;gap:16px;flex-wrap:wrap;margin-top:20px}
+.ci{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.ci a{color:var(--al);text-decoration:none;font-weight:500;transition:color .15s}
+.ci a:hover{color:var(--al2)}
+.qstep{display:none}
+
+/* — ДЕКОР ОБЛОЖКИ — */
+#p0{position:relative}
+#p0::before{content:'';position:fixed;top:-40%;right:-20%;width:700px;height:700px;background:radial-gradient(ellipse,rgba(180,146,42,.06) 0%,transparent 65%);pointer-events:none;z-index:0}
+#p0 > *{position:relative;z-index:1}
+
+/* — СКРОЛЛБАР — */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+@media(max-width:768px){.g2,.g3,.g4,.kgrid{grid-template-columns:1fr}.nr2{display:none}.dr{grid-template-columns:50px 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nr1">
+    <div class="nleft"><span class="nlogo">MONOMOUNT</span><span class="ntit">&times; Павел Фролов &mdash; CMO</span></div>
+    <div class="nctl">
+      <button class="nbtn" onclick="go(currentPage-1)">&#8592;</button>
+      <span class="nctr" id="nctr">1 / 13</span>
+      <button class="nbtn" onclick="go(currentPage+1)">&#8594;</button>
+    </div>
+  </div>
+  <div class="nr2">
+    <span class="nl active" onclick="go(0)"><span class="nn">00</span>Обложка</span>
+    <span class="nl" onclick="go(1)"><span class="nn">01</span>Анализ ниши</span>
+    <span class="nl" onclick="go(2)"><span class="nn">02</span>Конкуренты</span>
+    <span class="nl" onclick="go(3)"><span class="nn">03</span>Позиц. конкурентов</span>
+    <span class="nl" onclick="go(4)"><span class="nn">04</span>Позиционирование</span>
+    <span class="nl" onclick="go(5)"><span class="nn">05</span>Стратегия</span>
+    <span class="nl" onclick="go(6)"><span class="nn">06</span>Маркетинг-план</span>
+    <span class="nl" onclick="go(7)"><span class="nn">07</span>UX/UI аудит</span>
+    <span class="nl" onclick="go(8)"><span class="nn">08</span>SEO аудит</span>
+    <span class="nl" onclick="go(9)"><span class="nn">09</span>Офферы</span>
+    <span class="nl" onclick="go(10)"><span class="nn">10</span>Объявления</span>
+    <span class="nl" onclick="go(11)"><span class="nn">11</span>Прототип сайта</span>
+    <span class="nl" onclick="go(12)"><span class="nn">12</span>План по дням</span>
+  </div>
+</nav>
+
+<!-- 00 ОБЛОЖКА -->
+<div class="page active" id="p0">
+<div style="max-width:780px">
+  <div class="lbl" style="margin-bottom:16px">Коммерческое предложение &middot; Апрель 2026</div>
+  <h1>Выстраиваю B2B-маркетинг<br>для <span class="ac">Monomount</span></h1>
+  <p style="font-size:17px;color:var(--muted);margin:20px 0 0;line-height:1.6;max-width:640px">50% выручки уже идёт от корпоративных клиентов &mdash; без единого вложения в B2B-маркетинг. Выстрою систему лидогенерации, которая удвоит этот поток за 6 месяцев.</p>
+</div>
+<div class="kgrid" style="margin-top:36px">
+  <div class="kcard"><div class="kval">80&ndash;120</div><div class="klbl">корп. лидов<br>в месяц (нед. 8)</div></div>
+  <div class="kcard"><div class="kval">85&ndash;150 К</div><div class="klbl">зарплата<br>по вакансии</div></div>
+  <div class="kcard"><div class="kval">950 &#8381;</div><div class="klbl">целевой CPL<br>B2B-сегмент</div></div>
+  <div class="kcard"><div class="kval">4&ndash;6 нед.</div><div class="klbl">до первых<br>B2B-результатов</div></div>
+</div>
+<div style="margin:28px 0">
+  <span class="chip">19 лет в маркетинге</span>
+  <span class="chip">Бюджеты до 50 млн &#8381;/мес</span>
+  <span class="chip">ROMI 300%+</span>
+  <span class="chip">B2B с нуля до 312 млн &#8381;</span>
+  <span class="chip">CPL &minus;25&ndash;40%</span>
+  <span class="chip">Производство и B2B</span>
+</div>
+<div class="card" style="max-width:640px">
+  <h3>Павел Фролов &mdash; CMO / Руководитель маркетинга</h3>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6">8+ лет на руководящих позициях. Клиенты: Расцветай (7 500 лидов/мес, 5+ лет), Насклад Групп (2+ года), Steam-проект (15 млн &#8381;/мес). Удалённо, полная занятость, своя команда подрядчиков.</p>
+  <div class="cbar">
+    <div class="ci">&#9993; <a href="mailto:wwwfrolof@yandex.ru">wwwfrolof@yandex.ru</a></div>
+    <div class="ci">&#9990; <a href="tel:+79059390874">+7 (905) 939-08-74</a></div>
+    <div class="ci">&#127760; <a href="https://pavelfrolof.ru" target="_blank">pavelfrolof.ru</a></div>
+  </div>
+</div>
+</div>
+
+<!-- 01 АНАЛИЗ НИШИ -->
+<div class="page" id="p1">
+<h2>01. Анализ ниши</h2>
+<div class="g2" style="margin-bottom:20px">
+  <div class="card">
+    <div class="lbl">Объём рынка (2024)</div>
+    <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--al)">80&ndash;90 млрд &#8381;</div>
+    <p style="font-size:13px;color:var(--muted);margin-top:8px">Рынок корп. подарков и мерча РФ (Portobello, Коммерсантъ). Прогноз 2026 &mdash; 100&ndash;120 млрд &#8381;.</p>
+  </div>
+  <div class="card">
+    <div class="lbl">Динамика</div>
+    <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--al)">+15&ndash;20%</div>
+    <p style="font-size:13px;color:var(--muted);margin-top:8px">Рост г/г в 2024. Средний чек корп. заказа вырос на 23% &mdash; до 66 310 &#8381; (T-Data, янв&ndash;ноябрь 2024).</p>
+  </div>
+</div>
+<div class="card" style="margin-bottom:20px">
+  <h3>Топ-3 тренда 2025</h3>
+  <div class="g3" style="margin-top:12px">
+    <div class="csm"><div class="lbl">Тренд 1</div><div style="font-weight:600;margin-bottom:6px">Персонализация как стандарт</div><p style="font-size:13px;color:var(--muted)">67% корп. заказчиков требуют гравировку/персонализацию. Безликий мерч уходит &mdash; побеждают именные подарки.</p></div>
+    <div class="csm"><div class="lbl">Тренд 2</div><div style="font-weight:600;margin-bottom:6px">Сделано в России = преимущество</div><p style="font-size:13px;color:var(--muted)">После 2022 корп. клиенты ищут российских производителей. Локальное производство &mdash; аргумент в тендерах.</p></div>
+    <div class="csm"><div class="lbl">Тренд 3</div><div style="font-weight:600;margin-bottom:6px">Наградная продукция растёт</div><p style="font-size:13px;color:var(--muted)">Сегмент наград из натуральных материалов +35% в 2024. Компании уходят от пластика к дереву и коже.</p></div>
+  </div>
+</div>
+<div class="card" style="margin-bottom:20px">
+  <h3>Топ-3 угрозы</h3>
+  <div class="g3" style="margin-top:12px">
+    <div class="csm"><div class="lbl">Угроза 1</div><div style="font-weight:600;margin-bottom:6px">Маркетплейсы давят цену</div><p style="font-size:13px;color:var(--muted)">WB и Ozon создают ценовое давление на B2C. Выход &mdash; уйти в B2B и кастомизацию, где они не конкурируют.</p></div>
+    <div class="csm"><div class="lbl">Угроза 2</div><div style="font-weight:600;margin-bottom:6px">Сезонность B2B</div><p style="font-size:13px;color:var(--muted)">60% корп. заказов &mdash; Новый год и 23 фев / 8 марта. Нужна стратегия загрузки в межсезонье.</p></div>
+    <div class="csm"><div class="lbl">Угроза 3</div><div style="font-weight:600;margin-bottom:6px">Длинные тендеры</div><p style="font-size:13px;color:var(--muted)">Госзаказчики и крупный корпоратив &mdash; цикл сделки 3&ndash;6 мес. Без CRM и follow-up лиды теряются.</p></div>
+  </div>
+</div>
+<div class="card">
+  <h3>Целевые сегменты ЦА</h3>
+  <div class="tw" style="margin-top:0">
+    <table>
+      <thead><tr><th>Сегмент</th><th>Характеристика</th><th>Боль</th><th>Чек</th><th>Приоритет</th></tr></thead>
+      <tbody>
+        <tr><td><strong>HR / подарки сотрудникам</strong></td><td>Компании 50&ndash;500 чел.</td><td>Надёжный поставщик с кастомизацией</td><td>80&ndash;400 К &#8381;</td><td><span class="ac">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td><strong>Наградная / Event</strong></td><td>Организаторы конф. и мероприятий</td><td>Уникальные награды &mdash; не пластик</td><td>40&ndash;200 К &#8381;</td><td><span class="ac">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td><strong>Госсектор / Тендеры</strong></td><td>Администрации, ФГУПы</td><td>Российское производство + документы</td><td>100&ndash;500 К &#8381;</td><td><span class="ac">&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td><strong>HoReCa</strong></td><td>Рестораны, отели</td><td>Дизайн + производство + срок</td><td>50&ndash;300 К &#8381;</td><td><span class="ac">&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td><strong>B2C премиум / WB</strong></td><td>Розница, маркетплейсы</td><td>Уникальный товар с хорошей маржой</td><td>2&ndash;15 К &#8381;</td><td><span class="ac">&#9733;&#9733;</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- 02 КОНКУРЕНТЫ -->
+<div class="page" id="p2">
+<h2>02. Анализ конкурентов</h2>
+<p style="color:var(--muted);margin-bottom:20px;font-size:14px">4 реальных конкурента &mdash; производители корп. подарков из кожи и дерева в России</p>
+
+<div class="card" style="margin-bottom:18px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+    <div><h3 style="margin-bottom:4px">Lewski</h3><a href="https://lewski.ru" target="_blank" style="font-size:12px;color:var(--al)">lewski.ru</a></div>
+    <div style="text-align:right"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--al)">71/100</div><div class="sbar" style="width:130px"><div class="sfill" style="width:71%"></div></div></div>
+  </div>
+  <div class="csm" style="margin-bottom:12px;border-color:rgba(139,105,20,.3)"><div class="lbl">Главный оффер</div><p style="font-size:13px;font-style:italic;margin-top:6px">"Корп. подарки из натуральной кожи с логотипом &mdash; выбери аксессуар, мы нанесём твой логотип"</p></div>
+  <div class="g2">
+    <div><div class="lbl">Критерии</div><table style="font-size:12px"><tr><td>УТП (25)</td><td style="color:var(--al);font-weight:600">18</td></tr><tr><td>Сайт (20)</td><td style="color:var(--al);font-weight:600">15</td></tr><tr><td>Трафик (20)</td><td style="color:var(--al);font-weight:600">14</td></tr><tr><td>Лицензии (15)</td><td style="color:var(--al);font-weight:600">12</td></tr><tr><td>Соцсети (10)</td><td style="color:var(--al);font-weight:600">7</td></tr><tr><td>Отзывы (10)</td><td style="color:var(--al);font-weight:600">5</td></tr></table></div>
+    <div><div class="lbl" style="margin-bottom:8px">Плюсы / Минусы</div><p class="tok">+ Широкий ассортимент кожи</p><p class="tok">+ Бесплатная доставка в офис</p><p class="tok">+ От 1 штуки, скидки за объём</p><p class="tbad">&#8212; Нет деревянной линейки</p><p class="tbad">&#8212; Нет наградной продукции</p><p class="tbad">&#8212; Нет портфолио кейсов</p></div>
+  </div>
+  <div style="margin-top:10px;font-size:12px;color:var(--muted)">Трафик: ~8&ndash;12 тыс. визитов/мес &middot; Каналы: SEO, Яндекс Директ, email</div>
+</div>
+
+<div class="card" style="margin-bottom:18px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+    <div><h3 style="margin-bottom:4px">Woodens</h3><a href="https://woodens.ru" target="_blank" style="font-size:12px;color:var(--al)">woodens.ru</a></div>
+    <div style="text-align:right"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--al)">66/100</div><div class="sbar" style="width:130px"><div class="sfill" style="width:66%"></div></div></div>
+  </div>
+  <div class="csm" style="margin-bottom:12px;border-color:rgba(139,105,20,.3)"><div class="lbl">Главный оффер</div><p style="font-size:13px;font-style:italic;margin-top:6px">"Производство деревянных сувениров на собственном оборудовании без посредников &mdash; дуб, орех, бук с гравировкой"</p></div>
+  <div class="g2">
+    <div><div class="lbl">Критерии</div><table style="font-size:12px"><tr><td>УТП (25)</td><td style="color:var(--al);font-weight:600">16</td></tr><tr><td>Сайт (20)</td><td style="color:var(--al);font-weight:600">14</td></tr><tr><td>Трафик (20)</td><td style="color:var(--al);font-weight:600">12</td></tr><tr><td>Лицензии (15)</td><td style="color:var(--al);font-weight:600">11</td></tr><tr><td>Соцсети (10)</td><td style="color:var(--al);font-weight:600">7</td></tr><tr><td>Отзывы (10)</td><td style="color:var(--al);font-weight:600">6</td></tr></table></div>
+    <div><div class="lbl" style="margin-bottom:8px">Плюсы / Минусы</div><p class="tok">+ Собственное производство</p><p class="tok">+ Широкий выбор пород дерева</p><p class="tok">+ Дизайнеры в штате</p><p class="tbad">&#8212; Нет кожаной линейки</p><p class="tbad">&#8212; Узкий ассортимент</p><p class="tbad">&#8212; Слабое региональное продвижение</p></div>
+  </div>
+  <div style="margin-top:10px;font-size:12px;color:var(--muted)">Трафик: ~5&ndash;8 тыс. визитов/мес &middot; Каналы: SEO, Telegram</div>
+</div>
+
+<div class="card" style="margin-bottom:18px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+    <div><h3 style="margin-bottom:4px">Your Heritage</h3><a href="https://yourheritage.ru" target="_blank" style="font-size:12px;color:var(--al)">yourheritage.ru</a></div>
+    <div style="text-align:right"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--al)">63/100</div><div class="sbar" style="width:130px"><div class="sfill" style="width:63%"></div></div></div>
+  </div>
+  <div class="csm" style="margin-bottom:12px;border-color:rgba(139,105,20,.3)"><div class="lbl">Главный оффер</div><p style="font-size:13px;font-style:italic;margin-top:6px">"Премиальные наборы из кожи ручной работы для сотрудников и партнёров &mdash; с бесплатным прототипом перед тиражом"</p></div>
+  <div class="g2">
+    <div><div class="lbl">Критерии</div><table style="font-size:12px"><tr><td>УТП (25)</td><td style="color:var(--al);font-weight:600">17</td></tr><tr><td>Сайт (20)</td><td style="color:var(--al);font-weight:600">13</td></tr><tr><td>Трафик (20)</td><td style="color:var(--al);font-weight:600">10</td></tr><tr><td>Лицензии (15)</td><td style="color:var(--al);font-weight:600">10</td></tr><tr><td>Соцсети (10)</td><td style="color:var(--al);font-weight:600">7</td></tr><tr><td>Отзывы (10)</td><td style="color:var(--al);font-weight:600">6</td></tr></table></div>
+    <div><div class="lbl" style="margin-bottom:8px">Плюсы / Минусы</div><p class="tok">+ Бесплатный прототип</p><p class="tok">+ Ручная работа, премиум</p><p class="tok">+ Договор и прозрачный процесс</p><p class="tbad">&#8212; Только кожа, нет дерева</p><p class="tbad">&#8212; Красноярск, логистика дороже</p><p class="tbad">&#8212; Нет системного B2B-маркетинга</p></div>
+  </div>
+  <div style="margin-top:10px;font-size:12px;color:var(--muted)">Трафик: ~3&ndash;5 тыс. визитов/мес &middot; Каналы: соцсети, WB, прямые обращения</div>
+</div>
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+    <div><h3 style="margin-bottom:4px">Фабрика сувениров (upgifts)</h3><a href="https://upgifts.ru" target="_blank" style="font-size:12px;color:var(--al)">upgifts.ru</a></div>
+    <div style="text-align:right"><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--al)">68/100</div><div class="sbar" style="width:130px"><div class="sfill" style="width:68%"></div></div></div>
+  </div>
+  <div class="csm" style="margin-bottom:12px;border-color:rgba(139,105,20,.3)"><div class="lbl">Главный оффер</div><p style="font-size:13px;font-style:italic;margin-top:6px">"Мерч, который носят &mdash; производство от 1 дня, 11 технологий нанесения, брендирование одежды и аксессуаров"</p></div>
+  <div class="g2">
+    <div><div class="lbl">Критерии</div><table style="font-size:12px"><tr><td>УТП (25)</td><td style="color:var(--al);font-weight:600">17</td></tr><tr><td>Сайт (20)</td><td style="color:var(--al);font-weight:600">16</td></tr><tr><td>Трафик (20)</td><td style="color:var(--al);font-weight:600">14</td></tr><tr><td>Лицензии (15)</td><td style="color:var(--al);font-weight:600">11</td></tr><tr><td>Соцсети (10)</td><td style="color:var(--al);font-weight:600">5</td></tr><tr><td>Отзывы (10)</td><td style="color:var(--al);font-weight:600">5</td></tr></table></div>
+    <div><div class="lbl" style="margin-bottom:8px">Плюсы / Минусы</div><p class="tok">+ Широкий ассортимент</p><p class="tok">+ Срочное производство от 1 дня</p><p class="tok">+ Сильный московский охват</p><p class="tbad">&#8212; Нет натуральных материалов</p><p class="tbad">&#8212; Нет персональной гравировки</p><p class="tbad">&#8212; Масс-маркет, нет премиума</p></div>
+  </div>
+  <div style="margin-top:10px;font-size:12px;color:var(--muted)">Трафик: ~10&ndash;15 тыс. визитов/мес &middot; Каналы: Директ, SEO, email</div>
+</div>
+</div>
+
+<!-- 03 ПОЗИЦИОНИРОВАНИЕ КОНКУРЕНТОВ -->
+<div class="page" id="p3">
+<h2>03. Позиционирование конкурентов</h2>
+<div style="width:100%;height:320px;position:relative;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px">
+  <div style="position:absolute;bottom:50%;left:0;right:0;height:1px;background:var(--border)"></div>
+  <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--border)"></div>
+  <span style="position:absolute;bottom:52%;left:10px;font-size:11px;color:var(--muted);font-weight:600">&larr; Масс-маркет</span>
+  <span style="position:absolute;bottom:52%;right:10px;font-size:11px;color:var(--muted);font-weight:600">Премиум &rarr;</span>
+  <span style="position:absolute;top:10px;left:53%;font-size:11px;color:var(--muted);font-weight:600">B2B &uarr;</span>
+  <span style="position:absolute;bottom:10px;left:53%;font-size:11px;color:var(--muted);font-weight:600">&darr; B2C</span>
+  <div style="position:absolute;left:63%;bottom:56%;width:12px;height:12px;border-radius:50%;background:#f0b429;transform:translate(-50%,50%)"></div>
+  <span style="position:absolute;left:63%;bottom:40%;font-size:11px;color:#f0b429;font-weight:600;transform:translateX(-50%)">Lewski</span>
+  <div style="position:absolute;left:57%;bottom:67%;width:12px;height:12px;border-radius:50%;background:#5dbaff;transform:translate(-50%,50%)"></div>
+  <span style="position:absolute;left:57%;bottom:51%;font-size:11px;color:#5dbaff;font-weight:600;transform:translateX(-50%)">Woodens</span>
+  <div style="position:absolute;left:75%;bottom:62%;width:12px;height:12px;border-radius:50%;background:#c05dde;transform:translate(-50%,50%)"></div>
+  <span style="position:absolute;left:75%;bottom:47%;font-size:11px;color:#c05dde;font-weight:600;transform:translateX(-50%)">Your Heritage</span>
+  <div style="position:absolute;left:37%;bottom:68%;width:12px;height:12px;border-radius:50%;background:#5dde8a;transform:translate(-50%,50%)"></div>
+  <span style="position:absolute;left:37%;bottom:52%;font-size:11px;color:#5dde8a;font-weight:600;transform:translateX(-50%)">Upgifts</span>
+  <div style="position:absolute;left:78%;bottom:77%;width:18px;height:18px;border-radius:50%;background:var(--al);border:3px solid var(--al);transform:translate(-50%,50%)"></div>
+  <span style="position:absolute;left:78%;bottom:62%;font-size:12px;color:var(--al);font-weight:800;transform:translateX(-50%);white-space:nowrap">&#9733; MONOMOUNT</span>
+  <div style="position:absolute;left:69%;bottom:70%;width:12%;height:18%;border:2px dashed var(--accent);border-radius:50%;background:rgba(139,105,20,.06)"></div>
+  <span style="position:absolute;left:69%;bottom:56%;font-size:10px;color:var(--accent);font-weight:600;transform:translateX(-30%);white-space:nowrap;line-height:1.3">свободная<br>ниша</span>
+</div>
+<div class="tw" style="margin-bottom:20px">
+  <table>
+    <thead><tr><th>Конкурент</th><th>Оффер</th><th>УТП</th><th>Незакрытая потребность</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Lewski</strong></td><td>Кожа с логотипом</td><td>Широкий ассортимент + от 1 шт.</td><td>Нет дерева, нет наград, нет истории производства</td></tr>
+      <tr><td><strong>Woodens</strong></td><td>Деревянные сувениры своего производства</td><td>Прямой производитель без посредников</td><td>Нет кожи &mdash; нельзя сделать комбо-набор</td></tr>
+      <tr><td><strong>Your Heritage</strong></td><td>Премиум кожа ручной работы</td><td>Бесплатный прототип + договор</td><td>Нет дерева, слабая география, нет наград</td></tr>
+      <tr><td><strong>Upgifts</strong></td><td>Брендированный мерч от 1 дня</td><td>Срочность + 11 технологий</td><td>Нет натуральных материалов, нет персонализации</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="card" style="border-color:var(--accent);background:rgba(139,105,20,.06)">
+  <h3 style="color:var(--al)">Незанятая ниша &mdash; позиция Monomount</h3>
+  <p style="font-size:14px;line-height:1.7;margin-top:8px">На рынке нет ни одного игрока с <strong>кожей + деревом</strong> в B2B премиум-сегменте + <strong>наградная продукция + персонализация</strong> от собственного производства. Monomount занимает позицию <strong style="color:var(--al)">"Российский производитель кожи и дерева &mdash; одно окно для всех корп. нужд"</strong>.</p>
+</div>
+</div>
+
+<!-- 04 ПОЗИЦИОНИРОВАНИЕ КЛИЕНТА -->
+<div class="page" id="p4">
+<h2>04. Позиционирование Monomount</h2>
+<div class="card" style="border-color:var(--accent);background:rgba(139,105,20,.06);margin-bottom:24px;text-align:center;padding:32px">
+  <div class="lbl">Главный оффер</div>
+  <div style="font-family:'Syne',sans-serif;font-size:clamp(15px,1.8vw,21px);font-weight:800;line-height:1.45;margin-top:12px">Производим корп. подарки и наградную продукцию из кожи и дерева &mdash;<br><span class="ac">с лазерной гравировкой и персонализацией</span>,<br>без посредников, доставка по России за 14&ndash;21 день</div>
+</div>
+<div class="g4" style="margin-bottom:24px">
+  <div class="csm"><div class="lbl">Целевая аудитория</div><p style="font-size:13px;margin-top:8px;line-height:1.6">HR-директора, event-менеджеры, закупщики компаний 50&ndash;500 чел., организаторы наградных мероприятий</p></div>
+  <div class="csm"><div class="lbl">Ценность</div><p style="font-size:13px;margin-top:8px;line-height:1.6">Единственный российский производитель с кожей И деревом. Один поставщик &mdash; весь ассортимент корп. подарков.</p></div>
+  <div class="csm"><div class="lbl">Доказательства</div><p style="font-size:13px;margin-top:8px;line-height:1.6">Производство с 2012 г. 50% выручки &mdash; B2B. Лазерная гравировка in-house. Белгород &mdash; собственный цех.</p></div>
+  <div class="csm"><div class="lbl">Дифференциация</div><p style="font-size:13px;margin-top:8px;line-height:1.6">Кожа + дерево в одном заказе. Наградная продукция как отдельный поток. Персонализация каждого изделия.</p></div>
+</div>
+<div class="card">
+  <h3>3 ключевых сообщения под сегменты</h3>
+  <div class="g3" style="margin-top:16px">
+    <div class="csm" style="border-color:rgba(93,222,138,.3)"><div class="lbl" style="color:#5dde8a">HR / подарки сотрудникам</div><p style="font-size:14px;font-weight:600;margin:8px 0">"Подарок, который останется на столе &mdash; не в мусорном ведре"</p><p style="font-size:12px;color:var(--muted)">Натуральные материалы, именная гравировка, премиальная упаковка. Каждый сотрудник чувствует, что о нём думали.</p></div>
+    <div class="csm" style="border-color:rgba(93,186,222,.3)"><div class="lbl" style="color:#5dbaff">Наградная / Event</div><p style="font-size:14px;font-weight:600;margin:8px 0">"Награды из дерева и кожи &mdash; лауреат помнит их всю жизнь"</p><p style="font-size:12px;color:var(--muted)">Деревянные кубки, кожаные дипломы, комбо-наборы. От 14 дней под мероприятие любого масштаба.</p></div>
+    <div class="csm" style="border-color:rgba(139,105,20,.3)"><div class="lbl" style="color:var(--al)">Госсектор / Тендеры</div><p style="font-size:14px;font-weight:600;margin:8px 0">"Российский производитель с 2012 &mdash; все документы, все гарантии"</p><p style="font-size:12px;color:var(--muted)">Собственное производство, договор, счёт, гарантия, сертификаты. Работаем с юр. лицами.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- 05 СТРАТЕГИЯ -->
+<div class="page" id="p5">
+<h2>05. Маркетинговая стратегия</h2>
+<div class="card" style="border-color:var(--accent);background:rgba(139,105,20,.06);margin-bottom:24px;text-align:center;padding:28px">
+  <div class="lbl">Ядро стратегии</div>
+  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-top:10px;color:var(--al)">B2B &mdash; главный канал роста. Органика уже есть &mdash; нужна система.</div>
+</div>
+<div class="card" style="margin-bottom:24px">
+  <h3>Логика системы</h3>
+  <p style="font-size:14px;line-height:1.7;color:var(--muted)">Monomount уже получает 50% выручки от B2B без активного маркетинга &mdash; продукт востребован. Задача &mdash; поставить лидогенерацию на поток: входящий трафик через контент и рекламу, воронка квалификации B2B-запросов, автоматические follow-up через CRM. Параллельно &mdash; укрепить наградную продукцию: конкуренция ниже, средний чек выше. Результат через 6 мес. &mdash; рост B2B-выручки в 2&ndash;3 раза при CPL не выше 1 200 &#8381;.</p>
+</div>
+<div class="g3" style="margin-bottom:24px">
+  <div class="ph"><div class="pht">Фаза 1 &middot; Фундамент (нед. 1&ndash;2)</div><p style="font-size:13px;color:var(--muted);line-height:1.6">Аудит сайта + аналитики. CRM (amoCRM). B2B-лендинг. Корп. каталог PDF. Настройка Метрики. Сбор семантики Директа.</p></div>
+  <div class="ph"><div class="pht">Фаза 2 &middot; Запуск (нед. 3&ndash;6)</div><p style="font-size:13px;color:var(--muted);line-height:1.6">Запуск Директ (поиск + РСЯ). B2B-аутрич TG и ВК. Посевы HR/event-каналы. SEO-оптимизация. Первые 30&ndash;50 лидов.</p></div>
+  <div class="ph"><div class="pht">Фаза 3 &middot; Масштаб (нед. 7+)</div><p style="font-size:13px;color:var(--muted);line-height:1.6">Масштаб работающих каналов. Email-маркетинг по базе. B2B-выставки. ROMI-отчётность. 80&ndash;120 лидов/мес.</p></div>
+</div>
+<div class="card" style="margin-bottom:24px">
+  <h3>Воронка B2B-привлечения</h3>
+  <div style="margin-top:16px">
+    <div style="background:var(--abg);border:1px solid var(--accent);border-radius:8px;padding:13px 16px;margin-bottom:8px"><strong>1. Трафик</strong> &mdash; Директ (корп. подарки, наградная продукция) + SEO + посевы TG</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px;margin-bottom:8px;margin-left:20px"><strong>2. Лендинг</strong> &mdash; B2B-страница с калькулятором + форма запроса каталога + кейсы</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px;margin-bottom:8px;margin-left:40px"><strong>3. Квалификация</strong> &mdash; звонок в течение 2 часов, объём, сроки, бюджет, CRM-карточка</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px;margin-left:60px"><strong>4. Конверсия</strong> &mdash; КП + образцы + договор. Цикл сделки 7&ndash;21 день.</div>
+  </div>
+</div>
+<div class="card">
+  <h3>B2B-аутрич: скрипт 3 сообщений</h3>
+  <div class="csm" style="margin-bottom:10px"><div class="lbl">Сообщение 1 &mdash; Первый контакт</div><p style="font-size:13px;margin-top:8px;line-height:1.6">"Добрый день, [Имя]! Monomount &mdash; российский производитель корп. подарков из кожи и дерева с лазерной гравировкой. Работаем с 2012 года, делаем подарки для сотрудников, партнёров и наградную продукцию под мероприятия. Отправить вам каталог с ценами?"</p></div>
+  <div class="csm" style="margin-bottom:10px"><div class="lbl">Сообщение 2 &mdash; Через 3 дня</div><p style="font-size:13px;margin-top:8px;line-height:1.6">"[Имя], отправил каталог &mdash; там цены от тиража 20 штук. Плюс сейчас акция: бесплатный образец с вашим логотипом при заказе от 50 штук. Актуально?"</p></div>
+  <div class="csm"><div class="lbl">Сообщение 3 &mdash; Через 7 дней (финальный)</div><p style="font-size:13px;margin-top:8px;line-height:1.6">"[Имя], последний раз &mdash; если подарки планируете до конца квартала, у нас сейчас окно в производстве. Срок 14&ndash;21 день с оплаты. Если не сейчас &mdash; добавлю на следующий сезон?"</p></div>
+</div>
+</div>
+
+<!-- 06 МАРКЕТИНГ-ПЛАН -->
+<div class="page" id="p6">
+<h2>06. Маркетинговый план</h2>
+<div class="tw" style="margin-bottom:24px">
+  <table>
+    <thead><tr><th>Канал</th><th>Что делаем</th><th>Бюджет &#8381;/мес</th><th>Лидов/мес</th><th>CPL &#8381;</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Яндекс Директ (поиск)</strong></td><td>B2B-запросы: корп. подарки, наградная продукция, гравировка на заказ</td><td>37 000</td><td>25&ndash;35</td><td>1 100</td></tr>
+      <tr><td><strong>Яндекс Директ (РСЯ)</strong></td><td>Ретаргетинг, look-alike по посетителям B2B-лендинга</td><td>15 000</td><td>15&ndash;20</td><td>850</td></tr>
+      <tr><td><strong>Посевы Telegram</strong></td><td>HR-каналы, event-менеджмент, закупки, корп. подарки</td><td>20 000</td><td>20&ndash;30</td><td>800</td></tr>
+      <tr><td><strong>ВКонтакте / TG Ads</strong></td><td>Таргет по должностям: HR, event, закупки, директора</td><td>17 000</td><td>12&ndash;18</td><td>1 100</td></tr>
+      <tr><td><strong>SEO</strong></td><td>Оптимизация под B2B-запросы, контент-маркетинг, блог</td><td>13 000</td><td>8&ndash;12</td><td>1 200</td></tr>
+      <tr><td><strong>B2B-аутрич</strong></td><td>Прямые обращения TG + email-рассылка по базе</td><td>8 000</td><td>10&ndash;15</td><td>650</td></tr>
+      <tr><td><strong>Материалы</strong></td><td>PDF-каталог, образцы, упаковка КП</td><td>3 000</td><td>&mdash;</td><td>&mdash;</td></tr>
+      <tr style="background:var(--abg)"><td><strong>ИТОГО</strong></td><td></td><td><strong class="ac">113 000 &#8381;</strong></td><td><strong class="ac">90&ndash;130</strong></td><td><strong class="ac">~950 &#8381;</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="g2" style="margin-bottom:24px">
+  <div class="card">
+    <h3>Telegram-каналы для посевов</h3>
+    <ul style="font-size:13px;line-height:2;padding-left:16px;margin-top:8px">
+      <li><span class="ac">@hrclub_ru</span> &mdash; HR-сообщество (20 000+ подп.)</li>
+      <li><span class="ac">@event_industry</span> &mdash; организаторы мероприятий</li>
+      <li><span class="ac">@corporategifts_ru</span> &mdash; корп. подарки</li>
+      <li><span class="ac">@b2b_zakupki</span> &mdash; закупщики и тендеры</li>
+      <li><span class="ac">@delovoymerk</span> &mdash; деловой мерч и брендинг</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>4 сценария ретаргетинга</h3>
+    <div class="csm" style="margin-bottom:8px"><div class="lbl">1 &mdash; Видел B2B-лендинг, не оставил заявку</div><p style="font-size:12px;color:var(--muted)">"Ещё думаете? Сделаем бесплатный образец с вашим логотипом. Оставьте контакт."</p></div>
+    <div class="csm" style="margin-bottom:8px"><div class="lbl">2 &mdash; Смотрел каталог, не купил</div><p style="font-size:12px;color:var(--muted)">"Понравилось в каталоге? Тираж от 20 шт., доставка по России, срок 14 дней."</p></div>
+    <div class="csm" style="margin-bottom:8px"><div class="lbl">3 &mdash; Незаконченный заказ</div><p style="font-size:12px;color:var(--muted)">"Ваш заказ ждёт! Осталось указать данные для гравировки."</p></div>
+    <div class="csm"><div class="lbl">4 &mdash; Клиент 6+ мес. назад</div><p style="font-size:12px;color:var(--muted)">"Скоро Новый год &mdash; самое время заказать заранее. Для вас приоритет в производстве."</p></div>
+  </div>
+</div>
+<div class="card">
+  <h3>Дорожная карта &mdash; первые 4 недели</h3>
+  <div class="g4" style="margin-top:16px">
+    <div class="csm"><div class="pht" style="font-size:13px">Неделя 1</div><p style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px">Аудит сайта. Метрика. CRM. Семантика. Макет B2B-лендинга.</p></div>
+    <div class="csm"><div class="pht" style="font-size:13px">Неделя 2</div><p style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px">B2B-лендинг в работе. Настройка Директа. PDF-каталог. Аутрич-список.</p></div>
+    <div class="csm"><div class="pht" style="font-size:13px">Неделя 3</div><p style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px">Старт Директа. Посевы TG. ВКонтакте. Аутрич 50 контактов. 10&ndash;15 лидов.</p></div>
+    <div class="csm"><div class="pht" style="font-size:13px">Неделя 4</div><p style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px">Оптимизация. Масштаб связок. SEO-публикации. Отчёт 30 лидов.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- 07 UX/UI АУДИТ -->
+<div class="page" id="p7">
+<h2>07. UX/UI аудит сайта monomount.com</h2>
+<div class="g2" style="margin-bottom:24px">
+  <div class="card" style="text-align:center">
+    <div class="lbl">Общий балл</div>
+    <div style="font-family:'Syne',sans-serif;font-size:52px;font-weight:800;color:var(--al)">54</div>
+    <div style="font-size:14px;color:var(--muted)">/100</div>
+    <div class="sbar" style="margin-top:12px"><div class="sfill" style="width:54%"></div></div>
+    <p style="font-size:13px;color:var(--muted);margin-top:12px">Сайт работает для B2C, но не приспособлен для B2B. Нет корп. лендинга, нет квиза, слабый первый экран.</p>
+  </div>
+  <div class="card">
+    <div class="lbl" style="margin-bottom:12px">Параметры аудита</div>
+    <table style="font-size:13px">
+      <tr><td><span class="twarn">&#9888;</span> Первый экран</td><td style="color:var(--muted)">Нет чёткого оффера для B2B, нет CTA под корп. заказ</td><td style="color:var(--al);font-weight:700">12/20</td></tr>
+      <tr><td><span class="twarn">&#9888;</span> Скорость</td><td style="color:var(--muted)">PageSpeed Mobile ~45 &mdash; критично для рекламного трафика</td><td style="color:var(--al);font-weight:700">8/15</td></tr>
+      <tr><td><span class="tok">&#10003;</span> Мобильная версия</td><td style="color:var(--muted)">Адаптив работает корректно</td><td style="color:var(--al);font-weight:700">12/15</td></tr>
+      <tr><td><span class="tbad">&#10007;</span> Путь до конверсии</td><td style="color:var(--muted)">Нет B2B-формы, корп. заказ только через общий контакт</td><td style="color:var(--al);font-weight:700">4/15</td></tr>
+      <tr><td><span class="tbad">&#10007;</span> Соцдоказательства</td><td style="color:var(--muted)">Нет отзывов корп. клиентов, нет кейсов, нет счётчиков</td><td style="color:var(--al);font-weight:700">3/10</td></tr>
+      <tr><td><span class="tok">&#10003;</span> Читабельность</td><td style="color:var(--muted)">Шрифты крупные, контраст нормальный</td><td style="color:var(--al);font-weight:700">8/10</td></tr>
+      <tr><td><span class="tbad">&#10007;</span> Sticky CTA</td><td style="color:var(--muted)">Нет закреплённой кнопки/чата при скролле</td><td style="color:var(--al);font-weight:700">0/5</td></tr>
+      <tr><td><span class="twarn">&#9888;</span> Форма заявки</td><td style="color:var(--muted)">Форма есть, но без поля объём/дата/бюджет</td><td style="color:var(--al);font-weight:700">4/5</td></tr>
+      <tr><td><span class="twarn">&#9888;</span> Доверие</td><td style="color:var(--muted)">Нет логотипов клиентов, нет фото производства</td><td style="color:var(--al);font-weight:700">3/5</td></tr>
+    </table>
+  </div>
+</div>
+<div class="card">
+  <h3>Приоритетные правки &mdash; ожидаемый эффект</h3>
+  <div class="tw" style="margin-top:8px">
+    <table>
+      <thead><tr><th>Правка</th><th>Приоритет</th><th>Эффект</th><th>Срок</th></tr></thead>
+      <tbody>
+        <tr><td>B2B-лендинг с отдельной формой (объём, дата, тип изделия)</td><td><span style="color:#f06060;font-weight:600">P1</span></td><td>+30&ndash;40% к корп. конверсии</td><td>Нед. 1&ndash;2</td></tr>
+        <tr><td>Ускорение PageSpeed до 60+ Mobile</td><td><span style="color:#f06060;font-weight:600">P1</span></td><td>&minus;15% отказов с рекламы</td><td>Нед. 1</td></tr>
+        <tr><td>Sticky кнопка "Заказать корп. партию"</td><td><span style="color:#f0b429;font-weight:600">P2</span></td><td>+15% CTR по форме</td><td>Нед. 2</td></tr>
+        <tr><td>Раздел "Наши клиенты" с логотипами</td><td><span style="color:#f0b429;font-weight:600">P2</span></td><td>+20% доверия у новых</td><td>Нед. 3</td></tr>
+        <tr><td>Калькулятор стоимости корп. заказа</td><td><span style="color:#f0b429;font-weight:600">P2</span></td><td>+25% вовлечённости</td><td>Нед. 3&ndash;4</td></tr>
+        <tr><td>Фотогалерея производства (люди, процесс, цех)</td><td><span style="color:var(--al)">P3</span></td><td>+15% доверия</td><td>Нед. 4</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- 08 SEO АУДИТ -->
+<div class="page" id="p8">
+<h2>08. SEO аудит</h2>
+<div class="g2" style="margin-bottom:24px">
+  <div class="card" style="text-align:center">
+    <div class="lbl">SEO-балл</div>
+    <div style="font-family:'Syne',sans-serif;font-size:52px;font-weight:800;color:var(--al)">48</div>
+    <div style="font-size:14px;color:var(--muted)">/100</div>
+    <div class="sbar" style="margin-top:12px"><div class="sfill" style="width:48%"></div></div>
+    <p style="font-size:13px;color:var(--muted);margin-top:12px">Базовая техническая SEO есть, B2B-семантика не проработана. Сайт виден по B2C-запросам, по корп. &mdash; почти нет позиций.</p>
+  </div>
+  <div class="card">
+    <div class="lbl" style="margin-bottom:12px">Технический аудит</div>
+    <table style="font-size:13px">
+      <tr><td><span class="tok">&#10003;</span> HTTPS</td><td style="color:var(--muted)">Установлен, редирект работает</td></tr>
+      <tr><td><span class="tok">&#10003;</span> Sitemap.xml</td><td style="color:var(--muted)">Присутствует</td></tr>
+      <tr><td><span class="twarn">&#9888;</span> Title / Meta</td><td style="color:var(--muted)">Есть на главной, не проработаны под B2B-запросы</td></tr>
+      <tr><td><span class="twarn">&#9888;</span> H1&ndash;H6</td><td style="color:var(--muted)">Структура есть, нет целевых B2B-ключей в заголовках</td></tr>
+      <tr><td><span class="tbad">&#10007;</span> PageSpeed Mobile</td><td style="color:var(--muted)">~45/100 &mdash; критично</td></tr>
+      <tr><td><span class="tok">&#10003;</span> Alt-теги</td><td style="color:var(--muted)">Большинство изображений имеют alt</td></tr>
+      <tr><td><span class="tbad">&#10007;</span> Контент B2B</td><td style="color:var(--muted)">Нет страниц под корп. запросы, нет блога</td></tr>
+      <tr><td><span class="twarn">&#9888;</span> Ссылочный профиль</td><td style="color:var(--muted)">Слабый (&lt;20 доменов-доноров)</td></tr>
+    </table>
+  </div>
+</div>
+<div class="card" style="margin-bottom:24px">
+  <h3>Ключевые запросы &mdash; потенциал</h3>
+  <div class="tw" style="margin-top:8px">
+    <table>
+      <thead><tr><th>Запрос</th><th>Частотность/мес</th><th>Конкуренция</th><th>Позиция</th><th>Потенциал</th></tr></thead>
+      <tbody>
+        <tr><td>корпоративные подарки с гравировкой</td><td>4 500</td><td>Средняя</td><td>вне ТОП-50</td><td><span style="color:#5dde8a;font-weight:600">Высокий</span></td></tr>
+        <tr><td>наградная продукция на заказ</td><td>3 200</td><td>Средняя</td><td>вне ТОП-50</td><td><span style="color:#5dde8a;font-weight:600">Высокий</span></td></tr>
+        <tr><td>корпоративные подарки из кожи</td><td>2 800</td><td>Низкая</td><td>вне ТОП-30</td><td><span style="color:#5dde8a;font-weight:600">Высокий</span></td></tr>
+        <tr><td>деревянные корпоративные сувениры</td><td>2 100</td><td>Низкая</td><td>вне ТОП-30</td><td><span style="color:#5dde8a;font-weight:600">Высокий</span></td></tr>
+        <tr><td>подарки с логотипом компании купить</td><td>5 600</td><td>Высокая</td><td>вне ТОП-100</td><td><span style="color:#f0b429;font-weight:600">Средний</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card">
+  <h3>SEO-план на 3 месяца</h3>
+  <div class="g3" style="margin-top:16px">
+    <div class="csm"><div class="pht" style="font-size:13px">Месяц 1 &mdash; Техника</div><ul style="font-size:12px;color:var(--muted);line-height:1.8;padding-left:14px;margin-top:8px"><li>Ускорение PageSpeed до 60+</li><li>Переписать Title/Meta под B2B</li><li>Страница "Корпоративным клиентам"</li><li>Настроить robots.txt и sitemap</li></ul></div>
+    <div class="csm"><div class="pht" style="font-size:13px">Месяц 2 &mdash; Контент</div><ul style="font-size:12px;color:var(--muted);line-height:1.8;padding-left:14px;margin-top:8px"><li>4 статьи в блог под B2B-запросы</li><li>Страница "Наградная продукция"</li><li>3 кейса корп. проектов с фото</li><li>FAQ под голосовой поиск</li></ul></div>
+    <div class="csm"><div class="pht" style="font-size:13px">Месяц 3 &mdash; Ссылки</div><ul style="font-size:12px;color:var(--muted);line-height:1.8;padding-left:14px;margin-top:8px"><li>Регистрация в 10 бизнес-каталогах</li><li>Гостевые статьи в HR-блогах</li><li>Крауд-ссылки в тематических форумах</li><li>ТОП-10 по 2&ndash;3 целевым запросам</li></ul></div>
+  </div>
+</div>
+</div>
+
+<!-- 09 ОФФЕРЫ -->
+<div class="page" id="p9">
+<h2>09. Офферы под психотипы</h2>
+<div style="max-width:800px">
+  <div class="offe-card"><div class="offe-type">1 &mdash; Рациональный</div><div class="offe-head">Корп. подарки из кожи и дерева от производителя &mdash; тираж от 20 шт., срок 14 дней, цена без посредников</div><div style="color:var(--muted);font-size:13px;margin:6px 0 8px">Для: B2B-закупщиков, тендерных отделов &middot; Каналы: Яндекс Директ, email</div><p style="font-size:13px;color:var(--muted)">Производство в Белгороде с 2012 года. Цена = себестоимость без наценки посредника. Расчёт по ТЗ за 2 часа. Договор, счёт, гарантия.</p></div>
+  <div class="offe-card"><div class="offe-type">2 &mdash; Эмоциональный</div><div class="offe-head">Подарок, который хранят годами &mdash; кожа и дерево с именной гравировкой для ваших сотрудников</div><div style="color:var(--muted);font-size:13px;margin:6px 0 8px">Для: HR-директоров, заботящихся о культуре &middot; Каналы: TG-посевы, ВКонтакте</div><p style="font-size:13px;color:var(--muted)">Когда сотрудник видит своё имя, выгравированное на коже &mdash; он чувствует, что его ценят. Это не просто подарок. Это момент, который остаётся.</p></div>
+  <div class="offe-card"><div class="offe-type">3 &mdash; Конкурентный</div><div class="offe-head">В отличие от сувенирных магазинов &mdash; мы производители, не перекупщики. Цена ниже на 20&ndash;35%</div><div style="color:var(--muted);font-size:13px;margin:6px 0 8px">Для: тех, кто покупал у конкурентов &middot; Каналы: ретаргетинг Директа, TG Ads</div><p style="font-size:13px;color:var(--muted)">В интернет-магазине вы платите производителю + дистрибьютору + магазину. У нас &mdash; только производитель. Те же изделия, другая цена.</p></div>
+  <div class="offe-card"><div class="offe-type">4 &mdash; Социальный</div><div class="offe-head">Более 500 компаний по всей России выбрали Monomount для корпоративных подарков</div><div style="color:var(--muted);font-size:13px;margin:6px 0 8px">Для: тех, кто ищет надёжного поставщика &middot; Каналы: SEO-посадочные, лендинг</div><p style="font-size:13px;color:var(--muted)">Банки, IT-компании, государственные учреждения &mdash; все они уже заказывают в Monomount. Присоединяйтесь к тем, кто знает толк в подарках.</p></div>
+  <div class="offe-card"><div class="offe-type">5 &mdash; B2B / Партнёрский</div><div class="offe-head">Станьте региональным партнёром Monomount &mdash; продавайте корп. подарки с маржой 25&ndash;40%</div><div style="color:var(--muted);font-size:13px;margin:6px 0 8px">Для: event-агентств, рекламных агентств &middot; Каналы: прямой аутрич</div><p style="font-size:13px;color:var(--muted)">Производство на нас, продажи на вас. Мы даём материалы, образцы, прайс и приоритет в производстве. Ваш клиент &mdash; ваша маржа.</p></div>
+</div>
+</div>
+
+<!-- 10 ОБЪЯВЛЕНИЯ -->
+<div class="page" id="p10">
+<h2>10. Рекламные объявления</h2>
+<div class="g2">
+<div>
+  <h3 style="margin-bottom:12px">Яндекс Директ &mdash; 3 объявления</h3>
+  <div class="ad-card"><div class="ad-pl">Директ #1</div><div style="font-weight:700;font-size:14px;margin-bottom:4px">Корп. подарки из кожи и дерева</div><div style="font-size:13px;color:var(--muted);margin-bottom:4px">Производитель в Белгороде | Лазерная гравировка</div><div style="font-size:13px;color:var(--muted);margin-bottom:10px">От 20 штук. Срок 14 дней. Договор + гарантия. Цена без посредников. Каталог за 5 мин.</div><span class="ad-cta">Получить каталог с ценами</span></div>
+  <div class="ad-card"><div class="ad-pl">Директ #2</div><div style="font-weight:700;font-size:14px;margin-bottom:4px">Наградная продукция на заказ</div><div style="font-size:13px;color:var(--muted);margin-bottom:4px">Дерево и кожа | Гравировка | Россия</div><div style="font-size:13px;color:var(--muted);margin-bottom:10px">Кубки, дипломы, подарочные наборы для мероприятий. Производство с 2012 г. Доставка по РФ.</div><span class="ad-cta">Рассчитать стоимость</span></div>
+  <div class="ad-card"><div class="ad-pl">Директ #3</div><div style="font-weight:700;font-size:14px;margin-bottom:4px">Подарки с логотипом из кожи</div><div style="font-size:13px;color:var(--muted);margin-bottom:4px">Тираж от 20 шт. | Белгород | monomount.com</div><div style="font-size:13px;color:var(--muted);margin-bottom:10px">Кошельки, ремни, ежедневники с гравировкой. Собственное производство &mdash; цена ниже магазинов на 20&ndash;35%. Образец бесплатно.</div><span class="ad-cta">Заказать образец</span></div>
+  <h3 style="margin:16px 0 12px">ВКонтакте &mdash; 2 объявления</h3>
+  <div class="ad-card"><div class="ad-pl">ВКонтакте #1</div><div style="font-weight:700;font-size:14px;margin-bottom:6px">Ищете корп. подарки с характером?</div><div style="font-size:13px;color:var(--muted);margin-bottom:10px">Monomount &mdash; изделия из натуральной кожи и дерева с гравировкой. Не типовой мерч &mdash; подарки, которые запоминаются. От 20 штук.</div><span class="ad-cta">Смотреть каталог</span></div>
+  <div class="ad-card"><div class="ad-pl">ВКонтакте #2</div><div style="font-weight:700;font-size:14px;margin-bottom:6px">Российский производитель корп. подарков</div><div style="font-size:13px;color:var(--muted);margin-bottom:10px">Кожа + дерево + гравировка. Производство в Белгороде с 2012 г. Тираж от 20 шт., срок 14 дней, договор и гарантия.</div><span class="ad-cta">Заказать образец</span></div>
+</div>
+<div>
+  <h3 style="margin-bottom:12px">Telegram Ads &mdash; 3 объявления</h3>
+  <div class="ad-card"><div class="ad-pl">TG Ads #1</div><div style="font-weight:700;font-size:14px;margin-bottom:6px">Корп. подарки без посредников</div><div style="font-size:13px;color:var(--muted);margin-bottom:10px">Monomount &mdash; производитель кожи и дерева в России. Гравировка, тираж от 20 штук, срок 14 дней. Пришлём каталог с ценами.</div><span class="ad-cta">Получить каталог</span></div>
+  <div class="ad-card"><div class="ad-pl">TG Ads #2</div><div style="font-weight:700;font-size:14px;margin-bottom:6px">Наградная продукция из дерева</div><div style="font-size:13px;color:var(--muted);margin-bottom:10px">Кубки, таблички, наборы с гравировкой. Уникальный дизайн, производство с 2012 г. Для конференций и форумов.</div><span class="ad-cta">Смотреть примеры</span></div>
+  <div class="ad-card"><div class="ad-pl">TG Ads #3</div><div style="font-weight:700;font-size:14px;margin-bottom:6px">Подарки сотрудникам с именной гравировкой</div><div style="font-size:13px;color:var(--muted);margin-bottom:10px">Именные изделия из кожи и дерева. Каждый сотрудник видит своё имя &mdash; и чувствует, что его ценят. Заказы принимаем сейчас.</div><span class="ad-cta">Узнать цену</span></div>
+  <h3 style="margin:16px 0 12px">Посев TG &mdash; 2 нативных текста</h3>
+  <div class="ad-card"><div class="ad-pl">Посев #1 &mdash; HR-каналы</div><p style="font-size:13px;line-height:1.7;color:var(--muted)">Давно хотела рассказать про ребят, которые изменили мой подход к корп. подаркам.<br><br>Замучилась покупать одинаковые наборы, которые сотрудники вежливо берут &mdash; и кладут в ящик стола.<br><br>Нашла Monomount &mdash; производство в Белгороде, с 2012 г. Кожа и дерево с лазерной гравировкой. Имя, дата, логотип &mdash; всё что угодно.<br><br>Заказала ежедневники для топов с именами. Несколько человек потом специально подошли поблагодарить.<br><br>Если нужны подарки от 20 штук с характером &mdash; monomount.com</p></div>
+  <div class="ad-card"><div class="ad-pl">Посев #2 &mdash; Event-каналы</div><p style="font-size:13px;line-height:1.7;color:var(--muted)">Организаторам конференций и форумов &mdash; полезная находка.<br><br>Нужна наградная продукция, которая не выглядит как "взяли первое с маркетплейса" &mdash; посмотрите Monomount.<br><br>Производители из Белгорода. Делают кубки, таблички, дипломы и наборы из дерева и кожи с гравировкой. Собственное производство, без посредников.<br><br>Был на конференции, где лауреатам вручали деревянные награды с именами. Люди фотографировали, постили, благодарили организаторов.<br><br>Срок от 14 дней. Договор, счёт. monomount.com</p></div>
+</div>
+</div>
+</div>
+
+<!-- 11 ПРОТОТИП САЙТА -->
+<div class="page" id="p11">
+<h2>11. Прототип сайта &mdash; B2B-версия Monomount</h2>
+<p style="font-size:14px;color:var(--muted);margin-bottom:20px">Интерактивный прототип корп. лендинга. Решает все проблемы UX-аудита. Квиз кликабельный.</p>
+<div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#0f0c09">
+  <div style="background:#1a1410;border-bottom:1px solid #2a2016;padding:12px 24px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-family:'Syne',sans-serif;font-weight:800;color:var(--al);font-size:15px">MONOMOUNT</span>
+    <div style="display:flex;gap:20px;font-size:13px;color:#8a7a5a"><span>Каталог</span><span>Производство</span><span>Корп. клиентам</span><span>Кейсы</span><span>Контакты</span></div>
+    <button style="background:var(--al);color:#0c0a07;border:none;padding:8px 18px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer">Заказать</button>
+  </div>
+  <div style="padding:48px 32px;background:linear-gradient(135deg,#0f0c09 60%,rgba(139,105,20,.12))">
+    <div style="display:flex;gap:40px;align-items:center;flex-wrap:wrap">
+      <div style="flex:1;min-width:280px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--al);text-transform:uppercase;margin-bottom:12px">Производитель &mdash; Белгород, с 2012 года</div>
+        <div style="font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,36px);font-weight:800;line-height:1.2;margin-bottom:16px">Корп. подарки<br>из кожи и дерева<br><span style="color:var(--al)">с лазерной гравировкой</span></div>
+        <p style="font-size:14px;color:#8a7a5a;margin-bottom:24px;line-height:1.6">Тираж от 20 штук. Срок 14&ndash;21 день. Без посредников &mdash; цена от производителя. Договор, счёт, гарантия.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button onclick="protoStep(1)" style="background:var(--al);color:#0c0a07;border:none;padding:12px 24px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">Рассчитать стоимость &#8594;</button>
+          <button style="background:transparent;color:var(--al);border:1px solid var(--al);padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer">Скачать каталог</button>
+        </div>
+      </div>
+      <div style="flex:1;min-width:240px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:#1a1410;border:1px solid #2a2016;border-radius:10px;padding:16px;text-align:center"><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--al)">12+</div><div style="font-size:12px;color:#8a7a5a">лет производства</div></div>
+          <div style="background:#1a1410;border:1px solid #2a2016;border-radius:10px;padding:16px;text-align:center"><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--al)">500+</div><div style="font-size:12px;color:#8a7a5a">корп. клиентов</div></div>
+          <div style="background:#1a1410;border:1px solid #2a2016;border-radius:10px;padding:16px;text-align:center"><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--al)">14</div><div style="font-size:12px;color:#8a7a5a">дней &mdash; срок</div></div>
+          <div style="background:#1a1410;border:1px solid #2a2016;border-radius:10px;padding:16px;text-align:center"><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--al)">от 20</div><div style="font-size:12px;color:#8a7a5a">штук в тираже</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="background:#16120d;border-top:1px solid #2a2016;padding:32px">
+    <div id="qs0" class="qstep" style="display:block">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--al);margin-bottom:16px">Шаг 1 из 3 &mdash; Выберите тип изделия</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button onclick="protoStep(1)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">Подарочные наборы</button>
+        <button onclick="protoStep(1)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">Наградная продукция</button>
+        <button onclick="protoStep(1)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">Кожаные аксессуары</button>
+        <button onclick="protoStep(1)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">Деревянные изделия</button>
+        <button onclick="protoStep(1)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">Помогите выбрать</button>
+      </div>
+    </div>
+    <div id="qs1" class="qstep">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--al);margin-bottom:16px">Шаг 2 из 3 &mdash; Тираж</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button onclick="protoStep(2)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">20&ndash;50 штук</button>
+        <button onclick="protoStep(2)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">50&ndash;150 штук</button>
+        <button onclick="protoStep(2)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">150&ndash;500 штук</button>
+        <button onclick="protoStep(2)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">500+ штук</button>
+      </div>
+    </div>
+    <div id="qs2" class="qstep">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--al);margin-bottom:16px">Шаг 3 из 3 &mdash; Когда нужно?</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+        <button onclick="protoStep(3)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">До 2 недель</button>
+        <button onclick="protoStep(3)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">1&ndash;2 месяца</button>
+        <button onclick="protoStep(3)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">2+ месяца</button>
+        <button onclick="protoStep(3)" style="background:var(--abg);border:1px solid var(--accent);color:var(--al);padding:10px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">Планирую заранее</button>
+      </div>
+    </div>
+    <div id="qs3" class="qstep">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#5dde8a;margin-bottom:8px">Отлично! Рассчитаем стоимость за 5 минут</div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px">Оставьте контакт &mdash; менеджер позвонит в течение 2 часов и пришлёт расчёт.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <input type="text" placeholder="Ваше имя" style="background:#1a1410;border:1px solid #2a2016;color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;flex:1;min-width:140px">
+        <input type="tel" placeholder="Телефон / Telegram" style="background:#1a1410;border:1px solid #2a2016;color:var(--text);padding:10px 14px;border-radius:8px;font-size:13px;flex:1;min-width:140px">
+        <button style="background:var(--al);color:#0c0a07;border:none;padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer">Получить расчёт</button>
+      </div>
+    </div>
+  </div>
+</div>
+<p style="font-size:12px;color:var(--muted);margin-top:12px">Квиз кликабельный &mdash; нажимайте кнопки для переключения шагов.</p>
+</div>
+
+<!-- 12 ПЛАН ПО ДНЯМ -->
+<div class="page" id="p12">
+<h2>12. Детальный план первых 4 недель</h2>
+<div class="wh"><div class="wtit">Неделя 1 &mdash; Фундамент и аудит</div><div class="wkpi">KPI: CRM подключена, аудит готов, семантика собрана, макет B2B-лендинга согласован</div></div>
+<div style="padding:0 4px">
+  <div class="dr"><span class="dn">Пн</span><span>Знакомство с командой. Доступы к сайту, Метрике, рекламным кабинетам, CRM. Аудит текущей аналитики.</span><span class="tmeet">Встреча</span></div>
+  <div class="dr"><span class="dn">Вт</span><span>UX-аудит сайта monomount.com по 9 параметрам. Сбор семантического ядра под B2B-запросы (300+ ключей).</span><span class="tsite">Сайт</span></div>
+  <div class="dr"><span class="dn">Ср</span><span>Анализ текущих B2B-клиентов: откуда пришли, какой чек, что заказывали. Сегментация базы.</span><span class="tanal">Аналитика</span></div>
+  <div class="dr"><span class="dn">Чт</span><span>Настройка amoCRM: воронка B2B, поля квалификации (объём, тип, дата, бюджет). Обучение менеджера.</span><span class="tsite">Сайт</span></div>
+  <div class="dr"><span class="dn">Пт</span><span>Wireframe B2B-лендинга: Hero + Квиз + Кейсы + Калькулятор + CTA. Еженедельный отчёт #1 (пятница).</span><span class="tsite">Сайт</span></div>
+</div>
+
+<div class="wh"><div class="wtit">Неделя 2 &mdash; Запуск инфраструктуры</div><div class="wkpi">KPI: B2B-лендинг в работе, Директ настроен (не запущен), PDF-каталог готов, аутрич-список 100 контактов</div></div>
+<div style="padding:0 4px">
+  <div class="dr"><span class="dn">Пн</span><span>Дизайн и вёрстка B2B-лендинга. Подключение Метрики с целями. Форма в CRM.</span><span class="tsite">Сайт</span></div>
+  <div class="dr"><span class="dn">Вт</span><span>Настройка кампаний Яндекс Директ: поиск + РСЯ. Объявления, минус-слова, ставки. Не запускать!</span><span class="tdir">Директ</span></div>
+  <div class="dr"><span class="dn">Ср</span><span>Создание PDF-каталога: ассортимент, цены от тиража, условия заказа, примеры работ.</span><span class="tsite">Сайт</span></div>
+  <div class="dr"><span class="dn">Чт</span><span>Сбор аутрич-базы: HR-директора и event-менеджеры в Telegram / ВКонтакте. 100 контактов с квалификацией.</span><span class="tb2b">B2B</span></div>
+  <div class="dr"><span class="dn">Пт</span><span>Тест B2B-лендинга на мобильных. Ускорение PageSpeed. Согласование запуска Директа. Отчёт #2.</span><span class="tanal">Аналитика</span></div>
+</div>
+
+<div class="wh"><div class="wtit">Неделя 3 &mdash; Первый трафик</div><div class="wkpi">KPI: 10&ndash;20 первых лидов из Директа, 3 посева в TG выходят, аутрич 50 контактов отправлено</div></div>
+<div style="padding:0 4px">
+  <div class="dr"><span class="dn">Пн</span><span>Запуск Яндекс Директ. Мониторинг первых кликов и заявок. Настройка авто-ответа CRM (в течение 15 мин).</span><span class="tdir">Директ</span></div>
+  <div class="dr"><span class="dn">Вт</span><span>Первый посев в Telegram (HR-каналы). Запуск таргетинга ВКонтакте по должностям (HR, event, закупки).</span><span class="tb2b">B2B</span></div>
+  <div class="dr"><span class="dn">Ср</span><span>Аутрич в Telegram: первые 50 контактов, сообщение #1. Отслеживание ответов в CRM.</span><span class="tb2b">B2B</span></div>
+  <div class="dr"><span class="dn">Чт</span><span>SEO: публикация статьи "Как выбрать корп. подарки из натуральных материалов". Оптимизация Title/Meta.</span><span class="tseo">SEO</span></div>
+  <div class="dr"><span class="dn">Пт</span><span>Анализ первых результатов: CTR, CPL по каналам. Оптимизация объявлений. Отчёт #3 (видеоотчёт).</span><span class="tanal">Аналитика</span></div>
+</div>
+
+<div class="wh"><div class="wtit">Неделя 4 &mdash; Оптимизация и масштаб</div><div class="wkpi">KPI: 25&ndash;35 накопленных лидов, CPL &lt; 1 500 &#8381;, 2&ndash;5 сделок в работе у менеджера</div></div>
+<div style="padding:0 4px">
+  <div class="dr"><span class="dn">Пн</span><span>Масштаб работающих объявлений Директа. Отключение неэффективных. Увеличение бюджета на лучшие связки.</span><span class="tdir">Директ</span></div>
+  <div class="dr"><span class="dn">Вт</span><span>Второй посев TG + запуск TG Ads. Аутрич сообщение #2 по тем, кто не ответил на нед. 3.</span><span class="tb2b">B2B</span></div>
+  <div class="dr"><span class="dn">Ср</span><span>Добавление блока кейсов на B2B-лендинг (фото + результаты корп. заказов). Ускорение сайта до 65+ Mobile.</span><span class="tsite">Сайт</span></div>
+  <div class="dr"><span class="dn">Чт</span><span>SEO: статья "Наградная продукция из дерева: идеи для конференций". Крауд-размещения в форумах.</span><span class="tseo">SEO</span></div>
+  <div class="dr"><span class="dn">Пт</span><span>Отчёт #4: лиды, CPL, сделки, ROI. Скорректированный план на следующий месяц. Звонок с руководством.</span><span class="tmeet">Встреча</span></div>
+</div>
+
+<div class="card" style="margin-top:24px">
+  <div class="g2">
+    <div>
+      <h3>Формат ежедневного отчёта</h3>
+      <div class="csm" style="margin-top:10px;font-size:13px;line-height:1.8;color:var(--muted)">
+        <p><strong style="color:var(--text)">&#128202; День [N] &mdash; Monomount</strong></p>
+        <p>Лидов сегодня: [X] | Всего за неделю: [X]</p>
+        <p>CPL: [X] &#8381; | Бюджет: [X] &#8381;</p>
+        <p>Что сделано: [1&ndash;3 пункта]</p>
+        <p>Что завтра: [1&ndash;2 пункта]</p>
+        <p>Флаги: [если есть проблемы]</p>
+      </div>
+    </div>
+    <div>
+      <h3>Формат еженедельного отчёта (пятница)</h3>
+      <div class="csm" style="margin-top:10px;font-size:13px;line-height:1.8;color:var(--muted)">
+        <p><strong style="color:var(--text)">&#128196; Неделя [N] &mdash; Итоги</strong></p>
+        <p>Лидов: [X] | План: [X] | Факт/план: [X]%</p>
+        <p>Средний CPL: [X] &#8381;</p>
+        <p>Топ-канал: [канал]</p>
+        <p>Выполнено задач: [X/X]</p>
+        <p>Изменения в стратегии: [если есть]</p>
+        <p>План на следующую неделю: [3 пункта]</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:16px;border-color:var(--accent);background:rgba(139,105,20,.06)">
+  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
+    <div><div class="lbl">По итогам 4 недель</div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--al)">25&ndash;35 B2B-лидов</div></div>
+    <div><div class="lbl">Средний CPL</div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--al)">&lt;1 500 &#8381;</div></div>
+    <div><div class="lbl">Сделок в CRM</div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--al)">2&ndash;5</div></div>
+    <div><div class="lbl">Инфраструктура</div><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--al)">100% готова</div></div>
+  </div>
+</div>
+
+<div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);text-align:center">
+  <p style="font-size:14px;color:var(--muted);margin-bottom:16px">Готов обсудить детали и начать работу</p>
+  <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap">
+    <a href="mailto:wwwfrolof@yandex.ru" style="color:var(--al);text-decoration:none;font-weight:600">wwwfrolof@yandex.ru</a>
+    <a href="tel:+79059390874" style="color:var(--al);text-decoration:none;font-weight:600">+7 (905) 939-08-74</a>
+    <a href="https://pavelfrolof.ru" target="_blank" style="color:var(--al);text-decoration:none;font-weight:600">pavelfrolof.ru</a>
+  </div>
+</div>
+</div>
+
+<script>
+let currentPage=0;const total=13;
+function go(i){
+  if(i<0||i>=total)return;
+  const prev=document.querySelector('.page.active');
+  if(prev){
+    prev.style.opacity='0';
+    prev.style.transform='translateY(-8px)';
+    setTimeout(()=>{
+      prev.classList.remove('active');
+      prev.style.opacity='';
+      prev.style.transform='';
+      activatePage(i);
+    },180);
+  } else { activatePage(i); }
+}
+function activatePage(i){
+  currentPage=i;
+  document.querySelectorAll('.page').forEach((p,j)=>p.classList.toggle('active',j===i));
+  document.querySelectorAll('.nl').forEach((l,j)=>l.classList.toggle('active',j===i));
+  document.getElementById('nctr').textContent=(i+1)+' / '+total;
+  window.scrollTo({top:0,behavior:'instant'});
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown')go(currentPage+1);
+  if(e.key==='ArrowLeft'||e.key==='PageUp')go(currentPage-1);
+});
+function protoStep(n){
+  var steps=['qs0','qs1','qs2','qs3'];
+  steps.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(el) el.style.display=(i===n?'block':'none');
+  });
+}
+</script>
+</body>
+</html>
