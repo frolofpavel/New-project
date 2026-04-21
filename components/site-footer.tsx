@@ -1,10 +1,20 @@
 import Link from "next/link";
 
+import { HugeMarquee } from "@/components/motion/huge-marquee";
 import { siteConfig } from "@/lib/site-config";
 
 export function SiteFooter() {
   return (
     <footer className="site-footer">
+      <div className="site-footer__marquee" aria-hidden="true">
+        <HugeMarquee
+          items={["FROLOV.PF", "AI-АРХИТЕКТОР", "FROLOV.PF", "2026", "FROLOV.PF", "ARCHITECTURE"]}
+          direction="left"
+          duration={52}
+          variant="outline"
+        />
+      </div>
+
       <div className="site-footer__grid">
         <div className="site-footer__col">
           <p className="site-footer__brand">
@@ -14,6 +24,10 @@ export function SiteFooter() {
             {siteConfig.role}. Проектирую системы, внедряю AI-агентов, веду
             маркетинговые операции под бизнес-результат.
           </p>
+          <div className="site-footer__status">
+            <span className="status-dot" aria-hidden="true" />
+            <span>Свободен для новых проектов · Q2 2026</span>
+          </div>
         </div>
 
         <div className="site-footer__col">

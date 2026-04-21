@@ -123,27 +123,29 @@ export default function HomePage() {
             </p>
           </Reveal>
 
-          <Stagger className="cards-grid-2" stagger={0.1}>
-            {siteConfig.systems.map((s) => (
-              <StaggerItem key={s.title}>
-                <GlowCard className="system-card">
-                  <span className="system-card__tag">{s.tag}</span>
-                  <h3>{s.title}</h3>
-                  <p>{s.description}</p>
-                  <div className="system-card__metrics">
-                    {s.metrics.map((m) => (
-                      <div key={m.label}>
-                        <span className="metric__val">
-                          <CountUp value={m.value} />
-                        </span>
-                        <span className="metric__lbl">{m.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </GlowCard>
-              </StaggerItem>
-            ))}
-          </Stagger>
+          <div className="systems-scroll">
+            <Stagger className="systems-cards-track" stagger={0.1}>
+              {siteConfig.systems.map((s) => (
+                <StaggerItem key={s.title}>
+                  <GlowCard className="system-card">
+                    <span className="system-card__tag">{s.tag}</span>
+                    <h3>{s.title}</h3>
+                    <p>{s.description}</p>
+                    <div className="system-card__metrics">
+                      {s.metrics.map((m) => (
+                        <div key={m.label}>
+                          <span className="metric__val">
+                            <CountUp value={m.value} />
+                          </span>
+                          <span className="metric__lbl">{m.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </GlowCard>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </div>
         </div>
       </section>
 
@@ -210,6 +212,11 @@ export default function HomePage() {
           </Reveal>
         </div>
       </section>
+
+      <div className="section-beam" aria-hidden="true">
+        <div className="section-beam__line" />
+        <div className="section-beam__pulse" />
+      </div>
 
       {/* ══ CTA ══ */}
       <section id="contact-cta" className="cta-section">

@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, Variants } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { MouseEvent as ReactMouseEvent, useEffect, useRef, useState } from "react";
 
 import { MagneticLink } from "@/components/motion/magnetic";
 import { SplitText } from "@/components/motion/split-text";
@@ -78,8 +78,32 @@ const fadeUp: Variants = {
   }),
 };
 
+function useTerminalTilt() {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const rx = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), { stiffness: 150, damping: 20 });
+  const ry = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 150, damping: 20 });
+  const tx = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), { stiffness: 150, damping: 20 });
+  const ty = useSpring(useTransform(my, [-0.5, 0.5], [-8, 8]), { stiffness: 150, damping: 20 });
+
+  const onMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    mx.set((e.clientX - rect.left) / rect.width - 0.5);
+    my.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+  const onLeave = () => {
+    mx.set(0);
+    my.set(0);
+  };
+  return { ref, onMove, onLeave, rx, ry, tx, ty };
+}
+
 export function HeroBlock() {
   const { visibleLines, typedChars } = useTypedTerminal();
+  const tilt = useTerminalTilt();
 
   return (
     <section id="hero" className="hero">
@@ -150,9 +174,20 @@ export function HeroBlock() {
 
         <motion.div
           className="terminal-wrap"
+          ref={tilt.ref}
+          onMouseMove={tilt.onMove}
+          onMouseLeave={tilt.onLeave}
           initial={{ opacity: 0, y: 40, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          style={{
+            rotateX: tilt.rx,
+            rotateY: tilt.ry,
+            x: tilt.tx,
+            y: tilt.ty,
+            transformPerspective: 1200,
+            transformStyle: "preserve-3d",
+          }}
           aria-hidden="true"
         >
           <div className="terminal">
@@ -165,7 +200,22 @@ export function HeroBlock() {
               <span className="terminal__name">status.sh</span>
               <span />
             </div>
-            <div className="terminal__body">
+            <div className="terminal__viewport">
+              <div className="terminal__bg" aria-hidden="true">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster="/media/terminal-graph-poster.webp"
+                >
+                  <source src="/media/terminal-graph.webm" type="video/webm" />
+                  <source src="/media/terminal-graph.mp4" type="video/mp4" />
+                </video>
+                <div className="terminal__bg-veil" />
+              </div>
+              <div className="terminal__body">
               {TERMINAL_LINES.map((line, i) => {
                 if (i > visibleLines) return null;
                 const text = i === visibleLines ? line.text.slice(0, typedChars) : line.text;
@@ -204,6 +254,7 @@ export function HeroBlock() {
                   </div>
                 );
               })}
+              </div>
             </div>
           </div>
           <div className="terminal__status">

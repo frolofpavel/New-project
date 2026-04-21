@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Onest } from "next/font/google";
 
 import { CustomCursor } from "@/components/motion/cursor";
+import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -62,6 +63,7 @@ export default function RootLayout({
       <body>
         <SmoothScroll />
         <CustomCursor />
+        <ScrollProgress />
         <div className="grain" aria-hidden="true" />
         <div className="page-shell">
           <div className="bg-glow" aria-hidden="true" />
