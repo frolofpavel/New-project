@@ -3,6 +3,7 @@ import { JetBrains_Mono, Onest } from "next/font/google";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { siteConfig } from "@/lib/site-config";
 
 import "./globals.css";
@@ -58,6 +59,8 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${onest.variable} ${jetbrainsMono.variable}`}>
       <body>
+        <SmoothScroll />
+        <div className="grain" aria-hidden="true" />
         <div className="page-shell">
           <div className="bg-glow" aria-hidden="true" />
           <SiteHeader />
