@@ -1,139 +1,280 @@
 import Link from "next/link";
 
-import { BlogCard, CaseCard, ServiceCard } from "@/components/cards";
-import { LeadStrip } from "@/components/lead-strip";
-import { SectionHeading } from "@/components/section-heading";
-import { getAllBlogPosts, getAllCaseStudies } from "@/lib/content";
-import { services, siteConfig } from "@/lib/site-config";
+import { HeroBlock } from "@/components/hero-block";
+import { CountUp } from "@/components/motion/count-up";
+import { GlowCard } from "@/components/motion/glow-card";
+import { HugeMarquee } from "@/components/motion/huge-marquee";
+import { MagneticLink } from "@/components/motion/magnetic";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
+import { siteConfig } from "@/lib/site-config";
+
+function renderBody(markdown: string) {
+  const parts: Array<string | { type: "strong" | "hl"; text: string }> = [];
+  const regex = /\*\*([^*]+)\*\*|__([^_]+)__/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = regex.exec(markdown))) {
+    if (match.index > lastIndex) {
+      parts.push(markdown.slice(lastIndex, match.index));
+    }
+    if (match[1]) {
+      parts.push({ type: "strong", text: match[1] });
+    } else if (match[2]) {
+      parts.push({ type: "hl", text: match[2] });
+    }
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < markdown.length) {
+    parts.push(markdown.slice(lastIndex));
+  }
+  return parts.map((part, i) => {
+    if (typeof part === "string") return <span key={i}>{part}</span>;
+    if (part.type === "strong") return <strong key={i}>{part.text}</strong>;
+    return (
+      <strong key={i} className="hl">
+        {part.text}
+      </strong>
+    );
+  });
+}
 
 export default function HomePage() {
-  const caseStudies = getAllCaseStudies().slice(0, 2);
-  const posts = getAllBlogPosts().slice(0, 2);
-
   return (
     <>
-      <section className="hero">
-        <div className="container hero__grid">
-          <div className="hero__copy">
-            <p className="hero__eyebrow">{siteConfig.hero.eyebrow}</p>
-            <h1>{siteConfig.hero.title}</h1>
-            <p className="hero__description">{siteConfig.hero.description}</p>
+      <HeroBlock />
 
-            <div className="hero__actions">
-              <Link href={siteConfig.hero.primaryCta.href} className="button button--primary">
-                {siteConfig.hero.primaryCta.label}
-              </Link>
-              <Link href={siteConfig.hero.secondaryCta.href} className="button button--ghost">
-                {siteConfig.hero.secondaryCta.label}
-              </Link>
-            </div>
-          </div>
-
-          <div className="hero-panel">
-            <p className="hero-panel__kicker">Что получает клиент</p>
-            <ul>
-              <li>понятную цифровую подачу и собранное позиционирование</li>
-              <li>сайт, который помогает продавать, а не просто существует</li>
-              <li>рабочую систему роста: контент, поддержка, SEO, реклама и CRM-логика</li>
-            </ul>
-          </div>
-        </div>
+      {/* ══ HUGE MARQUEE — двунаправленный ══ */}
+      <section className="huge-marquee-block">
+        <HugeMarquee
+          items={["SYSTEMS NOT CAMPAIGNS", "AI · OPERATIONS", "ARCHITECTURE FIRST", "FROLOV.PF"]}
+          direction="left"
+          duration={38}
+          variant="solid"
+        />
+        <HugeMarquee
+          items={["МАРКЕТИНГ КАК СИСТЕМА", "19 ЛЕТ ОПЫТА", "B2B · LEADGEN", "AIOS · AI-BOS"]}
+          direction="right"
+          duration={46}
+          variant="outline"
+        />
       </section>
 
-      <section className="section">
-        <div className="container stats-grid">
-          {siteConfig.stats.map((item) => (
-            <article key={item.label} className="stat-card">
-              <strong>{item.value}</strong>
-              <span>{item.label}</span>
-            </article>
+      {/* ══ TICKER ══ */}
+      <div className="ticker" aria-hidden="true">
+        <div className="ticker__track">
+          {[...siteConfig.tickerItems, ...siteConfig.tickerItems, ...siteConfig.tickerItems].map((item, i) => (
+            <span key={`${item}-${i}`} className="ticker__item">
+              <span className="tick-arrow">↗</span>
+              {item}
+            </span>
           ))}
         </div>
+      </div>
+
+      {/* ══ ПРИНЦИПЫ ══ */}
+      <section id="principles" className="section">
+        <Reveal>
+          <div className="section-label">Принципы</div>
+          <h2 className="section-h2">
+            Как я думаю<br />о маркетинге
+          </h2>
+          <p className="section-sub">
+            Не «делаю рекламу» — строю машины, которые работают без тебя. Вот база.
+          </p>
+        </Reveal>
+
+        <Stagger className="principles-grid">
+          {siteConfig.principles.map((p) => (
+            <StaggerItem key={p.num}>
+              <GlowCard className="principle-card">
+                <div className="principle-card__num">{p.num}</div>
+                <div className="principle-card__icon" aria-hidden="true">
+                  {p.icon}
+                </div>
+                <h3 className="principle-card__title">{p.title}</h3>
+                <p className="principle-card__text">{p.text}</p>
+              </GlowCard>
+            </StaggerItem>
+          ))}
+        </Stagger>
       </section>
 
-      <section className="section">
-        <div className="container split-block">
-          <SectionHeading
-            eyebrow="Подход"
-            title="Собираю не просто страницы, а рабочую digital-среду для доверия, входящих запросов и роста."
-            description="Подключаюсь там, где нужно связать сайт, контент, маркетинг и дальнейшее развитие в один управляемый контур."
-          />
+      {/* ══ СИСТЕМЫ ══ */}
+      <section id="systems" className="section--muted has-bg-video">
+        <div className="bg-video" aria-hidden="true">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/media/systems-isometric-poster.webp"
+          >
+            <source src="/media/systems-isometric.webm" type="video/webm" />
+            <source src="/media/systems-isometric.mp4" type="video/mp4" />
+          </video>
+          <div className="bg-video__veil" />
+        </div>
+        <div className="section__inner">
+          <Reveal>
+            <div className="section-label">Системы</div>
+            <h2 className="section-h2">Что я строю</h2>
+            <p className="section-sub">
+              Собственные AI-продукты и системы под задачи клиентов. Всё работает в production.
+            </p>
+          </Reveal>
 
-          <div className="bullet-stack">
-            {siteConfig.audience.map((item) => (
-              <article key={item} className="soft-card">
-                <p>{item}</p>
-              </article>
+          <Stagger className="cards-grid-2" stagger={0.1}>
+            {siteConfig.systems.map((s) => (
+              <StaggerItem key={s.title}>
+                <GlowCard className="system-card">
+                  <span className="system-card__tag">{s.tag}</span>
+                  <h3>{s.title}</h3>
+                  <p>{s.description}</p>
+                  <div className="system-card__metrics">
+                    {s.metrics.map((m) => (
+                      <div key={m.label}>
+                        <span className="metric__val">
+                          <CountUp value={m.value} />
+                        </span>
+                        <span className="metric__lbl">{m.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </GlowCard>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
-      <section className="section section--muted">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Услуги"
-            title="От позиционирования до запуска сайта и дальнейшей digital-поддержки"
-            description="Можно начать с компактного запуска, а дальше постепенно наращивать контент, трафик и точки продаж."
-          />
+      {/* ══ КЕЙСЫ ══ */}
+      <section id="cases" className="section">
+        <Reveal>
+          <div className="section-label">Кейсы</div>
+          <h2 className="section-h2">Реальные результаты</h2>
+          <p className="section-sub">
+            Не «увеличили охваты», а конкретные числа в деньгах и лидах.
+          </p>
+        </Reveal>
 
-          <div className="card-grid card-grid--three">
-            {services.map((service) => (
-              <ServiceCard key={service.slug} service={service} />
-            ))}
-          </div>
+        <Stagger className="cards-grid-3" stagger={0.12}>
+          {siteConfig.featuredCases.map((c) => (
+            <StaggerItem key={c.title}>
+              <GlowCard className="case-card">
+                <p className="case-card__industry">{c.industry}</p>
+                <h3>{c.title}</h3>
+                <p>{c.description}</p>
+                <div className="case-card__result">
+                  <CountUp value={c.result} /> <span>{c.resultNote}</span>
+                </div>
+              </GlowCard>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </section>
+
+      {/* ══ ОБО МНЕ ══ */}
+      <section id="about" className="section--muted">
+        <div className="about-inner">
+          <Reveal>
+            <div className="section-label">{siteConfig.aboutKicker}</div>
+            <h2 className="section-h2">
+              {siteConfig.aboutTitleLines.map((line, i) => (
+                <span key={i}>
+                  {line}
+                  {i < siteConfig.aboutTitleLines.length - 1 ? <br /> : null}
+                </span>
+              ))}
+            </h2>
+            <div className="about-body">
+              {siteConfig.aboutBody.map((p, i) => (
+                <p key={i}>{renderBody(p.text)}</p>
+              ))}
+            </div>
+            <div className="about-chips">
+              {siteConfig.aboutChips.map((chip) => (
+                <span key={chip} className="chip">
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <div className="stat-stack">
+              {siteConfig.statRows.map((row) => (
+                <div key={row.title} className="stat-row">
+                  <span className="stat-row__num">
+                    <CountUp value={row.value} />
+                  </span>
+                  <div>
+                    <div className="stat-row__title">{row.title}</div>
+                    <div className="stat-row__sub">{row.sub}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Избранные кейсы"
-            title="Проекты, где сайт и digital становятся частью реальной работы бизнеса"
-            description="Здесь не витринные концепты, а практические проекты: поддержка, запуск, систематизация и рабочая цифровая подача."
-          />
+      {/* ══ CTA ══ */}
+      <section id="contact-cta" className="cta-section">
+        <div className="cta-section__video" aria-hidden="true">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/media/cta-network-poster.webp"
+          >
+            <source src="/media/cta-network.webm" type="video/webm" />
+            <source src="/media/cta-network.mp4" type="video/mp4" />
+          </video>
+          <div className="cta-section__veil" />
+        </div>
 
-          <div className="card-grid">
-            {caseStudies.map((item) => (
-              <CaseCard key={item.slug} item={item} />
-            ))}
-          </div>
+        <div className="cta-section__body">
+          <Reveal>
+            <div className="cta-section__label">{siteConfig.ctaLabel}</div>
+            <h2 className="cta-section__h2">
+              {siteConfig.ctaTitleLines.map((line, i) => (
+                <span key={i} className={line.variant === "accent" ? "accent" : undefined}>
+                  {line.text}
+                  {i < siteConfig.ctaTitleLines.length - 1 ? <br /> : null}
+                </span>
+              ))}
+            </h2>
+            <p className="cta-section__sub">{siteConfig.ctaSub}</p>
+
+            <div className="cta-section__btns">
+              <MagneticLink href={siteConfig.telegram} className="button button--primary" external>
+                → написать в Telegram
+              </MagneticLink>
+              <Link href={`mailto:${siteConfig.email}`} className="button button--secondary">
+                {siteConfig.email}
+              </Link>
+            </div>
+
+            <div className="cta-section__links">
+              <a href={`tel:${siteConfig.phone.replace(/[^\d+]/g, "")}`} className="cta-section__link">
+                <span aria-hidden="true">📞</span>
+                <span>{siteConfig.phone}</span>
+              </a>
+              <Link href="/contact" className="cta-section__link">
+                <span aria-hidden="true">✉️</span>
+                <span>Форма на странице контактов</span>
+              </Link>
+              <Link href="/portfolio" className="cta-section__link">
+                <span aria-hidden="true">📁</span>
+                <span>Смотреть кейсы</span>
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
-
-      <section className="section section--muted">
-        <div className="container">
-          <SectionHeading eyebrow="Подход" title="Что важно в моей работе с проектами" />
-
-          <div className="card-grid">
-            {siteConfig.testimonials.map((item) => (
-              <article key={item.author} className="card quote-card">
-                <p className="quote-card__text">“{item.quote}”</p>
-                <p className="quote-card__author">
-                  {item.author} • {item.role}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Из блога"
-            title="Пишу о сайтах, кейсах и о том, как собирать digital не кусками, а как систему"
-          />
-
-          <div className="card-grid">
-            {posts.map((item) => (
-              <BlogCard key={item.slug} item={item} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <LeadStrip />
     </>
   );
 }

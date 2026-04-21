@@ -7,7 +7,8 @@ import { getAllBlogPosts } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Блог",
-  description: "Статьи Павла Фролова о личных сайтах, контенте, кейсах и цифровой упаковке экспертизы.",
+  description:
+    "Заметки о маркетинге как системе, AI-агентах, операционной архитектуре и реальной практике работы с проектами.",
 };
 
 export default function BlogPage() {
@@ -16,21 +17,28 @@ export default function BlogPage() {
   return (
     <>
       <section className="page-hero">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Блог"
-            title="Пишу о том, как строить личные сайты, контентные системы и понятную цифровую подачу."
-            description="Здесь мысли, подходы и практические заметки, которые помогают связать экспертность, структуру и лидогенерацию."
-          />
-        </div>
+        <SectionHeading
+          as="h1"
+          eyebrow="Блог"
+          title="Заметки о маркетинге как системе и AI-операциях"
+          description="Пишу о том, как собирать маркетинг не кусками, а как систему: архитектура, AI-агенты, процессы, реальные кейсы."
+        />
       </section>
 
       <section className="section">
-        <div className="container card-grid">
-          {posts.map((item) => (
-            <BlogCard key={item.slug} item={item} />
-          ))}
-        </div>
+        {posts.length > 0 ? (
+          <div className="cards-grid-3">
+            {posts.map((item) => (
+              <BlogCard key={item.slug} item={item} />
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state">
+            <p className="section-heading__eyebrow">Скоро</p>
+            <h2>Первые статьи на подходе</h2>
+            <p>Темы на очереди: архитектура маркетинговой системы, AI-агенты в рутине, операционные циклы и реальные числа.</p>
+          </div>
+        )}
       </section>
 
       <LeadStrip />

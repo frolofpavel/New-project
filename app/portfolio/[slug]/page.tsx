@@ -41,37 +41,66 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   return (
     <>
       <section className="page-hero">
-        <div className="container article-layout">
+        <div className="article-layout">
           <div>
-            <p className="hero__eyebrow">
-              {item.client} • {formatDate(item.publishedAt)}
+            <p className="section-heading__eyebrow">
+              {item.client} · {formatDate(item.publishedAt)}
             </p>
-            <h1 className="article-title">{item.title}</h1>
-            <p className="hero__description">{item.excerpt}</p>
-            <ul className="chip-list">
-              {item.services.map((service) => (
-                <li key={service}>{service}</li>
-              ))}
-            </ul>
+            <h1
+              style={{
+                fontSize: "clamp(32px, 4vw, 52px)",
+                fontWeight: 900,
+                lineHeight: 1.1,
+                letterSpacing: "-0.025em",
+                margin: "16px 0 20px",
+              }}
+            >
+              {item.title}
+            </h1>
+            <p
+              style={{
+                fontSize: "18px",
+                color: "var(--muted-2)",
+                lineHeight: 1.6,
+                maxWidth: "640px",
+              }}
+            >
+              {item.excerpt}
+            </p>
+            {item.services.length > 0 ? (
+              <ul className="chip-list" style={{ marginTop: "24px", borderTop: "none", paddingTop: 0 }}>
+                {item.services.map((service) => (
+                  <li key={service}>{service}</li>
+                ))}
+              </ul>
+            ) : null}
           </div>
 
           <aside className="aside-card">
             <p className="aside-card__eyebrow">Кратко по проекту</p>
-            <p>
-              <strong>Проблема:</strong> {item.problem}
-            </p>
-            <p>
-              <strong>Решение:</strong> {item.solution}
-            </p>
-            <p>
-              <strong>Результат:</strong> {item.result}
-            </p>
+            <ul>
+              {item.problem ? (
+                <li>
+                  <strong style={{ color: "var(--text)" }}>Проблема:</strong> {item.problem}
+                </li>
+              ) : null}
+              {item.solution ? (
+                <li>
+                  <strong style={{ color: "var(--text)" }}>Решение:</strong> {item.solution}
+                </li>
+              ) : null}
+              {item.result ? (
+                <li>
+                  <strong style={{ color: "var(--accent)" }}>Результат:</strong> {item.result}
+                </li>
+              ) : null}
+            </ul>
           </aside>
         </div>
       </section>
 
       <section className="section">
-        <div className="container article-layout">
+        <div className="prose">
           <Markdown content={item.content} />
         </div>
       </section>

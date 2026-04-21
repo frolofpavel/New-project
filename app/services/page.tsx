@@ -7,24 +7,24 @@ import { services } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Услуги",
-  description: "Упаковка личного бренда, запуск сайтов, контентные системы и цифровая презентация под лидогенерацию.",
+  description:
+    "Маркетинговая архитектура, AI-автоматизация маркетинга, маркетинговые операции под ключ — от проектирования до запуска и ведения.",
 };
 
 export default function ServicesPage() {
   return (
     <>
       <section className="page-hero">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Услуги"
-            title="Помогаю выстроить сайт и контент как систему, а не набор разрозненных решений."
-            description="Ниже основные форматы, с которых обычно начинается работа. При необходимости они собираются в единый проект под задачу."
-          />
-        </div>
+        <SectionHeading
+          as="h1"
+          eyebrow="Услуги"
+          title="Три формата работы — от архитектуры системы до полного ведения маркетинга"
+          description="Можно начать с проектирования и AI-автоматизации отдельных процессов, можно подключить меня как операционного партнёра на маркетинг под ключ."
+        />
       </section>
 
       <section className="section">
-        <div className="container card-grid card-grid--three">
+        <div className="cards-grid-3">
           {services.map((service) => (
             <ServiceCard key={service.slug} service={service} />
           ))}

@@ -6,9 +6,5 @@ type MarkdownProps = {
 };
 
 export function Markdown({ content }: MarkdownProps) {
-  return (
-    <div className="prose">
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-    </div>
-  );
+  return <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>;
 }

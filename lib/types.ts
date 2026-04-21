@@ -5,7 +5,8 @@ export type SeoFields = {
 
 export type HeroContent = {
   eyebrow: string;
-  title: string;
+  eyebrowLive: string;
+  titleLines: Array<{ text: string; variant?: "accent" | "muted" }>;
   description: string;
   primaryCta: {
     label: string;
@@ -15,6 +16,39 @@ export type HeroContent = {
     label: string;
     href: string;
   };
+};
+
+export type Principle = {
+  num: string;
+  icon: string;
+  title: string;
+  text: string;
+};
+
+export type SystemMetric = {
+  value: string;
+  label: string;
+};
+
+export type SystemCard = {
+  tag: string;
+  title: string;
+  description: string;
+  metrics: SystemMetric[];
+};
+
+export type FeaturedCase = {
+  industry: string;
+  title: string;
+  description: string;
+  result: string;
+  resultNote: string;
+};
+
+export type StatRow = {
+  value: string;
+  title: string;
+  sub: string;
 };
 
 export type SiteConfig = {
@@ -28,17 +62,20 @@ export type SiteConfig = {
   vk: string;
   instagram: string;
   baseUrl: string;
+  tagline: string;
   hero: HeroContent;
-  stats: Array<{
-    value: string;
-    label: string;
-  }>;
-  audience: string[];
-  testimonials: Array<{
-    author: string;
-    role: string;
-    quote: string;
-  }>;
+  tickerItems: string[];
+  principles: Principle[];
+  systems: SystemCard[];
+  featuredCases: FeaturedCase[];
+  aboutKicker: string;
+  aboutTitleLines: string[];
+  aboutBody: Array<{ text: string }>;
+  aboutChips: string[];
+  statRows: StatRow[];
+  ctaLabel: string;
+  ctaTitleLines: Array<{ text: string; variant?: "accent" }>;
+  ctaSub: string;
   seo: SeoFields;
 };
 

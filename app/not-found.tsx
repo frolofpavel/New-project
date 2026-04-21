@@ -3,12 +3,12 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <section className="section">
-      <div className="container empty-state">
+      <div className="empty-state">
         <p className="section-heading__eyebrow">404</p>
-        <h1>Эта страница не найдена</h1>
-        <p>Возможно, материал был перемещен или ссылка устарела.</p>
+        <h1>Страница не найдена</h1>
+        <p>Возможно, материал был перемещён или ссылка устарела.</p>
         <Link href="/" className="button button--primary">
-          Вернуться на главную
+          На главную
         </Link>
       </div>
     </section>

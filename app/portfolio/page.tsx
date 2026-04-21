@@ -7,7 +7,8 @@ import { getAllCaseStudies } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Кейсы",
-  description: "Кейсы Павла Фролова: перезапуски сайтов, упаковка экспертности и проекты на стыке контента и стратегии.",
+  description:
+    "Кейсы Павла Фролова: лидогенерация в масштабе, B2B с нуля до 312M ₽, SaaS-продукты — конкретные числа в деньгах и лидах.",
 };
 
 export default function PortfolioPage() {
@@ -16,21 +17,32 @@ export default function PortfolioPage() {
   return (
     <>
       <section className="page-hero">
-        <div className="container">
-          <SectionHeading
-            eyebrow="Портфолио"
-            title="Кейсы, в которых цифровая упаковка становилась частью стратегии роста."
-            description="Показываю не только визуальный результат, но и логику: что мешало, что изменили и почему это сработало."
-          />
-        </div>
+        <SectionHeading
+          as="h1"
+          eyebrow="Кейсы"
+          title="Реальные результаты — не охваты, а выручка и лиды"
+          description="Показываю не только визуальный результат, но и логику: что мешало, что изменили и почему это сработало."
+        />
       </section>
 
       <section className="section">
-        <div className="container card-grid">
-          {caseStudies.map((item) => (
-            <CaseCard key={item.slug} item={item} />
-          ))}
-        </div>
+        {caseStudies.length > 0 ? (
+          <div className="cards-grid-3">
+            {caseStudies.map((item) => (
+              <CaseCard key={item.slug} item={item} />
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state">
+            <p className="section-heading__eyebrow">В разработке</p>
+            <h2>Детальные кейсы скоро появятся</h2>
+            <p>
+              Пока ключевые истории — Расцветай (7 500 лидов/мес, 5+ лет), Насклад
+              Групп (312 млн ₽ выручки B2B), SaaS-продукт (15 млн ₽/мес) — можно
+              обсудить лично.
+            </p>
+          </div>
+        )}
       </section>
 
       <LeadStrip />

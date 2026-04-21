@@ -41,24 +41,42 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <>
       <section className="page-hero">
-        <div className="container article-layout">
-          <div>
-            <p className="hero__eyebrow">
-              {formatDate(item.publishedAt)} • {item.readingTime}
-            </p>
-            <h1 className="article-title">{item.title}</h1>
-            <p className="hero__description">{item.excerpt}</p>
-            <ul className="chip-list">
-              {item.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <p className="section-heading__eyebrow">
+          {formatDate(item.publishedAt)} · {item.readingTime}
+        </p>
+        <h1
+          style={{
+            fontSize: "clamp(32px, 4vw, 52px)",
+            fontWeight: 900,
+            lineHeight: 1.1,
+            letterSpacing: "-0.025em",
+            margin: "16px 0 20px",
+            maxWidth: "880px",
+          }}
+        >
+          {item.title}
+        </h1>
+        <p
+          style={{
+            fontSize: "18px",
+            color: "var(--muted-2)",
+            lineHeight: 1.6,
+            maxWidth: "720px",
+          }}
+        >
+          {item.excerpt}
+        </p>
+        {item.tags.length > 0 ? (
+          <ul className="chip-list" style={{ marginTop: "28px", borderTop: "none", paddingTop: 0 }}>
+            {item.tags.map((tag) => (
+              <li key={tag}>{tag}</li>
+            ))}
+          </ul>
+        ) : null}
       </section>
 
       <section className="section">
-        <div className="container article-layout">
+        <div className="prose">
           <Markdown content={item.content} />
         </div>
       </section>
