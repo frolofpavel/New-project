@@ -82,6 +82,94 @@ img, svg { max-width: 100%; display: block; }
   background-size: 200px 200px;
 }
 
+/* Split-text (char / word stagger) */
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.split-char {
+  display: inline-block;
+  overflow: hidden;
+  line-height: inherit;
+  vertical-align: top;
+}
+.split-inline {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.split-line-wrap {
+  display: inline;
+}
+
+/* Custom cursor (desktop only) */
+.has-custom-cursor,
+.has-custom-cursor body {
+  cursor: none;
+}
+.has-custom-cursor a,
+.has-custom-cursor button,
+.has-custom-cursor .button,
+.has-custom-cursor [role="button"] {
+  cursor: none;
+}
+.has-custom-cursor input,
+.has-custom-cursor textarea,
+.has-custom-cursor select {
+  cursor: text;
+}
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  will-change: transform, width, height;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: opacity 180ms ease;
+}
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  transition: width 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms ease,
+    background-color 220ms ease,
+    opacity 220ms ease;
+}
+.cursor-ring.is-hovered {
+  width: 66px;
+  height: 66px;
+  margin: -33px 0 0 -33px;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+}
+.cursor-ring.is-pressed {
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border-color: rgba(255, 255, 255, 1);
+}
+.cursor-ring.is-hidden,
+.cursor-dot.is-hidden {
+  opacity: 0;
+}
+@media (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring { display: none; }
+}
+
 /* Lenis smooth scroll hooks */
 html.lenis,
 html.lenis body {
@@ -389,8 +477,9 @@ main { flex: 1; }
 .hero__h1-word {
   display: inline-block;
 }
-.hero__h1 .accent .hero__h1-word,
+.hero__h1-line.accent,
 .hero__h1-line.accent .hero__h1-word { color: var(--accent); }
+.hero__h1-line.muted-line,
 .hero__h1-line.muted-line .hero__h1-word { color: var(--muted); }
 
 .hero__sub {

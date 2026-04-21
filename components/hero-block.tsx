@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { MagneticLink } from "@/components/motion/magnetic";
+import { SplitText } from "@/components/motion/split-text";
 import { siteConfig } from "@/lib/site-config";
 
 const TERMINAL_LINES: Array<{ type: "prompt" | "arrow" | "folder" | "comment" | "spacer"; text: string }> = [
@@ -68,18 +69,6 @@ function useTypedTerminal() {
   return { visibleLines, typedChars };
 }
 
-const titleContainer: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
-};
-const titleWord: Variants = {
-  hidden: { y: "110%", opacity: 0 },
-  visible: {
-    y: "0%",
-    opacity: 1,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
-  },
-};
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number = 0) => ({
@@ -114,12 +103,7 @@ export function HeroBlock() {
             </span>
           </motion.div>
 
-          <motion.h1
-            className="hero__h1"
-            variants={titleContainer}
-            initial="hidden"
-            animate="visible"
-          >
+          <h1 className="hero__h1">
             {siteConfig.hero.titleLines.map((line, index) => (
               <span
                 key={index}
@@ -127,12 +111,16 @@ export function HeroBlock() {
                   line.variant === "accent" ? "accent" : line.variant === "muted" ? "muted-line" : ""
                 }`}
               >
-                <motion.span variants={titleWord} className="hero__h1-word">
-                  {line.text}
-                </motion.span>
+                <SplitText
+                  text={line.text}
+                  className="hero__h1-word"
+                  mode="chars"
+                  stagger={0.022}
+                  delay={0.15 + index * 0.18}
+                />
               </span>
             ))}
-          </motion.h1>
+          </h1>
 
           <motion.p
             className="hero__sub"

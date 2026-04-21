@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { HeroBlock } from "@/components/hero-block";
+import { AnimatedHeading } from "@/components/motion/animated-heading";
 import { CountUp } from "@/components/motion/count-up";
 import { GlowCard } from "@/components/motion/glow-card";
 import { HugeMarquee } from "@/components/motion/huge-marquee";
@@ -75,9 +76,7 @@ export default function HomePage() {
       <section id="principles" className="section">
         <Reveal>
           <div className="section-label">Принципы</div>
-          <h2 className="section-h2">
-            Как я думаю<br />о маркетинге
-          </h2>
+          <AnimatedHeading className="section-h2" lines={["Как я думаю", "о маркетинге"]} />
           <p className="section-sub">
             Не «делаю рекламу» — строю машины, которые работают без тебя. Вот база.
           </p>
@@ -118,7 +117,7 @@ export default function HomePage() {
         <div className="section__inner">
           <Reveal>
             <div className="section-label">Системы</div>
-            <h2 className="section-h2">Что я строю</h2>
+            <AnimatedHeading className="section-h2" lines={["Что я строю"]} />
             <p className="section-sub">
               Собственные AI-продукты и системы под задачи клиентов. Всё работает в production.
             </p>
@@ -152,7 +151,7 @@ export default function HomePage() {
       <section id="cases" className="section">
         <Reveal>
           <div className="section-label">Кейсы</div>
-          <h2 className="section-h2">Реальные результаты</h2>
+          <AnimatedHeading className="section-h2" lines={["Реальные результаты"]} />
           <p className="section-sub">
             Не «увеличили охваты», а конкретные числа в деньгах и лидах.
           </p>
@@ -179,14 +178,7 @@ export default function HomePage() {
         <div className="about-inner">
           <Reveal>
             <div className="section-label">{siteConfig.aboutKicker}</div>
-            <h2 className="section-h2">
-              {siteConfig.aboutTitleLines.map((line, i) => (
-                <span key={i}>
-                  {line}
-                  {i < siteConfig.aboutTitleLines.length - 1 ? <br /> : null}
-                </span>
-              ))}
-            </h2>
+            <AnimatedHeading className="section-h2" lines={siteConfig.aboutTitleLines} />
             <div className="about-body">
               {siteConfig.aboutBody.map((p, i) => (
                 <p key={i}>{renderBody(p.text)}</p>
