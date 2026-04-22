@@ -39,6 +39,9 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.seo.description,
+  verification: {
+    yandex: "e761f1efc48e766c",
+  },
   alternates: {
     canonical: "/",
   },
