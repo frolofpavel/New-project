@@ -150,6 +150,77 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ══ AI SHOWCASE ══ */}
+      <section id="ai-showcase" className="section">
+        <div className="ai-showcase">
+          <Reveal>
+            <div className="ai-showcase__copy">
+              <div className="section-label">AI в работе</div>
+              <AnimatedHeading
+                className="section-h2"
+                lines={["Не только тексты.", "AI может показывать продукт."]}
+              />
+              <p className="section-sub ai-showcase__sub">
+                Использую генеративный AI не как игрушку, а как рабочий слой для
+                презентаций, концептов, прототипов и клиентских материалов.
+                Ниже — пример визуала, который можно быстро встроить в
+                маркетинговую подачу.
+              </p>
+
+              <div className="ai-showcase__points">
+                <div className="ai-showcase__point">
+                  <span className="ai-showcase__point-num">01</span>
+                  <p>
+                    Быстрая упаковка идеи в наглядный визуальный артефакт без
+                    долгого продакшна.
+                  </p>
+                </div>
+                <div className="ai-showcase__point">
+                  <span className="ai-showcase__point-num">02</span>
+                  <p>
+                    Полезно для КП, посадочных, презентаций, рекламных креативов
+                    и теста визуальных гипотез.
+                  </p>
+                </div>
+                <div className="ai-showcase__point">
+                  <span className="ai-showcase__point-num">03</span>
+                  <p>
+                    Дальше это можно докручивать в полноценную систему:
+                    оффер, сценарий, лендинг, автоворонка и AI-операции вокруг.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.12}>
+            <div className="ai-showcase__media">
+              <div className="ai-showcase__frame">
+                <video
+                  className="ai-showcase__video"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  controls
+                  preload="metadata"
+                >
+                  <source src="/media/kling-ai-showcase.mp4" type="video/mp4" />
+                </video>
+              </div>
+
+              <div className="ai-showcase__caption">
+                <span className="ai-showcase__caption-tag">Пример AI-визуала</span>
+                <p>
+                  Видео встроено как живой пример того, как AI можно использовать
+                  в клиентской коммуникации и упаковке идеи.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ══ КЕЙСЫ ══ */}
       <section id="cases" className="section">
         <Reveal>
