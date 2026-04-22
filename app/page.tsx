@@ -206,7 +206,8 @@ export default function HomePage() {
               </div>
 
 
-              <div className="ai-showcase__caption" hidden>
+              {false && (
+              <div className="ai-showcase__caption">
                 <span className="ai-showcase__caption-tag">SuperGrok onboarding</span>
                 <p>
                   Р•С‰С‘ РѕРґРёРЅ С„РѕСЂРјР°С‚ РїРѕРґР°С‡Рё: РёРЅС‚РµСЂС„РµР№СЃРЅР°СЏ РґРµРјРѕРЅСЃС‚СЂР°С†РёСЏ,
@@ -214,6 +215,7 @@ export default function HomePage() {
                   РѕРЅР±РѕСЂРґРёРЅРіР° РёР»Рё РїСЂРѕРґСѓРєС‚РѕРІС‹С… СЃС†РµРЅР°СЂРёРµРІ СЃ AI.
                 </p>
               </div>
+              )}
             </div>
           </Reveal>
 
