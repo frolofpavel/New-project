@@ -205,21 +205,8 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="ai-showcase__frame">
-                <video
-                  className="ai-showcase__video"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  controls
-                  preload="metadata"
-                >
-                  <source src="/media/supergrok-onboarding-crisp.mp4" type="video/mp4" />
-                </video>
-              </div>
 
-              <div className="ai-showcase__caption">
+              <div className="ai-showcase__caption" hidden>
                 <span className="ai-showcase__caption-tag">SuperGrok onboarding</span>
                 <p>
                   Р•С‰С‘ РѕРґРёРЅ С„РѕСЂРјР°С‚ РїРѕРґР°С‡Рё: РёРЅС‚РµСЂС„РµР№СЃРЅР°СЏ РґРµРјРѕРЅСЃС‚СЂР°С†РёСЏ,
