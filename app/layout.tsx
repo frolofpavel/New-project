@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { siteConfig } from "@/lib/site-config";
+import { absoluteUrl } from "@/lib/seo";
 
 import "./globals.css";
 
@@ -37,6 +38,9 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.seo.description,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
@@ -44,11 +48,20 @@ export const metadata: Metadata = {
     url: siteConfig.baseUrl,
     siteName: siteConfig.name,
     locale: "ru_RU",
+    images: [
+      {
+        url: absoluteUrl("/og-cover.jpg"),
+        width: 1200,
+        height: 630,
+        alt: "Павел Фролов — маркетолог и AI-архитектор",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
+    images: [absoluteUrl("/og-cover.jpg")],
   },
   robots: {
     index: true,

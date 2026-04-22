@@ -154,6 +154,19 @@ export function HeroBlock() {
           </h1>
 
           <motion.p
+            className="hero__subtitle"
+            initial={instantMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: instantMotion ? 0 : 0.6,
+              ease: [0.22, 1, 0.36, 1],
+              delay: instantMotion ? 0 : 0.42,
+            }}
+          >
+            {siteConfig.hero.subtitle}
+          </motion.p>
+
+          <motion.p
             className="hero__sub"
             initial={instantMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

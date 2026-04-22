@@ -521,6 +521,15 @@ main { flex: 1; }
   max-width: 480px;
   margin-bottom: 40px;
 }
+.hero__subtitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-bottom: 18px;
+}
 .hero__sub strong { color: var(--text); font-weight: 600; }
 
 .hero__ctas {

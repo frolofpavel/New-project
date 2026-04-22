@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
 import { SectionHeading } from "@/components/section-heading";
 import { siteConfig } from "@/lib/site-config";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Контакт",
   description:
-    "Обсудим архитектуру маркетинга, AI-агентов или операционное ведение. Telegram, email, телефон — или форма на странице.",
-};
+    "Обсудить проект с Павлом Фроловым. Оставьте заявку или напишите в Telegram — отвечаю в течение дня.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

@@ -4,12 +4,14 @@ import { CaseCard } from "@/components/cards";
 import { LeadStrip } from "@/components/lead-strip";
 import { SectionHeading } from "@/components/section-heading";
 import { getAllCaseStudies } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Кейсы",
   description:
-    "Кейсы Павла Фролова: лидогенерация в масштабе, B2B с нуля до 312M ₽, SaaS-продукты — конкретные числа в деньгах и лидах.",
-};
+    "Реальные кейсы: АТА, Расцветай, БАУМЕХ и другие. Показываю выручку и лиды, не охваты. Портфолио Павла Фролова.",
+  path: "/portfolio",
+});
 
 export default function PortfolioPage() {
   const caseStudies = getAllCaseStudies();

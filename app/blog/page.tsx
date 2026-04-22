@@ -4,12 +4,14 @@ import { BlogCard } from "@/components/cards";
 import { LeadStrip } from "@/components/lead-strip";
 import { SectionHeading } from "@/components/section-heading";
 import { getAllBlogPosts } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Блог",
   description:
-    "Заметки о маркетинге как системе, AI-агентах, операционной архитектуре и реальной практике работы с проектами.",
-};
+    "Заметки о маркетинге как системе: AI-автоматизация, лидогенерация, архитектура роста. Блог Павла Фролова.",
+  path: "/blog",
+});
 
 export default function BlogPage() {
   const posts = getAllBlogPosts();

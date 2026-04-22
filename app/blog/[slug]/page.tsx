@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { LeadStrip } from "@/components/lead-strip";
 import { Markdown } from "@/components/markdown";
 import { formatDate, getAllBlogPosts, getBlogPostBySlug } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/seo";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -22,11 +23,12 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 
   return {
-    title: item.seo.title,
-    description: item.seo.description,
-    alternates: {
-      canonical: `/blog/${item.slug}`,
-    },
+    ...buildPageMetadata({
+      title: item.seo.title,
+      description: item.seo.description,
+      path: `/blog/${item.slug}`,
+      socialTitle: item.seo.title,
+    }),
   };
 }
 

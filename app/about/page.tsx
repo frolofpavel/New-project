@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { LeadStrip } from "@/components/lead-strip";
 import { SectionHeading } from "@/components/section-heading";
 import { siteConfig } from "@/lib/site-config";
+import { buildPageMetadata } from "@/lib/seo";
 
 const focusCards = [
   {
@@ -45,11 +46,12 @@ const timeline = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Обо мне",
   description:
-    "Павел Фролов — 19 лет в маркетинге, CMO с опытом бюджетов до 50M ₽/мес, последние 3 года — разработка AI-систем (AIOS, AI-BOS).",
-};
+    "Павел Фролов — CMO, который умеет в код. 19 лет в маркетинге, 200+ проектов, автор AI-операционной системы для агентств.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (
@@ -90,7 +92,7 @@ export default function AboutPage() {
               <div className="about-portrait about-story-portrait">
                 <Image
                   src="/images/pavel-about-2026.png"
-                  alt="Павел Фролов"
+                  alt="Павел Фролов — маркетолог и AI-архитектор"
                   width={2048}
                   height={1152}
                   priority

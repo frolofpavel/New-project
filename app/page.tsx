@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 
 import { HeroBlock } from "@/components/hero-block";
 import { AnimatedHeading } from "@/components/motion/animated-heading";
@@ -9,6 +11,15 @@ import { HugeMarquee } from "@/components/motion/huge-marquee";
 import { MagneticLink } from "@/components/motion/magnetic";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { siteConfig } from "@/lib/site-config";
+import { buildPageMetadata, buildPersonSchema } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: siteConfig.seo.title,
+  description: siteConfig.seo.description,
+  path: "/",
+  socialTitle: siteConfig.seo.title,
+  socialDescription: "Павел Фролов — маркетолог-стратег с 19 лет опытом. Проектирую AI-системы для маркетинга.",
+});
 
 function renderBody(markdown: string) {
   const parts: Array<string | { type: "strong" | "hl"; text: string }> = [];
@@ -44,6 +55,9 @@ export default function HomePage() {
   return (
     <>
       <HeroBlock />
+      <Script id="person-schema" type="application/ld+json" strategy="beforeInteractive">
+        {JSON.stringify(buildPersonSchema())}
+      </Script>
 
       {/* ══ HUGE MARQUEE — двунаправленный ══ */}
       <section className="huge-marquee-block">
@@ -272,7 +286,7 @@ export default function HomePage() {
               <div className="about-portrait">
                 <Image
                   src="/images/pavel-formal.jpg"
-                  alt="Павел Фролов"
+                  alt="Павел Фролов — маркетолог и AI-архитектор"
                   width={440}
                   height={540}
                   className="about-portrait__img"

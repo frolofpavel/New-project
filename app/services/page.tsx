@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import { ServiceCard } from "@/components/cards";
 import { LeadStrip } from "@/components/lead-strip";
 import { SectionHeading } from "@/components/section-heading";
 import { services } from "@/lib/site-config";
+import { buildPageMetadata, buildServiceSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Услуги",
   description:
-    "Маркетинговая архитектура, AI-автоматизация маркетинга, маркетинговые операции под ключ — от проектирования до запуска и ведения.",
-};
+    "Три формата работы: аудит маркетинговой архитектуры, построение AI-систем, полное ведение маркетинга. Под ключ, от 3 недель.",
+  path: "/services",
+});
 
 export default function ServicesPage() {
   return (
     <>
+      <Script id="service-schema" type="application/ld+json" strategy="beforeInteractive">
+        {JSON.stringify(buildServiceSchema())}
+      </Script>
       <section className="page-hero">
         <SectionHeading
           as="h1"

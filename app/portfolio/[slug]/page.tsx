@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { LeadStrip } from "@/components/lead-strip";
 import { Markdown } from "@/components/markdown";
 import { formatDate, getAllCaseStudies, getCaseStudyBySlug } from "@/lib/content";
+import { buildPageMetadata } from "@/lib/seo";
 
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
@@ -22,11 +23,12 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
   }
 
   return {
-    title: item.seo.title,
-    description: item.seo.description,
-    alternates: {
-      canonical: `/portfolio/${item.slug}`,
-    },
+    ...buildPageMetadata({
+      title: item.seo.title,
+      description: item.seo.description,
+      path: `/portfolio/${item.slug}`,
+      socialTitle: item.seo.title,
+    }),
   };
 }
 

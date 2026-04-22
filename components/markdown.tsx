@@ -6,5 +6,14 @@ type MarkdownProps = {
 };
 
 export function Markdown({ content }: MarkdownProps) {
-  return <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>;
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        img: ({ alt, ...props }) => <img {...props} alt={alt ?? ""} />,
+      }}
+    >
+      {content}
+    </ReactMarkdown>
+  );
 }

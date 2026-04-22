@@ -7,6 +7,7 @@ export type HeroContent = {
   eyebrow: string;
   eyebrowLive: string;
   titleLines: Array<{ text: string; variant?: "accent" | "muted" }>;
+  subtitle: string;
   description: string;
   primaryCta: {
     label: string;
