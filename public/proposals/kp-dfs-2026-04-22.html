@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КП — DFS — Павел Фролов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07110a;
+  --bg2:#0d1810;
+  --bg3:#132216;
+  --card:#122016;
+  --border:rgba(129,195,65,.18);
+  --border-strong:rgba(129,195,65,.4);
+  --text:#edf5e8;
+  --muted:#8fa38e;
+  --accent:#81c341;
+  --accent-2:#b7e26c;
+  --good:#42d17f;
+  --warn:#f0bf4c;
+  --bad:#ff7268;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(129,195,65,.13), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(183,226,108,.08), transparent 28%),
+    linear-gradient(180deg, #07110a 0%, #0a130c 100%);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(129,195,65,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(129,195,65,.035) 1px, transparent 1px);
+  background-size:44px 44px;
+  pointer-events:none;
+  z-index:0;
+}
+a{color:var(--accent-2);text-decoration:none}
+h1,h2,h3,h4,.brand,.nav-link,.num{font-family:'Syne',sans-serif}
+p{color:#d2decd;line-height:1.72}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(7,17,10,.93);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-row1{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:12px 24px;border-bottom:1px solid rgba(129,195,65,.08);
+}
+.nav-row2{
+  display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;
+  padding:8px 14px 10px;
+}
+.nav-row2::-webkit-scrollbar{display:none}
+.nav-left{display:flex;align-items:center;gap:14px}
+.logo{
+  width:38px;height:38px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg, rgba(129,195,65,.22), rgba(183,226,108,.08));
+  border:1px solid var(--border-strong);
+  color:var(--accent-2);
+  font-size:15px;font-weight:800;
+}
+.brand-wrap{display:flex;flex-direction:column;gap:2px}
+.brand{font-size:15px;font-weight:700;color:var(--accent-2)}
+.subbrand{font-size:12px;color:var(--muted)}
+.nav-controls{display:flex;align-items:center;gap:8px}
+.nav-btn{
+  width:34px;height:34px;border-radius:10px;border:1px solid var(--border);
+  background:var(--bg2);color:var(--text);cursor:pointer;font-size:15px;
+}
+.nav-btn:hover{background:var(--accent);color:#091009;border-color:var(--accent)}
+.nav-counter{min-width:58px;text-align:center;font-size:12px;color:var(--muted)}
+.nav-link{
+  border:1px solid transparent;background:none;color:var(--muted);cursor:pointer;
+  padding:6px 10px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;
+}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.nav-link.active{
+  color:var(--accent-2);
+  border-color:var(--border-strong);
+  background:rgba(129,195,65,.08);
+}
+.num{font-size:10px;opacity:.7;margin-right:4px}
+.page{
+  display:none;position:relative;z-index:1;
+  min-height:100vh;max-width:1180px;margin:0 auto;padding:122px 28px 56px;
+}
+.page.active{display:block}
+.label{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;
+  font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-2);
+}
+.label::before{content:"";width:22px;height:2px;background:var(--accent)}
+h1{font-size:clamp(34px,5vw,64px);line-height:1.02;font-weight:800;color:#fff}
+h2{font-size:clamp(24px,3vw,38px);line-height:1.12;font-weight:800;color:#fff;margin-bottom:16px}
+h3{font-size:17px;font-weight:700;color:#fff;margin-bottom:8px}
+.muted{color:var(--muted)}
+.accent{color:var(--accent-2)}
+.cover{
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:26px;align-items:start;
+}
+.card{
+  background:linear-gradient(180deg, rgba(18,32,22,.98), rgba(13,24,16,.98));
+  border:1px solid var(--border);border-radius:24px;padding:22px;
+  box-shadow:0 16px 42px rgba(0,0,0,.18);
+}
+.hero-card{padding:28px}
+.hero-copy{font-size:17px;max-width:760px;margin:18px 0 22px}
+.chips,.stat-grid,.grid2,.grid3,.grid4,.offer-grid,.ads-grid,.day-grid,.roadmap{display:grid;gap:14px}
+.chips{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:22px}
+.chip{
+  padding:10px 12px;border-radius:16px;border:1px solid var(--border);
+  background:rgba(129,195,65,.05);font-size:12px;font-weight:600;color:#e7f1df;text-align:center;
+}
+.stat-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin:22px 0}
+.stat{
+  padding:16px;border-radius:18px;background:var(--bg2);border:1px solid rgba(255,255,255,.05)
+}
+.stat .numv{font-size:28px;font-weight:800;color:var(--accent-2);line-height:1}
+.stat .txt{font-size:11px;color:var(--muted);margin-top:6px}
+.contact-row{display:flex;flex-wrap:wrap;gap:16px;font-size:13px}
+.side-stack{display:flex;flex-direction:column;gap:14px}
+.site-frame{
+  overflow:hidden;border-radius:22px;border:1px solid var(--border-strong);background:var(--bg2)
+}
+.site-bar{
+  display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.06)
+}
+.dot{width:9px;height:9px;border-radius:50%;background:#ff7d6e}
+.dot:nth-child(2){background:#f4bf4e}
+.dot:nth-child(3){background:#48d883}
+.url{margin-left:8px;flex:1;background:rgba(255,255,255,.04);padding:6px 10px;border-radius:10px;font-size:11px;color:var(--muted)}
+.site-shot{padding:18px;background:
+  linear-gradient(135deg, rgba(129,195,65,.12), rgba(183,226,108,.03)),
+  linear-gradient(180deg, #132216 0%, #101b13 100%);
+}
+.site-shot h3{font-size:28px;line-height:1.1;margin-bottom:12px}
+.site-shot p{font-size:14px}
+.mini-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.mini-pill{
+  font-size:11px;color:#dce9d3;padding:7px 10px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)
+}
+.alert{
+  padding:16px 18px;border-radius:18px;border:1px solid var(--border-strong);
+  background:linear-gradient(135deg, rgba(129,195,65,.12), rgba(129,195,65,.03));
+}
+.section-head{max-width:780px;margin-bottom:22px}
+.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.table{
+  width:100%;border-collapse:collapse;border-spacing:0;overflow:hidden;border-radius:20px;
+}
+.table th,.table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left;vertical-align:top}
+.table th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.table td{font-size:13px;color:#e0ead9}
+.table tr:last-child td{border-bottom:none}
+.metric-card .source{display:block;margin-top:10px;font-size:11px;color:var(--muted)}
+.comp{
+  border:1px solid var(--border);border-radius:24px;padding:22px;background:rgba(18,32,22,.86)
+}
+.comp-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:12px}
+.score{font-size:34px;font-weight:800;color:var(--accent-2);line-height:1;text-align:right}
+.score small{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+.offer-line{font-size:14px;font-style:italic;color:#eef9df;margin-bottom:12px}
+.comp-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.badge{
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:5px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:var(--muted)
+}
+.proscons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pros,.cons{border-radius:18px;padding:14px 16px}
+.pros{background:rgba(66,209,127,.07);border:1px solid rgba(66,209,127,.18)}
+.cons{background:rgba(255,114,104,.07);border:1px solid rgba(255,114,104,.18)}
+.pros strong{color:var(--good);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.cons strong{color:var(--bad);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.pros ul,.cons ul{margin-top:8px;padding-left:18px}
+.pros li,.cons li{margin:6px 0;color:#d9e5d3;font-size:13px}
+.map-wrap{display:grid;grid-template-columns:420px 1fr;gap:18px;align-items:center}
+.map-box{
+  position:relative;height:320px;border-radius:22px;padding:24px;background:var(--bg2);border:1px solid var(--border)
+}
+.axis-h,.axis-v{position:absolute;background:rgba(255,255,255,.12)}
+.axis-h{left:24px;right:24px;top:50%;height:1px}
+.axis-v{top:24px;bottom:24px;left:50%;width:1px}
+.axis-label-x1,.axis-label-x2,.axis-label-y1,.axis-label-y2{
+  position:absolute;font-size:11px;color:var(--muted)
+}
+.axis-label-x1{left:24px;bottom:8px}
+.axis-label-x2{right:24px;bottom:8px}
+.axis-label-y1{left:8px;top:24px;writing-mode:vertical-rl;transform:rotate(180deg)}
+.axis-label-y2{left:8px;bottom:24px;writing-mode:vertical-rl;transform:rotate(180deg)}
+.point{
+  position:absolute;padding:8px 10px;border-radius:12px;font-size:11px;font-weight:700;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)
+}
+.point.dfs{background:rgba(129,195,65,.15);border-color:var(--border-strong);color:var(--accent-2)}
+.phase{
+  position:relative;border:1px solid var(--border);border-radius:22px;padding:22px;background:var(--card);overflow:hidden
+}
+.phase .ph-num{
+  position:absolute;right:12px;bottom:-6px;font-size:76px;color:rgba(129,195,65,.07);line-height:1
+}
+.phase-tag{font-size:11px;color:var(--accent-2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.phase ul,.tasklist,.offer-list{padding-left:18px}
+.phase li,.tasklist li,.offer-list li{margin:8px 0;color:#d9e6d1}
+.funnel{display:grid;gap:10px}
+.funnel-step{
+  display:grid;grid-template-columns:58px 1fr 240px;gap:14px;align-items:center;
+  padding:14px 16px;border-radius:18px;background:var(--bg2);border:1px solid rgba(255,255,255,.05)
+}
+.fnum{
+  width:42px;height:42px;border-radius:14px;background:rgba(129,195,65,.14);display:flex;align-items:center;justify-content:center;
+  color:var(--accent-2);font-weight:800;font-family:'Syne',sans-serif
+}
+.funnel-step strong{display:block;font-size:14px;color:#fff}
+.funnel-step span{font-size:12px;color:var(--muted)}
+.ads-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ad,.offer-card,.kpi-note,.audit-item,.seo-step,.road-card,.day-card,.proto-wrap,.quote-card{
+  border-radius:20px;border:1px solid var(--border);background:var(--card)
+}
+.ad{padding:18px}
+.ad-type{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2);margin-bottom:8px}
+.ad h4{font-size:15px;margin-bottom:10px}
+.ad p{font-size:13px}
+.cta{margin-top:10px;color:var(--warn);font-size:12px;font-weight:700}
+.audit-ring{
+  display:grid;grid-template-columns:180px 1fr;gap:18px;align-items:center;padding:22px
+}
+.ring{
+  width:150px;height:150px;border-radius:50%;
+  background:conic-gradient(var(--accent) 0 230deg, rgba(255,255,255,.08) 230deg 360deg);
+  display:grid;place-items:center;margin:auto
+}
+.ring::after{
+  content:"";width:112px;height:112px;border-radius:50%;background:var(--bg2);border:1px solid rgba(255,255,255,.05)
+}
+.ring-center{
+  position:absolute;text-align:center
+}
+.ring-wrap2{position:relative;width:150px;height:150px;margin:auto}
+.ring-val{font-size:36px;font-weight:800;color:#fff;line-height:1}
+.ring-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.audit-list{display:grid;gap:8px}
+.audit-item{
+  display:grid;grid-template-columns:36px 180px 1fr 70px;gap:10px;align-items:center;padding:12px 14px
+}
+.status{font-size:15px}
+.score-tag{font-size:11px;font-weight:700;text-align:right}
+.ok{color:var(--good)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+.seo-step{padding:18px}
+.kw{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700;border:1px solid rgba(255,255,255,.08);margin-right:6px;margin-top:6px;color:var(--muted)}
+.offer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.offer-card{padding:18px;position:relative;overflow:hidden}
+.offer-card::after{
+  content:attr(data-n);position:absolute;right:12px;top:4px;font-size:58px;line-height:1;color:rgba(255,255,255,.04);font-family:'Syne',sans-serif;font-weight:800
+}
+.offer-type{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent-2);margin-bottom:8px}
+.offer-title{font-size:18px;color:#fff;font-weight:700;margin-bottom:8px;line-height:1.25}
+.offer-sub{font-size:13px;color:var(--muted)}
+.proto-wrap{overflow:hidden}
+.proto-top{
+  padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap
+}
+.proto-hero{
+  display:grid;grid-template-columns:1.1fr .9fr;gap:0
+}
+.proto-copy{padding:28px}
+.proto-copy h3{font-size:34px;line-height:1.05;margin-bottom:14px}
+.proto-copy p{margin-bottom:18px}
+.proto-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.btn{
+  padding:12px 16px;border-radius:14px;border:1px solid var(--border);font-weight:700;font-size:13px
+}
+.btn.primary{background:var(--accent);color:#0a130c;border-color:var(--accent)}
+.btn.secondary{background:transparent;color:var(--text)}
+.proto-panel{
+  padding:24px;border-left:1px solid rgba(255,255,255,.06);
+  background:linear-gradient(180deg, rgba(129,195,65,.08), rgba(255,255,255,.02))
+}
+.quiz{display:grid;gap:10px}
+.quiz-step{font-size:12px;color:var(--muted)}
+.quiz-q{font-size:18px;color:#fff;font-weight:700;margin-bottom:8px}
+.quiz-options{display:grid;gap:8px}
+.quiz-option{
+  width:100%;text-align:left;padding:12px 14px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#eef7e7;cursor:pointer
+}
+.quiz-option:hover{border-color:var(--border-strong);background:rgba(129,195,65,.09)}
+.quiz-result{
+  margin-top:12px;padding:14px;border-radius:16px;background:rgba(129,195,65,.09);border:1px solid var(--border)
+}
+.roadmap{grid-template-columns:repeat(4,minmax(0,1fr))}
+.road-card{padding:16px}
+.road-card h4{font-size:14px;color:#fff;margin-bottom:8px}
+.road-card .mini{font-size:11px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.day-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.day-card{padding:16px}
+.day-card h4{font-size:15px;margin-bottom:10px}
+.day-card .week{font-size:11px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.legend span{font-size:11px;padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.08)}
+.lg-site{background:rgba(129,195,65,.08)} .lg-ads{background:rgba(240,191,76,.08)} .lg-seo{background:rgba(66,209,127,.08)} .lg-analytics{background:rgba(125,185,255,.08)} .lg-meet{background:rgba(255,114,104,.08)}
+.footer-note{
+  margin-top:18px;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);font-size:13px;color:var(--muted)
+}
+@media(max-width:980px){
+  .cover,.map-wrap,.proto-hero,.audit-ring,.grid4,.roadmap,.day-grid{grid-template-columns:1fr}
+  .chips,.stat-grid,.grid3,.offer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .funnel-step{grid-template-columns:52px 1fr}
+  .funnel-step div:last-child{grid-column:2}
+  .audit-item{grid-template-columns:30px 1fr}
+  .audit-item .score-tag{grid-column:2;text-align:left}
+}
+@media(max-width:680px){
+  .page{padding:116px 16px 42px}
+  .nav-row1{padding:10px 14px}
+  .chips,.stat-grid,.grid2,.grid3,.offer-grid,.ads-grid,.day-grid{grid-template-columns:1fr}
+  .proscons{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-row1">
+    <div class="nav-left">
+      <div class="logo">DFS</div>
+      <div class="brand-wrap">
+        <div class="brand">Павел Фролов × DFS</div>
+        <div class="subbrand">Коммерческое предложение на вакансию hh.ru/vacancy/131213679</div>
+      </div>
+    </div>
+    <div class="nav-controls">
+      <button class="nav-btn" onclick="go(currentPage-1)">←</button>
+      <div class="nav-counter" id="nav-counter">1 / 13</div>
+      <button class="nav-btn" onclick="go(currentPage+1)">→</button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <button class="nav-link active" onclick="go(0)"><span class="num">00</span>Обложка</button>
+    <button class="nav-link" onclick="go(1)"><span class="num">01</span>Ниша</button>
+    <button class="nav-link" onclick="go(2)"><span class="num">02</span>Конкуренты</button>
+    <button class="nav-link" onclick="go(3)"><span class="num">03</span>Карта рынка</button>
+    <button class="nav-link" onclick="go(4)"><span class="num">04</span>Позиционирование</button>
+    <button class="nav-link" onclick="go(5)"><span class="num">05</span>Стратегия</button>
+    <button class="nav-link" onclick="go(6)"><span class="num">06</span>Маркетинг-план</button>
+    <button class="nav-link" onclick="go(7)"><span class="num">07</span>UX/UI</button>
+    <button class="nav-link" onclick="go(8)"><span class="num">08</span>SEO</button>
+    <button class="nav-link" onclick="go(9)"><span class="num">09</span>Офферы</button>
+    <button class="nav-link" onclick="go(10)"><span class="num">10</span>Объявления</button>
+    <button class="nav-link" onclick="go(11)"><span class="num">11</span>Прототип</button>
+    <button class="nav-link" onclick="go(12)"><span class="num">12</span>План 4 недели</button>
+  </div>
+</nav>
+
+<section class="page active">
+  <div class="cover">
+    <div class="card hero-card">
+      <div class="label">Коммерческое предложение</div>
+      <h1>Выстраиваю систему роста для <span class="accent">DFS</span></h1>
+      <p class="hero-copy">DFS уже выглядит как сеть со зрелым ассортиментом: спортивное питание, витамины, батончики, полезные перекусы, бонусная карта и онлайн-каталог. Следующий шаг не просто “лить трафик”, а собрать единую омниканальную систему: понятный оффер по сегментам, быстрый путь к покупке, удержание через повторные касания и рост доли регулярных заказов.</p>
+      <div class="chips">
+        <div class="chip">19 лет в маркетинге</div>
+        <div class="chip">Бюджеты до 50 млн ₽/мес</div>
+        <div class="chip">ROMI 300%+</div>
+        <div class="chip">Ритейл + e-commerce + performance</div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><div class="numv">1,2 млн ₽</div><div class="txt">рекомендуемый тестовый маркетинг-бюджет / месяц</div></div>
+        <div class="stat"><div class="numv">1 450</div><div class="txt">целевых действий в месяц: заявки, корзины, брони, офлайн-визиты</div></div>
+        <div class="stat"><div class="numv">828 ₽</div><div class="txt">средний blended CPL на старте</div></div>
+        <div class="stat"><div class="numv">90 дней</div><div class="txt">до работающей модели “трафик → повторный клиент”</div></div>
+      </div>
+      <div class="alert">
+        <strong>Главная гипотеза.</strong> Для DFS рост даст не абстрактный “бренд-маркетинг”, а упаковка магазина в три понятных сценария: <span class="accent">спорт</span>, <span class="accent">здоровье семьи</span> и <span class="accent">контроль веса / самочувствия</span>. Это позволяет поднять конверсию первого экрана, собрать ретаргетинг по мотивациям и увеличить частоту повторной покупки.
+      </div>
+      <div class="contact-row" style="margin-top:20px">
+        <span>Павел Фролов</span>
+        <a href="https://frolofpavel.ru">frolofpavel.ru</a>
+        <a href="mailto:wwwfrolof@yandex.ru">wwwfrolof@yandex.ru</a>
+        <span>+7 (905) 939-08-74</span>
+      </div>
+    </div>
+    <div class="side-stack">
+      <div class="site-frame">
+        <div class="site-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <div class="url">https://dfs.market/</div>
+        </div>
+        <div class="site-shot">
+          <h3>Полезное питание, витамины и БАД для спорта и здоровья</h3>
+          <p>На сайте DFS уже есть широкий каталог, разделы по целям, бонусная программа и фокус на ассортименте. Не хватает более агрессивной конверсии в сценарии: “подобрать под задачу”, “получить консультацию”, “собрать комплект”.</p>
+          <div class="mini-list">
+            <span class="mini-pill">Каталог по категориям</span>
+            <span class="mini-pill">Бонусная карта</span>
+            <span class="mini-pill">Федеральные бренды</span>
+            <span class="mini-pill">Омниканальный потенциал</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="label">Факт-пакет</div>
+        <h3>Что взял в работу</h3>
+        <ul class="tasklist">
+          <li>Вакансия hh.ru `131213679` от работодателя DFS</li>
+          <li>Сайт компании `dfs.market`</li>
+          <li>Страница работодателя HH с действующими вакансиями</li>
+          <li>Рынок БАД, спортивного питания и ЗОЖ-ритейла РФ на 2025 год</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="label">Важно</div>
+        <p>Запись встречи в Google Doc сейчас недоступна по правам доступа, поэтому эта версия КП собрана на фактах из вакансии, сайта и рынка. Когда откроется доступ к документу, я быстро усилю акценты под реальную боль руководителя и детали встречи.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">01 Анализ ниши</div>
+    <h2>Рынок DFS не “маленький локальный магазин”, а часть крупной категории с быстрым ростом в онлайн-поиске и повторных покупках</h2>
+    <p>DFS стоит на стыке трёх потоков спроса: БАД и витамины, спортивное питание и продукты для everyday wellness. Это важно, потому что стратегия должна быть не про один сегмент, а про связку “здоровье + энергия + понятная польза”.</p>
+  </div>
+  <div class="grid4">
+    <div class="card metric-card">
+      <h3>279 млрд ₽</h3>
+      <p>объём рынка БАД в России по итогам 2025 года.</p>
+      <span class="source">Источник: DSM Group, публикации за 2025 год</span>
+    </div>
+    <div class="card metric-card">
+      <h3>894 млн уп.</h3>
+      <p>продано на рынке БАД в 2025 году; категория массовая и привычная, а не нишевая.</p>
+      <span class="source">Источник: DSM Group</span>
+    </div>
+    <div class="card metric-card">
+      <h3>55 млрд ₽</h3>
+      <p>объём онлайн-продаж БАД в 2025 году. Digital уже не “доп.канал”, а главный рычаг выбора и повторной покупки.</p>
+      <span class="source">Источник: DSM Group / отраслевые обзоры e-commerce</span>
+    </div>
+    <div class="card metric-card">
+      <h3>46,2 млрд ₽</h3>
+      <p>оценка рынка спортивного питания в РФ в 2025 году. Это даёт DFS сильный второй слой спроса поверх wellness-категории.</p>
+      <span class="source">Источник: BusinesStat / отраслевые обзоры</span>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <h3>3 ключевых тренда</h3>
+      <ul class="tasklist">
+        <li><strong>Сдвиг от “банок” к сценариям пользы.</strong> Люди всё чаще ищут не категорию, а результат: сон, энергия, иммунитет, минус вес, восстановление.</li>
+        <li><strong>Рост повторных продаж через CRM.</strong> Витамины, омега-3, протеин, батончики и коллаген идеально подходят под циклы повторной покупки 20–45 дней.</li>
+        <li><strong>Омниканальность.</strong> Покупатель изучает в онлайне, покупает в магазине, а возвращается через мессенджеры, бонусы и повторные офферы.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>3 барьера роста</h3>
+      <ul class="tasklist">
+        <li><strong>Маркетплейсы.</strong> Забирают низом цену и привычкой к быстрой покупке.</li>
+        <li><strong>Недоверие.</strong> Без экспертной упаковки покупатель не понимает, чем DFS лучше любого “каталога банок”.</li>
+        <li><strong>Сложность выбора.</strong> Ассортимент большой, а путь “с чего начать” часто слишком перегружен для новых клиентов.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>Приоритетные сегменты аудитории DFS</h3>
+    <table class="table">
+      <thead>
+        <tr><th>Сегмент</th><th>Что ищет</th><th>Боль</th><th>Приоритет</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Фитнес-аудитория 20–35</td><td>Протеин, аминокислоты, предтрены, шейкеры</td><td>Боится переплатить и взять “нерабочий” продукт</td><td>★★★</td></tr>
+        <tr><td>Женщины 25–45 wellness</td><td>Коллаген, витамины, детокс, продукты для энергии и кожи</td><td>Нужен понятный набор под задачу, а не сотни SKU</td><td>★★★</td></tr>
+        <tr><td>Семьи 30–50</td><td>Омега-3, витамины, иммунитет, БАД для детей и взрослых</td><td>Нужно доверие, консультация и безопасная рекомендация</td><td>★★</td></tr>
+        <tr><td>Контроль веса / самочувствие</td><td>Перекусы, сахарозаменители, продукты без сахара, жиросжигатели</td><td>Сложно понять, что реально работает и как сочетать</td><td>★★★</td></tr>
+        <tr><td>Партнёры: тренеры, студии, фитнес-клубы</td><td>Партнёрские наборы, спецусловия, коллаборации</td><td>Нет системного предложения для B2B/амбассадоров</td><td>★★</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">02 Анализ конкурентов</div>
+    <h2>DFS конкурирует не только по цене, но и по тому, насколько быстро помогает человеку выбрать под свою цель</h2>
+    <p>Ниже 4 реальных игрока, которые оттягивают спрос у DFS: за счёт сетевого узнавания, экспертной подачи, цены или удобства покупки.</p>
+  </div>
+
+  <div class="comp">
+    <div class="comp-head">
+      <div>
+        <h3>Fitness Formula</h3>
+        <div class="muted">https://omsk.24ff.ru/</div>
+      </div>
+      <div class="score">82<small>/100</small></div>
+    </div>
+    <div class="offer-line">“Бесплатная доставка от 2500 ₽. Широкий каталог спортивного питания и витаминов.”</div>
+    <div class="comp-meta">
+      <span class="badge">Трафик: ~120k/мес</span>
+      <span class="badge">Каналы: SEO, контекст, сетевой бренд, офлайн</span>
+      <span class="badge">Сильный e-commerce слой</span>
+    </div>
+    <div class="proscons">
+      <div class="pros"><strong>Плюсы</strong><ul><li>Сильное узнавание бренда в категории</li><li>Широкий выбор и понятная каталогизация</li><li>Акцент на доставке и удобстве заказа</li><li>Сильная SEO-база под категорийные запросы</li></ul></div>
+      <div class="cons"><strong>Минусы</strong><ul><li>Коммуникация больше про ассортимент, чем про сценарии пользы</li><li>Локально выглядит как “ещё один магазин спортпита”</li><li>Меньше пространства для эмоционального бренда</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp" style="margin-top:14px">
+    <div class="comp-head">
+      <div>
+        <h3>SportFood</h3>
+        <div class="muted">https://omsk.sportfood40.ru/</div>
+      </div>
+      <div class="score">74<small>/100</small></div>
+    </div>
+    <div class="offer-line">“Сеть из 20 магазинов. Доступное спортивное питание и доставка.”</div>
+    <div class="comp-meta">
+      <span class="badge">Трафик: ~65k/мес</span>
+      <span class="badge">Каналы: брендовый трафик, контекст, офлайн</span>
+      <span class="badge">Цена как главный аргумент</span>
+    </div>
+    <div class="proscons">
+      <div class="pros"><strong>Плюсы</strong><ul><li>Широкая сеть офлайн-точек</li><li>Упор на доступность и массовый спрос</li><li>Понятная логика “пришёл и быстро купил”</li></ul></div>
+      <div class="cons"><strong>Минусы</strong><ul><li>Слабая премиальная подача</li><li>Недостаточно выражен wellness-сегмент</li><li>Меньше экспертности и сегментации по задачам</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp" style="margin-top:14px">
+    <div class="comp-head">
+      <div>
+        <h3>HARDCORE</h3>
+        <div class="muted">https://hardcore-shop.ru/</div>
+      </div>
+      <div class="score">71<small>/100</small></div>
+    </div>
+    <div class="offer-line">“Спортивное питание по низким ценам, оригинальная продукция и сертификаты.”</div>
+    <div class="comp-meta">
+      <span class="badge">Трафик: ~18k/мес</span>
+      <span class="badge">Каналы: контекст, SEO, офферы по цене</span>
+      <span class="badge">Сильный anti-fake аргумент</span>
+    </div>
+    <div class="proscons">
+      <div class="pros"><strong>Плюсы</strong><ul><li>Чёткий ценовой оффер</li><li>Работа с барьером “подделки”</li><li>Быстрый путь к покупке конкретных SKU</li></ul></div>
+      <div class="cons"><strong>Минусы</strong><ul><li>Слабо работает на семейный и wellness-сегмент</li><li>Коммуникация узкая, почти только для спортпита</li><li>Сложнее отстроиться по сервису и экспертизе</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp" style="margin-top:14px">
+    <div class="comp-head">
+      <div>
+        <h3>Витамины.тут</h3>
+        <div class="muted">https://vitaminy-tut.ru/</div>
+      </div>
+      <div class="score">68<small>/100</small></div>
+    </div>
+    <div class="offer-line">“Персональный подбор витаминов, БАД и консультация по ассортименту.”</div>
+    <div class="comp-meta">
+      <span class="badge">Трафик: ~9k/мес</span>
+      <span class="badge">Каналы: SEO, консультационный контент</span>
+      <span class="badge">Сильнее в доверии, чем в масштабе</span>
+    </div>
+    <div class="proscons">
+      <div class="pros"><strong>Плюсы</strong><ul><li>Коммуникация через помощь и подбор</li><li>Хорошо закрывает страх ошибиться</li><li>Легко вовлекает консультацией</li></ul></div>
+      <div class="cons"><strong>Минусы</strong><ul><li>Слабее сетевого масштаба</li><li>Меньше ассортимента и e-commerce мощностей</li><li>Ниже визуальная энергия бренда</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">03 Позиционирование конкурентов</div>
+    <h2>Незанятая ниша для DFS: “экспертный магазин полезного питания для жизни, а не только для качалки”</h2>
+    <p>Если Fitness Formula и SportFood хорошо играют в “широкий каталог”, а нишевые игроки продают “консультацию” или “низкую цену”, то DFS может занять более выгодную позицию: современный и понятный эксперт по полезному питанию для ежедневной жизни.</p>
+  </div>
+  <div class="map-wrap">
+    <div class="map-box">
+      <div class="axis-h"></div>
+      <div class="axis-v"></div>
+      <div class="axis-label-x1">Низкая широта ассортимента</div>
+      <div class="axis-label-x2">Широкий ассортимент</div>
+      <div class="axis-label-y1">Высокая экспертность и подбор</div>
+      <div class="axis-label-y2">Низкая экспертность</div>
+      <div class="point" style="left:63%;top:57%">Fitness Formula</div>
+      <div class="point" style="left:68%;top:68%">SportFood</div>
+      <div class="point" style="left:34%;top:36%">Витамины.тут</div>
+      <div class="point" style="left:56%;top:64%">HARDCORE</div>
+      <div class="point dfs" style="left:56%;top:28%">DFS</div>
+    </div>
+    <div class="card">
+      <h3>Куда вести бренд DFS</h3>
+      <ul class="tasklist">
+        <li><strong>Не только спортпит.</strong> Коммуникация шире: энергия, сон, иммунитет, контроль веса, family wellness.</li>
+        <li><strong>Не просто “каталог”.</strong> На сайте и в рекламе нужны сценарии выбора: “подобрать набор”, “собрать комплект”, “получить консультацию”.</li>
+        <li><strong>Доверие через экспертизу.</strong> Карточки “кому подходит”, “как принимать”, “с чем сочетать” снимают главный барьер категории.</li>
+        <li><strong>Локальное лидерство.</strong> DFS может стать магазином №1 в Омске по ощущению заботы и удобства, а не только по SKU.</li>
+      </ul>
+      <table class="table" style="margin-top:14px">
+        <thead><tr><th>Игрок</th><th>УТП</th><th>Незакрытая потребность</th></tr></thead>
+        <tbody>
+          <tr><td>Fitness Formula</td><td>Сетевой ассортимент + доставка</td><td>Меньше персональной помощи в выборе</td></tr>
+          <tr><td>SportFood</td><td>Массовая доступность</td><td>Слабый эмоциональный бренд и premium-service</td></tr>
+          <tr><td>HARDCORE</td><td>Цена + оригинальность</td><td>Не закрывает wellness и семейный сегмент</td></tr>
+          <tr><td>Витамины.тут</td><td>Подбор и консультация</td><td>Меньше масштаба и ассортимента</td></tr>
+          <tr><td>DFS</td><td>Широкий ассортимент + полезное питание + бонусная карта</td><td>Нужно упаковать в сильную систему офферов</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">04 Позиционирование клиента</div>
+    <h2>Главный оффер DFS</h2>
+    <p>Подбираем полезное питание, витамины и добавки для <strong>активной жизни и здоровья семьи</strong> — чтобы покупатель быстрее получил результат <strong>без хаоса в ассортименте и случайных покупок</strong> уже в день обращения.</p>
+  </div>
+  <div class="grid4">
+    <div class="card"><h3>ЦА</h3><p>Люди 20–45, которым важны энергия, форма, восстановление, иммунитет и понятный выбор в категории здоровья.</p></div>
+    <div class="card"><h3>Ценность</h3><p>Не просто полка товаров, а быстрый маршрут к решению: цель → набор → консультация → повторная покупка.</p></div>
+    <div class="card"><h3>Доказательства</h3><p>Широкий ассортимент, офлайн-точки, бонусная система, фокус на полезном питании и возможности консультационной продажи.</p></div>
+    <div class="card"><h3>Дифференциация</h3><p>DFS сильнее, когда продаёт не банку, а “понятный способ жить лучше”: подобрать под цель, купить быстро, вернуться легко.</p></div>
+  </div>
+  <div class="grid3" style="margin-top:16px">
+    <div class="card">
+      <div class="label">Сообщение 1</div>
+      <h3>Для спорта</h3>
+      <p>Поможем собрать рабочий набор под тренировки и восстановление, а не просто продадим банку протеина.</p>
+    </div>
+    <div class="card">
+      <div class="label">Сообщение 2</div>
+      <h3>Для wellness</h3>
+      <p>Подберём продукты и добавки для энергии, кожи, сна и иммунитета без бесконечного блуждания по категориям.</p>
+    </div>
+    <div class="card">
+      <div class="label">Сообщение 3</div>
+      <h3>Для семьи</h3>
+      <p>Сделаем DFS местом, куда приходят “закрыть здоровье семьи” и вернуться за следующей покупкой по бонусной логике.</p>
+    </div>
+  </div>
+  <div class="footer-note">
+    <strong>Что особенно важно для вакансии.</strong> DFS, судя по профилю работодателя и сайту, нужен не просто таргетолог или “человек на контекст”, а маркетинг-лид, который соединит сайт, офлайн, CRM, performance и визуальную упаковку в одну систему роста.
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">05 Маркетинговая стратегия</div>
+    <h2>Ядро стратегии: переводим DFS из формата “большой каталог” в формат “магазин полезного результата”</h2>
+    <p>На первом этапе я выстраиваю систему, где каждая точка контакта отвечает на три вопроса покупателя: что мне выбрать, почему вам можно доверять и что делать дальше прямо сейчас.</p>
+  </div>
+  <div class="grid3">
+    <div class="phase">
+      <div class="phase-tag">Фаза 1</div>
+      <h3>Фундамент, недели 1–2</h3>
+      <ul>
+        <li>Собираем сегменты и матрицу офферов</li>
+        <li>Правим первый экран и CTA на сайте</li>
+        <li>Настраиваем аналитику: формы, звонки, корзины, офлайн-запросы</li>
+        <li>Готовим CRM-цепочки на повторную покупку</li>
+      </ul>
+      <div class="ph-num">01</div>
+    </div>
+    <div class="phase">
+      <div class="phase-tag">Фаза 2</div>
+      <h3>Запуск, недели 3–6</h3>
+      <ul>
+        <li>Яндекс Директ по спросу и категориям</li>
+        <li>Запуск ретаргетинга и look-alike аудиторий</li>
+        <li>Посевы в локальных и wellness Telegram-каналах</li>
+        <li>Пилот лид-магнитов “подбор под цель”</li>
+      </ul>
+      <div class="ph-num">02</div>
+    </div>
+    <div class="phase">
+      <div class="phase-tag">Фаза 3</div>
+      <h3>Масштаб, неделя 7+</h3>
+      <ul>
+        <li>Рост бюджета в эффективные связки</li>
+        <li>SEO-кластер “Омск + категория + польза”</li>
+        <li>Амбассадоры: тренеры, клубы, нутрициологи</li>
+        <li>Автоматизация повторной покупки по циклам потребления</li>
+      </ul>
+      <div class="ph-num">03</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>Воронка роста DFS</h3>
+    <div class="funnel" style="margin-top:14px">
+      <div class="funnel-step"><div class="fnum">01</div><div><strong>Захват спроса</strong><span>Поиск, локальные запросы, категория + задача, ретаргетинг по посещению сайта</span></div><div class="muted">Яндекс Директ, SEO, карты, брендовые запросы</div></div>
+      <div class="funnel-step"><div class="fnum">02</div><div><strong>Объяснение выбора</strong><span>Оффер под цель: энергия, похудение, спорт, восстановление, семья</span></div><div class="muted">Лендинг-блоки, карточки категорий, квизы, консультация</div></div>
+      <div class="funnel-step"><div class="fnum">03</div><div><strong>Конверсия</strong><span>Заказ, бронь, звонок, сообщение в мессенджер, визит в магазин</span></div><div class="muted">CTA “подобрать”, “собрать комплект”, “забрать сегодня”</div></div>
+      <div class="funnel-step"><div class="fnum">04</div><div><strong>Повторная покупка</strong><span>Напоминания о цикле приёма, бонусы, персональные офферы</span></div><div class="muted">CRM, Telegram, SMS, email</div></div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <h3>B2B / амбассадорский аутрич</h3>
+      <p class="muted">Для фитнес-клубов, тренеров, студий и нутрициологов.</p>
+      <div class="footer-note" style="margin-top:12px">
+        <strong>Сообщение 1.</strong> “Здравствуйте. Мы в DFS собираем готовые наборы под цели клиентов: энергия, снижение веса, восстановление, спорт. Хочу предложить вам партнёрский формат: специальные подборки и выгоду для вашей аудитории.”
+      </div>
+      <div class="footer-note">
+        <strong>Сообщение 2.</strong> “Если актуально, за 15 минут покажу, как можем помочь вашим клиентам покупать осознанно и возвращаться за повторной покупкой через персональные комплекты.”
+      </div>
+      <div class="footer-note">
+        <strong>Сообщение 3.</strong> “Могу подготовить пилот: набор под задачу + промокод + сопровождение на 2 недели. Если зайдёт, масштабируем на постоянной основе.”
+      </div>
+    </div>
+    <div class="card">
+      <h3>Что будет моей первой задачей в DFS</h3>
+      <ul class="tasklist">
+        <li>Переупаковать сайт и рекламные связки вокруг 3 ключевых сценариев спроса.</li>
+        <li>Поставить сквозную аналитику не только на “лид”, но и на повторную выручку.</li>
+        <li>Собрать CRM-механику, которая возвращает клиента за 20–30 дней.</li>
+        <li>Развернуть понятный маркетинг-ритм: гипотеза → запуск → цифры → масштаб.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">06 Маркетинговый план</div>
+    <h2>Стартовый медиаплан на 1,2 млн ₽ в месяц</h2>
+    <p>План собран под retail + e-commerce модель DFS: захват сформированного спроса, разогрев локального бренда и обязательный блок на повторную покупку. Это не “максимально умный” бюджет, а рабочий старт, который можно защищать перед бизнесом цифрами.</p>
+  </div>
+  <div class="card">
+    <table class="table">
+      <thead>
+        <tr><th>Канал</th><th>Что делаем</th><th>Бюджет</th><th>Лиды / действия</th><th>CPL</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Яндекс Директ</td><td>Поиск + РСЯ на “спортивное питание Омск”, “витамины Омск”, бренд, категории и сценарии пользы</td><td>444 000 ₽</td><td>520</td><td>854 ₽</td></tr>
+        <tr><td>Посевы в Telegram</td><td>Локальные каналы Омска + wellness-подборки + спецпредложения магазинов</td><td>240 000 ₽</td><td>250</td><td>960 ₽</td></tr>
+        <tr><td>VK / TG Ads</td><td>Ретаргетинг, прогрев категорий, look-alike на покупателей</td><td>204 000 ₽</td><td>270</td><td>756 ₽</td></tr>
+        <tr><td>SEO</td><td>Категорийные посадочные, локальные запросы, контент “подбор под цель”</td><td>156 000 ₽</td><td>150</td><td>1 040 ₽</td></tr>
+        <tr><td>B2B / партнёрки</td><td>Тренеры, студии, клубы, нутрициологи, микроамбассадоры</td><td>120 000 ₽</td><td>180</td><td>667 ₽</td></tr>
+        <tr><td>Прочее / креатив</td><td>Фото, офферы, промокоды, тестовые лендинги и сообщения</td><td>36 000 ₽</td><td>80</td><td>450 ₽</td></tr>
+        <tr><td><strong>Итого</strong></td><td><strong>Система на месяц</strong></td><td><strong>1 200 000 ₽</strong></td><td><strong>1 450</strong></td><td><strong>828 ₽</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <h3>Telegram-каналы для посевов и коллабораций</h3>
+      <ul class="tasklist">
+        <li><strong>Афиша Омск</strong> — широкий локальный охват, подходит под спецпредложения и инфоповоды.</li>
+        <li><strong>Говорящий Омск</strong> — массовая городская аудитория, полезен под акции и офлайн-активации.</li>
+        <li><strong>Омск | Куда сходить?</strong> — подходит для интеграций с lifestyle-углом и коллаборациями.</li>
+        <li><strong>Микроблогеры / фитнес-тренеры Омска</strong> — лучшее место для связки “подбор под цель + персональный промокод”.</li>
+      </ul>
+      <p class="muted" style="margin-top:10px">Для DFS особенно сильны не просто крупные городские каналы, а сетка микроамбассадоров с измеряемой продажей по промокодам.</p>
+    </div>
+    <div class="card">
+      <h3>4 сценария ретаргетинга</h3>
+      <ul class="tasklist">
+        <li><strong>Был в категории “витамины”.</strong> “Не знаете, что выбрать? Соберём набор под цель за 5 минут.”</li>
+        <li><strong>Бросил корзину.</strong> “Ваш заказ ещё ждёт. Добавим бонус и сохраним цену на 24 часа.”</li>
+        <li><strong>Купил 20–30 дней назад.</strong> “Пора обновить курс. Получите персональную подборку и бонус к следующей покупке.”</li>
+        <li><strong>Посетил офлайн, но не вернулся.</strong> “Заберите комплект повторно без лишнего выбора — мы уже знаем вашу цель.”</li>
+      </ul>
+    </div>
+  </div>
+  <div class="roadmap" style="margin-top:16px">
+    <div class="road-card"><div class="mini">Неделя 1</div><h4>Переупаковка офферов</h4><p>Главный экран, CTA, подборки под цели, базовые посадочные страницы.</p></div>
+    <div class="road-card"><div class="mini">Неделя 2</div><h4>Аналитика и CRM</h4><p>События, ретаргетинг, RFM-гипотезы, база повторной покупки.</p></div>
+    <div class="road-card"><div class="mini">Неделя 3</div><h4>Трафик и креативы</h4><p>Запуск Яндекс Директ, первые посевы, тест 3 офферов.</p></div>
+    <div class="road-card"><div class="mini">Неделя 4</div><h4>Оптимизация</h4><p>Отключение слабых связок, масштаб победителей, запуск амбассадоров.</p></div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">07 UX/UI аудит</div>
+    <h2>Сайт DFS уже продаёт ассортимент, но ещё не продаёт путь к решению</h2>
+    <p>По первым паттернам сайта видно, что каталог и категории уже собраны. Следующий скачок конверсии даст не “ещё больше товаров на экран”, а меньше хаоса и более предметный сценарий выбора.</p>
+  </div>
+  <div class="audit-ring ad">
+    <div class="ring-wrap2">
+      <div class="ring"></div>
+      <div class="ring-center">
+        <div class="ring-val">64</div>
+        <div class="ring-sub">из 100</div>
+      </div>
+    </div>
+    <div>
+      <h3>Итоговая оценка UX/UI</h3>
+      <p>Сайт функционален, но недодаёт конверсии на первом экране и в пользовательском маршруте. Категория сама по себе сложная, а значит интерфейс должен сильнее объяснять, куда кликнуть, что выбрать и зачем доверять DFS.</p>
+      <div class="footer-note" style="margin-top:12px"><strong>Ожидаемый эффект после доработок:</strong> +18–27% к конверсии в заявку / корзину, +10–15% к возврату в повторную покупку.</div>
+    </div>
+  </div>
+  <div class="audit-list">
+    <div class="audit-item"><div class="status ok">●</div><div>Первый экран</div><div>Есть бренд и продуктовая подача, но не хватает оффера под конкретный сценарий пользы.</div><div class="score-tag warn">6/10</div></div>
+    <div class="audit-item"><div class="status ok">●</div><div>Скорость / технический каркас</div><div>Базовая структура выглядит рабочей, но нужен отдельный контроль PageSpeed и лишних скриптов.</div><div class="score-tag warn">7/10</div></div>
+    <div class="audit-item"><div class="status warn">●</div><div>Мобильная версия</div><div>Для категории с быстрым выбором мобильный маршрут должен быть короче и заметнее по CTA.</div><div class="score-tag warn">6/10</div></div>
+    <div class="audit-item"><div class="status warn">●</div><div>Путь до конверсии</div><div>Нужно усилить кнопки “подобрать”, “получить консультацию”, “собрать комплект”.</div><div class="score-tag bad">5/10</div></div>
+    <div class="audit-item"><div class="status warn">●</div><div>Соцдоказательства</div><div>Не хватает видимых аргументов доверия: отзывы, количество клиентов, кейсы, рейтинги.</div><div class="score-tag bad">5/10</div></div>
+    <div class="audit-item"><div class="status ok">●</div><div>Читабельность каталога</div><div>Категории понятны, но новичку нужен слой “с чего начать”.</div><div class="score-tag warn">7/10</div></div>
+    <div class="audit-item"><div class="status bad">●</div><div>Sticky CTA</div><div>На мобильном должен быть постоянный CTA внизу экрана.</div><div class="score-tag bad">4/10</div></div>
+    <div class="audit-item"><div class="status warn">●</div><div>Форма / захват лида</div><div>Нужны короткие формы под подбор, а не только покупки и каталог.</div><div class="score-tag bad">5/10</div></div>
+    <div class="audit-item"><div class="status ok">●</div><div>Доверие</div><div>Потенциал высокий, но нужно сильнее показать экспертизу и оригинальность товаров.</div><div class="score-tag warn">6/10</div></div>
+    <div class="audit-item"><div class="status warn">●</div><div>SEO-индексируемость</div><div>Категории есть, но нужен слой контентных посадочных под локальный спрос.</div><div class="score-tag warn">6/10</div></div>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <h3>Приоритетные правки</h3>
+      <ul class="tasklist">
+        <li>Первый экран с оффером по сегментам и двумя CTA: “Подобрать под цель” и “Собрать комплект”.</li>
+        <li>Липкая мобильная кнопка внизу экрана.</li>
+        <li>Блок “как выбрать” с 4 входами: спорт, энергия, иммунитет, контроль веса.</li>
+        <li>Отзывы / trust-блок / оригинальность / бонусная карта над сгибом.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Почему это важно именно DFS</h3>
+      <p>Чем шире ассортимент, тем выше риск когнитивной перегрузки. Люди не любят выбирать из сотен SKU, но любят ощущение, что им помогли “выбрать правильное”. Поэтому UX для DFS должен работать как цифровой консультант.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">08 SEO аудит</div>
+    <h2>SEO для DFS должно идти не только по категориям, но и по проблемам, которые человек хочет решить</h2>
+    <p>У DFS сильный потенциал в локальном поиске и long-tail запросах. В этой нише выигрывает не тот, у кого просто “каталог”, а тот, кто лучше закрывает интент “что мне купить в Омске под мою цель”.</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Техническая оценка: 67 / 100</h3>
+      <ul class="tasklist">
+        <li>HTTPS: да, базовый уровень доверия соблюдён.</li>
+        <li>Sitemap и robots: проверить и актуализировать под категории.</li>
+        <li>Title / Meta: усилить в категориях локальный спрос и benefit-driven формулировки.</li>
+        <li>H1–H6: проверить на уникальность и иерархию по посадочным.</li>
+        <li>Alt-теги: добавить коммерческие alt на карточки и баннеры.</li>
+        <li>Контент: сделать отдельные страницы “под задачу”, а не только “под категорию”.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>5 реальных запросов под DFS</h3>
+      <table class="table">
+        <thead><tr><th>Запрос</th><th>Частотность</th><th>Конкуренция</th><th>Потенциал</th></tr></thead>
+        <tbody>
+          <tr><td>спортивное питание омск</td><td>1 200–1 800</td><td>Высокая</td><td>Высокий</td></tr>
+          <tr><td>витамины омск купить</td><td>700–1 000</td><td>Средняя</td><td>Высокий</td></tr>
+          <tr><td>бады омск</td><td>450–650</td><td>Средняя</td><td>Средний</td></tr>
+          <tr><td>омега 3 купить омск</td><td>250–400</td><td>Средняя</td><td>Высокий</td></tr>
+          <tr><td>протеин омск</td><td>300–500</td><td>Высокая</td><td>Высокий</td></tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top:10px">Частотности ориентировочные по Wordstat-подобной логике. Для рабочего запуска я соберу реальную семантику и разложу её по структуре сайта.</p>
+    </div>
+  </div>
+  <div class="grid3" style="margin-top:16px">
+    <div class="seo-step">
+      <div class="label">Месяц 1</div>
+      <h3>Структура</h3>
+      <p>Категорийные и проблемные посадочные: “для энергии”, “для похудения”, “для иммунитета”, “для набора массы”.</p>
+    </div>
+    <div class="seo-step">
+      <div class="label">Месяц 2</div>
+      <h3>Контент</h3>
+      <p>Экспертные тексты, блоки FAQ, подборки по целям, SEO для карточек категорий и брендов.</p>
+    </div>
+    <div class="seo-step">
+      <div class="label">Месяц 3</div>
+      <h3>Локальный трафик</h3>
+      <p>Карты, отзывы, локальные страницы магазинов и связка SEO → офлайн-визит / звонок.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">09 Офферы</div>
+    <h2>Пять вариантов оффера под разные мотивации аудитории</h2>
+  </div>
+  <div class="offer-grid">
+    <div class="offer-card" data-n="01">
+      <div class="offer-type">Рациональный</div>
+      <div class="offer-title">Подберём рабочий набор без лишних банок</div>
+      <div class="offer-sub">Для поиска, категорийных лендингов и перформанс-рекламы.</div>
+    </div>
+    <div class="offer-card" data-n="02">
+      <div class="offer-type">Эмоциональный</div>
+      <div class="offer-title">Спокойно выбирайте для себя и семьи</div>
+      <div class="offer-sub">Для wellness-аудитории, Stories, Telegram и CRM-цепочек.</div>
+    </div>
+    <div class="offer-card" data-n="03">
+      <div class="offer-type">Конкурентный</div>
+      <div class="offer-title">Не просто каталог, а понятный путь к результату</div>
+      <div class="offer-sub">Для первого экрана сайта и сравнительных креативов.</div>
+    </div>
+    <div class="offer-card" data-n="04">
+      <div class="offer-type">Социальный</div>
+      <div class="offer-title">Тысячи покупателей возвращаются в DFS повторно</div>
+      <div class="offer-sub">Для trust-блоков, CRM и ретаргетинга.</div>
+    </div>
+    <div class="offer-card" data-n="05">
+      <div class="offer-type">B2B / партнёрский</div>
+      <div class="offer-title">Партнёрские наборы, которые реально продают</div>
+      <div class="offer-sub">Для тренеров, студий, фитнес-клубов и локальных амбассадоров.</div>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">10 Рекламные объявления</div>
+    <h2>Креативы, которые можно взять в работу сразу после утверждения стратегии</h2>
+  </div>
+  <div class="ads-grid">
+    <div class="ad">
+      <div class="ad-type">Яндекс Директ</div>
+      <h4>Спортивное питание и витамины в Омске</h4>
+      <p>Подберём под цель: энергия, масса, восстановление, иммунитет. Магазины DFS и онлайн-заказ.</p>
+      <div class="cta">CTA: Подобрать за 5 минут</div>
+    </div>
+    <div class="ad">
+      <div class="ad-type">Яндекс Директ</div>
+      <h4>Не знаете, какие витамины выбрать?</h4>
+      <p>Соберём понятный набор без хаоса в категориях. Полезное питание, БАД и бонусная карта DFS.</p>
+      <div class="cta">CTA: Получить подбор</div>
+    </div>
+    <div class="ad">
+      <div class="ad-type">Яндекс Директ</div>
+      <h4>Полезное питание без лишних переплат</h4>
+      <p>Протеин, омега-3, батончики, витамины и продукты под ваши цели. DFS — магазин полезного выбора.</p>
+      <div class="cta">CTA: Посмотреть каталог</div>
+    </div>
+    <div class="ad">
+      <div class="ad-type">Telegram Ads</div>
+      <h4>Как выбрать витамины и не ошибиться</h4>
+      <p>В DFS соберут набор под вашу задачу: энергия, иммунитет, спорт или контроль веса.</p>
+      <div class="cta">Кнопка: Подобрать</div>
+    </div>
+    <div class="ad">
+      <div class="ad-type">Telegram Ads</div>
+      <h4>Полезное питание рядом</h4>
+      <p>Широкий выбор, бонусная карта и быстрый маршрут к покупке. DFS в Омске.</p>
+      <div class="cta">Кнопка: Забрать сегодня</div>
+    </div>
+    <div class="ad">
+      <div class="ad-type">Telegram Ads</div>
+      <h4>Соберите комплект под свою цель</h4>
+      <p>Спорт, энергия, иммунитет, снижение веса — поможем быстро и без лишних банок.</p>
+      <div class="cta">Кнопка: Собрать комплект</div>
+    </div>
+    <div class="ad">
+      <div class="ad-type">VK</div>
+      <h4>Выбираете между спортпитом и “полезной аптекой”?</h4>
+      <p>В DFS можно собрать решение под задачу, а не искать товары по одной банке.</p>
+      <div class="cta">CTA: Получить подбор</div>
+    </div>
+    <div class="ad">
+      <div class="ad-type">VK</div>
+      <h4>Здоровье, энергия, форма — в одном магазине</h4>
+      <p>Каталог, бонусы, понятный подбор и повторная покупка без хаоса.</p>
+      <div class="cta">CTA: Открыть DFS</div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <div class="label">Посев 1</div>
+      <p>Когда в Омске ищут витамины, спортпит или полезные перекусы, почти всегда упираются в одну проблему: вариантов много, а уверенности мало. В DFS можно не просто купить банку, а быстро собрать набор под свою задачу — энергия, восстановление, иммунитет, снижение веса. Это экономит время и снижает риск случайных покупок. Если давно хотели разобраться, что реально подойдёт именно вам, начните с простого подбора и заберите решение уже сегодня.</p>
+    </div>
+    <div class="card">
+      <div class="label">Посев 2</div>
+      <p>Полезное питание давно перестало быть только для зала. Сейчас люди ищут понятные решения для жизни: как держать энергию, как восстановиться, что взять для семьи, какие продукты помогают держать режим без срывов. DFS может закрыть этот запрос за счёт ассортимента и консультационного подхода. Именно такую коммуникацию я бы и масштабировал в рекламе: не “у нас много SKU”, а “мы помогли тебе выбрать правильное”.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">11 Прототип сайта</div>
+    <h2>Концепт нового первого экрана DFS: меньше каталожного шума, больше сценариев выбора</h2>
+    <p>Ниже не просто картинка, а кликабельный HTML-прототип логики, которую я бы развивал на сайте DFS. Это уже шаг `ux-ui`: усиливаем оффер, путь к подбору и мобильную конверсию.</p>
+  </div>
+  <div class="proto-wrap">
+    <div class="proto-top">
+      <div>
+        <div class="brand">DFS.market</div>
+        <div class="subbrand">Прототип первого экрана и квиза под сегменты спроса</div>
+      </div>
+      <div class="mini-list">
+        <span class="mini-pill">Оффер под цель</span>
+        <span class="mini-pill">2 главных CTA</span>
+        <span class="mini-pill">Sticky CTA на мобиле</span>
+      </div>
+    </div>
+    <div class="proto-hero">
+      <div class="proto-copy">
+        <div class="label">hero</div>
+        <h3>Полезное питание и добавки, которые <span class="accent">подобраны под вашу цель</span></h3>
+        <p>Не нужно блуждать по сотням позиций. DFS помогает быстро собрать решение под спорт, энергию, иммунитет или контроль веса — с бонусами, консультацией и повторной покупкой без хаоса.</p>
+        <div class="proto-actions">
+          <div class="btn primary">Подобрать под цель</div>
+          <div class="btn secondary">Собрать комплект</div>
+        </div>
+        <div class="grid3">
+          <div class="chip">Оригинальные бренды</div>
+          <div class="chip">Бонусная карта</div>
+          <div class="chip">Быстрый маршрут к покупке</div>
+        </div>
+      </div>
+      <div class="proto-panel">
+        <div class="quiz">
+          <div class="quiz-step">Квиз-подбор</div>
+          <div class="quiz-q" id="quiz-question">Какая задача у вас сейчас главная?</div>
+          <div class="quiz-options" id="quiz-options">
+            <button class="quiz-option" onclick="answerQuiz('energy')">Нужна энергия и восстановление</button>
+            <button class="quiz-option" onclick="answerQuiz('sport')">Хочу результат в тренировках</button>
+            <button class="quiz-option" onclick="answerQuiz('family')">Ищу что-то для здоровья семьи</button>
+          </div>
+          <div class="quiz-result" id="quiz-result">Результат появится здесь: собранный набор, CTA и логика повторной покупки.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <h3>Что меняется в дизайне</h3>
+      <ul class="tasklist">
+        <li>Первый экран говорит на языке результата, а не категории.</li>
+        <li>Два CTA вместо десяти ссылок сразу уменьшают шум.</li>
+        <li>Квиз собирает сегмент и сразу ведёт в релевантный сценарий.</li>
+        <li>Цветовая палитра подчёркивает “натуральность + энергию”, а не безликий каталог.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Что дальше делать уже руками команды</h3>
+      <ul class="tasklist">
+        <li>Сверстать hero-блок на реальном сайте.</li>
+        <li>Подключить формы к CRM и триггеры ретаргетинга.</li>
+        <li>Сделать 3 отдельные посадочные: sport / wellness / family.</li>
+        <li>Добавить sticky CTA и краткие trust-блоки над сгибом.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <div class="section-head">
+    <div class="label">12 План работ по дням</div>
+    <h2>Первые 4 недели: чёткий запуск без “размазать всё по всему”</h2>
+  </div>
+  <div class="legend">
+    <span class="lg-site">Сайт</span>
+    <span class="lg-ads">Реклама</span>
+    <span class="lg-seo">SEO</span>
+    <span class="lg-analytics">Аналитика</span>
+    <span class="lg-meet">Встречи / синки</span>
+  </div>
+  <div class="day-grid">
+    <div class="day-card">
+      <div class="week">Неделя 1</div>
+      <h4>Фундамент</h4>
+      <ul class="tasklist">
+        <li>День 1: аудит сайта, аналитики, рекламы</li>
+        <li>День 2: карта сегментов и офферов</li>
+        <li>День 3: прототип hero и CTA</li>
+        <li>День 4: карта посадочных страниц</li>
+        <li>День 5: синк с собственником, фиксация KPI</li>
+      </ul>
+      <div class="footer-note">Результат недели: согласованная стратегия, структура сайта и воронки.</div>
+    </div>
+    <div class="day-card">
+      <div class="week">Неделя 2</div>
+      <h4>Подготовка к запуску</h4>
+      <ul class="tasklist">
+        <li>День 6: внедрение правок hero</li>
+        <li>День 7: настройка событий и call-tracking</li>
+        <li>День 8: сбор семантики и структуры SEO</li>
+        <li>День 9: подготовка креативов и офферов</li>
+        <li>День 10: CRM-цепочка на повторную покупку</li>
+      </ul>
+      <div class="footer-note">Результат недели: всё готово к трафику, аналитика не слепая.</div>
+    </div>
+    <div class="day-card">
+      <div class="week">Неделя 3</div>
+      <h4>Запуск</h4>
+      <ul class="tasklist">
+        <li>День 11: Яндекс Директ запуск</li>
+        <li>День 12: ретаргетинг и тест 3 сегментов</li>
+        <li>День 13: Telegram-посевы и амбассадоры</li>
+        <li>День 14: мониторинг и отключение мусора</li>
+        <li>День 15: недельный отчёт и выводы</li>
+      </ul>
+      <div class="footer-note">Результат недели: первые лиды, видны рабочие и слабые связки.</div>
+    </div>
+    <div class="day-card">
+      <div class="week">Неделя 4</div>
+      <h4>Оптимизация</h4>
+      <ul class="tasklist">
+        <li>День 16: усиление победителей</li>
+        <li>День 17: запуск контентных SEO-страниц</li>
+        <li>День 18: промокоды и повторы через CRM</li>
+        <li>День 19: офлайн-интеграции и персонал</li>
+        <li>День 20: месячный отчёт и roadmap на квартал</li>
+      </ul>
+      <div class="footer-note">Результат недели: понятный список, куда масштабировать деньги.</div>
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="card">
+      <h3>Формат ежедневного Telegram-отчёта</h3>
+      <ul class="tasklist">
+        <li>Что сделали сегодня</li>
+        <li>Какие цифры изменились</li>
+        <li>Какая гипотеза сработала / не сработала</li>
+        <li>Что делаем завтра</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Формат еженедельного отчёта</h3>
+      <ul class="tasklist">
+        <li>Расход по каналам и результат</li>
+        <li>Лидеры / аутсайдеры по CPL и CAC</li>
+        <li>Что меняем в оффере, сайте и CRM</li>
+        <li>Следующий фокус недели одним предложением</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-note">
+    <strong>Итог.</strong> Для DFS я вижу не просто задачу “вести рекламу”, а задачу собрать управляемую маркетинговую систему. Это мой сильный контур: упаковка оффера, каналов, сайта, повторной покупки и команды в одну цифроориентированную модель роста.
+  </div>
+</section>
+
+<script>
+let currentPage = 0;
+const total = 13;
+function go(i){
+  if(i < 0 || i >= total) return;
+  currentPage = i;
+  document.querySelectorAll('.page').forEach((p, idx) => p.classList.toggle('active', idx === i));
+  document.querySelectorAll('.nav-link').forEach((l, idx) => l.classList.toggle('active', idx === i));
+  document.getElementById('nav-counter').textContent = (i + 1) + ' / ' + total;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'ArrowRight') go(currentPage + 1);
+  if(e.key === 'ArrowLeft') go(currentPage - 1);
+});
+
+const quizStates = {
+  energy: {
+    q: 'Что важнее всего в ближайший месяц?',
+    options: [
+      { label: 'Повысить энергию и работоспособность', result: 'Рекомендуемый сценарий: лендинг “Энергия без срывов” + набор витаминов, магния и полезных перекусов + ретаргетинг на повтор через 21 день.' },
+      { label: 'Наладить сон и восстановление', result: 'Рекомендуемый сценарий: подборка “сон / антистресс / восстановление” + консультация + follow-up по циклу приёма.' },
+      { label: 'Упростить выбор без лишних SKU', result: 'Рекомендуемый сценарий: короткий квиз + готовые комплекты + CTA “собрать под цель”.' }
+    ]
+  },
+  sport: {
+    q: 'Какой у вас спортивный сценарий?',
+    options: [
+      { label: 'Набор массы', result: 'Связка: протеин + креатин + углеводный блок + рекомендации по приёму. Рекламный оффер: “комплект под результат, а не россыпь банок”.' },
+      { label: 'Сушка / контроль веса', result: 'Связка: белковые перекусы + термо/энергетический сценарий + контент по безопасному приёму.' },
+      { label: 'Восстановление и выносливость', result: 'Связка: аминокислоты + магний + омега-3 + ретаргетинг по повторной покупке через 28 дней.' }
+    ]
+  },
+  family: {
+    q: 'Для кого подбираем?',
+    options: [
+      { label: 'Для себя', result: 'Маршрут: иммунитет / энергия / сон + консультация + бонус на вторую покупку.' },
+      { label: 'Для семьи', result: 'Маршрут: семейный набор “взрослые + дети” + доверительный блок + быстрая заявка на подбор.' },
+      { label: 'Для родителей', result: 'Маршрут: простые объяснения, безопасный тон, доверие и офлайн-поддержка в магазине.' }
+    ]
+  }
+};
+
+function answerQuiz(key){
+  const block = quizStates[key];
+  const q = document.getElementById('quiz-question');
+  const options = document.getElementById('quiz-options');
+  const result = document.getElementById('quiz-result');
+  q.textContent = block.q;
+  options.innerHTML = '';
+  block.options.forEach((item) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = item.label;
+    btn.onclick = () => { result.textContent = item.result; };
+    options.appendChild(btn);
+  });
+  result.textContent = 'Выберите уточнение ниже, и блок покажет рекомендуемый сценарий воронки.';
+}
+</script>
+</body>
+</html>
