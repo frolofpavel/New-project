@@ -18,13 +18,22 @@ export default function PortfolioPage() {
 
   return (
     <>
-      <section className="page-hero">
+      <section className="page-hero portfolio-hero">
+        <div className="portfolio-hero__media" aria-hidden="true">
+          <video autoPlay muted loop playsInline preload="metadata">
+            <source src="/media/supergrok-onboarding-crisp.mp4" type="video/mp4" />
+          </video>
+          <div className="portfolio-hero__veil" />
+        </div>
+
+        <div className="portfolio-hero__content">
         <SectionHeading
           as="h1"
           eyebrow="Кейсы"
           title="Реальные результаты — не охваты, а выручка и лиды"
           description="Показываю не только визуальный результат, но и логику: что мешало, что изменили и почему это сработало."
         />
+        </div>
       </section>
 
       <section className="section">
