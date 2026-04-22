@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 
 import { LeadStrip } from "@/components/lead-strip";
 import { Markdown } from "@/components/markdown";
 import { formatDate, getAllCaseStudies, getCaseStudyBySlug } from "@/lib/content";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildCaseStudySchema, buildPageMetadata } from "@/lib/seo";
 
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
@@ -42,6 +43,13 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
 
   return (
     <>
+      <Script
+        id={`case-schema-${item.slug}`}
+        type="application/ld+json"
+        strategy="beforeInteractive"
+      >
+        {JSON.stringify(buildCaseStudySchema(item))}
+      </Script>
       <section className="page-hero">
         <div className="article-layout">
           <div>

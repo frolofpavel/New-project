@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { siteConfig } from "@/lib/site-config";
+import type { BlogPost, CaseStudy } from "@/lib/types";
 
 const OG_IMAGE_PATH = "/og-cover.jpg";
 const PERSON_IMAGE_PATH = "/foto-pavel.jpg";
@@ -109,5 +110,51 @@ export function buildServiceSchema() {
       "@type": "Country",
       name: "Россия",
     },
+  };
+}
+
+function buildAuthorPerson() {
+  return {
+    "@type": "Person",
+    name: "Павел Фролов",
+    url: siteConfig.baseUrl,
+  };
+}
+
+export function buildBlogPostSchema(post: BlogPost) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.seo.description,
+    url: absoluteUrl(`/blog/${post.slug}`),
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    author: buildAuthorPerson(),
+    publisher: buildAuthorPerson(),
+    image: absoluteUrl(OG_IMAGE_PATH),
+    keywords: post.tags.join(", "),
+    articleSection: "Блог",
+    inLanguage: "ru-RU",
+  };
+}
+
+export function buildCaseStudySchema(item: CaseStudy) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: item.title,
+    headline: item.title,
+    description: item.seo.description,
+    url: absoluteUrl(`/portfolio/${item.slug}`),
+    datePublished: item.publishedAt,
+    dateModified: item.publishedAt,
+    author: buildAuthorPerson(),
+    creator: buildAuthorPerson(),
+    image: absoluteUrl(OG_IMAGE_PATH),
+    about: item.client,
+    keywords: item.services.join(", "),
+    inLanguage: "ru-RU",
   };
 }

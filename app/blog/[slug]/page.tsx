@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 
 import { LeadStrip } from "@/components/lead-strip";
 import { Markdown } from "@/components/markdown";
 import { formatDate, getAllBlogPosts, getBlogPostBySlug } from "@/lib/content";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildBlogPostSchema, buildPageMetadata } from "@/lib/seo";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -42,6 +43,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
+      <Script
+        id={`blog-schema-${item.slug}`}
+        type="application/ld+json"
+        strategy="beforeInteractive"
+      >
+        {JSON.stringify(buildBlogPostSchema(item))}
+      </Script>
       <section className="page-hero">
         <p className="section-heading__eyebrow">
           {formatDate(item.publishedAt)} · {item.readingTime}
