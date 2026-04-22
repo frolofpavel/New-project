@@ -1227,6 +1227,78 @@ main { flex: 1; }
   line-height: 1.5;
 }
 
+/* ── About portrait with floating badges ─────────────────── */
+.about-portrait-wrap {
+  position: relative;
+  padding: 0 20px 20px 0; /* room for badges that overflow */
+}
+.about-portrait {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border-2);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.04);
+  position: relative;
+  line-height: 0;
+}
+.about-portrait__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center top;
+}
+.about-portrait__veil {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 45%;
+  background: linear-gradient(0deg, rgba(8, 9, 15, 0.72) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Floating stat badges */
+.about-badge {
+  position: absolute;
+  background: rgba(14, 16, 24, 0.9);
+  border: 1px solid var(--border-2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 14px;
+  padding: 14px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+  min-width: 140px;
+  pointer-events: none;
+}
+.about-badge__num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.about-badge__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted-2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+/* badge positions */
+.about-badge--bl {
+  bottom: 100px;
+  left: -24px;
+}
+.about-badge--br {
+  bottom: 40px;
+  right: -4px;
+}
+.about-badge--tr {
+  top: 40px;
+  right: -4px;
+}
+
 /* Transition beam: about → CTA */
 .section-beam {
   position: relative;
@@ -1881,11 +1953,23 @@ main { flex: 1; }
   .site-footer__grid { grid-template-columns: 1fr; gap: 32px; }
   .site-nav { display: none; }
   .live-status { display: none; }
+  /* About portrait on tablet — badges closer to photo */
+  .about-portrait-wrap { padding: 0 12px 12px 0; }
+  .about-badge--bl { left: -12px; }
+  .about-badge--br { right: 0; }
+  .about-badge--tr { right: 0; }
 }
 
 @media (max-width: 640px) {
   :root { --header-h: 60px; }
   .hero { padding: 110px 20px 60px; }
+  /* Stack badges differently on mobile */
+  .about-portrait-wrap { padding: 0 8px 8px 0; }
+  .about-badge { padding: 10px 14px; min-width: 110px; border-radius: 10px; }
+  .about-badge__num { font-size: 18px; }
+  .about-badge--bl { left: -8px; bottom: 80px; }
+  .about-badge--br { right: 0; bottom: 20px; }
+  .about-badge--tr { right: 0; top: 20px; }
   .section { padding: 72px 20px; }
   .section--muted { padding: 72px 20px; }
   .systems-scroll {

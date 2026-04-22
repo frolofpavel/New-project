@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Onest } from "next/font/google";
 
-import { CustomCursor } from "@/components/motion/cursor";
+// CustomCursor disabled — hides system cursor, causes UX issues on Windows
+// import { CustomCursor } from "@/components/motion/cursor";
 import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -67,7 +68,6 @@ export default function RootLayout({
     <html lang="ru" className={`${onest.variable} ${jetbrainsMono.variable}`}>
       <body>
         <SmoothScroll />
-        <CustomCursor />
         <ScrollProgress />
         <div className="grain" aria-hidden="true" />
         <div className="page-shell">

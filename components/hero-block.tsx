@@ -183,6 +183,7 @@ export function HeroBlock() {
               {siteConfig.hero.secondaryCta.label}
             </Link>
           </motion.div>
+
         </div>
 
         <motion.div

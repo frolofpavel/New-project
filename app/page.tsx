@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { HeroBlock } from "@/components/hero-block";
@@ -196,18 +197,31 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal delay={0.15}>
-            <div className="stat-stack">
-              {siteConfig.statRows.map((row) => (
-                <div key={row.title} className="stat-row">
-                  <span className="stat-row__num">
-                    <CountUp value={row.value} />
-                  </span>
-                  <div>
-                    <div className="stat-row__title">{row.title}</div>
-                    <div className="stat-row__sub">{row.sub}</div>
-                  </div>
-                </div>
-              ))}
+            <div className="about-portrait-wrap">
+              <div className="about-portrait">
+                <Image
+                  src="/images/pavel-formal.jpg"
+                  alt="Павел Фролов"
+                  width={440}
+                  height={540}
+                  className="about-portrait__img"
+                />
+                <div className="about-portrait__veil" />
+              </div>
+
+              {/* Floating stat badges */}
+              <div className="about-badge about-badge--bl">
+                <span className="about-badge__num">19+</span>
+                <span className="about-badge__label">лет в маркетинге</span>
+              </div>
+              <div className="about-badge about-badge--br">
+                <span className="about-badge__num">50M₽</span>
+                <span className="about-badge__label">в управлении</span>
+              </div>
+              <div className="about-badge about-badge--tr">
+                <span className="about-badge__num">300%</span>
+                <span className="about-badge__label">ROMI средний</span>
+              </div>
             </div>
           </Reveal>
         </div>
