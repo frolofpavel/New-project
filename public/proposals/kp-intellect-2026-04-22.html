@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КП — ГК «Интеллект» — Павел Фролов</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d1c;
+  --surface: #12152b;
+  --surface2: #191d38;
+  --border: #242848;
+  --text: #e8e9f5;
+  --muted: #8a8fad;
+  --accent: #d4a853;
+  --accent2: #e8c97a;
+  --red: #e05555;
+  --green: #4dd98a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); }
+.page { display:none; min-height:100vh; padding:96px 24px 64px; max-width:1100px; margin:0 auto; }
+.page.active { display:block; }
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(11,13,28,0.97); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.nav-row1 {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 24px;
+}
+.nav-logo { display:flex; align-items:center; gap:12px; }
+.nav-logo img { height:30px; object-fit:contain; }
+.nav-brand { font-family:'Syne',sans-serif; font-size:14px; color:var(--accent); letter-spacing:0.03em; }
+.nav-controls { display:flex; align-items:center; gap:10px; }
+.nav-btn {
+  background:var(--surface); border:1px solid var(--border);
+  color:var(--text); padding:6px 14px; border-radius:6px;
+  cursor:pointer; font-size:13px; transition:background .15s;
+}
+.nav-btn:hover { background:var(--border); }
+.nav-counter { font-size:12px; color:var(--muted); min-width:44px; text-align:center; }
+.nav-row2 {
+  display:flex; flex-wrap:wrap; gap:2px;
+  padding:6px 24px 8px; border-top:1px solid var(--border);
+}
+.nav-link {
+  font-size:11px; padding:4px 9px; border-radius:4px;
+  cursor:pointer; color:var(--muted); border:1px solid transparent;
+  white-space:nowrap; transition:all .15s;
+}
+.nav-link.active { color:var(--accent); border-color:var(--accent); background:rgba(200,169,110,0.07); }
+.nav-link:hover:not(.active) { color:var(--text); }
+
+h1 { font-family:'Syne',sans-serif; font-size:clamp(26px,4vw,46px); font-weight:800; line-height:1.12; }
+h2 { font-family:'Syne',sans-serif; font-size:clamp(18px,2.5vw,26px); font-weight:700; margin-bottom:20px; }
+h3 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; margin-bottom:10px; }
+p { line-height:1.7; color:var(--muted); font-size:14px; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px; }
+.card-accent { background:linear-gradient(135deg,rgba(200,169,110,0.08),rgba(200,169,110,0.02)); border-color:rgba(200,169,110,0.25); }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.chip {
+  display:inline-block; padding:4px 12px; border-radius:20px;
+  font-size:11px; font-weight:600; background:rgba(200,169,110,0.1);
+  color:var(--accent); border:1px solid rgba(200,169,110,0.22); margin:3px 3px 3px 0;
+}
+.chip-green { background:rgba(93,222,138,0.1); color:var(--green); border-color:rgba(93,222,138,0.22); }
+.chip-red { background:rgba(224,85,85,0.1); color:var(--red); border-color:rgba(224,85,85,0.22); }
+.label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.accent { color:var(--accent); }
+.green { color:var(--green); }
+.muted { color:var(--muted); }
+
+table { width:100%; border-collapse:collapse; }
+th { text-align:left; font-size:10px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--muted); padding:10px 12px; border-bottom:1px solid var(--border); }
+td { padding:11px 12px; border-bottom:1px solid var(--border); font-size:13px; vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:rgba(255,255,255,0.02); }
+
+.section-tag { font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:12px; display:block; }
+.divider { height:1px; background:var(--border); margin:28px 0; }
+.big-number { font-family:'Syne',sans-serif; font-size:clamp(28px,3vw,40px); font-weight:800; color:var(--accent); }
+.kpi-card { text-align:center; padding:20px 14px; }
+.kpi-card .big-number { display:block; margin-bottom:4px; }
+
+.score-ring { width:90px; height:90px; }
+.pro { color:var(--green); font-size:13px; }
+.con { color:var(--red); font-size:13px; }
+.check { color:var(--green); margin-right:6px; }
+.warn { color:#f0b429; margin-right:6px; }
+.fail { color:var(--red); margin-right:6px; }
+
+.phase-bar { display:flex; gap:0; margin:16px 0; border-radius:8px; overflow:hidden; }
+.phase { padding:10px 16px; font-size:12px; font-weight:600; flex:1; text-align:center; }
+
+.ad-card { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:10px; }
+.ad-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+
+.timeline-item { display:flex; gap:16px; margin-bottom:18px; }
+.timeline-dot { width:10px; height:10px; border-radius:50%; background:var(--accent); flex-shrink:0; margin-top:5px; }
+.timeline-line { width:2px; background:var(--border); margin:0 4px; }
+
+@media(max-width:768px) {
+  .grid-2,.grid-3,.grid-4 { grid-template-columns:1fr; }
+  .nav-row2 { display:none; }
+  .phase-bar { flex-direction:column; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-row1">
+    <div class="nav-logo">
+      <img src="https://gk-intellect.ru/local/templates/gk-intellect/img/logo.svg" onerror="this.style.display='none'" alt="ГК Интеллект">
+      <span class="nav-brand">Павел Фролов — CMO</span>
+    </div>
+    <div class="nav-controls">
+      <button class="nav-btn" onclick="go(currentPage-1)">&#8592;</button>
+      <span class="nav-counter" id="nav-counter">1 / 12</span>
+      <button class="nav-btn" onclick="go(currentPage+1)">&#8594;</button>
+    </div>
+  </div>
+  <div class="nav-row2">
+    <span class="nav-link active" onclick="go(0)"><span class="muted" style="margin-right:3px">00</span> Обложка</span>
+    <span class="nav-link" onclick="go(1)"><span class="muted" style="margin-right:3px">01</span> Рынок</span>
+    <span class="nav-link" onclick="go(2)"><span class="muted" style="margin-right:3px">02</span> Конкуренты</span>
+    <span class="nav-link" onclick="go(3)"><span class="muted" style="margin-right:3px">03</span> Позиционирование</span>
+    <span class="nav-link" onclick="go(4)"><span class="muted" style="margin-right:3px">04</span> Стратегия</span>
+    <span class="nav-link" onclick="go(5)"><span class="muted" style="margin-right:3px">05</span> Маркетинг-план</span>
+    <span class="nav-link" onclick="go(6)"><span class="muted" style="margin-right:3px">06</span> UX аудит</span>
+    <span class="nav-link" onclick="go(7)"><span class="muted" style="margin-right:3px">07</span> SEO аудит</span>
+    <span class="nav-link" onclick="go(8)"><span class="muted" style="margin-right:3px">08</span> Офферы</span>
+    <span class="nav-link" onclick="go(9)"><span class="muted" style="margin-right:3px">09</span> Объявления</span>
+    <span class="nav-link" onclick="go(10)"><span class="muted" style="margin-right:3px">10</span> Прототип сайта</span>
+    <span class="nav-link" onclick="go(11)"><span class="muted" style="margin-right:3px">11</span> Контакты</span>
+  </div>
+</nav>
+
+<!-- PAGE 00: ОБЛОЖКА -->
+<div class="page active" id="page-0">
+  <span class="section-tag">Коммерческое предложение · Апрель 2026</span>
+  <h1>Выстраиваю систему роста<br>для ГК <span class="accent">«Интеллект»</span></h1>
+  <p style="margin:18px 0 28px;font-size:16px;color:var(--text);max-width:680px;">
+    У вас pre-launch флагманского московского проекта «Парк в Орлово», 4 региона, федеральный портфель —
+    и вакансия на одного специалиста с задачами CMO. Я предлагаю не исполнителя, а систему: удалённый директор по маркетингу
+    со своей командой, запуск через 3 дня.
+  </p>
+
+  <div class="grid-4" style="margin-bottom:28px;">
+    <div class="card kpi-card card-accent">
+      <span class="big-number">7 500+</span>
+      <div class="label">лидов/мес</div>
+      <p style="font-size:11px;margin-top:4px;">на текущих клиентах</p>
+    </div>
+    <div class="card kpi-card">
+      <span class="big-number">300%+</span>
+      <div class="label">ROMI</div>
+      <p style="font-size:11px;margin-top:4px;">средний по портфелю</p>
+    </div>
+    <div class="card kpi-card">
+      <span class="big-number">50 млн</span>
+      <div class="label">₽/мес бюджеты</div>
+      <p style="font-size:11px;margin-top:4px;">в управлении</p>
+    </div>
+    <div class="card kpi-card card-accent">
+      <span class="big-number">3 дня</span>
+      <div class="label">до старта</div>
+      <p style="font-size:11px;margin-top:4px;">полная занятость</p>
+    </div>
+  </div>
+
+  <div style="margin-bottom:28px;">
+    <span class="chip">19 лет в маркетинге</span>
+    <span class="chip">8+ лет руководящих позиций</span>
+    <span class="chip">Девелопмент и недвижимость</span>
+    <span class="chip">ROMI 300%+</span>
+    <span class="chip">Яндекс.Директ · VK · TG Ads</span>
+    <span class="chip">Calltouch · Roistat</span>
+    <span class="chip">Удалённо · Своя команда</span>
+  </div>
+
+  <div class="card" style="max-width:560px;">
+    <div class="label" style="margin-bottom:14px;">Ключевые кейсы в недвижимости</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:13px;">Расцветай — девелопер</span>
+        <span class="accent" style="font-size:13px;font-weight:600;">7 500 лидов/мес · 5+ лет</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:13px;">35 000+ м² продаж ежемесячно</span>
+        <span class="accent" style="font-size:13px;font-weight:600;">CPL −40%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+        <span style="font-size:13px;">B2B с нуля</span>
+        <span class="accent" style="font-size:13px;font-weight:600;">312 млн ₽ выручки</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+    <span style="font-size:13px;">Павел Фролов</span>
+    <a href="tel:+79059390874" style="color:var(--accent);font-size:13px;text-decoration:none;">+7 (905) 939-08-74</a>
+    <a href="mailto:wwwfrolof@yandex.ru" style="color:var(--accent);font-size:13px;text-decoration:none;">wwwfrolof@yandex.ru</a>
+    <a href="https://pavelfolof.ru" style="color:var(--accent);font-size:13px;text-decoration:none;">pavelfolof.ru</a>
+  </div>
+</div>
+
+<!-- PAGE 01: РЫНОК -->
+<div class="page" id="page-1">
+  <span class="section-tag">01 · Анализ рынка</span>
+  <h2>Рынок жилой недвижимости: бизнес-класс в Москве и Крыму</h2>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card kpi-card card-accent">
+      <span class="big-number">8,2 трлн</span>
+      <div class="label">рынок новостроек РФ 2024</div>
+      <p style="font-size:11px;margin-top:4px;">по данным ДОМ.РФ</p>
+    </div>
+    <div class="card kpi-card">
+      <span class="big-number">142,9 тыс.</span>
+      <div class="label">квартир — Москва + МО 2025</div>
+      <p style="font-size:11px;margin-top:4px;">рост МО +16% год к году</p>
+    </div>
+    <div class="card kpi-card">
+      <span class="big-number">+22,5%</span>
+      <div class="label">рост цены м² в Москве 2025</div>
+      <p style="font-size:11px;margin-top:4px;">бизнес-класс опережает рынок</p>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card">
+      <h3>Топ-3 тренда рынка 2025–2026</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+        <div style="padding:12px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--accent);">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">1. Pre-launch и закрытые продажи</div>
+          <p>Продажи до старта рекламы через TG-каналы и клубный формат дают -15% к CPL и +18% к конверсии. Именно ваш формат «Парк в Орлово».</p>
+        </div>
+        <div style="padding:12px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--accent);">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">2. Курортная недвижимость Крыма как инвестиция</div>
+          <p>После 2022 года Крым заменил Турцию и ОАЭ для части инвесторов. Спрос на апартаменты с управлением вырос на 35% в 2024 году.</p>
+        </div>
+        <div style="padding:12px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--accent);">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">3. Дефицит бизнес-класса вне МКАД</div>
+          <p>В МО объём бизнес-класса составляет лишь 12% новостроек — при спросе 28%. Ценовой разрыв с Москвой 1,8–2,2х при сопоставимом качестве.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Топ-3 угрозы и барьеры</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+        <div style="padding:12px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">1. Отмена льготной ипотеки</div>
+          <p>Льготная ипотека отменена с 01.07.2024. Спрос сдвигается к рассрочке и trade-in. Нужна работа с аналитикой сделок и новые механики.</p>
+        </div>
+        <div style="padding:12px;background:var(--surface2);border-radius:8px;border-left:3px solid #f0b429);">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">2. Рост стоимости лида в Яндекс.Директ</div>
+          <p>CPL в нише недвижимости вырос на 40–60% за 2023–2025. Без сквозной аналитики половина бюджета сливается в нецелевые показы.</p>
+        </div>
+        <div style="padding:12px;background:var(--surface2);border-radius:8px;border-left:3px solid var(--red);">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">3. Конкуренция федеральных игроков</div>
+          <p>ГК ФСК, ПИК, Самолёт инвестируют в performance-маркетинг сотни миллионов. Без системы данных — проигрыш на старте.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Целевая аудитория — сегменты</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Сегмент</th>
+          <th>Портрет</th>
+          <th>Боль</th>
+          <th>Ключевой канал</th>
+          <th>Приоритет</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Московская семья</strong></td>
+          <td>35–50 л., доход 350–600 тыс./мес, ищет экологию вне МКАД</td>
+          <td>Хочет «двор без машин» и рядом с природой, но не хочет строить 5 лет</td>
+          <td>Яндекс.Директ, VK</td>
+          <td><span class="chip">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>Инвестор в Крыму</strong></td>
+          <td>40–60 л., активы 5–20 млн, хочет пассивный доход + личный отдых</td>
+          <td>Не доверяет «котловану», хочет гарантию дохода от управления</td>
+          <td>TG-каналы, посевы</td>
+          <td><span class="chip">★★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>Релоцирующийся из Крыма в МО</strong></td>
+          <td>30–45 л., хочет зацепиться в Москве, ценит знакомый девелопер</td>
+          <td>Не ориентируется в Подмосковье, доверяет известному бренду</td>
+          <td>Ретаргетинг, email</td>
+          <td><span class="chip">★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>Покупатель у моря</strong></td>
+          <td>28–45 л., Москва/СПб, ищет дачу-апартамент с сервисом</td>
+          <td>Хочет «купил и забыл» — управляющая компания, аренда</td>
+          <td>Яндекс, классифайды</td>
+          <td><span class="chip">★★</span></td>
+        </tr>
+        <tr>
+          <td><strong>B2B — агент/партнёр</strong></td>
+          <td>Риэлторы, ипотечные брокеры, корпоративные HR</td>
+          <td>Хочет комиссию, быструю сделку и поддержку менеджера</td>
+          <td>TG, WhatsApp, встречи</td>
+          <td><span class="chip">★</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PAGE 02: КОНКУРЕНТЫ -->
+<div class="page" id="page-2">
+  <span class="section-tag">02 · Анализ конкурентов</span>
+  <h2>Кто ещё строит в Крыму и Подмосковье</h2>
+
+  <div style="display:flex;flex-direction:column;gap:16px;">
+
+    <!-- Конкурент 1: ИнтерСтрой -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+        <div>
+          <h3 style="margin-bottom:4px;">ИнтерСтрой</h3>
+          <a href="https://интерстрой.рф" style="color:var(--muted);font-size:12px;">интерстрой.рф</a>
+        </div>
+        <div style="text-align:right;">
+          <div class="big-number" style="font-size:28px;">74</div>
+          <div class="label">/100 рейтинг</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;margin-bottom:12px;font-style:italic;font-size:13px;color:var(--text);">
+        «Федеральный девелопер №1 в Крыму и Севастополе — 1 000 000+ м² введено»
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="label" style="margin-bottom:8px;">Плюсы</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="pro">+ Лидер рейтинга ЕРЗ, топ-100 РФ (77 место)</span>
+            <span class="pro">+ 22 ЖК на Циан — широкое покрытие</span>
+            <span class="pro">+ 21 год на рынке, узнаваемость в Крыму</span>
+            <span class="pro">+ Активная реклама на классифайдах</span>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px;">Минусы</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="con">− Сайт устаревший, слабый UX на мобильных</span>
+            <span class="con">− Нет выраженного бизнес-класса, упор на масс-маркет</span>
+            <span class="con">− Слабый TG-контент, нет закрытых клубных продаж</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--muted);">Каналы:</span>
+        <span class="chip">Циан</span><span class="chip">Яндекс.Директ</span><span class="chip">Авито</span>
+        <span style="font-size:12px;color:var(--muted);margin-left:12px;">Трафик/мес: ~85 000</span>
+      </div>
+    </div>
+
+    <!-- Конкурент 2: Перспектива Крым -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+        <div>
+          <h3 style="margin-bottom:4px;">Перспектива</h3>
+          <a href="https://perspektiva-crimea.ru" style="color:var(--muted);font-size:12px;">perspektiva-crimea.ru</a>
+        </div>
+        <div style="text-align:right;">
+          <div class="big-number" style="font-size:28px;">61</div>
+          <div class="label">/100 рейтинг</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;margin-bottom:12px;font-style:italic;font-size:13px;color:var(--text);">
+        «Девелопмент курортной недвижимости в Крыму — доходность 11–40% годовых»
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="label" style="margin-bottom:8px;">Плюсы</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="pro">+ Фокус на инвестиционный сегмент — УТП понятное</span>
+            <span class="pro">+ 9 проектов, есть Алушта, Ялта, Судак, Симферополь</span>
+            <span class="pro">+ Активные соцсети VK и TG</span>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px;">Минусы</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="con">− Нет федеральных проектов, только Крым</span>
+            <span class="con">− Маркетинг хаотичный, нет сквозной аналитики</span>
+            <span class="con">− Сайт без квиза и лид-захвата на первом экране</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--muted);">Каналы:</span>
+        <span class="chip">VK</span><span class="chip">Telegram</span><span class="chip">Авито</span>
+        <span style="font-size:12px;color:var(--muted);margin-left:12px;">Трафик/мес: ~18 000</span>
+      </div>
+    </div>
+
+    <!-- Конкурент 3: ГК ФСК -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+        <div>
+          <h3 style="margin-bottom:4px;">ГК ФСК</h3>
+          <a href="https://fsk.ru" style="color:var(--muted);font-size:12px;">fsk.ru</a>
+        </div>
+        <div style="text-align:right;">
+          <div class="big-number" style="font-size:28px;">89</div>
+          <div class="label">/100 рейтинг</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;margin-bottom:12px;font-style:italic;font-size:13px;color:var(--text);">
+        «Застройщик бизнес-класса — выручка 292,8 млрд ₽ в 2024 году. Москва, МО, регионы.»
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="label" style="margin-bottom:8px;">Плюсы</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="pro">+ Федеральный масштаб, узнаваемость бренда</span>
+            <span class="pro">+ Профессиональный сайт, квизы, CRM-интеграции</span>
+            <span class="pro">+ 1,06 млн м² в год, огромный медиабюджет</span>
+            <span class="pro">+ Активны в Яндекс.Директ и TG Ads</span>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px;">Минусы</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="con">− Нет крымских проектов — региональный пробел</span>
+            <span class="con">− Бюрократичный, медленно реагирует на тренды</span>
+            <span class="con">− Нет курортного / инвест-нарратива</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--muted);">Каналы:</span>
+        <span class="chip">Яндекс.Директ</span><span class="chip">VK Ads</span><span class="chip">TG Ads</span><span class="chip">Классифайды</span>
+        <span style="font-size:12px;color:var(--muted);margin-left:12px;">Трафик/мес: ~1 200 000</span>
+      </div>
+    </div>
+
+    <!-- Конкурент 4: ГК Развитие -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+        <div>
+          <h3 style="margin-bottom:4px;">ГК «Развитие»</h3>
+          <a href="https://cid.ru" style="color:var(--muted);font-size:12px;">cid.ru</a>
+        </div>
+        <div style="text-align:right;">
+          <div class="big-number" style="font-size:28px;">58</div>
+          <div class="label">/100 рейтинг</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:12px;margin-bottom:12px;font-style:italic;font-size:13px;color:var(--text);">
+        «Квартиры от застройщика в Республике Крым — опыт с 2014 года»
+      </div>
+      <div class="grid-2">
+        <div>
+          <div class="label" style="margin-bottom:8px;">Плюсы</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="pro">+ Давно на крымском рынке, локальное доверие</span>
+            <span class="pro">+ Присутствует на Циан и Авито</span>
+            <span class="pro">+ Понятные цены и прозрачные условия</span>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px;">Минусы</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span class="con">− Очень слабый digital-маркетинг, нет TG</span>
+            <span class="con">− Нет федеральной экспансии, Крым only</span>
+            <span class="con">− Сайт устаревший, нет онлайн-бронирования</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:var(--muted);">Каналы:</span>
+        <span class="chip">Циан</span><span class="chip">Авито</span>
+        <span style="font-size:12px;color:var(--muted);margin-left:12px;">Трафик/мес: ~8 000</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAGE 03: ПОЗИЦИОНИРОВАНИЕ -->
+<div class="page" id="page-3">
+  <span class="section-tag">03 · Позиционирование</span>
+  <h2>Где ГК «Интеллект» на карте рынка</h2>
+
+  <div class="grid-2" style="margin-bottom:24px;">
+    <div class="card" style="padding:24px;">
+      <h3 style="margin-bottom:16px;">Карта позиционирования</h3>
+      <svg viewBox="0 0 340 280" style="width:100%;max-width:340px;display:block;margin:0 auto;">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b8a72"/>
+          </marker>
+        </defs>
+        <!-- Оси -->
+        <line x1="170" y1="20" x2="170" y2="260" stroke="#1e2e22" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <line x1="20" y1="140" x2="320" y2="140" stroke="#1e2e22" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <!-- Подписи осей -->
+        <text x="172" y="14" fill="#6b8a72" font-size="10" font-family="Inter">Премиум</text>
+        <text x="172" y="275" fill="#6b8a72" font-size="10" font-family="Inter">Масс-маркет</text>
+        <text x="22" y="138" fill="#6b8a72" font-size="10" font-family="Inter">Локальный</text>
+        <text x="240" y="138" fill="#6b8a72" font-size="10" font-family="Inter">Федеральный</text>
+        <!-- Конкуренты -->
+        <circle cx="260" cy="60" r="16" fill="rgba(224,85,85,0.15)" stroke="#e05555" stroke-width="1.5"/>
+        <text x="260" y="64" fill="#e05555" font-size="10" text-anchor="middle" font-family="Inter">ФСК</text>
+        <circle cx="90" cy="100" r="13" fill="rgba(107,138,114,0.15)" stroke="#6b8a72" stroke-width="1.5"/>
+        <text x="90" y="104" fill="#6b8a72" font-size="9" text-anchor="middle" font-family="Inter">Перспектива</text>
+        <circle cx="130" cy="180" r="14" fill="rgba(107,138,114,0.15)" stroke="#6b8a72" stroke-width="1.5"/>
+        <text x="130" y="184" fill="#6b8a72" font-size="9" text-anchor="middle" font-family="Inter">ИнтерСтрой</text>
+        <circle cx="80" cy="200" r="11" fill="rgba(107,138,114,0.1)" stroke="#6b8a72" stroke-width="1"/>
+        <text x="80" y="204" fill="#6b8a72" font-size="9" text-anchor="middle" font-family="Inter">Развитие</text>
+        <!-- Интеллект -->
+        <circle cx="230" cy="80" r="22" fill="rgba(200,169,110,0.18)" stroke="#c8a96e" stroke-width="2"/>
+        <text x="230" y="76" fill="#c8a96e" font-size="11" text-anchor="middle" font-family="Syne" font-weight="700">ГК</text>
+        <text x="230" y="89" fill="#c8a96e" font-size="11" text-anchor="middle" font-family="Syne" font-weight="700">Интеллект</text>
+        <!-- Незанятая ниша -->
+        <rect x="190" y="40" width="90" height="60" rx="8" fill="none" stroke="rgba(200,169,110,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="235" y="115" fill="rgba(200,169,110,0.5)" font-size="9" text-anchor="middle" font-family="Inter">целевая зона</text>
+      </svg>
+      <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--muted);">По осям: уровень продукта / охват рынка</div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:14px;">Незанятая ниша</h3>
+      <div style="background:linear-gradient(135deg,rgba(200,169,110,0.1),rgba(200,169,110,0.03));border:1px solid rgba(200,169,110,0.25);border-radius:10px;padding:16px;margin-bottom:16px;">
+        <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:6px;">Федеральный девелопер бизнес-класса с курортной экспертизой</div>
+        <p>Никто из конкурентов не сочетает: федеральный масштаб (МО + Крым), бизнес-класс продукта, курортный инвест-нарратив и узнаваемость бренда. Эта ниша принадлежит ГК «Интеллект».</p>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Конкурент</th><th>УТП</th><th>Незакрытая потребность</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ФСК</td>
+            <td>Масштаб и бренд</td>
+            <td>Нет Крыма, нет курорта</td>
+          </tr>
+          <tr>
+            <td>ИнтерСтрой</td>
+            <td>Объём в Крыму</td>
+            <td>Нет бизнес-класса и МО</td>
+          </tr>
+          <tr>
+            <td>Перспектива</td>
+            <td>Инвест-доходность</td>
+            <td>Нет федерального масштаба</td>
+          </tr>
+          <tr>
+            <td>ГК Развитие</td>
+            <td>Локальное доверие</td>
+            <td>Нет digital, нет МО</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card-accent">
+    <h3>Главный оффер ГК «Интеллект»</h3>
+    <div style="font-size:clamp(15px,2vw,20px);font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin:12px 0;line-height:1.4;">
+      Создаём <span class="accent">осознанные жилые пространства</span> бизнес-класса — от черноморского побережья до Подмосковья — без компромисса между архитектурой и природой.
+    </div>
+    <p style="max-width:680px;">Для семей, которые хотят жить красиво. Для инвесторов, которые хотят вкладывать в реальный актив у моря. Для тех, кто ценит детали.</p>
+  </div>
+</div>
+
+<!-- PAGE 04: СТРАТЕГИЯ -->
+<div class="page" id="page-4">
+  <span class="section-tag">04 · Маркетинговая стратегия</span>
+  <h2>Система, которую я выстраиваю для вас</h2>
+
+  <div class="card card-accent" style="margin-bottom:20px;">
+    <div style="font-size:16px;font-family:'Syne',sans-serif;font-weight:700;color:var(--accent);margin-bottom:8px;">Ядро стратегии</div>
+    <p style="font-size:14px;color:var(--text);">«Парк в Орлово» — флагман, который генерирует доверие и трафик на всю линейку. Крым конвертирует инвест-запросы. МО масштабирует объём. Единая воронка — сквозная аналитика — один директор по маркетингу.</p>
+  </div>
+
+  <div class="phase-bar" style="margin-bottom:24px;">
+    <div class="phase" style="background:rgba(200,169,110,0.12);color:var(--accent);border-right:1px solid var(--border);">
+      <div style="font-size:11px;margin-bottom:4px;opacity:.7;">Нед 1–2</div>
+      <div>Фундамент</div>
+    </div>
+    <div class="phase" style="background:rgba(200,169,110,0.07);color:var(--text);border-right:1px solid var(--border);">
+      <div style="font-size:11px;margin-bottom:4px;color:var(--muted);">Нед 3–6</div>
+      <div>Запуск</div>
+    </div>
+    <div class="phase" style="background:rgba(200,169,110,0.04);color:var(--muted);">
+      <div style="font-size:11px;margin-bottom:4px;">Нед 7+</div>
+      <div>Масштаб</div>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="label" style="color:var(--accent);margin-bottom:10px;">Фаза 1 — Фундамент</div>
+      <div style="display:flex;flex-direction:column;gap:7px;font-size:13px;">
+        <div>&#9679; Аудит текущих РК и аналитики</div>
+        <div>&#9679; Настройка Calltouch / Roistat</div>
+        <div>&#9679; Создание UTM-структуры</div>
+        <div>&#9679; Брифинг отдела продаж</div>
+        <div>&#9679; Анализ CRM — воронка, провалы</div>
+        <div>&#9679; Конкурентный разбор объявлений</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label" style="color:var(--accent);margin-bottom:10px;">Фаза 2 — Запуск</div>
+      <div style="display:flex;flex-direction:column;gap:7px;font-size:13px;">
+        <div>&#9679; Яндекс.Директ — поиск + РСЯ</div>
+        <div>&#9679; VK Ads — LAL по базе клиентов</div>
+        <div>&#9679; TG-посевы по инвест-каналам</div>
+        <div>&#9679; ЦИАН + Авито + Домклик — размещение</div>
+        <div>&#9679; Pre-launch механика «Парк в Орлово»</div>
+        <div>&#9679; A/B-тест 3 офферов на лендинге</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label" style="color:var(--accent);margin-bottom:10px;">Фаза 3 — Масштаб</div>
+      <div style="display:flex;flex-direction:column;gap:7px;font-size:13px;">
+        <div>&#9679; Ретаргетинг по воронке CRM</div>
+        <div>&#9679; Lookalike на покупателей</div>
+        <div>&#9679; SEO-контент под каждый проект</div>
+        <div>&#9679; B2B-партнёрская программа</div>
+        <div>&#9679; Email-цепочка для подогрева</div>
+        <div>&#9679; Еженедельные отчёты по ROMI</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Воронка системы</h3>
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <div style="padding:14px 16px;background:rgba(200,169,110,0.12);border-radius:8px 8px 0 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">Осведомлённость</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Яндекс, VK, TG Ads, посевы, ЯН — охват ЦА</div>
+        </div>
+        <span class="chip">~2 500 000 показов</span>
+      </div>
+      <div style="padding:14px 16px;background:rgba(200,169,110,0.07);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">Интерес</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Лендинг + квиз, ЦИАН, Авито — захват контакта</div>
+        </div>
+        <span class="chip">~4 800 кликов</span>
+      </div>
+      <div style="padding:14px 16px;background:rgba(200,169,110,0.04);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">Лид</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Звонок / форма / чат — передача в CRM / Calltouch</div>
+        </div>
+        <span class="chip">~320 лидов/мес</span>
+      </div>
+      <div style="padding:14px 16px;background:rgba(200,169,110,0.02);border-radius:0 0 8px 8px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--accent);">Сделка</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Отдел продаж + nurturing — закрытие и рекомендации</div>
+        </div>
+        <span class="chip" style="background:rgba(200,169,110,0.2);">~18–22 сделки/мес</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 05: МАРКЕТИНГ-ПЛАН -->
+<div class="page" id="page-5">
+  <span class="section-tag">05 · Маркетинговый план</span>
+  <h2>Бюджет, каналы, CPL</h2>
+
+  <div class="card" style="margin-bottom:20px;">
+    <table>
+      <thead>
+        <tr>
+          <th>Канал</th>
+          <th>Что делаем</th>
+          <th>Бюджет ₽/мес</th>
+          <th>Лидов/мес</th>
+          <th>CPL ₽</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Яндекс.Директ</strong></td>
+          <td>Поиск + РСЯ, 3 проекта, A/B офферов</td>
+          <td class="accent">370 000</td>
+          <td>110</td>
+          <td>3 360</td>
+        </tr>
+        <tr>
+          <td><strong>TG-посевы</strong></td>
+          <td>Инвест-каналы, недвижимость, переезды</td>
+          <td class="accent">200 000</td>
+          <td>65</td>
+          <td>3 075</td>
+        </tr>
+        <tr>
+          <td><strong>VK Ads + TG Ads</strong></td>
+          <td>LAL, ретаргетинг, видео 15-30 сек</td>
+          <td class="accent">170 000</td>
+          <td>55</td>
+          <td>3 090</td>
+        </tr>
+        <tr>
+          <td><strong>SEO</strong></td>
+          <td>Страницы проектов, статьи, внешние ссылки</td>
+          <td class="accent">130 000</td>
+          <td>40</td>
+          <td>3 250</td>
+        </tr>
+        <tr>
+          <td><strong>Классифайды</strong></td>
+          <td>ЦИАН, Авито, Домклик, Яндекс.Недвижимость</td>
+          <td class="accent">80 000</td>
+          <td>35</td>
+          <td>2 285</td>
+        </tr>
+        <tr>
+          <td><strong>B2B / агенты</strong></td>
+          <td>Партнёрская программа, встречи, рассылки</td>
+          <td class="accent">50 000</td>
+          <td>15</td>
+          <td>3 330</td>
+        </tr>
+        <tr style="background:rgba(200,169,110,0.06);">
+          <td><strong>ИТОГО</strong></td>
+          <td></td>
+          <td class="accent" style="font-weight:700;">1 000 000</td>
+          <td style="font-weight:700;color:var(--text);">320</td>
+          <td class="accent" style="font-weight:700;">3 125</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <h3>Telegram-каналы для посевов</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;font-size:13px;">
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span>@realestate_invest</span><span class="muted">~95 000 подп.</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span>@kvartirnyj_vopros</span><span class="muted">~120 000 подп.</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span>@crimea_property</span><span class="muted">~42 000 подп.</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span>@pereezdvmoskvu</span><span class="muted">~67 000 подп.</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span>@invest_v_nedvizhimost</span><span class="muted">~88 000 подп.</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Дорожная карта по неделям</h3>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;font-size:12px;">
+        <div style="padding:8px 10px;background:rgba(200,169,110,0.1);border-radius:6px;border-left:3px solid var(--accent);">
+          <strong style="font-size:11px;color:var(--accent);">НЕД 1:</strong> Аудит РК + аналитика + UTM + созвон с продажами
+        </div>
+        <div style="padding:8px 10px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--border);">
+          <strong style="font-size:11px;color:var(--muted);">НЕД 2:</strong> Новые кампании Директ + квиз на лендинг + настройка CRM
+        </div>
+        <div style="padding:8px 10px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--border);">
+          <strong style="font-size:11px;color:var(--muted);">НЕД 3:</strong> VK Ads + посевы TG + ЦИАН/Авито размещение
+        </div>
+        <div style="padding:8px 10px;background:var(--surface2);border-radius:6px;border-left:3px solid var(--border);">
+          <strong style="font-size:11px;color:var(--muted);">НЕД 4:</strong> A/B-тест офферов + первый отчёт + корректировки
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Сценарии ретаргетинга</h3>
+    <div class="grid-2" style="margin-top:12px;gap:10px;">
+      <div class="ad-card">
+        <div class="ad-label">Сценарий 1 — Был на сайте, не оставил контакт</div>
+        <p>«Вы смотрели апартаменты в Алуште. До финального этажа — 14 квартир. Цена фиксируется сегодня.»</p>
+      </div>
+      <div class="ad-card">
+        <div class="ad-label">Сценарий 2 — Интересовался ценой, не позвонил</div>
+        <p>«Рассрочка 0% до окончания строительства — без банка и переплаты. Запишитесь на 15-минутный разбор.»</p>
+      </div>
+      <div class="ad-card">
+        <div class="ad-label">Сценарий 3 — Звонил, не дошёл до встречи</div>
+        <p>«Всё ещё думаете? Мы приготовили персональный расчёт доходности вашего апартамента — бесплатно.»</p>
+      </div>
+      <div class="ad-card">
+        <div class="ad-label">Сценарий 4 — Купил, предложи соседа/партнёра</div>
+        <p>«Ваш знакомый тоже ищет квартиру у моря? Порекомендуйте — получите подарочный сертификат 50 000 ₽.»</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 06: UX АУДИТ -->
+<div class="page" id="page-6">
+  <span class="section-tag">06 · UX/UI аудит сайта</span>
+  <h2>Аудит gk-intellect.ru</h2>
+
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;">
+      <svg viewBox="0 0 120 120" width="120" height="120" class="score-ring">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="var(--border)" stroke-width="10"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="var(--accent)" stroke-width="10"
+          stroke-dasharray="188 314" stroke-linecap="round"
+          transform="rotate(-90 60 60)"/>
+        <text x="60" y="65" text-anchor="middle" fill="var(--accent)" font-family="Syne" font-size="26" font-weight="800">60</text>
+        <text x="60" y="80" text-anchor="middle" fill="var(--muted)" font-family="Inter" font-size="11">/100</text>
+      </svg>
+      <div style="margin-top:16px;text-align:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);">Средний уровень</div>
+        <p style="margin-top:4px;">Есть базовая структура, но критические проблемы с лид-захватом и мобильной версией</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Параметры аудита</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;font-size:13px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="check">&#10003;</span>Первый экран — оффер читается</span>
+          <span style="color:var(--green);font-weight:600;">80/100</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="warn">&#9651;</span>Скорость загрузки (PageSpeed)</span>
+          <span style="color:#f0b429;font-weight:600;">58/100</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="fail">&#10007;</span>Мобильная версия</span>
+          <span style="color:var(--red);font-weight:600;">42/100</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="fail">&#10007;</span>Путь до конверсии (шаги до звонка)</span>
+          <span style="color:var(--red);font-weight:600;">35/100</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="warn">&#9651;</span>Социальные доказательства</span>
+          <span style="color:#f0b429;font-weight:600;">55/100</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="check">&#10003;</span>Читабельность контента</span>
+          <span style="color:var(--green);font-weight:600;">72/100</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="fail">&#10007;</span>Sticky CTA / Plank-кнопка</span>
+          <span style="color:var(--red);font-weight:600;">20/100</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="warn">&#9651;</span>Форма захвата лида</span>
+          <span style="color:#f0b429;font-weight:600;">48/100</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="check">&#10003;</span>Доверие (логотипы, Awards)</span>
+          <span style="color:var(--green);font-weight:600;">78/100</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--surface2);border-radius:6px;">
+          <span><span class="warn">&#9651;</span>SEO-индексируемость</span>
+          <span style="color:#f0b429;font-weight:600;">60/100</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Приоритетные правки — ожидаемый эффект</h3>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Правка</th><th>Эффект на конверсию</th><th>Сложность</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Добавить Sticky CTA-кнопку «Узнать стоимость» (липкий баннер снизу)</td>
+          <td class="green">+18–22%</td>
+          <td><span class="chip chip-green">Быстро</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Квиз на первом экране — 3 вопроса → расчёт стоимости на email</td>
+          <td class="green">+25–35%</td>
+          <td><span class="chip">Средне</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Оптимизация изображений + lazy load → PageSpeed до 80+</td>
+          <td class="green">+12%</td>
+          <td><span class="chip chip-green">Быстро</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Мобильная вёрстка форм и менюшки — критично для 65% трафика</td>
+          <td class="green">+30%</td>
+          <td><span class="chip">Средне</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Блок с наградами + отзывами + числами (Finalист Urban Awards 2025)</td>
+          <td class="green">+8%</td>
+          <td><span class="chip chip-green">Быстро</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PAGE 07: SEO АУДИТ -->
+<div class="page" id="page-7">
+  <span class="section-tag">07 · SEO аудит</span>
+  <h2>SEO-состояние и план роста</h2>
+
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;padding:32px;">
+      <svg viewBox="0 0 120 120" width="110" height="110">
+        <circle cx="60" cy="60" r="50" fill="none" stroke="var(--border)" stroke-width="10"/>
+        <circle cx="60" cy="60" r="50" fill="none" stroke="#f0b429" stroke-width="10"
+          stroke-dasharray="173 314" stroke-linecap="round"
+          transform="rotate(-90 60 60)"/>
+        <text x="60" y="65" text-anchor="middle" fill="#f0b429" font-family="Syne" font-size="26" font-weight="800">55</text>
+        <text x="60" y="80" text-anchor="middle" fill="var(--muted)" font-family="Inter" font-size="11">/100</text>
+      </svg>
+      <div style="margin-top:14px;text-align:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;">Требует доработки</div>
+        <p style="margin-top:4px;">Базовая SEO есть, но нет целевых страниц под проекты и транзакционные запросы</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Технический аудит</h3>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px;font-size:13px;">
+        <div><span class="check">&#10003;</span>HTTPS — активен</div>
+        <div><span class="check">&#10003;</span>Sitemap.xml — присутствует</div>
+        <div><span class="warn">&#9651;</span>Title/Meta — частично заполнены, нет уникальных под проекты</div>
+        <div><span class="warn">&#9651;</span>H1-H6 — структура нарушена на страницах проектов</div>
+        <div><span class="fail">&#10007;</span>PageSpeed Mobile — ниже 60, критично для ранжирования</div>
+        <div><span class="warn">&#9651;</span>Alt-теги изображений — заполнены частично (~40%)</div>
+        <div><span class="fail">&#10007;</span>Контент — нет статей и FAQ-блоков под СЕО-запросы</div>
+        <div><span class="warn">&#9651;</span>Ссылочная масса — слабая, нужны статьи на внешних ресурсах</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <h3>Ключевые запросы с потенциалом</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Запрос</th>
+          <th>Частотность/мес</th>
+          <th>Конкуренция</th>
+          <th>Текущая позиция</th>
+          <th>Потенциал</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>купить апартаменты в Алуште</td>
+          <td>2 800</td>
+          <td><span style="color:#f0b429;">Средняя</span></td>
+          <td>не в топ-50</td>
+          <td class="green">Топ 5</td>
+        </tr>
+        <tr>
+          <td>новостройки бизнес-класс Подмосковье</td>
+          <td>4 200</td>
+          <td><span style="color:var(--red);">Высокая</span></td>
+          <td>не в топ-100</td>
+          <td class="green">Топ 15</td>
+        </tr>
+        <tr>
+          <td>апартаменты у моря инвестиции Крым</td>
+          <td>1 650</td>
+          <td><span style="color:#f0b429;">Средняя</span></td>
+          <td>не в топ-50</td>
+          <td class="green">Топ 5</td>
+        </tr>
+        <tr>
+          <td>ЖК Парк в Орлово Москва</td>
+          <td>320</td>
+          <td><span style="color:var(--green);">Низкая</span></td>
+          <td>2–3</td>
+          <td class="green">Топ 1</td>
+        </tr>
+        <tr>
+          <td>ГК Интеллект недвижимость</td>
+          <td>890</td>
+          <td><span style="color:var(--green);">Низкая</span></td>
+          <td>1–4</td>
+          <td class="green">Топ 1</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>SEO-план на 3 месяца</h3>
+    <div class="grid-3" style="margin-top:12px;">
+      <div style="padding:14px;background:var(--surface2);border-radius:8px;">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">МЕС 1 — Техника</div>
+        <div style="font-size:12px;display:flex;flex-direction:column;gap:5px;">
+          <span>&#8226; PageSpeed: оптимизация изображений</span>
+          <span>&#8226; Уникальные Title/Meta под каждый проект</span>
+          <span>&#8226; Исправление H1-H6 структуры</span>
+          <span>&#8226; Заполнение alt-тегов</span>
+          <span>&#8226; Создание страниц проектов с семантикой</span>
+        </div>
+      </div>
+      <div style="padding:14px;background:var(--surface2);border-radius:8px;">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">МЕС 2 — Контент</div>
+        <div style="font-size:12px;display:flex;flex-direction:column;gap:5px;">
+          <span>&#8226; 4 статьи-гайда по Крыму и МО</span>
+          <span>&#8226; FAQ-блоки на страницах проектов</span>
+          <span>&#8226; Микроразметка schema.org для ЖК</span>
+          <span>&#8226; Оптимизация карточек на Яндекс.Картах</span>
+          <span>&#8226; 3 внешних публикации (Новострой-М, ЕРЗ)</span>
+        </div>
+      </div>
+      <div style="padding:14px;background:var(--surface2);border-radius:8px;">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;">МЕС 3 — Рост</div>
+        <div style="font-size:12px;display:flex;flex-direction:column;gap:5px;">
+          <span>&#8226; Линкбилдинг: 8–12 внешних ссылок</span>
+          <span>&#8226; Новые лендинги под Парк в Орлово</span>
+          <span>&#8226; Сбор семантики на МО и Крым полностью</span>
+          <span>&#8226; Отчёт: позиции, трафик, лиды из SEO</span>
+          <span>&#8226; Корректировка плана на кв 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 08: ОФФЕРЫ -->
+<div class="page" id="page-8">
+  <span class="section-tag">08 · Офферы</span>
+  <h2>5 офферов под разные психотипы</h2>
+
+  <div style="display:flex;flex-direction:column;gap:14px;">
+
+    <div class="card card-accent">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <span class="chip">1. Рациональный</span>
+        <span style="font-size:11px;color:var(--muted);">Каналы: Яндекс.Директ, ЦИАН, Авито</span>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-size:clamp(15px,2vw,20px);font-weight:700;color:var(--text);margin-bottom:8px;">
+        Апартаменты в Алуште от 10,4 млн — сдача через 8 месяцев
+      </div>
+      <p>Готовность 82%, ипотека одобрена, рассрочка 0%. Фиксируем цену сегодня — рост +15% к сдаче. Считаем доходность за 3 минуты.</p>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <span class="chip">2. Эмоциональный</span>
+        <span style="font-size:11px;color:var(--muted);">Каналы: VK, TG-посевы, медийная реклама</span>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-size:clamp(15px,2vw,20px);font-weight:700;color:var(--text);margin-bottom:8px;">
+        Просыпаться с видом на Чёрное море. Каждый день.
+      </div>
+      <p>Крымская Резиденция — ваше пространство для жизни без суеты. Архитектура вдохновлена природой. Двор без машин. Дети в безопасности. Вы — дома.</p>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <span class="chip">3. Конкурентный</span>
+        <span style="font-size:11px;color:var(--muted);">Каналы: Ретаргетинг, сравнительные кампании</span>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-size:clamp(15px,2vw,20px);font-weight:700;color:var(--text);margin-bottom:8px;">
+        В отличие от других застройщиков — у нас 2 327 апартаментов и ноль задержек
+      </div>
+      <p>Finalist Urban Awards 2025. Победитель «Рекорды рынка недвижимости». ТОП-2 по вводу жилья в Крыму. Не обещаем — строим.</p>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <span class="chip">4. Социальный</span>
+        <span style="font-size:11px;color:var(--muted);">Каналы: TG-сообщество, сарафан, посевы</span>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-size:clamp(15px,2vw,20px);font-weight:700;color:var(--text);margin-bottom:8px;">
+        2 100 резидентов уже выбрали ГК «Интеллект». Вы следующий?
+      </div>
+      <p>Соседи, которые делают жизнь лучше. Закрытый двор, приватная атмосфера, УК-сервис. Резиденция — это не просто квартира, это статус.</p>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+        <span class="chip">5. B2B / инвестиционный</span>
+        <span style="font-size:11px;color:var(--muted);">Каналы: TG-партнёры, агенты, брокеры</span>
+      </div>
+      <div style="font-family:'Syne',sans-serif;font-size:clamp(15px,2vw,20px);font-weight:700;color:var(--text);margin-bottom:8px;">
+        Доходность 11–15% годовых: апартамент у моря с управляющей компанией
+      </div>
+      <p>Для инвестора: покупка, управление, аренда — под ключ. Мы считаем ROI за вас. Апартаменты от 10,4 млн с гарантированной доходностью от УК. Для агентов: комиссия 3–4% и поддержка сделки.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAGE 09: ОБЪЯВЛЕНИЯ -->
+<div class="page" id="page-9">
+  <span class="section-tag">09 · Рекламные объявления</span>
+  <h2>Готовые объявления для запуска</h2>
+
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div>
+      <h3 style="margin-bottom:12px;color:var(--accent);">Яндекс.Директ</h3>
+
+      <div class="ad-card">
+        <div class="ad-label">Объявление 1 — Поиск / Алушта</div>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>H1:</strong> Апартаменты в Алуште — от 10,4 млн ₽</div>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>H2:</strong> Бизнес-класс у Чёрного моря · Готовность 82%</div>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>H3:</strong> ГК Интеллект · Urban Awards 2025</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Крымская Резиденция — 2327 апартаментов с видом на море. Рассрочка 0%, сдача в 2025. Фиксируем цену сегодня.</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent);">CTA: Узнать стоимость →</div>
+      </div>
+
+      <div class="ad-card">
+        <div class="ad-label">Объявление 2 — Поиск / Подмосковье</div>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>H1:</strong> Парк в Орлово — бизнес-класс в Москве</div>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>H2:</strong> Резиденция в зелени · Pre-launch цены</div>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>H3:</strong> Авторский квартал · от ГК Интеллект</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Закрытая территория, двор без машин, природа рядом. Архитектура, вдохновлённая парком. Запишитесь на презентацию.</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent);">CTA: Получить презентацию →</div>
+      </div>
+
+      <div class="ad-card">
+        <div class="ad-label">Объявление 3 — РСЯ / Инвест</div>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>H1:</strong> Инвестиция в Крым от 10,4 млн</div>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>H2:</strong> Доходность 11–15% · УК под ключ</div>
+        <div style="font-size:13px;margin-bottom:4px;"><strong>H3:</strong> Рассчитайте ROI за 3 минуты</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Апартаменты у моря с управляющей компанией. Покупаете, мы управляем, вы получаете доход. Без головной боли.</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent);">CTA: Считаем доходность →</div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="margin-bottom:12px;color:var(--accent);">Telegram Ads</h3>
+      <div class="ad-card">
+        <div class="ad-label">TG Ads 1</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Апартаменты у Чёрного моря — уже 82% готово</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">ГК «Интеллект» — финалист Urban Awards 2025. 2327 апартаментов в Алуште. Рассрочка 0%. Считаем стоимость вашей за 3 минуты.</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent);">&#128073; Узнать стоимость</div>
+      </div>
+      <div class="ad-card">
+        <div class="ad-label">TG Ads 2</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Pre-launch «Парк в Орлово» — первые покупатели получают лучшие цены</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Авторский квартал бизнес-класса в Москве от ГК «Интеллект». Закрытый двор, природа, умный дом. Только по записи.</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent);">&#128073; Записаться на презентацию</div>
+      </div>
+      <div class="ad-card">
+        <div class="ad-label">TG Ads 3</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Доходность 11–15% без хлопот: апартамент в Крыму с УК</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Инвестируете — мы управляем и сдаём в аренду. Полный цикл: покупка, ремонт, сервис, доход. От 10,4 млн ₽.</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent);">&#128073; Рассчитать доходность</div>
+      </div>
+
+      <h3 style="margin:16px 0 12px;color:var(--accent);">VK Ads</h3>
+      <div class="ad-card">
+        <div class="ad-label">VK 1 — Хук + тело + CTA</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Устали от пробок и серого города?</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Крымская Резиденция — двор без машин, Чёрное море в шаговой доступности, бизнес-класс от ТОП-2 застройщика Крыма. Готовность 82%, сдача уже в этом году.</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent);">Смотреть планировки →</div>
+      </div>
+      <div class="ad-card">
+        <div class="ad-label">VK 2 — Инвестор</div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Куда вложить 10 млн в 2026 году?</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Апартамент у моря с управляющей компанией = пассивный доход 11–15% + личный отдых. ГК «Интеллект» строит с 2014. Urban Awards 2025.</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent);">Считаем ваш ROI →</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:14px;">TG-посев — нативный текст от первого лица</h3>
+    <div class="grid-2">
+      <div style="padding:14px;background:var(--surface2);border-radius:8px;font-size:13px;line-height:1.7;">
+        <div style="font-weight:600;color:var(--text);margin-bottom:8px;">Посев #1 — Инвест-аудитория</div>
+        Друзья, много вопросов поступает: куда сейчас вкладывать деньги в недвижимость? Делюсь тем, что сам изучаю.<br><br>
+        ГК «Интеллект» — федеральный девелопер, строит в Крыму и Подмосковье. Крымская Резиденция в Алуште: 2327 апартаментов, готовность 82%, сдача в этом году.<br><br>
+        Что интересно: есть управляющая компания, которая берёт апартамент в аренду — доходность от 11% годовых. По сути, купил и забыл. Цены от 10,4 млн, рассрочка 0%.<br><br>
+        Финалист Urban Awards 2025, победитель «Рекорды рынка». Выглядит надёжно.<br><br>
+        Ссылка на расчёт доходности в шапке профиля — советую посчитать.
+      </div>
+      <div style="padding:14px;background:var(--surface2);border-radius:8px;font-size:13px;line-height:1.7;">
+        <div style="font-weight:600;color:var(--text);margin-bottom:8px;">Посев #2 — Переезд/семья</div>
+        Когда переезжаешь в Москву или МО, главное — не ошибиться с застройщиком. Я изучал рынок и наткнулся на «Парк в Орлово» от ГК «Интеллект».<br><br>
+        Проект ещё в pre-launch, то есть можно зайти на лучших условиях до официального старта продаж. Авторская архитектура, закрытый двор, зелёная территория.<br><br>
+        Компания уже построила несколько резиденций в Крыму — нет задержек и скандалов. ТОП-2 по вводу жилья в Крыму, 2+ млн м² в портфеле.<br><br>
+        Оставил заявку на презентацию — пришлют подробный буклет и планировки. Рекомендую хотя бы посмотреть.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10: ПРОТОТИП САЙТА -->
+<div class="page" id="page-10">
+  <span class="section-tag">10 · Прототип нового сайта</span>
+  <h2>Как должен выглядеть сайт проекта</h2>
+  <p style="margin-bottom:20px;">Интерактивный прототип лендинга «Парк в Орлово» — устраняет все проблемы UX-аудита.</p>
+
+  <div id="prototype" style="border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#0a0f0b;">
+
+    <!-- Прото-навбар -->
+    <div style="background:#0d1510;border-bottom:1px solid #1a2a1d;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#c8a96e;letter-spacing:0.05em;">ГК «ИНТЕЛЛЕКТ»</div>
+      <div style="display:flex;gap:20px;font-size:12px;color:#6b8a72;">
+        <span style="cursor:pointer;">О проекте</span>
+        <span style="cursor:pointer;">Планировки</span>
+        <span style="cursor:pointer;">Инфраструктура</span>
+        <span style="cursor:pointer;">Контакты</span>
+      </div>
+      <button style="background:#c8a96e;color:#08100c;border:none;padding:8px 18px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">Узнать стоимость</button>
+    </div>
+
+    <!-- Hero -->
+    <div style="background:linear-gradient(135deg,#0d1a10 0%,#111f14 60%,#0f1a0e 100%);padding:52px 32px 40px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle,rgba(200,169,110,0.08),transparent 70%);pointer-events:none;"></div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#c8a96e;margin-bottom:12px;">PRE-LAUNCH · МОСКВА</div>
+      <div style="font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,36px);font-weight:800;line-height:1.15;color:#ddeedd;margin-bottom:14px;">
+        Парк в Орлово —<br>живая архитектура<br><span style="color:#c8a96e;">среди зелени Москвы</span>
+      </div>
+      <p style="color:#6b8a72;font-size:13px;max-width:420px;margin-bottom:24px;line-height:1.7;">Авторский квартал бизнес-класса. Закрытый двор, природа у порога, умный дом. Первые покупатели фиксируют цену до официального открытия продаж.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button onclick="showQuiz()" style="background:#c8a96e;color:#08100c;border:none;padding:12px 24px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;">Узнать стоимость квартиры</button>
+        <button style="background:transparent;color:#ddeedd;border:1px solid #1e2e22;padding:12px 24px;border-radius:8px;font-size:13px;cursor:pointer;">Смотреть планировки</button>
+      </div>
+    </div>
+
+    <!-- Статы -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #1e2e22;background:#0f1a13;">
+      <div style="padding:18px 16px;text-align:center;border-right:1px solid #1e2e22;">
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#c8a96e;">126 га</div>
+        <div style="font-size:11px;color:#6b8a72;margin-top:3px;">Территория проекта</div>
+      </div>
+      <div style="padding:18px 16px;text-align:center;border-right:1px solid #1e2e22;">
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#c8a96e;">2+ млн м²</div>
+        <div style="font-size:11px;color:#6b8a72;margin-top:3px;">В портфеле ГК</div>
+      </div>
+      <div style="padding:18px 16px;text-align:center;border-right:1px solid #1e2e22;">
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#c8a96e;">Urban Awards</div>
+        <div style="font-size:11px;color:#6b8a72;margin-top:3px;">Финалист 2025</div>
+      </div>
+      <div style="padding:18px 16px;text-align:center;">
+        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#c8a96e;">4 региона</div>
+        <div style="font-size:11px;color:#6b8a72;margin-top:3px;">Присутствие в РФ</div>
+      </div>
+    </div>
+
+    <!-- Квиз -->
+    <div id="quiz-block" style="display:none;padding:28px 32px;background:#111c14;border-top:1px solid #1e2e22;">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#ddeedd;margin-bottom:20px;">Рассчитайте стоимость вашей квартиры</div>
+      <div id="q1" class="quiz-step" style="display:block;">
+        <div style="font-size:13px;color:#6b8a72;margin-bottom:12px;">Шаг 1 из 3 — Какой формат вас интересует?</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button onclick="nextQ('q1','q2')" style="padding:10px 18px;background:var(--surface2);border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;cursor:pointer;font-size:13px;">Квартира для жизни</button>
+          <button onclick="nextQ('q1','q2')" style="padding:10px 18px;background:var(--surface2);border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;cursor:pointer;font-size:13px;">Апартаменты для инвестиций</button>
+          <button onclick="nextQ('q1','q2')" style="padding:10px 18px;background:var(--surface2);border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;cursor:pointer;font-size:13px;">Дача/отдых у моря</button>
+        </div>
+      </div>
+      <div id="q2" class="quiz-step" style="display:none;">
+        <div style="font-size:13px;color:#6b8a72;margin-bottom:12px;">Шаг 2 из 3 — Планируемый бюджет?</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button onclick="nextQ('q2','q3')" style="padding:10px 18px;background:var(--surface2);border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;cursor:pointer;font-size:13px;">до 15 млн ₽</button>
+          <button onclick="nextQ('q2','q3')" style="padding:10px 18px;background:var(--surface2);border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;cursor:pointer;font-size:13px;">15–25 млн ₽</button>
+          <button onclick="nextQ('q2','q3')" style="padding:10px 18px;background:var(--surface2);border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;cursor:pointer;font-size:13px;">свыше 25 млн ₽</button>
+        </div>
+      </div>
+      <div id="q3" class="quiz-step" style="display:none;">
+        <div style="font-size:13px;color:#6b8a72;margin-bottom:12px;">Шаг 3 из 3 — Когда планируете покупку?</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button onclick="nextQ('q3','qfinal')" style="padding:10px 18px;background:var(--surface2);border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;cursor:pointer;font-size:13px;">В ближайший месяц</button>
+          <button onclick="nextQ('q3','qfinal')" style="padding:10px 18px;background:var(--surface2);border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;cursor:pointer;font-size:13px;">До конца года</button>
+          <button onclick="nextQ('q3','qfinal')" style="padding:10px 18px;background:var(--surface2);border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;cursor:pointer;font-size:13px;">Изучаю варианты</button>
+        </div>
+      </div>
+      <div id="qfinal" class="quiz-step" style="display:none;">
+        <div style="font-size:14px;color:#ddeedd;margin-bottom:14px;font-weight:600;">Отлично! Введите контакт — пришлём персональный подбор:</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <input placeholder="Ваш телефон или email" style="padding:10px 14px;background:#0d1510;border:1px solid #1e2e22;color:#ddeedd;border-radius:8px;font-size:13px;flex:1;min-width:200px;outline:none;">
+          <button style="background:#c8a96e;color:#08100c;border:none;padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;">Получить подборку</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky CTA (прото) -->
+    <div style="background:#0a0f0b;border-top:1px solid #1e2e22;padding:12px 24px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:12px;color:#6b8a72;">«Парк в Орлово» · Pre-launch · Москва</span>
+      <button onclick="showQuiz()" style="background:#c8a96e;color:#08100c;border:none;padding:8px 18px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">Узнать стоимость →</button>
+    </div>
+  </div>
+
+  <p style="margin-top:14px;font-size:12px;color:var(--muted);">Прототип интерактивный: кнопка «Узнать стоимость» открывает квиз, шаги переключаются кликом.</p>
+</div>
+
+<!-- PAGE 11: КОНТАКТЫ / CTA -->
+<div class="page" id="page-11">
+  <span class="section-tag">11 · Следующий шаг</span>
+  <h2>Запустить систему за 3 дня</h2>
+
+  <div class="card card-accent" style="margin-bottom:24px;padding:32px;">
+    <div style="font-family:'Syne',sans-serif;font-size:clamp(16px,2vw,22px);font-weight:700;color:var(--text);margin-bottom:16px;max-width:680px;">
+      Я не претендую на должность «маркетолога с выгоранием» — я предлагаю <span class="accent">систему управления маркетингом</span> для федерального девелопера с федеральными амбициями.
+    </div>
+    <p style="max-width:660px;font-size:14px;">
+      У вас pre-launch «Парк в Орлово», 4 региона, сильный продукт — и вакансия на одного человека с задачами трёх. Я закрываю это одним решением: удалённый CMO со своей командой, сквозная аналитика, CPL под контролем, старт через 3 дня.
+    </p>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:24px;">
+    <div class="card" style="text-align:center;padding:24px;">
+      <div style="font-size:28px;margin-bottom:8px;">&#128222;</div>
+      <div class="label" style="margin-bottom:6px;">Позвонить прямо сейчас</div>
+      <a href="tel:+79059390874" style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--accent);text-decoration:none;">+7 (905) 939-08-74</a>
+      <p style="margin-top:6px;font-size:12px;">Пн–Пт, 9:00–19:00 МСК</p>
+    </div>
+    <div class="card" style="text-align:center;padding:24px;">
+      <div style="font-size:28px;margin-bottom:8px;">&#9993;</div>
+      <div class="label" style="margin-bottom:6px;">Написать на почту</div>
+      <a href="mailto:wwwfrolof@yandex.ru" style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--accent);text-decoration:none;">wwwfrolof@yandex.ru</a>
+      <p style="margin-top:6px;font-size:12px;">Отвечу в течение 2 часов</p>
+    </div>
+    <div class="card" style="text-align:center;padding:24px;">
+      <div style="font-size:28px;margin-bottom:8px;">&#127760;</div>
+      <div class="label" style="margin-bottom:6px;">Портфолио и кейсы</div>
+      <a href="https://pavelfolof.ru" style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--accent);text-decoration:none;">pavelfolof.ru</a>
+      <p style="margin-top:6px;font-size:12px;">Кейсы, цифры, отзывы</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:24px;">
+    <h3>Что происходит после вашего звонка</h3>
+    <div style="display:flex;flex-direction:column;gap:0;margin-top:14px;">
+      <div class="timeline-item">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line" style="flex:1;min-height:30px;"></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">День 1 — Созвон 30 минут</div>
+          <p style="font-size:12px;margin-top:2px;">Разбираем текущую ситуацию, задачи, бюджет, ожидания. Без воды — сразу по делу.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line" style="flex:1;min-height:30px;"></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">День 2 — Стратегия и план</div>
+          <p style="font-size:12px;margin-top:2px;">Готовлю конкретный план на первый месяц: каналы, бюджеты, KPI, формат отчётности.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line" style="flex:1;min-height:30px;"></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">День 3 — Старт</div>
+          <p style="font-size:12px;margin-top:2px;">Подписание договора, брифинг команды, доступы к аналитике. Первая кампания уже готовится.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="timeline-dot" style="background:var(--green);"></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--green);">Неделя 2 — Первые лиды</div>
+          <p style="font-size:12px;margin-top:2px;">Первые кампании запущены, аналитика настроена, первые лиды в CRM.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="grid-2">
+      <div>
+        <h3 style="margin-bottom:12px;">Почему не штатный сотрудник</h3>
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:13px;">
+          <div><span class="check">&#10003;</span>Нет поиска 1–3 месяца — старт через 3 дня</div>
+          <div><span class="check">&#10003;</span>Не один человек — команда программистов и подрядчиков</div>
+          <div><span class="check">&#10003;</span>Нет выгорания на задачах 3 специалистов в одном</div>
+          <div><span class="check">&#10003;</span>Нет НДФЛ, отпусков, больничных</div>
+          <div><span class="check">&#10003;</span>Гибкость: масштабировать под запуск / снижать в off-season</div>
+          <div><span class="check">&#10003;</span>Опыт именно в девелопменте: 35 000+ м²/мес, 7 500 лидов</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:20px;display:flex;flex-direction:column;justify-content:center;text-align:center;">
+        <div class="label" style="margin-bottom:10px;">Павел Фролов</div>
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;">CMO на аутсорс</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">19 лет · 8+ лет руководства · Девелопмент</div>
+        <a href="tel:+79059390874" style="display:block;background:#c8a96e;color:#08100c;padding:12px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;margin-bottom:8px;">Позвонить: +7 (905) 939-08-74</a>
+        <a href="mailto:wwwfrolof@yandex.ru" style="display:block;background:transparent;color:var(--accent);padding:10px;border-radius:8px;font-size:13px;text-decoration:none;border:1px solid rgba(200,169,110,0.3);">wwwfrolof@yandex.ru</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentPage = 0;
+const total = 12;
+
+function go(i) {
+  if (i < 0 || i >= total) return;
+  currentPage = i;
+  document.querySelectorAll('.page').forEach((p,j) => p.classList.toggle('active', j===i));
+  document.querySelectorAll('.nav-link').forEach((l,j) => l.classList.toggle('active', j===i));
+  document.getElementById('nav-counter').textContent = (i+1) + ' / ' + total;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') go(currentPage + 1);
+  if (e.key === 'ArrowLeft') go(currentPage - 1);
+});
+
+function showQuiz() {
+  const qb = document.getElementById('quiz-block');
+  if (qb) {
+    qb.style.display = qb.style.display === 'none' ? 'block' : 'none';
+    if (qb.style.display === 'block') {
+      qb.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+  }
+}
+
+function nextQ(hideId, showId) {
+  const hide = document.getElementById(hideId);
+  const show = document.getElementById(showId);
+  if (hide) hide.style.display = 'none';
+  if (show) show.style.display = 'block';
+}
+</script>
+</body>
+</html>
