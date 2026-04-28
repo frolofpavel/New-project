@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КП Павел Фролов × ВЕНТО-2М</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08100c;--bg2:#111815;--bg3:#19241f;--accent:#f26b21;--text:#eaf2ed;--muted:#9aaa9f;--warn:#f0b429;--danger:#e05555;--white:#fff;}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top right,#2b190d,#08100c 42%,#050807);font-family:Inter,sans-serif;color:var(--text);}
+nav{position:sticky;top:0;z-index:20;background:rgba(8,16,12,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08);padding:14px 24px}
+.nav-top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:12px} .nav-logo{display:flex;align-items:center;gap:12px;font-weight:800;font-family:Syne}
+.logo-mark{width:38px;height:38px;border-radius:12px;background:var(--accent);display:grid;place-items:center;color:#140900;font-weight:900} .nav-sep{height:26px;width:1px;background:rgba(255,255,255,.2)}
+.nav-arrows{display:flex;align-items:center;gap:10px} button{border:0;border-radius:999px;padding:10px 14px;background:var(--accent);color:#160b05;font-weight:800;cursor:pointer} .ghost{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.25)}
+.nav-bottom{display:flex;flex-wrap:wrap;gap:8px} .nav-link{background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.08);font-weight:600;padding:8px 11px} .nav-link.active{background:var(--accent);color:#170900} .nav-num{opacity:.65;margin-right:6px}
+main{max-width:1180px;margin:0 auto;padding:38px 22px 80px} .page{display:none;animation:fade .25s ease} .page.active{display:block} @keyframes fade{from{opacity:.3;transform:translateY(8px)}to{opacity:1;transform:none}}
+.section-kicker{color:var(--accent);font-weight:800;letter-spacing:.12em;margin-bottom:8px} h1{font-family:Syne;font-size:clamp(34px,5vw,66px);line-height:.95;margin:0 0 24px} h2,h3{font-family:Syne;margin-top:0} .lead{font-size:22px;line-height:1.45;color:#f5fff8}
+.hero-grid,.grid-2{display:grid;grid-template-columns:1.2fr .8fr;gap:24px} .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px} .card,.hl,.comp-card,.ad-card,.offer-card,.kpi-card{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:22px;box-shadow:0 20px 80px rgba(0,0,0,.22)}
+.hl{border-left:5px solid var(--accent);margin:24px 0} .hl-title{font-weight:900;color:var(--accent);margin-bottom:8px} .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px} .chips span,.tag{padding:9px 12px;border-radius:999px;background:rgba(242,107,33,.12);border:1px solid rgba(242,107,33,.38);color:#ffd0b8;font-weight:700;font-size:13px}
+.kpi{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08)} .kpi:last-child{border-bottom:0} .kpi b{display:block;font-family:Syne;font-size:28px;color:var(--accent)} .kpi span,.muted{color:var(--muted)}
+.contact-row,.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px} .contact-row span,.metrics div{background:rgba(255,255,255,.06);border-radius:18px;padding:16px;border:1px solid rgba(255,255,255,.08)} .metrics b{font-family:Syne;font-size:28px;color:var(--accent);display:block}
+table{width:100%;border-collapse:collapse;margin:24px 0;background:rgba(255,255,255,.04);border-radius:20px;overflow:hidden} th,td{padding:15px;text-align:left;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top} th{color:var(--accent);background:rgba(255,255,255,.05)}
+.comp-grid,.ad-grid,.offer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px} .comp-head{display:flex;justify-content:space-between;gap:10px} .comp-name{font-family:Syne;font-size:24px;font-weight:800} .comp-url{color:var(--muted)} .comp-score-val{font-family:Syne;font-size:42px;color:var(--accent);font-weight:900;text-align:right} .comp-score-sub{color:var(--muted);text-align:right}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:12px} .pros,.cons{background:rgba(255,255,255,.04);border-radius:16px;padding:12px} .pros-title{color:#80e6a0;font-weight:800} .cons-title{color:#ff9b91;font-weight:800}
+.position-map{height:420px;border:1px solid rgba(255,255,255,.12);border-radius:24px;position:relative;background:linear-gradient(45deg,rgba(255,255,255,.03),rgba(242,107,33,.07));overflow:hidden;margin:24px 0} .axis{position:absolute;color:var(--muted);font-size:13px} .axis.x{bottom:14px;left:30%} .axis.y{transform:rotate(-90deg);left:-45px;top:45%} .dot{position:absolute;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:9px 12px;border-radius:999px} .target{right:70px;top:60px;background:var(--accent);color:#160b05;font-weight:900} .d1{left:90px;bottom:90px} .d2{right:260px;top:145px} .d3{right:160px;top:105px} .d4{right:110px;top:170px}
+.timeline,.funnel{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0} .funnel{grid-template-columns:repeat(4,1fr)} .timeline div,.funnel div{background:rgba(255,255,255,.05);border-radius:22px;padding:20px;border:1px solid rgba(255,255,255,.08)} .funnel b{display:block;margin:8px 0;color:var(--accent)}
+.score-wrap{display:flex;gap:24px;align-items:center;margin-bottom:24px} .score{width:130px;height:130px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) 62%, var(--bg3) 0);font-family:Syne;font-size:42px;font-weight:900;color:white} .audit-list{display:grid;gap:10px} .audit-item{display:grid;grid-template-columns:50px 210px 1fr 90px;gap:10px;align-items:center;background:rgba(255,255,255,.05);padding:14px;border-radius:16px} .audit-name{font-weight:800} .audit-note{color:var(--muted)} .audit-score{text-align:center;font-weight:900} .s-ok{color:#87e6a0} .s-w{color:#ffd36e} .s-bad{color:#ff8f86}
+.offer-card{position:relative;padding-top:52px} .offer-card:before{content:attr(data-n);position:absolute;top:16px;left:18px;color:var(--accent);font-family:Syne;font-size:24px;font-weight:900} .offer-type{color:var(--muted);font-weight:700} .offer-text{font-family:Syne;font-size:28px;font-weight:900;margin:8px 0} .offer-sub{color:var(--muted)}
+.prototype{background:#101614;border-radius:28px;border:1px solid rgba(255,255,255,.12);padding:22px} .proto-nav{display:flex;align-items:center;gap:22px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1)} .proto-nav button{margin-left:auto} .proto-hero{padding:42px 0;max-width:780px} .proto-hero h2{font-size:46px;line-height:1} .badge{color:#160b05;background:var(--accent);padding:8px 12px;border-radius:999px;font-weight:900} .proto-stats,.day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px} .proto-stats div,.quiz,.day{background:rgba(255,255,255,.06);padding:18px;border-radius:18px} .quiz-options{display:flex;flex-wrap:wrap;gap:10px}
+.day-grid{grid-template-columns:repeat(5,1fr);margin-bottom:24px} .day span{display:inline-block;color:#160b05;background:var(--accent);border-radius:999px;padding:5px 8px;font-weight:800;font-size:12px;margin:8px 0} small{color:var(--muted)}
+@media(max-width:900px){.hero-grid,.grid-2,.grid-4,.comp-grid,.ad-grid,.offer-grid,.timeline,.funnel,.contact-row,.metrics,.proto-stats,.day-grid{grid-template-columns:1fr} .audit-item{grid-template-columns:40px 1fr} .audit-note,.audit-score{grid-column:2} h1{font-size:38px} nav{position:relative}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-top">
+    <div class="nav-logo"><div class="logo-mark">V</div><div class="nav-sep"></div><span>ВЕНТО‑2М × Павел Фролов</span></div>
+    <div class="nav-arrows"><button onclick="go(currentPage-1)">←</button><span id="nav-counter">1 / 13</span><button onclick="go(currentPage+1)">→</button></div>
+  </div>
+  <div class="nav-bottom"><button class="nav-link active" onclick="go(0)"><span class="nav-num">00</span>Обложка</button><button class="nav-link" onclick="go(1)"><span class="nav-num">01</span>Анализ ниши</button><button class="nav-link" onclick="go(2)"><span class="nav-num">02</span>Конкуренты</button><button class="nav-link" onclick="go(3)"><span class="nav-num">03</span>Позиц. конкурентов</button><button class="nav-link" onclick="go(4)"><span class="nav-num">04</span>Позиционирование</button><button class="nav-link" onclick="go(5)"><span class="nav-num">05</span>Стратегия</button><button class="nav-link" onclick="go(6)"><span class="nav-num">06</span>Маркетинг-план</button><button class="nav-link" onclick="go(7)"><span class="nav-num">07</span>UX/UI аудит</button><button class="nav-link" onclick="go(8)"><span class="nav-num">08</span>SEO аудит</button><button class="nav-link" onclick="go(9)"><span class="nav-num">09</span>Офферы</button><button class="nav-link" onclick="go(10)"><span class="nav-num">10</span>Объявления</button><button class="nav-link" onclick="go(11)"><span class="nav-num">11</span>Прототип сайта</button><button class="nav-link" onclick="go(12)"><span class="nav-num">12</span>План работ</button></div>
+</nav>
+<main>
+
+<section class="page active" id="p0">
+  <div class="section-kicker">00 / 12</div>
+  <h1>Выстраиваю систему роста для ВЕНТО‑2М</h1>
+  
+<div class="hero-grid">
+  <div>
+    <p class="lead">Павел Фролов как удалённый Head of Digital / интернет‑маркетолог: беру на себя Директ, SEO, аналитику, SMM, лендинги и воронку B2B/B2C без необходимости искать одного офисного универсала.</p>
+    <div class="chips">
+      <span>19 лет в маркетинге</span><span>Бюджеты до 50 млн ₽/мес</span><span>ROMI 300%+</span><span>Промышленный B2B · e-commerce · СИЗ</span><span>Удалённо · старт за 3 дня</span>
+    </div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi"><b>220–360</b><span>целевых лидов/мес B2B+B2C</span></div>
+    <div class="kpi"><b>650–900 тыс. ₽</b><span>стартовый медиабюджет</span></div>
+    <div class="kpi"><b>2 300–4 500 ₽</b><span>плановый CPL по смешанной воронке</span></div>
+    <div class="kpi"><b>30 дней</b><span>до управляемой digital-системы</span></div>
+  </div>
+</div>
+<div class="hl">
+  <div class="hl-title">Главная идея КП</div>
+  <p>Не искать одного офисного маркетолога, который одновременно закрывает Директ, SEO, аналитику, SMM, лендинги и копирайтинг. Рациональнее подключить управляемую digital-команду с одним ответственным CMO-контуром: Павел ведёт стратегию, аналитику, каналы и подрядчиков, ВЕНТО получает измеримую систему лидогенерации.</p>
+</div>
+<div class="contact-row">
+  <span>Павел Фролов</span><span>wwwfrolof@yandex.ru</span><span>+7 (905) 939‑08‑74</span><span>frolofpavel.ru</span>
+</div>
+
+</section>
+
+<section class="page" id="p1">
+  <div class="section-kicker">01 / 12</div>
+  <h1>Анализ ниши: СИЗ от падения + альпинистское снаряжение</h1>
+  
+<div class="grid-2">
+  <div class="card"><h3>Краткий тезис</h3><p>Рынок растёт, но выигрывают не просто производители, а бренды, которые умеют разделять B2B‑закупку, розницу, обучение и экспертный контент.</p></div>
+  <div class="card"><h3>Размер рынка</h3><p>Ориентир: рынок СИЗ и спецодежды в РФ в 2024 году превышал 330 млрд ₽. Сегмент защиты от падения — узкий, но маржинальный и нормативно обязательный для высотных работ.</p></div>
+</div>
+<div class="metrics">
+  <div><b>+18%</b><span>рост рынка СИЗ/спецодежды РФ в 2024</span></div>
+  <div><b>2 рынка</b><span>B2B предприятия + B2C спорт/туризм</span></div>
+  <div><b>1990</b><span>год основания ВЕНТО‑2М</span></div>
+  <div><b>Москва</b><span>ядро спроса и корпоративных закупок</span></div>
+</div>
+<table>
+<tr><th>Сегмент</th><th>Размер/роль</th><th>Боль</th><th>Приоритет</th></tr>
+<tr><td>Охрана труда / закупки</td><td>крупные и средние предприятия</td><td>сертификаты, наличие, комплектность, сроки</td><td>★★★★★</td></tr>
+<tr><td>Промальп и подрядчики</td><td>проф. пользователи</td><td>надёжность, цена владения, замена, консультация</td><td>★★★★★</td></tr>
+<tr><td>Скалолазы / туристы</td><td>розничный спрос</td><td>выбор, доверие, размер, доставка</td><td>★★★★☆</td></tr>
+<tr><td>Учебные центры</td><td>B2B2C</td><td>комплекты, методология, скидки, повторные закупки</td><td>★★★★☆</td></tr>
+<tr><td>Дилеры СИЗ</td><td>опт/партнёры</td><td>маржа, ассортимент, стабильность поставок</td><td>★★★☆☆</td></tr>
+</table>
+<div class="hl"><div class="hl-title">Вывод</div><p>ВЕНТО нельзя продвигать одной общей кампанией. Нужны разные посадочные, семантика и сообщения: “купить СИЗ” для горячего спроса, “комплекты для предприятия” для B2B, “надёжное российское снаряжение” для спорт‑аудитории.</p></div>
+
+</section>
+
+<section class="page" id="p2">
+  <div class="section-kicker">02 / 12</div>
+  <h1>Анализ конкурентов</h1>
+  
+<div class="comp-grid"><div class="comp-card">
+  <div class="comp-head"><div><div class="comp-name">Safe‑Tec</div><div class="comp-url">safe-tec.ru</div></div><div><div class="comp-score-val">82</div><div class="comp-score-sub">/100</div></div></div>
+  <p><b>Позиционирование:</b> Российский производитель промышленного страховочного снаряжения</p><p>Сильная B2B‑экспертиза, проекты и инженерный образ.</p>
+  <p><b>Каналы:</b> SEO, B2B, каталоги · <b>Цена:</b> от 3 000–80 000 ₽</p>
+  <div class="pros-cons"><div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>производитель</li><li>B2B‑позиционирование</li><li>инженерная подача</li></ul></div><div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>менее сильная B2C‑витрина</li><li>узкая эмоциональная коммуникация</li></ul></div></div>
+</div><div class="comp-card">
+  <div class="comp-head"><div><div class="comp-name">GURU PRO</div><div class="comp-url">guru-pro.su</div></div><div><div class="comp-score-val">74</div><div class="comp-score-sub">/100</div></div></div>
+  <p><b>Позиционирование:</b> СИЗ для промышленных альпинистов</p><p>Поставщик СИЗ для высотных работ, делает акцент на профессиональный подбор.</p>
+  <p><b>Каналы:</b> SEO, каталог, консультации · <b>Цена:</b> от 1 000–60 000 ₽</p>
+  <div class="pros-cons"><div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>чёткая ниша</li><li>понятный каталог</li><li>проф. аудитория</li></ul></div><div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>меньше бренда производителя</li><li>слабее контентная воронка</li></ul></div></div>
+</div><div class="comp-card">
+  <div class="comp-head"><div><div class="comp-name">Alpindustria.pro</div><div class="comp-url">alpindustria.pro</div></div><div><div class="comp-score-val">79</div><div class="comp-score-sub">/100</div></div></div>
+  <p><b>Позиционирование:</b> СИЗ, консалтинг и решения для работы на высоте</p><p>Профессиональный B2B‑контур АльпИндустрии: поставка, оценка рисков, обучение, подбор систем.</p>
+  <p><b>Каналы:</b> SEO, контент, B2B‑услуги · <b>Цена:</b> проектно</p>
+  <div class="pros-cons"><div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>услуги вокруг СИЗ</li><li>экспертный контент</li><li>комплексные решения</li></ul></div><div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>не производитель VENTO</li><li>сложнее конкурировать по цене</li></ul></div></div>
+</div><div class="comp-card">
+  <div class="comp-head"><div><div class="comp-name">Техноавиа</div><div class="comp-url">technoavia.ru</div></div><div><div class="comp-score-val">86</div><div class="comp-score-sub">/100</div></div></div>
+  <p><b>Позиционирование:</b> Федеральный каталог СИЗ и спецодежды</p><p>Крупный федеральный игрок с широкой сетью и сильной закупочной инфраструктурой.</p>
+  <p><b>Каналы:</b> SEO, офлайн‑сеть, дилеры · <b>Цена:</b> широкая линейка</p>
+  <div class="pros-cons"><div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>масштаб</li><li>доверие</li><li>широкий ассортимент</li></ul></div><div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>СИЗ от падения — не ядро бренда</li><li>меньше нишевой экспертности</li></ul></div></div>
+</div></div>
+<div class="hl"><div class="hl-title">Конкурентная логика</div><p>Федеральные игроки сильны ассортиментом и сетью, нишевые игроки — экспертностью. Сильная позиция ВЕНТО‑2М: объединить производство, собственный бренд, розницу, B2B‑комплекты и обучающий контент в одну воронку доверия.</p></div>
+
+</section>
+
+<section class="page" id="p3">
+  <div class="section-kicker">03 / 12</div>
+  <h1>Позиционирование конкурентов</h1>
+  
+<table>
+<tr><th>Игрок</th><th>Оффер</th><th>УТП</th><th>Незакрытая потребность</th></tr>
+<tr><td>Safe‑Tec</td><td>Российский производитель страховочного снаряжения</td><td>инженерность, производство, проекты</td><td>меньше розничной и спортивной эмоциональности</td></tr>
+<tr><td>GURU PRO</td><td>СИЗ для промышленных альпинистов</td><td>подбор под профессионалов</td><td>не хватает большого бренда‑производителя</td></tr>
+<tr><td>Alpindustria.pro</td><td>СИЗ + консалтинг + обучение</td><td>комплексные решения</td><td>зависимость от брендов‑поставщиков</td></tr>
+<tr><td>Техноавиа</td><td>широкий каталог спецодежды и СИЗ</td><td>масштаб и сеть</td><td>низкая нишевая глубина по высотным работам</td></tr>
+</table>
+<div class="position-map">
+  <div class="axis x">универсальный → нишевый</div><div class="axis y">базовое доверие → premium/экспертность</div>
+  <div class="dot d1">Техноавиа</div><div class="dot d2">GURU PRO</div><div class="dot d3">Safe‑Tec</div><div class="dot d4">Alp.pro</div><div class="dot target">VENTO</div>
+</div>
+<div class="hl"><div class="hl-title">Незанятая ниша</div><p>“Российский производитель систем безопасности для высоты, который закрывает весь цикл: выбор → комплект → обучение → закупка → повторная поставка”. Это выше, чем интернет‑магазин, и конкретнее, чем общий поставщик СИЗ.</p></div>
+
+</section>
+
+<section class="page" id="p4">
+  <div class="section-kicker">04 / 12</div>
+  <h1>Позиционирование ВЕНТО‑2М</h1>
+  
+<div class="hl"><div class="hl-title">Главный оффер</div><p><b>Комплектуем высотные работы сертифицированными СИЗ VENTO — без риска ошибки в подборе за 1 рабочий день.</b></p></div>
+<div class="grid-4">
+  <div class="card"><h3>ЦА</h3><p>Охрана труда, закупки, промышленные подрядчики, промальп, спорт‑розница.</p></div>
+  <div class="card"><h3>Ценность</h3><p>Не “купить привязь”, а снизить риск, закрыть нормативы и получить рабочую систему защиты.</p></div>
+  <div class="card"><h3>Доказательства</h3><p>С 1990 года · производство · каталог СИЗ · видео/обучение · розница и B2B.</p></div>
+  <div class="card"><h3>Отличие</h3><p>Собственный бренд + экспертный подбор + e-commerce + B2B‑комплектация.</p></div>
+</div>
+<table>
+<tr><th>Сегмент</th><th>Сообщение</th><th>Почему сработает</th></tr>
+<tr><td>Закупки</td><td>Соберём комплект СИЗ под ваши высотные работы</td><td>снимает риск неверного подбора</td></tr>
+<tr><td>Промальп</td><td>Снаряжение, которому доверяют на высоте</td><td>работает через безопасность и опыт</td></tr>
+<tr><td>Розница</td><td>Подберите систему под маршрут, скалодром или туризм</td><td>переводит сложный ассортимент в понятный выбор</td></tr>
+</table>
+
+</section>
+
+<section class="page" id="p5">
+  <div class="section-kicker">05 / 12</div>
+  <h1>Маркетинговая стратегия</h1>
+  
+<div class="hl"><div class="hl-title">Ядро стратегии</div><p>Разделить спрос на 3 воронки: горячая покупка, B2B‑закупка и экспертный прогрев через обучение.</p></div>
+<div class="timeline">
+  <div><b>Фаза 1 · 1–2 недели</b><p>Аудит Метрики, e-commerce, целей, сегментов, семантики, текущих посадочных и карточек.</p></div>
+  <div><b>Фаза 2 · 3–6 недель</b><p>Запуск Директа по кластерам: СИЗ от падения, привязи, стропы, комплекты, B2B‑заявки, спортивное снаряжение.</p></div>
+  <div><b>Фаза 3 · 7+ недель</b><p>SEO‑страницы под категории, ретаргетинг, email/TG‑цепочки, партнёрский B2B‑аутрич.</p></div>
+</div>
+<div class="funnel">
+  <div>🔍<b>Горячий спрос</b><p>Поиск → категория/лендинг → форма/звонок/корзина.</p></div>
+  <div>📚<b>Экспертный прогрев</b><p>Видео, статьи, чек‑листы выбора СИЗ, инструкции.</p></div>
+  <div>💬<b>B2B-конверсия</b><p>Квиз “подобрать комплект” → КП → консультация.</p></div>
+  <div>🔁<b>Возврат</b><p>Ретаргетинг, email, повторные закупки, расходники.</p></div>
+</div>
+<div class="card"><h3>B2B-аутрич: 3 сообщения</h3><p><b>1.</b> “Добрый день. Подскажите, кто отвечает за закупку СИЗ для высотных работ? VENTO комплектует предприятия сертифицированными системами от падения.”</p><p><b>2.</b> “Можем не просто отправить каталог, а собрать комплект под тип работ: кровля, металлоконструкции, лестницы, промальп.”</p><p><b>3.</b> “Предлагаю 15 минут: покажем 2–3 готовых комплекта и сроки поставки. Если не актуально сейчас — зафиксируем дату следующей закупки.”</p></div>
+
+</section>
+
+<section class="page" id="p6">
+  <div class="section-kicker">06 / 12</div>
+  <h1>Маркетинговый план</h1>
+  
+<table>
+<tr><th>Канал</th><th>Что делаем</th><th>Бюджет</th><th>Лиды</th><th>CPL</th></tr>
+<tr><td>Яндекс Директ</td><td>поиск + РСЯ по B2B/B2C кластерам</td><td>315 000 ₽</td><td>90–130</td><td>2 400–3 500 ₽</td></tr>
+<tr><td>SEO</td><td>категории, статьи, коммерческие страницы</td><td>120 000 ₽</td><td>30–50</td><td>2 400–4 000 ₽</td></tr>
+<tr><td>Telegram / посевы</td><td>каналы туризма, промальпа, охраны труда</td><td>160 000 ₽</td><td>35–55</td><td>2 900–4 600 ₽</td></tr>
+<tr><td>VK / TG Ads</td><td>спорт, туризм, высотники, ретаргет</td><td>135 000 ₽</td><td>45–70</td><td>1 900–3 000 ₽</td></tr>
+<tr><td>B2B-аутрич</td><td>закупки, охрана труда, подрядчики</td><td>90 000 ₽</td><td>20–35</td><td>2 600–4 500 ₽</td></tr>
+<tr><th>Итого</th><th>стартовый месяц</th><th>820 000 ₽</th><th>220–340</th><th>2 400–3 700 ₽</th></tr>
+</table>
+<div class="grid-2">
+  <div class="card"><h3>Telegram‑посевы</h3><p>Кластеры для ручной проверки: туризм/скалолазание, промышленная безопасность, охрана труда, закупки, стройка. Перед запуском — собрать 20 каналов, отобрать 6–8 по ER и аудитории.</p></div>
+  <div class="card"><h3>Ретаргетинг</h3><p>1) был в категории → не купил; 2) добавил в корзину → не оформил; 3) смотрел B2B‑страницу → получить КП; 4) покупал раньше → сезонная замена/докомплектация.</p></div>
+</div>
+<div class="timeline">
+  <div><b>Неделя 1</b><p>Аналитика, цели, сегменты, семантика, карта посадочных.</p></div>
+  <div><b>Неделя 2</b><p>Директ, ретаргетинг, B2B‑лендинг, UTM, дашборд.</p></div>
+  <div><b>Неделя 3</b><p>SEO‑страницы, контент, карточки категорий, email/TG.</p></div>
+  <div><b>Неделя 4</b><p>Оптимизация ставок, CPL, конверсий, отчёт и план масштабирования.</p></div>
+</div>
+
+</section>
+
+<section class="page" id="p7">
+  <div class="section-kicker">07 / 12</div>
+  <h1>UX/UI аудит</h1>
+  
+<div class="score-wrap"><div class="score">62</div><div><h3>UX‑оценка: 62/100</h3><p>Сайт уже работает как каталог и магазин, но для вакансии интернет‑маркетолога главный резерв — не “красота”, а конверсионное разделение B2B/B2C и быстрый путь к заявке.</p></div></div>
+<div class="audit-list"><div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Первый экран</div><div class="audit-note">есть понятная специализация, но нужно разделить B2B/B2C входы</div><div class="audit-score s-ok">7/10</div></div><div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Каталог</div><div class="audit-note">широкая структура категорий СИЗ и спортснаряжения</div><div class="audit-score s-ok">8/10</div></div><div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Путь к B2B-заявке</div><div class="audit-note">нужен отдельный сценарий “подобрать комплект для предприятия”</div><div class="audit-score s-w">5/10</div></div><div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Мобильная конверсия</div><div class="audit-note">нужен sticky CTA: позвонить / WhatsApp / КП</div><div class="audit-score s-w">6/10</div></div><div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Доверие</div><div class="audit-note">сертификаты и документы есть, но их нужно поднять выше в воронке</div><div class="audit-score s-w">6/10</div></div><div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Квиз подбора</div><div class="audit-note">нет явного интерактивного подбора СИЗ по типу работ</div><div class="audit-score s-bad">3/10</div></div><div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Обучающий контент</div><div class="audit-note">видео есть, но его нужно связать с товарами и лидами</div><div class="audit-score s-w">6/10</div></div><div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Карточки товаров</div><div class="audit-note">усилить блоки “для каких работ подходит”</div><div class="audit-score s-w">6/10</div></div></div>
+<div class="hl"><div class="hl-title">Приоритетные правки</div><p>1) отдельный B2B‑лендинг “комплект СИЗ для высотных работ”; 2) квиз подбора; 3) sticky CTA на мобильном; 4) блок сертификатов/документов в верхней части; 5) связать видео с карточками товаров. Ожидаемый эффект: +15–25% к конверсии в заявку по B2B‑трафику.</p></div>
+
+</section>
+
+<section class="page" id="p8">
+  <div class="section-kicker">08 / 12</div>
+  <h1>SEO аудит</h1>
+  
+<div class="score-wrap"><div class="score">58</div><div><h3>SEO‑оценка: 58/100</h3><p>Потенциал высокий из‑за товарных категорий, но нужна системная работа с коммерческими посадочными, статьями выбора и B2B‑страницами под типы работ.</p></div></div>
+<div class="grid-2">
+  <div class="card"><h3>Технический слой</h3><p>HTTPS есть. Нужно проверить sitemap, robots, дубляжи фильтров, скорость мобильных категорий, микроразметку Product/Breadcrumb/FAQ, индексацию видео и документов.</p></div>
+  <div class="card"><h3>Контентный слой</h3><p>Сделать страницы: комплекты для кровли, металлоконструкций, лестниц, промальпа, учебных центров; добавить FAQ и калькулятор комплекта.</p></div>
+</div>
+<table><tr><th>Ключ</th><th>Тип спроса</th><th>Конкуренция</th><th>Текущая задача</th><th>Потенциал</th></tr><tr><td>сиз от падения с высоты</td><td>коммерческий кластер</td><td>Высокая</td><td>проверить топ‑10</td><td>Высокий</td></tr><tr><td>страховочная привязь купить</td><td>товарный кластер</td><td>Высокая</td><td>категория</td><td>Высокий</td></tr><tr><td>комплект сиз для работы на высоте</td><td>B2B/комплекты</td><td>Средняя</td><td>усилить</td><td>Высокий</td></tr><tr><td>снаряжение для промышленного альпинизма</td><td>проф. кластер</td><td>Средняя</td><td>категория</td><td>Средний</td></tr><tr><td>альпинистское снаряжение купить</td><td>спорт/розница</td><td>Высокая</td><td>категория</td><td>Средний</td></tr></table>
+<div class="hl"><div class="hl-title">SEO‑план на 3 месяца</div><p><b>Месяц 1:</b> техаудит, карта категорий, 10 коммерческих страниц. <b>Месяц 2:</b> 12 экспертных материалов + FAQ + перелинковка с товарами. <b>Месяц 3:</b> страницы B2B‑комплектов, микроразметка, ссылочные размещения, обновление карточек.</p></div>
+
+</section>
+
+<section class="page" id="p9">
+  <div class="section-kicker">09 / 12</div>
+  <h1>Офферы</h1>
+  
+<div class="offer-grid">
+  <div class="offer-card" data-n="01"><div class="offer-type">Рациональный · скорость</div><div class="offer-text">Комплект СИЗ для высотных работ за 1 день</div><div class="offer-sub">Поиск / B2B‑лендинг / Директ</div></div>
+  <div class="offer-card" data-n="02"><div class="offer-type">Эмоциональный · безопасность</div><div class="offer-text">Снаряжение, которому доверяют на высоте</div><div class="offer-sub">B2C, спорт, промальп</div></div>
+  <div class="offer-card" data-n="03"><div class="offer-type">Конкурентный · против рынка</div><div class="offer-text">Не просто каталог — система защиты под вашу задачу</div><div class="offer-sub">B2B‑аутрич и лендинг</div></div>
+  <div class="offer-card" data-n="04"><div class="offer-type">Социальный · доверие</div><div class="offer-text">VENTO: российское снаряжение с 1990 года</div><div class="offer-sub">Ретаргетинг, бренд, видео</div></div>
+  <div class="offer-card" data-n="05"><div class="offer-type">B2B · ROI</div><div class="offer-text">Снизьте риск закупочной ошибки в СИЗ</div><div class="offer-sub">Охрана труда, закупки, предприятия</div></div>
+</div>
+
+</section>
+
+<section class="page" id="p10">
+  <div class="section-kicker">10 / 12</div>
+  <h1>Рекламные объявления</h1>
+  
+<div class="ad-grid">
+  <div class="ad-card"><div class="ad-head">Яндекс · СИЗ от падения</div><div class="ad-body">СИЗ для работы на высоте. Привязи, стропы, карабины, комплекты. Подбор под задачу. VENTO с 1990 года.</div><div class="ad-cta">→ Получить подбор</div></div>
+  <div class="ad-card"><div class="ad-head">Яндекс · Комплект для предприятия</div><div class="ad-body">Соберём комплект СИЗ под кровлю, лестницы, металлоконструкции и промальп. Документы и консультация.</div><div class="ad-cta">→ Запросить КП</div></div>
+  <div class="ad-card"><div class="ad-head">VK/TG · спорт</div><div class="ad-body">Выбираете страховочную систему? VENTO помогает подобрать снаряжение под скалодром, маршрут или туризм.</div><div class="ad-cta">→ Перейти в каталог</div></div>
+  <div class="ad-card"><div class="ad-head">TG Ads · B2B</div><div class="ad-body">Закрываете закупку СИЗ для высотных работ? VENTO подберёт комплект, документы и сроки поставки.</div><div class="ad-cta">→ Получить КП</div></div>
+</div>
+<div class="card"><h3>Нативный посев</h3><p>Когда предприятие покупает СИЗ “по списку”, риск часто не в цене, а в неверной комплектации: привязь есть, строп есть, но система не подходит под конкретный тип работ. VENTO решает задачу иначе: сначала тип высотных работ, затем комплект, документы и поставка. Это экономит время закупки и снижает риск ошибки для охраны труда.</p></div>
+
+</section>
+
+<section class="page" id="p11">
+  <div class="section-kicker">11 / 12</div>
+  <h1>Прототип посадочной страницы</h1>
+  
+<div class="prototype">
+  <div class="proto-nav"><b>VENTO</b><span>СИЗ от падения</span><span>Комплекты</span><span>Документы</span><button>Получить КП</button></div>
+  <div class="proto-hero"><span class="badge">Российский производитель · с 1990 года</span><h2>Комплект СИЗ для высотных работ без ошибки в подборе</h2><p>Ответьте на 4 вопроса — соберём состав комплекта, документы и ориентировочную стоимость для предприятия.</p><button onclick="nextQuiz()">Подобрать комплект</button><button class="ghost">Скачать каталог</button></div>
+  <div class="proto-stats"><div><b>30+ лет</b><span>на рынке</span></div><div><b>B2B+B2C</b><span>продажи</span></div><div><b>СИЗ</b><span>категории и документы</span></div></div>
+  <div class="quiz"><h3 id="quiz-title">Для каких работ нужен комплект?</h3><div class="quiz-options"><button onclick="nextQuiz()">Кровля</button><button onclick="nextQuiz()">Металлоконструкции</button><button onclick="nextQuiz()">Лестницы</button><button onclick="nextQuiz()">Промальп</button></div><p id="quiz-note">После выбора показываем рекомендуемый состав и форму заявки.</p></div>
+</div>
+
+</section>
+
+<section class="page" id="p12">
+  <div class="section-kicker">12 / 12</div>
+  <h1>План работ по дням · первые 4 недели</h1>
+  
+<div class="hl"><div class="hl-title">Формат управления</div><p>Каждый день — 1 главный результат. Ежедневный отчёт в Telegram: что сделано, цифры, блокер, следующий шаг. По пятницам — недельный отчёт: бюджет, лиды, CPL, конверсии, решения на следующую неделю.</p></div>
+<h3>Неделя 1</h3><div class='day-grid'><div class='day'><b>День 1</b><span>Аналитика</span><p>проверить цели, события, UTM и e-commerce</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 2</b><span>Директ</span><p>собрать/запустить кластер кампаний</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 3</b><span>SEO</span><p>подготовить страницу/семантику под кластер</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 4</b><span>Сайт</span><p>улучшить блок конверсии или карточку</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 5</b><span>SMM</span><p>подготовить пост/посев/ретаргетинг</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div></div><h3>Неделя 2</h3><div class='day-grid'><div class='day'><b>День 6</b><span>B2B</span><p>собрать базу и отправить первую волну</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 7</b><span>Отчёт</span><p>свести CPL, заявки, гипотезы и решения</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 8</b><span>Аналитика</span><p>проверить цели, события, UTM и e-commerce</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 9</b><span>Директ</span><p>собрать/запустить кластер кампаний</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 10</b><span>SEO</span><p>подготовить страницу/семантику под кластер</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div></div><h3>Неделя 3</h3><div class='day-grid'><div class='day'><b>День 11</b><span>Сайт</span><p>улучшить блок конверсии или карточку</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 12</b><span>SMM</span><p>подготовить пост/посев/ретаргетинг</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 13</b><span>B2B</span><p>собрать базу и отправить первую волну</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 14</b><span>Отчёт</span><p>свести CPL, заявки, гипотезы и решения</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 15</b><span>Аналитика</span><p>проверить цели, события, UTM и e-commerce</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div></div><h3>Неделя 4</h3><div class='day-grid'><div class='day'><b>День 16</b><span>Директ</span><p>собрать/запустить кластер кампаний</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 17</b><span>SEO</span><p>подготовить страницу/семантику под кластер</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 18</b><span>Сайт</span><p>улучшить блок конверсии или карточку</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 19</b><span>SMM</span><p>подготовить пост/посев/ретаргетинг</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div><div class='day'><b>День 20</b><span>B2B</span><p>собрать базу и отправить первую волну</p><small>Результат: готов артефакт дня и статус в Telegram.</small></div></div>
+<div class="metrics"><div><b>20 дней</b><span>рабочий спринт</span></div><div><b>13 артефактов</b><span>аналитика, кампании, страницы, отчёты</span></div><div><b>220+</b><span>план лидов</span></div><div><b>1 система</b><span>маркетинг без хаоса</span></div></div>
+
+</section>
+
+</main>
+<script>
+let currentPage = 0;
+const total = 13;
+function go(i) {
+  if (i < 0 || i >= total) return;
+  currentPage = i;
+  document.querySelectorAll('.page').forEach((p,j) => p.classList.toggle('active', j===i));
+  document.querySelectorAll('.nav-link').forEach((l,j) => l.classList.toggle('active', j===i));
+  document.getElementById('nav-counter').textContent = (i+1) + ' / ' + total;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') go(currentPage + 1);
+  if (e.key === 'ArrowLeft')  go(currentPage - 1);
+});
+let quizStep = 0;
+function nextQuiz() {
+  quizStep++;
+  const titles = ['Для каких работ нужен комплект?', 'Сколько сотрудников нужно закрыть?', 'Нужны документы и КП?', 'Готово: оставьте контакт для подбора'];
+  document.getElementById('quiz-title').textContent = titles[Math.min(quizStep, titles.length-1)];
+  document.getElementById('quiz-note').textContent = quizStep >= 3 ? 'Форма передаёт заявку менеджеру B2B-продаж.' : 'Следующий вопрос уточнит состав комплекта.';
+}
+</script>
+</body>
+</html>
