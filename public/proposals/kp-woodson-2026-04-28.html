@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Павел Фролов × Woodson — Маркетинговая стратегия</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#f5f0e8;
+  --warm:#faf6ee;
+  --bark:#2c1a0e;
+  --bark2:#3d2510;
+  --wood:#6b3d1e;
+  --wood2:#8b5a2b;
+  --moss:#3a5c2e;
+  --moss2:#4a7a3a;
+  --amber:#c47c2a;
+  --amber2:#e09030;
+  --steam:#d4cfc8;
+  --ash:#7a7068;
+  --smoke:#9a9088;
+  --border:rgba(44,26,14,0.1);
+  --border2:rgba(44,26,14,0.2);
+  --text:#2c1a0e;
+  --muted:#7a6858;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--text);
+  font-family:'Raleway',sans-serif;
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* WOOD GRAIN TEXTURE */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    repeating-linear-gradient(
+      87deg,
+      transparent 0px,
+      transparent 12px,
+      rgba(107,61,30,0.015) 12px,
+      rgba(107,61,30,0.015) 13px
+    ),
+    repeating-linear-gradient(
+      91deg,
+      transparent 0px,
+      transparent 20px,
+      rgba(107,61,30,0.01) 20px,
+      rgba(107,61,30,0.01) 21px
+    );
+  pointer-events:none;z-index:0;
+}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(44,26,14,0.97);
+  backdrop-filter:blur(12px);
+  border-bottom:2px solid var(--amber);
+}
+.nav-top{
+  max-width:1100px;margin:0 auto;padding:0 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:52px;border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.nav-logo{display:flex;align-items:center;gap:14px}
+.nav-logo-icon{font-size:20px}
+.nav-logo-txt{
+  font-family:'Playfair Display',serif;
+  font-size:16px;font-weight:700;
+  color:var(--amber2);letter-spacing:.02em;
+}
+.nav-logo-sep{width:1px;height:20px;background:rgba(255,255,255,0.15)}
+.nav-logo-name{font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:.06em}
+.nav-arrows{display:flex;align-items:center;gap:6px}
+.nav-arrow{
+  width:30px;height:30px;
+  border:1px solid rgba(196,124,42,0.4);
+  background:none;color:var(--amber);
+  cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  transition:.2s;font-family:inherit;
+}
+.nav-arrow:hover{background:var(--amber);color:var(--bark);border-color:var(--amber)}
+.nav-counter{font-size:11px;color:var(--steam);padding:0 8px;min-width:44px;text-align:center;letter-spacing:.06em}
+.nav-bottom{
+  max-width:1100px;margin:0 auto;padding:0 24px;
+  display:flex;flex-wrap:wrap;
+}
+.nav-link{
+  padding:8px 14px;font-size:11px;font-weight:500;
+  color:rgba(255,255,255,0.4);cursor:pointer;
+  border-bottom:2px solid transparent;white-space:nowrap;
+  transition:.2s;background:none;
+  border-top:none;border-left:none;border-right:none;
+  font-family:'Raleway',sans-serif;letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.nav-link:hover{color:rgba(255,255,255,0.75)}
+.nav-link.active{color:var(--amber2);border-bottom-color:var(--amber)}
+.nav-num{font-size:9px;opacity:.5;margin-right:5px}
+
+/* PAGES */
+.page{display:none;min-height:calc(100vh - 96px)}
+.page.active{display:block}
+.wrap{max-width:1100px;margin:0 auto;padding:0 32px}
+.sec-pad{padding:64px 0}
+
+/* TYPOGRAPHY */
+.sec-tag{
+  font-size:10px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--moss);margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-tag::before{content:'';width:24px;height:1px;background:var(--moss)}
+h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,4vw,44px);font-weight:700;
+  color:var(--bark);line-height:1.15;
+  letter-spacing:-.01em;margin-bottom:32px;
+}
+h2 em{font-style:italic;color:var(--wood)}
+h3{
+  font-size:11px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--wood);margin-bottom:12px;
+}
+h4{font-size:15px;font-weight:600;color:var(--bark);margin-bottom:8px}
+p{color:var(--muted);margin-bottom:14px;font-size:14px;font-weight:400}
+p:last-child{margin-bottom:0}
+strong{color:var(--bark)}
+
+/* HL */
+.hl{
+  background:linear-gradient(135deg,rgba(58,92,46,0.07),rgba(58,92,46,0.03));
+  border:1px solid rgba(58,92,46,0.18);
+  border-left:3px solid var(--moss);
+  padding:28px 32px;margin:24px 0;
+  position:relative;
+}
+.hl-title{
+  font-family:'Playfair Display',serif;
+  font-size:19px;font-weight:600;
+  color:var(--bark);margin-bottom:10px;line-height:1.35;
+  font-style:italic;
+}
+.hl p{color:var(--text);font-size:14px;margin:0}
+
+/* CARDS */
+.cg2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}
+.cg3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:28px}
+.cg4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:28px}
+.card{
+  background:var(--warm);padding:26px 28px;transition:.2s;
+  position:relative;overflow:hidden;
+}
+.card:hover{background:#fff}
+.cg3 .card,.cg4 .card{border:none}
+.card-num{
+  font-family:'Playfair Display',serif;
+  font-size:42px;font-weight:700;color:var(--amber);
+  line-height:1;margin-bottom:8px;font-style:italic;
+}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:16px;margin:36px 0}
+.div-line{flex:1;height:1px;background:var(--border)}
+.div-icon{font-size:16px;color:var(--amber)}
+.div-text{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--smoke);white-space:nowrap}
+
+/* TAGS */
+.tag{
+  display:inline-block;font-size:10px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 10px;border-radius:2px;
+}
+.tag-g{background:rgba(58,92,46,.1);color:var(--moss)}
+.tag-w{background:rgba(196,124,42,.12);color:var(--amber)}
+.tag-r{background:rgba(180,60,40,.1);color:#b43c28}
+.tag-b{background:var(--border);color:var(--ash)}
+
+/* COVER */
+.cover{
+  min-height:calc(100vh - 96px);
+  display:flex;flex-direction:column;
+  justify-content:space-between;
+  padding:64px 0 48px;
+}
+.cover-grid{display:grid;grid-template-columns:1fr 320px;gap:60px;align-items:start}
+.cover-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:10px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--moss);
+  border:1px solid rgba(58,92,46,0.25);
+  padding:8px 16px;margin-bottom:28px;
+}
+.cover-badge::before{content:'🌿';font-size:14px}
+.cover-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(38px,5.5vw,66px);font-weight:700;
+  line-height:1.05;letter-spacing:-.02em;
+  color:var(--bark);margin-bottom:24px;
+}
+.cover-h1 em{font-style:italic;color:var(--wood)}
+.cover-sub{font-size:16px;color:var(--muted);line-height:1.75;max-width:480px;margin-bottom:32px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:500;padding:6px 14px;
+  border:1px solid var(--border2);color:var(--ash);
+  letter-spacing:.04em;
+}
+.chip-g{border-color:rgba(58,92,46,0.3);color:var(--moss)}
+.chip-a{border-color:rgba(196,124,42,0.3);color:var(--amber)}
+.kpi-box{
+  background:var(--bark);
+  display:flex;flex-direction:column;gap:1px;
+  margin-top:52px;border:2px solid var(--amber);
+}
+.kpi-cell{
+  background:var(--bark2);padding:20px 24px;
+  display:flex;flex-direction:column;gap:4px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.kpi-cell:last-child{border-bottom:none}
+.kpi-val{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:var(--amber2);
+  line-height:1;font-style:italic;
+}
+.kpi-label{font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:.04em}
+.cover-bottom{
+  border-top:1px solid var(--border);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;margin-top:48px;
+}
+.author{display:flex;align-items:center;gap:14px}
+.avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--bark);border:2px solid var(--amber);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:16px;
+  font-weight:700;color:var(--amber2);font-style:italic;
+}
+.author-name{font-weight:700;color:var(--bark);font-size:14px}
+.author-title{font-size:12px;color:var(--smoke);letter-spacing:.03em}
+
+/* COMP */
+.comp-card{
+  background:var(--warm);border:1px solid var(--border);
+  padding:26px 30px;margin-bottom:14px;
+  border-left:3px solid var(--bark);transition:.2s;
+}
+.comp-card:hover{border-left-color:var(--amber);background:#fff}
+.comp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:16px;flex-wrap:wrap}
+.comp-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--bark);font-style:italic}
+.comp-url{font-size:12px;color:var(--smoke);margin-top:2px}
+.comp-score-val{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--amber);line-height:1;font-style:italic}
+.comp-score-sub{font-size:11px;color:var(--smoke);text-align:right}
+.comp-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:14px}
+.comp-cell{background:var(--cream);padding:14px 16px}
+.comp-cell-label{font-size:9px;color:var(--smoke);letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
+.comp-cell-val{font-size:13px;color:var(--bark)}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.pros,.cons{background:var(--cream);padding:16px 18px}
+.pros{border-top:2px solid var(--moss)}
+.cons{border-top:2px solid #b43c28}
+.pros-title{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--moss);margin-bottom:8px}
+.cons-title{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#b43c28;margin-bottom:8px}
+.pros ul,.cons ul{list-style:none;padding:0}
+.pros li,.cons li{font-size:13px;color:var(--muted);padding:3px 0 3px 16px;position:relative}
+.pros li::before{content:'＋';position:absolute;left:0;color:var(--moss);font-weight:700;font-size:10px;top:5px}
+.cons li::before{content:'−';position:absolute;left:0;color:#b43c28;font-weight:700}
+
+/* POS MAP */
+.pos-map{
+  aspect-ratio:1;max-width:460px;margin:24px auto;
+  border:1px solid var(--border);position:relative;
+  background:var(--warm);
+}
+.pos-map::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border2)}
+.pos-map::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--border2)}
+.pos-l{position:absolute;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--smoke);font-weight:600}
+.pos-l.top{top:10px;left:50%;transform:translateX(-50%)}
+.pos-l.bot{bottom:10px;left:50%;transform:translateX(-50%)}
+.pos-l.lft{left:10px;top:50%;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg)}
+.pos-l.rgt{right:10px;top:50%;writing-mode:vertical-rl;transform:translateY(-50%)}
+.pos-dot{position:absolute;border-radius:50%;transform:translate(-50%,-50%)}
+.pos-dot::after{
+  content:attr(data-label);position:absolute;top:-26px;left:50%;
+  transform:translateX(-50%);font-size:10px;white-space:nowrap;
+  color:var(--bark);background:var(--cream);padding:2px 8px;
+  border:1px solid var(--border2);font-family:'Raleway',sans-serif;
+}
+.pos-dot.comp{width:10px;height:10px;background:var(--steam)}
+.pos-dot.client{width:16px;height:16px;background:var(--moss);box-shadow:0 0 14px rgba(58,92,46,.4)}
+
+/* TABLE */
+.dt{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px}
+.dt th{text-align:left;padding:10px 14px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--smoke);border-bottom:2px solid var(--bark)}
+.dt td{padding:13px 14px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+.dt td:first-child{color:var(--bark);font-weight:500}
+.dt tr:hover td{background:rgba(44,26,14,.02)}
+
+/* PHASES */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:24px 0}
+.phase{background:var(--warm);padding:26px 22px;position:relative;overflow:hidden}
+.phase-bg{
+  position:absolute;bottom:-10px;right:8px;
+  font-family:'Playfair Display',serif;
+  font-size:80px;font-weight:700;color:rgba(196,124,42,0.06);
+  line-height:1;pointer-events:none;font-style:italic;
+}
+.phase-tag{font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--moss);margin-bottom:12px}
+.phase h4{font-size:15px;text-transform:none;letter-spacing:0;margin-bottom:10px;font-family:'Playfair Display',serif;font-style:italic}
+.phase ul{list-style:none;padding:0}
+.phase li{font-size:13px;color:var(--muted);padding:4px 0 4px 16px;position:relative}
+.phase li::before{content:'→';position:absolute;left:0;color:var(--amber);font-size:11px;top:6px}
+
+/* CHANNELS */
+.ch-hdr{display:grid;grid-template-columns:200px 1fr 110px 110px;padding:8px 0;border-bottom:2px solid var(--bark)}
+.ch-hdr span{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--smoke);font-weight:600;padding:0 14px}
+.ch-row{
+  display:grid;grid-template-columns:200px 1fr 110px 110px;
+  background:var(--warm);border:1px solid var(--border);
+  border-top:none;transition:.2s;
+}
+.ch-row:first-of-type{border-top:1px solid var(--border)}
+.ch-row:hover{background:#fff}
+.ch-row>div{padding:15px 14px;border-right:1px solid var(--border);font-size:13px}
+.ch-row>div:last-child{border-right:none}
+.ch-name{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--bark)}
+.ch-em{font-size:16px}
+.ch-desc{color:var(--muted)}
+.ch-bud{color:var(--wood);font-weight:700;font-family:'Playfair Display',serif;font-size:15px;font-style:italic}
+.ch-kpi{color:var(--amber);font-weight:600}
+
+/* TG GRID */
+.tg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:14px 0 28px}
+.tg-item{background:var(--warm);padding:13px 16px;display:flex;align-items:center;gap:10px;transition:.2s}
+.tg-item:hover{background:#fff}
+.tg-em{font-size:15px}
+.tg-name{font-size:13px;color:var(--bark);font-weight:500}
+.tg-link{font-size:11px;color:var(--smoke)}
+
+/* RT */
+.rt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px}
+.rt-card{background:var(--warm);border:1px solid var(--border);padding:22px 24px;border-top:2px solid var(--bark)}
+.rt-n{font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:rgba(196,124,42,0.15);line-height:1;margin-bottom:8px;font-style:italic}
+.rt-card h4{color:var(--moss);font-size:13px;text-transform:none;letter-spacing:0;margin-bottom:7px;font-family:'Playfair Display',serif;font-style:italic}
+
+/* AUDIT */
+.audit-ring{display:flex;align-items:center;gap:32px;margin:22px 0}
+.ring{position:relative;width:110px;height:110px;flex-shrink:0}
+.ring svg{transform:rotate(-90deg)}
+.ring-lbl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-val{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--bark);line-height:1;font-style:italic}
+.ring-sub{font-size:10px;color:var(--smoke)}
+.audit-items{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);margin:14px 0}
+.audit-item{display:grid;grid-template-columns:30px 1fr 180px 70px;background:var(--warm);align-items:center;transition:.15s}
+.audit-item:hover{background:#fff}
+.audit-item>div{padding:12px 14px}
+.audit-ico{font-size:14px}
+.audit-name{font-size:13px;color:var(--bark);font-weight:500}
+.audit-note{font-size:12px;color:var(--smoke)}
+.audit-score{font-size:12px;font-weight:700;text-align:right}
+.s-ok{color:var(--moss)}.s-w{color:var(--amber)}.s-bad{color:#b43c28}
+.audit-hdr{background:var(--cream)!important}
+.audit-hdr>div{font-size:9px!important;letter-spacing:.12em;text-transform:uppercase;color:var(--smoke)!important;font-weight:600!important}
+
+/* OFFERS */
+.offer-card{
+  background:var(--warm);border:1px solid var(--border);
+  border-left:3px solid var(--bark);
+  padding:24px 28px;margin-bottom:10px;
+  position:relative;overflow:hidden;transition:.2s;
+}
+.offer-card:hover{border-left-color:var(--amber);background:#fff;transform:translateX(4px)}
+.offer-card::after{
+  content:attr(data-n);position:absolute;right:18px;top:-8px;
+  font-family:'Playfair Display',serif;font-size:72px;
+  font-weight:700;color:rgba(196,124,42,.06);line-height:1;
+  pointer-events:none;font-style:italic;
+}
+.offer-type{font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--moss);margin-bottom:10px}
+.offer-text{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--bark);line-height:1.35;margin-bottom:8px;font-style:italic}
+.offer-sub{font-size:13px;color:var(--muted)}
+
+/* ADS */
+.ad-platform{
+  display:flex;align-items:center;gap:10px;
+  font-size:10px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--smoke);
+  margin:28px 0 14px;padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
+.ad-platform::before{content:'';width:20px;height:1px;background:var(--amber)}
+.ad-card{
+  background:var(--warm);border:1px solid var(--border);
+  padding:18px 22px;margin-bottom:8px;transition:.2s;
+}
+.ad-card:hover{background:#fff}
+.ad-head{font-weight:600;color:var(--bark);font-size:14px;margin-bottom:5px;font-family:'Playfair Display',serif;font-style:italic}
+.ad-body{font-size:13px;color:var(--muted);margin-bottom:5px}
+.ad-cta{font-size:12px;color:var(--moss);font-weight:600;letter-spacing:.04em}
+
+/* ATRCH */
+.atr-steps{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border)}
+.atr-step{display:flex;background:var(--warm)}
+.atr-num{
+  font-family:'Playfair Display',serif;
+  font-size:36px;font-weight:700;color:var(--amber);
+  padding:22px;flex-shrink:0;width:76px;
+  display:flex;align-items:flex-start;
+  border-right:1px solid var(--border);font-style:italic;
+}
+.atr-body{padding:22px 24px;flex:1}
+.atr-msg{
+  background:var(--cream);
+  border-left:2px solid var(--amber);
+  padding:14px 18px;margin-top:12px;
+  font-size:14px;color:var(--bark);
+  line-height:1.65;font-style:italic;
+  font-family:'Playfair Display',serif;
+}
+
+/* PLAN DAYS */
+.plan-week{margin-bottom:32px}
+.pw-header{
+  display:flex;align-items:center;gap:16px;margin-bottom:16px;
+  padding-bottom:12px;border-bottom:2px solid var(--bark);
+}
+.pw-num{
+  font-family:'Playfair Display',serif;
+  font-size:11px;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--amber);
+  background:var(--bark);padding:5px 14px;font-style:italic;
+}
+.pw-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--bark);font-style:italic}
+.pw-goal{font-size:12px;color:var(--smoke);margin-left:auto;font-style:italic}
+.plan-days{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border)}
+.plan-day{display:grid;grid-template-columns:88px 1fr;background:var(--warm);transition:.15s}
+.plan-day:hover{background:#fff}
+.plan-day.weekend{opacity:.55}
+.plan-day-label{
+  padding:14px 16px;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:center;gap:2px;
+}
+.plan-day-name{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--bark)}
+.plan-day-date{font-size:10px;color:var(--smoke)}
+.plan-day-body{padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.plan-tasks{display:flex;flex-direction:column;gap:5px}
+.plan-task{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--bark)}
+.plan-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.t-dir{background:var(--moss)}.t-seo{background:var(--wood)}.t-site{background:var(--amber)}.t-anal{background:#b43c28}.t-meet{background:var(--bark)}
+.plan-result{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;padding:6px 10px;
+  background:rgba(58,92,46,0.06);
+  border-left:2px solid var(--moss);
+  color:var(--moss);font-style:italic;
+  margin-top:2px;
+}
+.plan-result.warn{background:rgba(196,124,42,0.06);border-color:var(--amber);color:var(--amber)}
+.pw-summary{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border);
+  margin-top:12px;
+}
+.pws-cell{background:var(--cream);padding:16px 18px}
+.pws-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--smoke);margin-bottom:4px}
+.pws-val{font-size:14px;font-weight:600;color:var(--bark)}
+.pws-val.g{color:var(--moss)}.pws-val.a{color:var(--amber)}
+
+/* PROTO */
+.proto-wrap{border:2px solid var(--bark);overflow:hidden;margin:22px 0}
+.proto-browser{background:var(--bark);padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.proto-dots{display:flex;gap:5px}
+.proto-dot{width:9px;height:9px;border-radius:50%}
+.proto-url-bar{flex:1;background:rgba(255,255,255,.08);border-radius:2px;padding:5px 12px;font-size:11px;color:rgba(255,255,255,.4);margin:0 16px}
+.proto-body{background:#f9f4ec}
+.proto-nav{background:var(--bark);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:54px;border-bottom:2px solid var(--amber)}
+.proto-nav-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--amber2);font-style:italic}
+.proto-nav-links{display:flex;gap:22px}
+.proto-nav-link{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:.04em}
+.proto-nav-cta{background:var(--moss);color:#fff;font-size:11px;font-weight:600;padding:8px 18px;letter-spacing:.06em}
+.proto-hero{
+  padding:64px 32px 52px;
+  background:linear-gradient(135deg,var(--bark) 0%,var(--bark2) 100%);
+  border-bottom:2px solid var(--amber);position:relative;overflow:hidden;
+}
+.proto-hero::before{
+  content:'🌿🍃🪵';font-size:120px;opacity:.04;
+  position:absolute;right:-20px;top:-20px;line-height:1;
+  pointer-events:none;
+}
+.proto-badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;color:var(--amber2);border:1px solid rgba(196,124,42,.3);padding:6px 14px;margin-bottom:18px;letter-spacing:.12em;text-transform:uppercase}
+.proto-h1{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,42px);font-weight:700;color:#fff;line-height:1.15;margin-bottom:12px;font-style:italic}
+.proto-sub{font-size:14px;color:rgba(255,255,255,.45);max-width:500px;margin:0 0 28px}
+.proto-ctas{display:flex;gap:10px;flex-wrap:wrap}
+.proto-btn-p{background:var(--amber);color:var(--bark);font-size:12px;font-weight:700;padding:13px 26px;letter-spacing:.04em;cursor:pointer}
+.proto-btn-s{border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.7);font-size:12px;padding:13px 26px;cursor:pointer}
+.proto-trust{display:flex;align-items:center;justify-content:flex-start;gap:22px;margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(255,255,255,.35);flex-wrap:wrap}
+.proto-stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+.proto-stat{padding:22px;border-right:1px solid var(--border);background:var(--warm)}
+.proto-stat:last-child{border-right:none}
+.proto-stat-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--wood);line-height:1;margin-bottom:4px;font-style:italic}
+.proto-stat-label{font-size:11px;color:var(--smoke)}
+.proto-cats{padding:40px 32px;border-bottom:1px solid var(--border);background:var(--cream)}
+.proto-cats-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--bark);margin-bottom:18px;font-style:italic}
+.proto-cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.proto-cat{
+  background:var(--warm);border:1px solid var(--border);
+  padding:18px;cursor:pointer;transition:.2s;
+  border-bottom:3px solid transparent;
+}
+.proto-cat:hover,.proto-cat.sel{border-bottom-color:var(--amber);background:#fff}
+.proto-cat-icon{font-size:24px;margin-bottom:8px}
+.proto-cat-title{font-size:13px;font-weight:600;color:var(--bark);margin-bottom:3px;font-family:'Playfair Display',serif}
+.proto-cat-sub{font-size:11px;color:var(--smoke)}
+.proto-why{padding:40px 32px;display:grid;grid-template-columns:1fr 1fr;gap:32px;border-bottom:1px solid var(--border);background:var(--warm)}
+.proto-why-h{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--bark);margin-bottom:10px;font-style:italic}
+.proto-why-list{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.proto-why-item{display:flex;gap:12px;align-items:flex-start}
+.proto-why-ico{width:36px;height:36px;background:var(--bark);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.proto-why-title{font-size:13px;font-weight:600;color:var(--bark);margin-bottom:2px}
+.proto-why-sub{font-size:12px;color:var(--smoke)}
+.proto-right{background:var(--cream);border:1px solid var(--border);padding:22px}
+.proto-case{background:var(--warm);padding:14px;border-left:2px solid var(--amber);margin-bottom:8px}
+.proto-case:last-child{margin-bottom:0}
+.proto-case-label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.proto-case-text{font-size:13px;color:var(--bark);font-weight:500;line-height:1.4;font-family:'Playfair Display',serif;font-style:italic}
+.proto-case-sub{font-size:11px;color:var(--smoke);margin-top:2px}
+.proto-cta-bar{background:var(--moss);padding:28px 32px;text-align:center}
+.proto-cta-h{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:#fff;margin-bottom:5px;font-style:italic}
+.proto-cta-s{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:14px}
+.proto-cta-btn{display:inline-block;background:var(--amber);color:var(--bark);font-size:12px;font-weight:700;padding:12px 28px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+
+/* CTA FINAL */
+.cta-final{
+  background:var(--bark);
+  padding:56px 52px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:28px;flex-wrap:wrap;
+  border-top:3px solid var(--amber);
+}
+.cta-final h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(22px,3vw,34px);font-weight:700;
+  color:#fff;margin-bottom:6px;font-style:italic;
+}
+.cta-final p{color:rgba(255,255,255,.55);font-size:14px;margin:0}
+.cta-btn{
+  display:inline-block;background:var(--amber);color:var(--bark);
+  font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:16px 32px;text-decoration:none;white-space:nowrap;
+  border:2px solid var(--amber);transition:.2s;
+}
+.cta-btn:hover{background:transparent;color:var(--amber)}
+
+footer{border-top:1px solid var(--border);padding:24px 0;background:var(--warm)}
+.foot-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.foot-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--bark);font-style:italic}
+.foot-contacts{display:flex;gap:22px;flex-wrap:wrap}
+.foot-c{font-size:13px;color:var(--smoke)}
+.foot-c a{color:var(--bark);text-decoration:none}
+.foot-c a:hover{color:var(--moss)}
+
+.legend{display:flex;gap:20px;flex-wrap:wrap;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:8px}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--smoke);letter-spacing:.04em}
+.legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+@media(max-width:768px){
+  .wrap,.nav-top,.nav-bottom{padding-left:16px;padding-right:16px}
+  .cover-grid,.cg2,.cg3,.cg4,.phases,.pros-cons,.comp-row,.rt-grid{grid-template-columns:1fr}
+  .ch-hdr,.ch-row{grid-template-columns:1fr}
+  .ch-row>div{border-right:none;border-bottom:1px solid var(--border)}
+  .audit-item{grid-template-columns:30px 1fr 70px}.audit-note{display:none}
+  .atr-step{flex-direction:column}
+  .cta-final{flex-direction:column}
+  .proto-why,.proto-cat-grid,.proto-stats{grid-template-columns:1fr}
+  .plan-day{grid-template-columns:1fr}
+  .plan-day-label{border-right:none;border-bottom:1px solid var(--border);flex-direction:row;align-items:center;gap:10px}
+  .pw-summary{grid-template-columns:1fr}
+  .kpi-box{margin-top:24px}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.page.active .wrap>*{animation:fadeUp .35s ease both}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-top">
+    <div class="nav-logo">
+      <span class="nav-logo-icon">🌿</span>
+      <span class="nav-logo-txt">Woodson</span>
+      <div class="nav-logo-sep"></div>
+      <span class="nav-logo-name">× Павел Фролов — CMO</span>
+    </div>
+    <div class="nav-arrows">
+      <button class="nav-arrow" onclick="go(currentPage-1)">←</button>
+      <span class="nav-counter" id="nav-counter">1 / 13</span>
+      <button class="nav-arrow" onclick="go(currentPage+1)">→</button>
+    </div>
+  </div>
+  <div class="nav-bottom">
+    <button class="nav-link active" onclick="go(0)"><span class="nav-num">00</span>Обложка</button>
+    <button class="nav-link" onclick="go(1)"><span class="nav-num">01</span>Анализ ниши</button>
+    <button class="nav-link" onclick="go(2)"><span class="nav-num">02</span>Конкуренты</button>
+    <button class="nav-link" onclick="go(3)"><span class="nav-num">03</span>Позиц. конкурентов</button>
+    <button class="nav-link" onclick="go(4)"><span class="nav-num">04</span>Позиционирование</button>
+    <button class="nav-link" onclick="go(5)"><span class="nav-num">05</span>Стратегия</button>
+    <button class="nav-link" onclick="go(6)"><span class="nav-num">06</span>Маркетинг-план</button>
+    <button class="nav-link" onclick="go(7)"><span class="nav-num">07</span>UX/UI аудит</button>
+    <button class="nav-link" onclick="go(8)"><span class="nav-num">08</span>SEO аудит</button>
+    <button class="nav-link" onclick="go(9)"><span class="nav-num">09</span>Офферы</button>
+    <button class="nav-link" onclick="go(10)"><span class="nav-num">10</span>Объявления</button>
+    <button class="nav-link" onclick="go(11)"><span class="nav-num">11</span>Прототип сайта</button>
+    <button class="nav-link" onclick="go(12)"><span class="nav-num">12</span>План работ</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- 00 ОБЛОЖКА -->
+<div class="page active" id="p0"><div class="wrap"><div class="cover">
+  <div class="cover-grid">
+    <div>
+      <div class="cover-badge">Маркетинговая стратегия · Апрель 2026</div>
+      <h1 class="cover-h1">Строю систему роста<br>для <em>Woodson</em> —<br>изнутри команды</h1>
+      <p class="cover-sub">Предлагаю себя как удалённый директор по маркетингу. Выстрою полную систему: от стратегии и медиаплана до маркетплейсов, CRM и работы с пар-мастерами и блогерами.</p>
+      <div class="chips">
+        <span class="chip chip-g">19 лет в маркетинге</span>
+        <span class="chip chip-g">Бюджеты до 50 млн ₽/мес</span>
+        <span class="chip chip-a">ROMI 300%+</span>
+        <span class="chip">Ритейл · e-commerce · B2B</span>
+        <span class="chip">Удалённо · Полная занятость</span>
+      </div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-cell"><span class="kpi-val">19 лет</span><span class="kpi-label">в performance-маркетинге</span></div>
+      <div class="kpi-cell"><span class="kpi-val">50 млн ₽</span><span class="kpi-label">бюджеты в управлении / мес</span></div>
+      <div class="kpi-cell"><span class="kpi-val">300%+</span><span class="kpi-label">ROMI на проектах</span></div>
+      <div class="kpi-cell"><span class="kpi-val">7 500</span><span class="kpi-label">лидов / мес — текущий клиент Расцветай</span></div>
+      <div class="kpi-cell"><span class="kpi-val">150 000 ₽</span><span class="kpi-label">желаемый доход / мес</span></div>
+    </div>
+  </div>
+  <div class="cover-bottom">
+    <div class="author">
+      <div class="avatar">ПФ</div>
+      <div><div class="author-name">Павел Фролов</div><div class="author-title">Директор по маркетингу / Head of Marketing / CMO</div></div>
+    </div>
+    <div style="font-size:12px;color:var(--smoke)">wwwfrolof@yandex.ru · +7 (905) 939-08-74 · pavelfrolof.ru</div>
+  </div>
+</div></div></div>
+
+<!-- 01 АНАЛИЗ НИШИ -->
+<div class="page" id="p1"><div class="wrap sec-pad">
+  <div class="sec-tag">01 — Анализ ниши</div>
+  <h2>Рынок бань и банной культуры<br><em>Краснодарский край</em></h2>
+  <div class="hl">
+    <div class="hl-title">Краснодар — лидер по DIY и загородному строительству на юге России</div>
+    <p>Краснодарский край входит в топ-3 регионов России по числу DIY-магазинов — рядом с Москвой и Петербургом. Спрос на бани здесь растёт быстрее среднего: в декабре 2023 года жители Краснодара стали ходить в баню на 90%+ чаще (данные Авито), а число парных в городе выросло за год на 44%. В 2025 году продажи модульных бань в Краснодарском крае выросли на 77% — крупнейший региональный скачок по данным Авито. Средняя стоимость модульной бани в регионе — 397 000 ₽. Woodson базируется прямо здесь — в п.Дружелюбный — и имеет преимущество локального производителя.</p>
+  </div>
+  <div class="cg4">
+    <div class="card"><div class="card-num">+77%</div><h3>Рост продаж бань</h3><p>Продажи модульных бань в Краснодарском крае в 2025 году. Крупнейший региональный скачок в России. Источник: Авито</p></div>
+    <div class="card"><div class="card-num">397 000 ₽</div><h3>Средний чек бани</h3><p>Средняя стоимость модульной бани на Кубани в 2025 году. Ценовой диапазон каркасных: от 520 000 до 2 470 000 ₽</p></div>
+    <div class="card"><div class="card-num">+90%</div><h3>Спрос на бани</h3><p>Рост запросов «сауна Краснодар» в декабре 2023. Число парных в городе за год выросло на 44%. Источник: Авито</p></div>
+    <div class="card"><div class="card-num">Топ-3</div><h3>ЮФО по DIY</h3><p>Краснодар — в тройке лидеров РФ по числу DIY-магазинов. Аудитория готова строить и обустраивать сама.</p></div>
+  </div>
+
+  <div class="divider"><div class="div-line"></div><span class="div-icon">🌿</span><div class="div-text">Конкурентная среда в Краснодаре</div><div class="div-line"></div></div>
+  <div class="hl" style="border-left-color:var(--amber)">
+    <div class="hl-title" style="font-size:16px">Рынок строительства бань в регионе — раздроблен, качества мало</div>
+    <p>На рынке Краснодарского края 10+ компаний строят каркасные бани: «500 бань», BaniHouse, BroilClub, СтройДомКраснодар, «Сибиряк», BRUS TEAM и другие. Большинство — ценовые игроки без репутации и узнаваемости. Никто из них не совмещает <strong>собственное производство аксессуаров + строительство + экспертный контент</strong>. Woodson — единственный игрок с этой комбинацией в регионе.</p>
+  </div>
+
+  <div class="divider"><div class="div-line"></div><span class="div-icon">🌿</span><div class="div-text">Тренды и угрозы региона</div><div class="div-line"></div></div>
+  <div class="cg2">
+    <div class="card" style="border-top:2px solid var(--moss)">
+      <span class="tag tag-g">Возможности Краснодара и ЮФО</span>
+      <h3 style="margin-top:12px">Что работает в регионе</h3>
+      <p><strong>Глэмпинги и эко-отели ЮФО</strong> — Анапа, Геленджик, Туапсе активно строят банные комплексы — прямые B2B-клиенты. <strong>Модульные бани +77%</strong> — самый быстрорастущий продукт в регионе. <strong>Тёплый климат</strong> — в Краснодарском крае баня используется круглый год, нет жёсткой сезонности как в Сибири. <strong>Население растёт</strong> — Краснодар третий город России по приросту населения, частное строительство бьёт рекорды.</p>
+    </div>
+    <div class="card" style="border-top:2px solid #b43c28">
+      <span class="tag tag-r">Риски региона</span>
+      <h3 style="margin-top:12px">Что давит на рынок</h3>
+      <p><strong>Ценовой демпинг</strong> — мелкие бригады строят дешевле, без гарантий. <strong>Сезонный провал</strong> — июль-август спрос падает (отпуска, жара), надо учитывать в медиаплане. <strong>Маркетплейсы забирают аксессуары</strong> — Wildberries и Ozon приучили покупать онлайн. <strong>Конкуренты без лица</strong> — 10+ компаний в регионе делают всё то же самое визуально, сложно выделиться без сильного бренда.</p>
+    </div>
+  </div>
+
+  <div class="divider"><div class="div-line"></div><span class="div-icon">🌿</span><div class="div-text">Целевая аудитория региона</div><div class="div-line"></div></div>
+  <table class="dt">
+    <thead><tr><th>Сегмент</th><th>Характеристика</th><th>Боль / потребность</th><th>Канал</th><th>Приоритет</th></tr></thead>
+    <tbody>
+      <tr><td>Владельцы частных домов Краснодара</td><td>35–55 лет, пригород, дача на Кубани</td><td>Баня под ключ быстро, без долгой стройки, с гарантией</td><td>Яндекс поиск, YouTube</td><td><span class="tag tag-g">★★★★★</span></td></tr>
+      <tr><td>Глэмпинги и эко-отели ЮФО</td><td>Анапа, Геленджик, Туапсе — B2B</td><td>Надёжный поставщик бань и аксессуаров для гостей</td><td>B2B-аутрич, Telegram</td><td><span class="tag tag-g">★★★★★</span></td></tr>
+      <tr><td>Пар-мастера Краснодара и ЮФО</td><td>Профессионалы с аудиторией в соцсетях</td><td>Качественные аксессуары + статус эксперта</td><td>Instagram, TG, нетворкинг</td><td><span class="tag tag-g">★★★★★</span></td></tr>
+      <tr><td>Покупатели аксессуаров онлайн</td><td>25–45 лет, по всей России через WB/Ozon</td><td>Качественные аксессуары из натурального дерева</td><td>Wildberries, Ozon</td><td><span class="tag tag-w">★★★★☆</span></td></tr>
+      <tr><td>Переехавшие в Краснодар</td><td>Новосёлы строят дом + баню</td><td>Всё сразу, надёжно, местный производитель</td><td>Поиск, соцсети, 2ГИС</td><td><span class="tag tag-w">★★★★☆</span></td></tr>
+    </tbody>
+  </table>
+</div></div>
+
+<!-- 02 КОНКУРЕНТЫ -->
+<div class="page" id="p2"><div class="wrap sec-pad">
+  <div class="sec-tag">02 — Анализ конкурентов</div>
+  <h2>Кто играет<br>на этом <em>рынке</em></h2>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">Банные Штучки</div><div class="comp-url">bannyeshtuchki.ru</div></div>
+      <div><div class="comp-score-val">80</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <div class="hl" style="margin:0 0 14px"><div class="hl-title" style="font-size:15px">«Крупнейший бренд товаров для SPA и банного отдыха»</div><p>Более 15 лет на рынке, позиционируют себя как «крупнейший бренд». Экспертный подход к продукту, обучение потребителей. Широкий ассортимент от аксессуаров до SPA. Хорошее присутствие на маркетплейсах.</p></div>
+    <div class="comp-row">
+      <div class="comp-cell"><div class="comp-cell-label">Трафик</div><div class="comp-cell-val">~50 000 / мес</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Каналы</div><div class="comp-cell-val">Поиск, маркетплейсы, ритейл</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Фокус</div><div class="comp-cell-val">Аксессуары, SPA</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Сильный бренд, 15+ лет</li><li>Широкий ассортимент</li><li>Обучение потребителей</li><li>Сильное присутствие в ритейле</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Нет строительства бань</li><li>Нет работы с пар-мастерами системно</li><li>Слабый YouTube-канал</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">ВашиБани.ру</div><div class="comp-url">vashibani.ru</div></div>
+      <div><div class="comp-score-val">70</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <div class="hl" style="margin:0 0 14px"><div class="hl-title" style="font-size:15px">«Крупнейший поставщик печей и дымоходов по России»</div><p>Фокус на оборудовании: печи, дымоходы, камины. Строительство под ключ по Москве и МО. Широкий каталог 50+ брендов включая финские марки.</p></div>
+    <div class="comp-row">
+      <div class="comp-cell"><div class="comp-cell-label">Трафик</div><div class="comp-cell-val">~70 000 / мес</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Каналы</div><div class="comp-cell-val">SEO, Яндекс Директ</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Фокус</div><div class="comp-cell-val">Оборудование, строительство</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Широкий выбор брендов</li><li>Строительство под ключ</li><li>Хороший SEO-трафик</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Нет собственного производства</li><li>Нет культуры бани / экспертизы</li><li>Слабая работа с инфлюенсерами</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">Знатный Банщик</div><div class="comp-url">znatny-banshik.ru</div></div>
+      <div><div class="comp-score-val">55</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <div class="hl" style="margin:0 0 14px"><div class="hl-title" style="font-size:15px">«Всё для настоящей русской бани и финской сауны»</div><p>Традиционный магазин с широким ассортиментом банных принадлежностей. Акцент на натуральных материалах и традициях. Слабый digital-маркетинг.</p></div>
+    <div class="comp-row">
+      <div class="comp-cell"><div class="comp-cell-label">Трафик</div><div class="comp-cell-val">~15 000 / мес</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Каналы</div><div class="comp-cell-val">SEO, небольшой контекст</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Фокус</div><div class="comp-cell-val">Традиц. аксессуары</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Чёткая тема — традиции бани</li><li>Натуральные материалы</li><li>Хорошие описания продуктов</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Слабый бренд</li><li>Нет соцсетей и инфлюенсеров</li><li>Нет производства и строительства</li></ul></div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-head">
+      <div><div class="comp-name">Банный Терем</div><div class="comp-url">ban-terem.ru</div></div>
+      <div><div class="comp-score-val">52</div><div class="comp-score-sub">/ 100</div></div>
+    </div>
+    <div class="hl" style="margin:0 0 14px"><div class="hl-title" style="font-size:15px">«Собственное производство банных принадлежностей по низким ценам»</div><p>Ставка на цену: собственное производство → низкие цены. Широкий ассортимент, доставка по России. Основная аудитория — ценочувствительный сегмент.</p></div>
+    <div class="comp-row">
+      <div class="comp-cell"><div class="comp-cell-label">Трафик</div><div class="comp-cell-val">~12 000 / мес</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">Каналы</div><div class="comp-cell-val">SEO, маркетплейсы</div></div>
+      <div class="comp-cell"><div class="comp-cell-label">УТП</div><div class="comp-cell-val">Цена + доставка</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pros"><div class="pros-title">Сильные стороны</div><ul><li>Собственное производство</li><li>Низкие цены</li><li>Широкий ассортимент</li></ul></div>
+      <div class="cons"><div class="cons-title">Слабые стороны</div><ul><li>Слабый бренд — «дёшево»</li><li>Нет экспертизы и культуры</li><li>Нет инфлюенсеров и контента</li></ul></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- 03 ПОЗИЦИОНИРОВАНИЕ КОНКУРЕНТОВ -->
+<div class="page" id="p3"><div class="wrap sec-pad">
+  <div class="sec-tag">03 — Позиционирование конкурентов</div>
+  <h2>Карта рынка и<br><em>незанятые позиции</em></h2>
+  <p>Карта по осям: широта (только аксессуары → полная экосистема) и ценность (цена → культура/экспертиза).</p>
+  <div class="pos-map">
+    <span class="pos-l top">Культура / Экспертиза / Лайфстайл</span>
+    <span class="pos-l bot">Цена / Функциональность</span>
+    <span class="pos-l lft">Только аксессуары</span>
+    <span class="pos-l rgt">Полная экосистема</span>
+    <div class="pos-dot comp" style="left:22%;top:40%" data-label="Банные Штучки"></div>
+    <div class="pos-dot comp" style="left:55%;top:65%" data-label="ВашиБани.ру"></div>
+    <div class="pos-dot comp" style="left:18%;top:60%" data-label="Знатный Банщик"></div>
+    <div class="pos-dot comp" style="left:20%;top:78%" data-label="Банный Терем"></div>
+    <div class="pos-dot client" style="left:78%;top:25%" data-label="Woodson ✦"></div>
+  </div>
+  <div class="divider"><div class="div-line"></div><span class="div-icon">🌿</span><div class="div-text">Офферы конкурентов</div><div class="div-line"></div></div>
+  <table class="dt">
+    <thead><tr><th>Конкурент</th><th>Главный оффер</th><th>УТП</th><th>Незакрытая потребность</th></tr></thead>
+    <tbody>
+      <tr><td>Банные Штучки</td><td>Крупнейший бренд SPA и бани</td><td>15+ лет, обучение</td><td>Нет строительства и культуры пар-мастеров</td></tr>
+      <tr><td>ВашиБани.ру</td><td>Крупнейший поставщик оборудования</td><td>Широкий выбор брендов</td><td>Нет своего производства, нет культуры</td></tr>
+      <tr><td>Знатный Банщик</td><td>Всё для настоящей русской бани</td><td>Традиции</td><td>Нет инфлюенсеров, нет строительства</td></tr>
+      <tr><td>Банный Терем</td><td>Дёшево и широко</td><td>Низкая цена</td><td>Нет культуры, нет экспертизы</td></tr>
+    </tbody>
+  </table>
+  <div class="hl">
+    <div class="hl-title">Незанятая позиция Woodson — «Полная экосистема банной культуры»</div>
+    <p>Ни один конкурент не закрывает одновременно: <strong>собственное производство + строительство бань + маркетплейсы + работа с пар-мастерами + инфлюенсер-маркетинг + лайфстайл-контент</strong>. Woodson уже делает всё это — задача маркетинга сделать это видимым. Позиция: «Мы создаём правильную баню целиком — от печи до кваса».</p>
+  </div>
+</div></div>
+
+<!-- 04 ПОЗИЦИОНИРОВАНИЕ -->
+<div class="page" id="p4"><div class="wrap sec-pad">
+  <div class="sec-tag">04 — Позиционирование Woodson</div>
+  <h2>Как Woodson должен<br><em>себя подавать</em></h2>
+  <div class="hl">
+    <div class="hl-title">Не магазин товаров для бани — хранители банной культуры России</div>
+    <p>Woodson — единственная компания которая даёт полный цикл: аксессуары собственного производства + печи + строительство бани под ключ + экспертный контент + работа с пар-мастерами. Это не просто магазин. Это экосистема для тех, кто серьёзно относится к бане. Победители «ЧистоТоп-2024 и 2025» — уже есть история.</p>
+  </div>
+  <div class="cg2">
+    <div class="card" style="border-left:3px solid var(--moss)">
+      <span class="tag tag-g">B2C — частные покупатели</span>
+      <h3 style="margin-top:12px">Главное сообщение</h3>
+      <div style="font-family:'Playfair Display',serif;font-size:17px;color:var(--bark);margin-bottom:10px;font-style:italic;line-height:1.4">"Woodson — чтобы ваша баня была настоящей"</div>
+      <p>Не «купить товары», а «создать правильную баню». Акцент на экспертизе, натуральных материалах, традиции и современном дизайне. Для тех кто хочет большего, чем просто попариться.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--amber)">
+      <span class="tag tag-w">B2B — пар-мастера и комплексы</span>
+      <h3 style="margin-top:12px">Главное сообщение</h3>
+      <div style="font-family:'Playfair Display',serif;font-size:17px;color:var(--bark);margin-bottom:10px;font-style:italic;line-height:1.4">"Профессиональные инструменты — для профессионалов"</div>
+      <p>Надёжный партнёр для пар-мастеров и банных комплексов. Качество которое можно показать гостям. Эксклюзивные аксессуары, которых нет у конкурентов. Оптовые условия и регулярные поставки.</p>
+    </div>
+    <div class="card">
+      <span class="tag tag-b">Доказательства</span>
+      <h3 style="margin-top:12px">Чем подтверждаем</h3>
+      <p>Победители ЧистоТоп-2024 и 2025 — «Лучшая каркасная баня» и «Лучшие аксессуары». 15 лет опыта в производстве. Собственный завод в Краснодаре (п.Дружелюбный) — можно приехать. Отделка бани для актёра Павла Деревянко — кейс с именем.</p>
+    </div>
+    <div class="card">
+      <span class="tag tag-r">Дифференциация</span>
+      <h3 style="margin-top:12px">Против рынка</h3>
+      <p>Банные Штучки = масс-маркет. ВашиБани = оборудование без культуры. Woodson = полная экосистема с душой. Единственный производитель с собственными аксессуарами + полным строительством + пар-мастерским сообществом.</p>
+    </div>
+  </div>
+</div></div>
+
+<!-- 05 СТРАТЕГИЯ -->
+<div class="page" id="p5"><div class="wrap sec-pad">
+  <div class="sec-tag">05 — Маркетинговая стратегия</div>
+  <h2>Система роста<br>по <em>четырём направлениям</em></h2>
+  <div class="hl">
+    <div class="hl-title">Четыре параллельных потока: поиск + маркетплейсы + инфлюенсеры + B2B</div>
+    <p>Стратегия строится не на одном канале, а на системе. Горячий спрос из поиска — сразу в конверсию. Маркетплейсы — пассивный доход с карточек. Пар-мастера и блогеры — долгосрочное доверие и охват. B2B — регулярные оптовые заказы от комплексов и глэмпингов.</p>
+  </div>
+  <div class="phases">
+    <div class="phase"><div class="phase-bg">1</div><div class="phase-tag">Фаза 1 · нед. 1–2</div><h4>Фундамент и аудит</h4><ul><li>Аудит текущего маркетинга и каналов</li><li>Оптимизация карточек маркетплейсов</li><li>SEO-аудит и семантика</li><li>База пар-мастеров и инфлюенсеров</li></ul></div>
+    <div class="phase"><div class="phase-bg">2</div><div class="phase-tag">Фаза 2 · нед. 3–6</div><h4>Запуск трафика и контента</h4><ul><li>Яндекс.Директ — горячий спрос</li><li>Оптимизация карточек WB и Ozon</li><li>Первые посевы у пар-мастеров</li><li>Контент-план для соцсетей</li></ul></div>
+    <div class="phase"><div class="phase-bg">3</div><div class="phase-tag">Фаза 3 · нед. 7+</div><h4>Масштаб и партнёрства</h4><ul><li>Программа амбассадоров — пар-мастера</li><li>B2B-аутрич: банные комплексы, глэмпинги</li><li>CRM-маркетинг и триггерные цепочки</li><li>Участие в выставках ЧистоТоп</li></ul></div>
+  </div>
+  <div class="divider"><div class="div-line"></div><span class="div-icon">🌿</span><div class="div-text">B2B-аутрич — банные комплексы</div><div class="div-line"></div></div>
+  <div class="atr-steps">
+    <div class="atr-step"><div class="atr-num">1</div><div class="atr-body"><h4>Первый контакт</h4><p>Обращение к владельцам банных комплексов и глэмпингов через Telegram / Instagram.</p><div class="atr-msg">«Работаем с банными комплексами и глэмпингами — поставляем аксессуары и оборудование оптом. Можем предложить эксклюзивные позиции под вашу баню. Актуально?»</div></div></div>
+    <div class="atr-step"><div class="atr-num">2</div><div class="atr-body"><h4>Второй контакт — демонстрация</h4><p>Если нет ответа — через 3 дня, с конкретным примером.</p><div class="atr-msg">«Woodson сделали отделку бани для Павла Деревянко. Наши аксессуары из дуба и липы — видны с первого взгляда. Готовы привезти образцы и обсудить условия для вашего объекта.»</div></div></div>
+    <div class="atr-step"><div class="atr-num">3</div><div class="atr-body"><h4>Третий контакт — оффер</h4><p>Конкретное предложение с условиями.</p><div class="atr-msg">«Для банных комплексов — специальные оптовые условия, брендированная упаковка под ваш объект и эксклюзивные позиции которых нет на маркетплейсах. Когда удобно созвониться на 20 минут?»</div></div></div>
+  </div>
+</div></div>
+
+<!-- 06 МАРКЕТИНГ-ПЛАН -->
+<div class="page" id="p6"><div class="wrap sec-pad">
+  <div class="sec-tag">06 — Маркетинговый план</div>
+  <h2>Каналы, бюджеты,<br><em>KPI на старте</em></h2>
+  <div class="cg3" style="margin-bottom:28px">
+    <div class="card"><div class="card-num">500–800к</div><p>рекомендуемый рекламный бюджет / мес на старте</p></div>
+    <div class="card"><div class="card-num">+30%</div><p>целевой рост выручки за 3 месяца</p></div>
+    <div class="card"><div class="card-num">×3</div><p>рост заявок на модульные бани через поиск</p></div>
+  </div>
+  <div class="ch-hdr"><span>Канал</span><span>Что делаем</span><span>Бюджет</span><span>KPI</span></div>
+  <div class="ch-row"><div class="ch-name"><span class="ch-em">🔍</span>Яндекс.Директ</div><div class="ch-desc">Горячий спрос: «баня под ключ», «аксессуары для бани», «модульная баня Краснодар». Поиск + РСЯ по интересам.</div><div class="ch-bud">200 000 ₽</div><div class="ch-kpi">150+ лидов / мес</div></div>
+  <div class="ch-row"><div class="ch-name"><span class="ch-em">🛒</span>Маркетплейсы</div><div class="ch-desc">Оптимизация карточек WB и Ozon: SEO-текст, рич-контент, видео, инфографика. Внутренняя реклама на топ-позиции.</div><div class="ch-bud">150 000 ₽</div><div class="ch-kpi">+40% продаж</div></div>
+  <div class="ch-row"><div class="ch-name"><span class="ch-em">🌿</span>SEO сайта</div><div class="ch-desc">Контентные страницы: каркасные бани, аксессуары, отделка бани. Органический трафик — долгосрочный актив.</div><div class="ch-bud">100 000 ₽</div><div class="ch-kpi">Топ-10 по 20 запросам</div></div>
+  <div class="ch-row"><div class="ch-name"><span class="ch-em">📱</span>ВКонтакте / TG</div><div class="ch-desc">Контент-план: процесс производства, кейсы, советы от пар-мастеров, акции. Таргет по аудиториям «баня» и «загородный дом».</div><div class="ch-bud">100 000 ₽</div><div class="ch-kpi">+5 000 подписчиков</div></div>
+  <div class="ch-row"><div class="ch-name"><span class="ch-em">🤝</span>Инфлюенсеры / пар-мастера</div><div class="ch-desc">Программа амбассадоров: пар-мастера используют аксессуары Woodson и делают контент. Обмен на продукт + %..</div><div class="ch-bud">100 000 ₽</div><div class="ch-kpi">10 амбассадоров</div></div>
+
+  <div class="divider"><div class="div-line"></div><span class="div-icon">🌿</span><div class="div-text">TG-каналы для посевов</div><div class="div-line"></div></div>
+  <div class="tg-grid">
+    <div class="tg-item"><span class="tg-em">🛁</span><div><div class="tg-name">Банная культура России</div><div class="tg-link">Нишевые каналы банной тематики</div></div></div>
+    <div class="tg-item"><span class="tg-em">🏡</span><div><div class="tg-name">Загородный дом и баня</div><div class="tg-link">Аудитория владельцев частных домов</div></div></div>
+    <div class="tg-item"><span class="tg-em">🌿</span><div><div class="tg-name">Пар-мастера РФ</div><div class="tg-link">Профессиональные сообщества</div></div></div>
+    <div class="tg-item"><span class="tg-em">🏕</span><div><div class="tg-name">Глэмпинги и эко-отели</div><div class="tg-link">B2B-аудитория</div></div></div>
+  </div>
+
+  <div class="divider"><div class="div-line"></div><span class="div-icon">🌿</span><div class="div-text">Ретаргетинг — 4 сценария</div><div class="div-line"></div></div>
+  <div class="rt-grid">
+    <div class="rt-card"><div class="rt-n">01</div><h4>Смотрел каталог → не купил</h4><p>КМС / ВКонтакте. Тот же товар или категория: «Аксессуары из дуба — доставка завтра». Сегмент: посетители каталога 3–7 дней без покупки.</p></div>
+    <div class="rt-card"><div class="rt-n">02</div><h4>Интересовался баней → не оставил заявку</h4><p>Страница каркасных или модульных бань без заявки. «Осталось 3 места на весну 2026. Успейте забронировать по ценам 2025».</p></div>
+    <div class="rt-card"><div class="rt-n">03</div><h4>Купил аксессуары → возврат через 60 дней</h4><p>Email / ВКонтакте. «Пора обновить банные аксессуары? Новинки сезона — уже в наличии».</p></div>
+    <div class="rt-card"><div class="rt-n">04</div><h4>B2B — был на странице партнёрства</h4><p>«Woodson для банных комплексов: оптовые условия + брендинг под ваш объект». Таргет по интересам «бизнес» + «баня».</p></div>
+  </div>
+</div></div>
+
+<!-- 07 UX АУДИТ -->
+<div class="page" id="p7"><div class="wrap sec-pad">
+  <div class="sec-tag">07 — UX/UI аудит</div>
+  <h2>Анализ сайта<br><em>woodson.ru</em></h2>
+  <div class="audit-ring">
+    <div class="ring">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="46" fill="none" stroke="#e8e0d4" stroke-width="9"/>
+        <circle cx="55" cy="55" r="46" fill="none" stroke="url(#gr1)" stroke-width="9" stroke-dasharray="289" stroke-dashoffset="87" stroke-linecap="round" transform="rotate(-90 55 55)"/>
+        <defs><linearGradient id="gr1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3a5c2e"/><stop offset="100%" stop-color="#c47c2a"/></linearGradient></defs>
+      </svg>
+      <div class="ring-lbl"><span class="ring-val">70</span><span class="ring-sub">/ 100</span></div>
+    </div>
+    <div><h3>Общая UX-оценка</h3><p>Сайт профессиональный и насыщенный. Сильные стороны — широкий каталог, хорошие описания товаров, кейсы с фото. Зоны роста — первый экран перегружен, нет чёткого разделения B2C / B2B, SEO-структура требует доработки. Квиз на сайте — хорошая конверсионная механика, но визуально нуждается в акцентировании.</p></div>
+  </div>
+  <div class="audit-items">
+    <div class="audit-item audit-hdr"><div></div><div>Параметр</div><div>Замечание</div><div>Оценка</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Каталог и ассортимент</div><div class="audit-note">Широкий, структурированный, с фото</div><div class="audit-score s-ok">9/10</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Кейсы и портфолио</div><div class="audit-note">Реальные проекты, фото, видео на YouTube</div><div class="audit-score s-ok">8/10</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Социальные доказательства</div><div class="audit-note">Победа ЧистоТоп, отзывы, кейс Деревянко</div><div class="audit-score s-ok">8/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Первый экран / Hero</div><div class="audit-note">Перегружен, нет одного чёткого оффера</div><div class="audit-score s-w">6/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Разделение B2C / B2B</div><div class="audit-note">Смешано — частники и банные комплексы видят одно</div><div class="audit-score s-w">5/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Скорость загрузки</div><div class="audit-note">Много изображений без оптимизации — PageSpeed Mobile ~50</div><div class="audit-score s-w">5/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Мобильная версия</div><div class="audit-note">Каталог нормальный, но hero и CTA теряются</div><div class="audit-score s-w">6/10</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">CRM-квиз / лид-магнит</div><div class="audit-note">Нет механики захвата контактов на B2B-аудиторию</div><div class="audit-score s-bad">3/10</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">SEO-структура страниц</div><div class="audit-note">Нет страниц под «каркасная баня [город]»</div><div class="audit-score s-w">5/10</div></div>
+  </div>
+  <div class="hl">
+    <div class="hl-title">Приоритетные правки — ожидаемый эффект +25–35% к конверсии</div>
+    <p><strong>1. Чёткий Hero</strong> — один сильный оффер на первом экране + два CTA (Частникам / Бизнесу). <strong>2. B2B-раздел</strong> — отдельная страница для банных комплексов и глэмпингов с оптовым предложением. <strong>3. Лид-магнит для B2B</strong> — «Рассчитайте стоимость комплектации вашей бани» → контакт. <strong>4. Оптимизация изображений</strong> — WebP + lazy loading → PageSpeed 80+. Прототип нового сайта — вкладка 11.</p>
+  </div>
+</div></div>
+
+<!-- 08 SEO АУДИТ -->
+<div class="page" id="p8"><div class="wrap sec-pad">
+  <div class="sec-tag">08 — SEO аудит</div>
+  <h2>Техническое и<br><em>контентное SEO</em></h2>
+  <div class="audit-ring">
+    <div class="ring">
+      <svg width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="46" fill="none" stroke="#e8e0d4" stroke-width="9"/>
+        <circle cx="55" cy="55" r="46" fill="none" stroke="url(#gr2)" stroke-width="9" stroke-dasharray="289" stroke-dashoffset="116" stroke-linecap="round" transform="rotate(-90 55 55)"/>
+        <defs><linearGradient id="gr2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#3a5c2e"/><stop offset="100%" stop-color="#c47c2a"/></linearGradient></defs>
+      </svg>
+      <div class="ring-lbl"><span class="ring-val">60</span><span class="ring-sub">/ 100</span></div>
+    </div>
+    <div><h3>SEO-оценка</h3><p>Базовые технические параметры в порядке. Главная проблема — нет SEO-страниц под высокочастотные коммерческие запросы («каркасная баня [город]», «аксессуары для бани купить»). При правильной работе с контентом можно выйти в топ-5 по 20+ запросам за 3 месяца.</p></div>
+  </div>
+  <div class="audit-items">
+    <div class="audit-item audit-hdr"><div></div><div>Параметр</div><div>Замечание</div><div>Статус</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">HTTPS / SSL</div><div class="audit-note">Действителен</div><div class="audit-score s-ok">OK</div></div>
+    <div class="audit-item"><div class="audit-ico">✅</div><div class="audit-name">Sitemap / Robots</div><div class="audit-note">Присутствует и корректен</div><div class="audit-score s-ok">OK</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Title / Meta Description</div><div class="audit-note">Не оптимизированы под целевые запросы</div><div class="audit-score s-w">Частично</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">H1–H6 структура</div><div class="audit-note">H1 есть, но подзаголовки без ключей</div><div class="audit-score s-w">Частично</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">PageSpeed Mobile</div><div class="audit-note">Тяжёлые изображения, ожид. 45–55/100</div><div class="audit-score s-bad">Критично</div></div>
+    <div class="audit-item"><div class="audit-ico">❌</div><div class="audit-name">Региональные SEO-страницы</div><div class="audit-note">Нет страниц «баня под ключ [город]»</div><div class="audit-score s-bad">Критично</div></div>
+    <div class="audit-item"><div class="audit-ico">⚠️</div><div class="audit-name">Ссылочная масса</div><div class="audit-note">Минимальная — нужно наращивать</div><div class="audit-score s-w">Слабая</div></div>
+  </div>
+  <div class="divider"><div class="div-line"></div><span class="div-icon">🌿</span><div class="div-text">Ключевые запросы</div><div class="div-line"></div></div>
+  <table class="dt">
+    <thead><tr><th>Запрос</th><th>Частотность / мес</th><th>Конкуренция</th><th>Позиция</th><th>Потенциал</th></tr></thead>
+    <tbody>
+      <tr><td>каркасная баня под ключ</td><td>~8 000</td><td><span class="tag tag-w">Средняя</span></td><td>нет в топ-50</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>аксессуары для бани купить</td><td>~12 000</td><td><span class="tag tag-r">Высокая</span></td><td>нет в топ-50</td><td><span class="tag tag-w">Средний</span></td></tr>
+      <tr><td>модульная баня Краснодар</td><td>~1 400</td><td><span class="tag tag-g">Низкая</span></td><td>нет в топ-50</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>ковш для бани дубовый</td><td>~2 200</td><td><span class="tag tag-g">Низкая</span></td><td>нет в топ-30</td><td><span class="tag tag-g">Высокий</span></td></tr>
+      <tr><td>печь для бани купить</td><td>~18 000</td><td><span class="tag tag-r">Высокая</span></td><td>нет в топ-50</td><td><span class="tag tag-w">Средний</span></td></tr>
+    </tbody>
+  </table>
+  <div class="hl">
+    <div class="hl-title">SEO-план на 3 месяца</div>
+    <p><strong>Месяц 1:</strong> Оптимизация Title/Meta, WebP-изображения, ускорение. Создание 10 страниц под аксессуары (ковши, запарники, шайки × материалы). <strong>Месяц 2:</strong> Региональные страницы «баня под ключ [город]» × 5 городов. Информационные статьи: «Как выбрать печь», «Правильный пар» и т.д. <strong>Месяц 3:</strong> Ссылочная масса, крауд-маркетинг в форумах и банных сообществах. Цель: топ-10 по 20+ запросам.</p>
+  </div>
+</div></div>
+
+<!-- 09 ОФФЕРЫ -->
+<div class="page" id="p9"><div class="wrap sec-pad">
+  <div class="sec-tag">09 — Примеры офферов</div>
+  <h2>Варианты главного<br><em>сообщения</em> для тестирования</h2>
+  <div class="offer-card" data-n="01"><div class="offer-type">Экосистемный · Полный цикл</div><div class="offer-text">«Всё для правильной бани — от печи до кваса. Woodson»</div><div class="offer-sub">Позиционирует Woodson как экосистему, а не просто магазин. Для главной страницы, поиска, соцсетей.</div></div>
+  <div class="offer-card" data-n="02"><div class="offer-type">Эмоциональный · Традиции и культура</div><div class="offer-text">«Настоящая баня начинается с правильных вещей. Сделано в России, для России»</div><div class="offer-sub">Апеллирует к банной культуре и патриотизму. Для контент-маркетинга и посевов у пар-мастеров.</div></div>
+  <div class="offer-card" data-n="03"><div class="offer-type">Конкурентный · Против маркетплейсов</div><div class="offer-text">«Не «Банные Штучки» — Woodson. Собственное производство, 15 лет, победители ЧистоТоп»</div><div class="offer-sub">Прямое сравнение с рыночным лидером. Для ретаргетинга аудитории конкурентов в Яндекс.Директ.</div></div>
+  <div class="offer-card" data-n="04"><div class="offer-type">Для B2B · Банные комплексы и глэмпинги</div><div class="offer-text">«Аксессуары Woodson в вашей бане — ваши гости заметят и запомнят»</div><div class="offer-sub">Акцент на впечатлении гостей. Для B2B-аутрича, рекламы в каналах владельцев глэмпингов.</div></div>
+  <div class="offer-card" data-n="05"><div class="offer-type">Строительство · Баня под ключ</div><div class="offer-text">«Баня через 2 дня на вашем участке. Без стройки, без грязи, без ожидания»</div><div class="offer-sub">Для кампаний по модульным баням. Главное преимущество — скорость и удобство. Для поиска и YouTube.</div></div>
+</div></div>
+
+<!-- 10 ОБЪЯВЛЕНИЯ -->
+<div class="page" id="p10"><div class="wrap sec-pad">
+  <div class="sec-tag">10 — Рекламные объявления</div>
+  <h2>Готовые тексты<br>для <em>запуска</em></h2>
+
+  <div class="ad-platform">Яндекс.Директ — Баня под ключ</div>
+  <div class="ad-card"><div class="ad-head">Каркасная баня под ключ | Установка 1–2 дня | Woodson</div><div class="ad-body">Модульные бани собственного производства. Без долгой стройки и грязи. Заказы на весну 2026 открыты. Успейте по ценам 2025.</div><div class="ad-cta">→ Рассчитать стоимость бани</div></div>
+  <div class="ad-card"><div class="ad-head">Баня на участке за 2 дня | Краснодар | Woodson ЧистоТоп</div><div class="ad-body">Победители «Лучшая каркасная баня ЧистоТоп-2024». Производство в Краснодаре — можно приехать и посмотреть. Доставка по России.</div><div class="ad-cta">→ Посмотреть проекты бань</div></div>
+
+  <div class="ad-platform">Яндекс.Директ — Аксессуары и товары</div>
+  <div class="ad-card"><div class="ad-head">Аксессуары для бани из дуба и липы | Woodson | Собственное производство</div><div class="ad-body">Ковши, запарники, шайки без клея и лаков. Только натуральное дерево. 15 лет производства. Доставка по всей России.</div><div class="ad-cta">→ Перейти в каталог</div></div>
+
+  <div class="ad-platform">ВКонтакте — Таргет (владельцы частных домов)</div>
+  <div class="ad-card"><div class="ad-head">Ваша баня заслуживает правильных вещей</div><div class="ad-body">Woodson делает аксессуары для бани без химии — только дуб, липа и натуральное дерево. Запарники, ковши, шайки собственного производства. 15 лет на рынке. Победители ЧистоТоп-2024.</div><div class="ad-cta">→ Смотреть каталог Woodson</div></div>
+  <div class="ad-card"><div class="ad-head">Баня за 2 дня без стройки — это реально</div><div class="ad-body">Woodson привозит и устанавливает готовую каркасную баню прямо на вашем участке. Внутренняя отделка, освещение, вентиляция — всё включено. Приглашаем на наш завод в Краснодаре.</div><div class="ad-cta">→ Узнать стоимость под ваш участок</div></div>
+
+  <div class="ad-platform">Посевы — Пар-мастера и банные блогеры</div>
+  <div class="ad-card">
+    <div class="ad-head">Попробовал аксессуары Woodson — делюсь впечатлениями</div>
+    <div class="ad-body" style="white-space:pre-line">Работаю пар-мастером 7 лет и перепробовал много всего. Недавно начал использовать ковши и запарники Woodson из дуба.
+
+Разница заметна сразу: дерево без химии — правильный аромат в парной. Ковш не скользит, вес комфортный, выдерживает хорошую нагрузку.
+
+Важно что производство краснодарское — всё можно потрогать руками до заказа. На производстве был лично.
+
+Для тех кто ценит инструменты — посмотрите woodson.ru. Есть всё что нужно для правильной работы в бане.</div>
+    <div class="ad-cta">→ woodson.ru — каталог профессиональных аксессуаров</div>
+  </div>
+  <div class="ad-card">
+    <div class="ad-head">Как мы строили баню для клиента в Анапе за 2 дня</div>
+    <div class="ad-body" style="white-space:pre-line">Клиент хотел баню на участке, но без многомесячной стройки. Нашли Woodson в Краснодаре.
+
+Приехали на производство — посмотрели как делают, потрогали материалы. Заказали каркасную баню 5×7 с внутренней отделкой ольха + можжевельник.
+
+Привезли и установили за 2 дня. Баня уже готова к парению.
+
+Если у вас аналогичная история — woodson.ru покажет все модели и варианты отделки.</div>
+    <div class="ad-cta">→ bani.woodson.ru — проекты и цены</div>
+  </div>
+</div></div>
+
+<!-- 11 ПРОТОТИП -->
+<div class="page" id="p11"><div class="wrap sec-pad">
+  <div class="sec-tag">11 — Прототип сайта</div>
+  <h2>Новый woodson.ru —<br><em>экосистема</em> банной культуры</h2>
+  <p style="margin-bottom:22px">Исправлены ключевые проблемы из UX-аудита: чёткий Hero, разделение B2C/B2B, лид-магнит для оптовиков, ускоренная загрузка. Структура лучше чем у всех 4 конкурентов.</p>
+
+  <div class="proto-wrap">
+    <div class="proto-browser">
+      <div class="proto-dots">
+        <div class="proto-dot" style="background:#e05555"></div>
+        <div class="proto-dot" style="background:#f0b429"></div>
+        <div class="proto-dot" style="background:#3ecf8e"></div>
+      </div>
+      <div class="proto-url-bar">woodson.ru</div>
+    </div>
+    <div class="proto-body">
+      <div class="proto-nav">
+        <div class="proto-nav-logo">🌿 Woodson</div>
+        <div class="proto-nav-links">
+          <span class="proto-nav-link">Аксессуары</span>
+          <span class="proto-nav-link">Печи и оборудование</span>
+          <span class="proto-nav-link">Бани под ключ</span>
+          <span class="proto-nav-link">Для бизнеса</span>
+          <span class="proto-nav-link">О компании</span>
+        </div>
+        <div class="proto-nav-cta">Рассчитать баню</div>
+      </div>
+
+      <div class="proto-hero">
+        <div class="proto-badge">🏆 Победители ЧистоТоп-2024 и 2025 · Производство Краснодар</div>
+        <div class="proto-h1">Правильная баня начинается<br>с правильных вещей</div>
+        <div class="proto-sub">Собственное производство аксессуаров из дуба и липы. Модульные бани под ключ за 1–2 дня. Всё для создания настоящей русской бани.</div>
+        <div class="proto-ctas">
+          <div class="proto-btn-p">🏠 Баня под ключ</div>
+          <div class="proto-btn-s">🛒 Аксессуары и товары</div>
+        </div>
+        <div class="proto-trust">
+          <span>🌿 Без клея и лаков</span>
+          <span>🏆 ЧистоТоп-2024 и 2025</span>
+          <span>🏭 Собственное производство</span>
+          <span>🚚 Доставка по России</span>
+        </div>
+      </div>
+
+      <div class="proto-stats">
+        <div class="proto-stat"><div class="proto-stat-val">15 лет</div><div class="proto-stat-label">опыта производства</div></div>
+        <div class="proto-stat"><div class="proto-stat-val">1–2 дня</div><div class="proto-stat-label">установка бани на участке</div></div>
+        <div class="proto-stat"><div class="proto-stat-val">2 победы</div><div class="proto-stat-label">ЧистоТоп 2024 и 2025</div></div>
+        <div class="proto-stat"><div class="proto-stat-val">РФ + СНГ</div><div class="proto-stat-label">доставка по всей стране</div></div>
+      </div>
+
+      <div class="proto-cats">
+        <div class="proto-cats-title">Что вам нужно?</div>
+        <div class="proto-cat-grid">
+          <div class="proto-cat sel" onclick="selCat(this)"><div class="proto-cat-icon">🏠</div><div class="proto-cat-title">Баня под ключ</div><div class="proto-cat-sub">Каркасные и модульные бани, 1–2 дня установка</div></div>
+          <div class="proto-cat" onclick="selCat(this)"><div class="proto-cat-icon">🪣</div><div class="proto-cat-title">Аксессуары для бани</div><div class="proto-cat-sub">Ковши, запарники, шайки — собственное производство</div></div>
+          <div class="proto-cat" onclick="selCat(this)"><div class="proto-cat-icon">🔥</div><div class="proto-cat-title">Печи и оборудование</div><div class="proto-cat-sub">Печи, дымоходы, парогенераторы — топ-бренды</div></div>
+        </div>
+      </div>
+
+      <div class="proto-why">
+        <div>
+          <div class="proto-why-h">Почему выбирают Woodson</div>
+          <p style="font-size:13px;color:var(--muted)">Единственный производитель который даёт полный цикл</p>
+          <div class="proto-why-list">
+            <div class="proto-why-item"><div class="proto-why-ico">🌿</div><div><div class="proto-why-title">Собственное производство</div><div class="proto-why-sub">Аксессуары из дуба и липы — без клея, лаков и химии</div></div></div>
+            <div class="proto-why-item"><div class="proto-why-ico">🏆</div><div><div class="proto-why-title">Признание отрасли</div><div class="proto-why-sub">Победители ЧистоТоп-2024 и 2025 в двух номинациях</div></div></div>
+            <div class="proto-why-item"><div class="proto-why-ico">🏭</div><div><div class="proto-why-title">Завод в Краснодаре</div><div class="proto-why-sub">Можно приехать, посмотреть и выбрать перед заказом</div></div></div>
+            <div class="proto-why-item"><div class="proto-why-ico">⚡</div><div><div class="proto-why-title">Баня за 1–2 дня</div><div class="proto-why-sub">Привозим и устанавливаем готовую баню на вашем участке</div></div></div>
+          </div>
+        </div>
+        <div class="proto-right">
+          <h3 style="color:var(--amber);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;font-family:'Playfair Display',serif">Реальные проекты</h3>
+          <div class="proto-case"><div class="proto-case-label">Знаменитость</div><div class="proto-case-text">Отделка бани для актёра Павла Деревянко</div><div class="proto-case-sub">Ольха, можжевельник, авторский дизайн, 2025</div></div>
+          <div class="proto-case"><div class="proto-case-label">Глэмпинг Анапа</div><div class="proto-case-text">Каркасная баня 7×5, установка 2 дня</div><div class="proto-case-sub">Полная отделка + оборудование, 2025</div></div>
+          <div class="proto-case"><div class="proto-case-label">Отзыв ★★★★★</div><div class="proto-case-text">«Магазин очень отличается от обычных — всё стильно и круто!»</div><div class="proto-case-sub">Google, постоянный покупатель</div></div>
+        </div>
+      </div>
+
+      <div class="proto-cta-bar">
+        <div class="proto-cta-h">Для банных комплексов и глэмпингов</div>
+        <div class="proto-cta-s">Оптовые условия + брендирование под ваш объект + эксклюзивные позиции</div>
+        <div class="proto-cta-btns" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <div class="proto-cta-btn">Условия для бизнеса →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hl">
+    <div class="hl-title">Что улучшено vs текущий woodson.ru</div>
+    <p><strong>Два CTA</strong> на первом экране (бани / аксессуары). <strong>Квиз «Что вам нужно»</strong> — сегментирует аудиторию. <strong>Отдельный B2B-раздел</strong> для оптовиков и комплексов. <strong>Кейсы</strong> с конкретными именами и проектами. Ни у Банных Штучек, ни у ВашиБани нет такой структуры — Woodson будет лучшим сайтом в нише.</p>
+  </div>
+</div></div>
+
+<!-- 12 ПЛАН РАБОТ -->
+<div class="page" id="p12"><div class="wrap sec-pad">
+  <div class="sec-tag">12 — План работ по дням</div>
+  <h2>28 дней —<br><em>конкретный план</em></h2>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot t-dir" style="background:var(--moss)"></div>Яндекс.Директ</div>
+    <div class="legend-item"><div class="legend-dot t-seo" style="background:var(--wood)"></div>SEO / Маркетплейсы</div>
+    <div class="legend-item"><div class="legend-dot t-site" style="background:var(--amber)"></div>Сайт / Контент</div>
+    <div class="legend-item"><div class="legend-dot t-anal" style="background:#b43c28"></div>Аналитика / CRM</div>
+    <div class="legend-item"><div class="legend-dot t-meet" style="background:var(--bark)"></div>Встреча / Отчёт</div>
+  </div>
+
+  <!-- НЕДЕЛЯ 1 -->
+  <div class="plan-week">
+    <div class="pw-header">
+      <div class="pw-num">Неделя 1</div>
+      <div class="pw-title">Погружение, аудит, фундамент</div>
+      <div class="pw-goal">Старт: Пн 14 апр</div>
+    </div>
+    <div class="plan-days">
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name" style="color:var(--moss)">Пн</span><span class="plan-day-date">14 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-meet"></div>Установочный созвон: цели, KPI, доступы к кабинетам</div><div class="plan-task"><div class="plan-dot t-anal"></div>Аудит Яндекс.Метрики, рекламного кабинета и маркетплейсов</div><div class="plan-task"><div class="plan-dot t-seo"></div>Аудит SEO-позиций и семантика — 200+ ключевых запросов</div></div><div class="plan-result">📋 Полный доступ получен, аудит начат</div></div></div>
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name">Вт</span><span class="plan-day-date">15 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-seo"></div>Аудит карточек WB и Ozon — заголовки, описания, фото, рейтинги</div><div class="plan-task"><div class="plan-dot t-site"></div>Аудит сайта: UX, конверсии, структура Hero и CTA</div><div class="plan-task"><div class="plan-dot t-meet"></div>Знакомство с командой маркетинга, распределение зон ответственности</div></div><div class="plan-result accent">📊 Аудит завершён, список приоритетных задач готов</div></div></div>
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name">Ср</span><span class="plan-day-date">16 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>Сбор семантики Яндекс.Директ: кластеры «баня под ключ», «аксессуары», «печи»</div><div class="plan-task"><div class="plan-dot t-seo"></div>Оптимизация 10 карточек маркетплейса: заголовки + описания + ключи</div><div class="plan-task"><div class="plan-dot t-site"></div>ТЗ на новый Hero сайта и B2B-раздел — передача программистам</div></div><div class="plan-result">📝 Семантика и ТЗ сайта готовы</div></div></div>
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name">Чт</span><span class="plan-day-date">17 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>Создание структуры кампаний в Яндекс.Директ — 3 кампании</div><div class="plan-task"><div class="plan-dot t-anal"></div>Настройка целей в Метрике: заявка, звонок, корзина, карточка</div><div class="plan-task"><div class="plan-dot t-seo"></div>Рич-контент для 5 топ-товаров WB — инфографика + видео</div></div><div class="plan-result">🔧 Кампании созданы, аналитика настроена</div></div></div>
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name">Пт</span><span class="plan-day-date">18 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>Написание 30 объявлений Яндекс.Директ — финальная проверка</div><div class="plan-task"><div class="plan-dot t-site"></div>Контроль выполнения ТЗ сайта</div><div class="plan-task"><div class="plan-dot t-meet"></div>Итоговый отчёт недели 1 — план на неделю 2</div></div><div class="plan-result" style="color:var(--moss)">✅ Всё готово к запуску Директ в понедельник</div></div></div>
+      <div class="plan-day weekend"><div class="plan-day-label"><span class="plan-day-name">Сб–Вс</span><span class="plan-day-date">19–20 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-anal"></div>Мониторинг маркетплейсов — позиции карточек после изменений</div></div></div></div>
+    </div>
+    <div class="pw-summary">
+      <div class="pws-cell"><div class="pws-label">Директ</div><div class="pws-val">3 кампании готовы</div></div>
+      <div class="pws-cell"><div class="pws-label">Маркетплейсы</div><div class="pws-val a">10 карточек оптимизированы</div></div>
+      <div class="pws-cell"><div class="pws-label">Сайт</div><div class="pws-val">ТЗ в работе</div></div>
+    </div>
+  </div>
+
+  <!-- НЕДЕЛЯ 2 -->
+  <div class="plan-week">
+    <div class="pw-header">
+      <div class="pw-num">Неделя 2</div>
+      <div class="pw-title">Запуск Директ — первый трафик</div>
+      <div class="pw-goal">Старт: Пн 21 апр</div>
+    </div>
+    <div class="plan-days">
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name" style="color:var(--amber)">Пн</span><span class="plan-day-date">21 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>🚀 Запуск кампаний «Баня под ключ» и «Аксессуары» в Яндекс.Директ</div><div class="plan-task"><div class="plan-dot t-seo"></div>Запуск внутренней рекламы на маркетплейсах по топ-10 SKU</div><div class="plan-task"><div class="plan-dot t-anal"></div>Мониторинг первых показов и кликов каждые 2 часа</div></div><div class="plan-result warn">🔥 Первые клики и заявки из поиска</div></div></div>
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name">Вт</span><span class="plan-day-date">22 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>Анализ первых данных — CTR, цена клика, конверсии. Чистка минус-слов</div><div class="plan-task"><div class="plan-dot t-site"></div>Приёмка нового Hero сайта и B2B-раздела от программистов</div><div class="plan-task"><div class="plan-dot t-seo"></div>Написание 3 SEO-статей: «Как выбрать ковш», «Правильный пар», «Виды бань»</div></div><div class="plan-result">📊 Первая оптимизация кампаний</div></div></div>
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name">Ср</span><span class="plan-day-date">23 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>Запуск кампании «Печи и оборудование», A/B тест объявлений</div><div class="plan-task"><div class="plan-dot t-seo"></div>Публикация SEO-статей, настройка микроразметки Schema.org</div><div class="plan-task"><div class="plan-dot t-site"></div>Старт программы амбассадоров — первые 5 пар-мастеров</div></div><div class="plan-result">🌿 Программа амбассадоров запущена</div></div></div>
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name">Чт</span><span class="plan-day-date">24 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>Настройка РСЯ-кампании по интересам «баня», «загородный дом»</div><div class="plan-task"><div class="plan-dot t-seo"></div>Оптимизация ещё 20 карточек WB и Ozon</div><div class="plan-task"><div class="plan-dot t-anal"></div>Первый анализ по маркетплейсам: CTR карточек, позиции</div></div><div class="plan-result">📈 30–50 заявок из Директ за неделю</div></div></div>
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name">Пт</span><span class="plan-day-date">25 апр</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>Оптимизация ставок по первым данным недели</div><div class="plan-task"><div class="plan-dot t-meet"></div>Еженедельный отчёт: клики, заявки, CPL, маркетплейсы, план нед. 3</div></div><div class="plan-result" style="color:var(--moss)">✅ Первый отчёт отправлен</div></div></div>
+    </div>
+    <div class="pw-summary">
+      <div class="pws-cell"><div class="pws-label">Заявки из Директ</div><div class="pws-val a">30–50 / нед</div></div>
+      <div class="pws-cell"><div class="pws-label">Карточки маркетплейсов</div><div class="pws-val g">30 оптимизировано</div></div>
+      <div class="pws-cell"><div class="pws-label">Амбассадоры</div><div class="pws-val">5 пар-мастеров</div></div>
+    </div>
+  </div>
+
+  <!-- НЕДЕЛЯ 3-4 -->
+  <div class="plan-week">
+    <div class="pw-header">
+      <div class="pw-num">Недели 3–4</div>
+      <div class="pw-title">Масштабирование и первые результаты</div>
+      <div class="pw-goal">28 апр — 9 мая</div>
+    </div>
+    <div class="plan-days">
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name" style="color:var(--moss)">Нед 3</span><span class="plan-day-date">28 апр–2 мая</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>Масштабирование рабочих кампаний Яндекс.Директ</div><div class="plan-task"><div class="plan-dot t-seo"></div>Создание региональных страниц «баня под ключ [город]» — 5 городов</div><div class="plan-task"><div class="plan-dot t-anal"></div>Настройка CRM-триггеров: брошенная корзина, повторная покупка</div><div class="plan-task"><div class="plan-dot t-site"></div>Первый контент от пар-мастеров — публикация в соцсетях</div></div><div class="plan-result" style="color:var(--moss)">📈 80–120 заявок из Директ, рост карточек маркетплейсов</div></div></div>
+      <div class="plan-day"><div class="plan-day-label"><span class="plan-day-name" style="color:var(--moss)">Нед 4</span><span class="plan-day-date">5–9 мая</span></div><div class="plan-day-body"><div class="plan-tasks"><div class="plan-task"><div class="plan-dot t-dir"></div>Запуск ретаргетинга — все 4 сценария</div><div class="plan-task"><div class="plan-dot t-seo"></div>Проверка первых SEO-позиций по региональным страницам</div><div class="plan-task"><div class="plan-dot t-anal"></div>Итоговый месячный отчёт: все каналы, план vs факт, план на месяц 2</div><div class="plan-task"><div class="plan-dot t-meet"></div>Итоговый созвон — результаты, план на месяц 2, обсуждение бюджета</div></div><div class="plan-result" style="color:var(--moss)">🏆 Итог месяца 1 готов, месяц 2 согласован</div></div></div>
+    </div>
+    <div class="pw-summary">
+      <div class="pws-cell"><div class="pws-label">Заявки / мес из Директ</div><div class="pws-val g">150+ квал. заявок</div></div>
+      <div class="pws-cell"><div class="pws-label">Маркетплейсы</div><div class="pws-val g">+30–40% продаж</div></div>
+      <div class="pws-cell"><div class="pws-label">SEO</div><div class="pws-val">20+ страниц в индексе</div></div>
+    </div>
+  </div>
+
+  <!-- ФОРМАТЫ ОТЧЁТОВ -->
+  <div style="background:var(--warm);border:1px solid var(--border);padding:24px 28px;margin:24px 0;border-left:3px solid var(--amber)">
+    <h3 style="margin-bottom:14px">📱 Ежедневный отчёт (Telegram)</h3>
+    <div style="background:var(--cream);border-left:2px solid var(--amber);padding:14px 18px;font-size:13px;color:var(--bark);line-height:1.75;font-family:'Playfair Display',serif;font-style:italic">
+      🌿 Woodson · [дата]<br><br>
+      🔍 Директ: показы / клики / заявки / расход / CPL<br>
+      🛒 Маркетплейсы: позиции топ-SKU / продажи за день<br>
+      🌿 SEO / Контент: [что сделано]<br>
+      🌐 Сайт: [что обновлено]<br><br>
+      ⚡ Завтра: [план]<br>
+      ❗ Вопросы: [если нужно от команды]
+    </div>
+  </div>
+</div></div>
+
+</main>
+
+<div class="cta-final">
+  <div>
+    <h2>Готов войти в команду Woodson<br>и выстроить систему роста</h2>
+    <p>Удалённо · Полная занятость · Старт через 3 дня после договорённости · От 150 000 ₽</p>
+  </div>
+  <a href="mailto:wwwfrolof@yandex.ru" class="cta-btn">Написать Павлу →</a>
+</div>
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <div class="foot-name">Павел Фролов — CMO / Head of Marketing</div>
+      <div class="foot-contacts">
+        <div class="foot-c">📧 <a href="mailto:wwwfrolof@yandex.ru">wwwfrolof@yandex.ru</a></div>
+        <div class="foot-c">📱 <a href="tel:+79059390874">+7 (905) 939-08-74</a></div>
+        <div class="foot-c">🌐 <a href="https://pavelfrolof.ru" target="_blank">pavelfrolof.ru</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+let currentPage=0;
+const total=13;
+function go(i){
+  if(i<0||i>=total)return;
+  currentPage=i;
+  document.querySelectorAll('.page').forEach((p,j)=>p.classList.toggle('active',j===i));
+  document.querySelectorAll('.nav-link').forEach((l,j)=>l.classList.toggle('active',j===i));
+  document.getElementById('nav-counter').textContent=(i+1)+' / '+total;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')go(currentPage+1);
+  if(e.key==='ArrowLeft')go(currentPage-1);
+});
+function selCat(el){
+  document.querySelectorAll('.proto-cat').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+</script>
+</body>
+</html>
