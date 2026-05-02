@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "new-project-three-murex.vercel.app"
+        }
+      ],
+      "destination": "https://pavelfrolof.ru/$1",
+      "permanent": true
+    }
+  ]
+}
