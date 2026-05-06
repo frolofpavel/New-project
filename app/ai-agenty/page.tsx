@@ -45,7 +45,7 @@ export default function AiAgentsPage() {
           <MagneticLink href="/contact" className="button button--primary" external={false}>
             Записаться на бесплатный аудит 30 мин
           </MagneticLink>
-          <MagneticLink href={siteConfig.telegram} className="button button--secondary">
+          <MagneticLink href={siteConfig.telegram} className="button button--secondary" external>
             Написать в Telegram
           </MagneticLink>
         </div>
