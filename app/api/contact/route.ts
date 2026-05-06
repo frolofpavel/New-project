@@ -1,3 +1,4 @@
+import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
 type ContactPayload = {
@@ -72,6 +73,38 @@ async function sendTelegramLead(message: string) {
     const details = await response.text();
     throw new Error(`Telegram delivery failed: ${details}`);
   }
+
+  return true;
+}
+
+async function sendSmtpLead(payload: Required<Omit<ContactPayload, "website">>) {
+  const host = process.env.CONTACT_SMTP_HOST ?? "smtp.yandex.ru";
+  const portRaw = process.env.CONTACT_SMTP_PORT ?? "465";
+  const port = Number.parseInt(portRaw, 10);
+  const user = process.env.CONTACT_SMTP_USER?.trim();
+  const pass = process.env.CONTACT_SMTP_PASS?.trim();
+  const to = (process.env.CONTACT_TO_EMAIL ?? user)?.trim();
+  const from = (process.env.CONTACT_FROM_EMAIL ?? user)?.trim();
+
+  if (!user || !pass || !to || !from) {
+    return false;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port: Number.isFinite(port) ? port : 465,
+    secure: (Number.isFinite(port) ? port : 465) === 465,
+    auth: { user, pass },
+  });
+
+  await transporter.sendMail({
+    from,
+    to,
+    replyTo: payload.email,
+    subject: `Заявка pavelfrolof.ru — ${payload.name}`,
+    text: buildPlainTextLead(payload),
+    html: buildHtmlLead(payload),
+  });
 
   return true;
 }
@@ -152,12 +185,13 @@ export async function POST(request: Request) {
   };
 
   try {
-    const [telegramSent, emailSent] = await Promise.all([
+    const [telegramSent, resendSent, smtpSent] = await Promise.all([
       sendTelegramLead(buildPlainTextLead(safePayload)),
       sendResendLead(safePayload),
+      sendSmtpLead(safePayload),
     ]);
 
-    if (!telegramSent && !emailSent) {
+    if (!telegramSent && !resendSent && !smtpSent) {
       console.info("Lead request (no provider configured)", safePayload);
 
       if (process.env.NODE_ENV === "development") {
