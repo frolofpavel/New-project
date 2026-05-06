@@ -77,10 +77,10 @@ export function buildPersonSchema() {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Павел Фролов",
-    jobTitle: "Маркетолог-стратег, AI-архитектор",
+    jobTitle: "AI-архитектор, внедрение AI-агентов под ключ",
     url: siteConfig.baseUrl,
     image: absoluteUrl(PERSON_IMAGE_PATH),
-    description: "Маркетолог с 19 лет опытом. Проектирую AI-системы для маркетинга.",
+    description: "Внедрение AI-агентов под ключ для бизнеса. 19 лет в маркетинге и системной архитектуре.",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Новосибирск",

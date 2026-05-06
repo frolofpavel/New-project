@@ -69,6 +69,7 @@ export type SiteConfig = {
   principles: Principle[];
   systems: SystemCard[];
   featuredCases: FeaturedCase[];
+  aiAgentCases: FeaturedCase[];
   aboutKicker: string;
   aboutTitleLines: string[];
   aboutBody: Array<{ text: string }>;

@@ -8,12 +8,15 @@ export function LeadStrip() {
       <div className="lead-strip__inner">
         <div>
           <p className="section-heading__eyebrow">Есть задача?</p>
-          <h2>Разберём архитектуру, внедрим AI-агентов, соберём маркетинг как систему.</h2>
+          <h2>Воронка: знакомство → бесплатный аудит 30 мин → пилот → система агентов.</h2>
         </div>
 
         <div className="lead-strip__actions">
-          <Link href="/contact" className="button button--primary">
-            Обсудить проект
+          <Link href="/ai-agenty" className="button button--primary">
+            AI-агенты под ключ
+          </Link>
+          <Link href="/contact" className="button button--secondary">
+            Записаться на аудит
           </Link>
           <a
             href={siteConfig.telegram}

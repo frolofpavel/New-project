@@ -251,9 +251,9 @@ export default function HomePage() {
       <section id="cases" className="section">
         <Reveal>
           <div className="section-label">Кейсы</div>
-          <AnimatedHeading className="section-h2" lines={["Реальные результаты"]} />
+          <AnimatedHeading className="section-h2" lines={["Маркетинг и деньги"]} />
           <p className="section-sub">
-            Не «увеличили охваты», а конкретные числа в деньгах и лидах.
+            Не «охваты», а лиды и выручка — то, что можно сравнить с бюджетом.
           </p>
         </Reveal>
 
@@ -271,6 +271,63 @@ export default function HomePage() {
             </StaggerItem>
           ))}
         </Stagger>
+
+        <Reveal>
+          <div className="section-label" style={{ marginTop: "48px" }}>
+            AI-агенты и продукты
+          </div>
+          <AnimatedHeading className="section-h2" lines={["ROI в операциях"]} />
+          <p className="section-sub">
+            Production-системы и измеримые эффекты — не демо и не «чат с GPT».
+          </p>
+        </Reveal>
+
+        <Stagger className="cards-grid-3" stagger={0.12}>
+          {siteConfig.aiAgentCases.map((c) => (
+            <StaggerItem key={c.title}>
+              <GlowCard className="case-card">
+                <p className="case-card__industry">{c.industry}</p>
+                <h3>{c.title}</h3>
+                <p>{c.description}</p>
+                <div className="case-card__result">
+                  <CountUp value={c.result} /> <span>{c.resultNote}</span>
+                </div>
+              </GlowCard>
+            </StaggerItem>
+          ))}
+        </Stagger>
+
+        <Reveal>
+          <div
+            id="audit"
+            style={{
+              marginTop: "48px",
+              padding: "clamp(24px, 4vw, 40px)",
+              borderRadius: "16px",
+              border: "1px solid rgba(255,255,255,0.08)",
+              background: "rgba(255,255,255,0.02)",
+              maxWidth: "880px",
+            }}
+          >
+            <div className="section-label">Вход в воронку</div>
+            <h3 style={{ fontSize: "clamp(22px, 2.5vw, 30px)", fontWeight: 800, margin: "12px 0 16px" }}>
+              Бесплатный аудит 30 минут
+            </h3>
+            <p style={{ color: "var(--muted-2)", lineHeight: 1.65, marginBottom: "20px" }}>
+              Короткий созвон: какие процессы стоят денег, где AI уместен в первую очередь, какой формат — аудит, пилот или сразу система.
+              Если задача не ко мне — скажу прямо.
+            </p>
+            <MagneticLink href="/contact" className="button button--primary" external={false}>
+              Записаться на аудит
+            </MagneticLink>
+            <Link
+              href="/ai-agenty"
+              style={{ marginLeft: "16px", fontSize: "15px", color: "var(--muted-2)" }}
+            >
+              Страница «AI-агенты под ключ» →
+            </Link>
+          </div>
+        </Reveal>
       </section>
 
       {/* ══ ОБО МНЕ ══ */}
