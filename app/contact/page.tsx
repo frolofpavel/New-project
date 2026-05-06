@@ -33,7 +33,7 @@ export default function ContactPage() {
             <div className="contact-points">
               <a href={siteConfig.telegram} target="_blank" rel="noreferrer">
                 <span aria-hidden="true">💬</span>
-                <span>Telegram — @pavelfrolof</span>
+                <span>Telegram — {siteConfig.telegramHandle}</span>
               </a>
               <a href={`mailto:${siteConfig.email}`}>
                 <span aria-hidden="true">✉️</span>

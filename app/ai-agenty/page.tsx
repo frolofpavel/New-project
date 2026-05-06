@@ -41,12 +41,12 @@ export default function AiAgentsPage() {
           title="Внедрение AI-агентов под ключ — от аудита до системы в production"
           description="Целевой клиент: владелец бизнеса с выручкой порядка 50–500 млн ₽/год. Не почасовая консультация — пакеты с фиксированным объёмом и понятным результатом. Типичный чек проекта в B2B — порядка 200–700 тыс ₽; точная смета после брифа."
         />
-        <div style={{ marginTop: "28px", display: "flex", flexWrap: "wrap", gap: "12px" }}>
+        <div className="page-hero__actions">
           <MagneticLink href="/contact" className="button button--primary" external={false}>
             Записаться на бесплатный аудит 30 мин
           </MagneticLink>
           <MagneticLink href={siteConfig.telegram} className="button button--secondary" external>
-            Написать в Telegram
+            Telegram {siteConfig.telegramHandle}
           </MagneticLink>
         </div>
       </section>
@@ -66,7 +66,7 @@ export default function AiAgentsPage() {
         >
           Три формата — без «ставки за час» как главного оффера
         </h2>
-        <div className="cards-grid-3">
+        <div className="cards-grid-3 cards-grid-3--tight">
           {services.map((service) => (
             <ServiceCard key={service.slug} service={service} />
           ))}
@@ -74,26 +74,28 @@ export default function AiAgentsPage() {
       </section>
 
       <section className="section section--muted">
-        <SectionHeading
-          eyebrow="HeadHunter и найм"
-          title="Ищете AI-специалиста в штат?"
-          description="Короткий аргумент для ЛПР и HR: вместо бесконечного найма — внедрение под ключ с понятным результатом и сроком. Ниже — смыслы, которые можно использовать в откликах и сообщениях (адаптируйте под компанию)."
-        />
-        <div className="cards-grid-3" style={{ marginTop: "28px" }}>
-          {hhAngles.map((item) => (
-            <GlowCard key={item.title} className="principle-card">
-              <div className="principle-card__num" aria-hidden="true">
-                ↗
-              </div>
-              <h3 className="principle-card__title">{item.title}</h3>
-              <p className="principle-card__text">{item.text}</p>
-            </GlowCard>
-          ))}
+        <div className="section__inner">
+          <SectionHeading
+            eyebrow="HeadHunter и найм"
+            title="Ищете AI-специалиста в штат?"
+            description="Короткий аргумент для ЛПР и HR: вместо бесконечного найма — внедрение под ключ с понятным результатом и сроком. Ниже — смыслы, которые можно использовать в откликах и сообщениях (адаптируйте под компанию)."
+          />
+          <div className="cards-grid-3 cards-grid-3--tight">
+            {hhAngles.map((item) => (
+              <GlowCard key={item.title} className="principle-card">
+                <div className="principle-card__num" aria-hidden="true">
+                  ↗
+                </div>
+                <h3 className="principle-card__title">{item.title}</h3>
+                <p className="principle-card__text">{item.text}</p>
+              </GlowCard>
+            ))}
+          </div>
+          <p className="ai-agenty__footnote">
+            Готовая посадочная для диалога — эта страница. В отклике на HH можно дать ссылку{" "}
+            <Link href="/ai-agenty">pavelfrolof.ru/ai-agenty</Link> и предложить созвон по аудиту.
+          </p>
         </div>
-        <p style={{ marginTop: "24px", color: "var(--muted-2)", fontSize: "15px", maxWidth: "720px" }}>
-          Готовая посадочная для диалога — эта страница. В отклике на HH можно дать ссылку{" "}
-          <Link href="/ai-agenty">pavelfrolof.ru/ai-agenty</Link> и предложить созвон по аудиту.
-        </p>
       </section>
 
       <section className="section">
@@ -110,18 +112,20 @@ export default function AiAgentsPage() {
       </section>
 
       <section className="section section--muted">
-        <SectionHeading
-          eyebrow="Контент и SEO"
-          title="Планы публикаций — на сайте в блоге"
-          description="Контент-план Telegram и список из шести SEO-статей по AI-агентам лежат в блоге: можно использовать как дорожную карту до запуска Директа."
-        />
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "20px" }}>
-          <Link href="/blog/kontent-plan-telegram-may-2026" className="button button--secondary">
-            Контент-план Telegram (май 2026)
-          </Link>
-          <Link href="/blog/seo-plan-6-statey-ai-agenty" className="button button--secondary">
-            SEO: 6 статей про AI-агентов
-          </Link>
+        <div className="section__inner">
+          <SectionHeading
+            eyebrow="Контент и SEO"
+            title="Планы публикаций — на сайте в блоге"
+            description="Контент-план Telegram и список из шести SEO-статей по AI-агентам лежат в блоге: можно использовать как дорожную карту до запуска Директа."
+          />
+          <div className="ai-agenty__blog-links">
+            <Link href="/blog/kontent-plan-telegram-may-2026" className="button button--secondary">
+              Контент-план Telegram (май 2026)
+            </Link>
+            <Link href="/blog/seo-plan-6-statey-ai-agenty" className="button button--secondary">
+              SEO: 6 статей про AI-агентов
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -1502,6 +1502,50 @@ main { flex: 1; }
   position: relative;
   z-index: 1;
 }
+.page-hero__actions {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+}
+.page-hero__actions .button {
+  flex: 1 1 auto;
+  min-width: min(100%, 240px);
+  white-space: normal;
+  line-height: 1.35;
+  text-align: center;
+}
+@media (min-width: 520px) {
+  .page-hero__actions .button {
+    flex: 0 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+  }
+}
+
+.cards-grid-3.cards-grid-3--tight {
+  margin-top: 28px;
+}
+
+.ai-agenty__footnote {
+  margin-top: 24px;
+  color: var(--muted-2);
+  font-size: 15px;
+  max-width: 720px;
+  line-height: 1.65;
+}
+.ai-agenty__blog-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+.ai-agenty__blog-links .button {
+  white-space: normal;
+  line-height: 1.35;
+  text-align: center;
+}
 .portfolio-hero {
   overflow: hidden;
   min-height: 460px;

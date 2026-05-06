@@ -59,6 +59,7 @@ export type SiteConfig = {
   email: string;
   phone: string;
   telegram: string;
+  telegramHandle: string;
   whatsapp: string;
   vk: string;
   instagram: string;
