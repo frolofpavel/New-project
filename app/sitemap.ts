@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteConfig.baseUrl}/ai-agenty`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority: 0.95,
     },
     {
       url: `${siteConfig.baseUrl}/services`,
@@ -45,7 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteConfig.baseUrl}/blog`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.8,
+      priority: 0.85,
     },
   ];
 
@@ -60,7 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteConfig.baseUrl}/blog/${item.slug}`,
     lastModified: new Date(item.publishedAt),
     changeFrequency: "monthly" as const,
-    priority: 0.6,
+    priority: 0.65,
   }));
 
   return [...staticPages, ...casePages, ...blogPages];

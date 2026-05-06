@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
-
 import { HeroBlock } from "@/components/hero-block";
 import { AnimatedHeading } from "@/components/motion/animated-heading";
 import { CountUp } from "@/components/motion/count-up";
@@ -11,7 +9,7 @@ import { HugeMarquee } from "@/components/motion/huge-marquee";
 import { MagneticLink } from "@/components/motion/magnetic";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { siteConfig } from "@/lib/site-config";
-import { buildPageMetadata, buildPersonSchema } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: siteConfig.seo.title,
@@ -55,9 +53,6 @@ export default function HomePage() {
   return (
     <>
       <HeroBlock />
-      <Script id="person-schema" type="application/ld+json" strategy="beforeInteractive">
-        {JSON.stringify(buildPersonSchema())}
-      </Script>
 
       {/* ══ HUGE MARQUEE — двунаправленный ══ */}
       <section className="huge-marquee-block">

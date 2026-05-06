@@ -9,7 +9,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { siteConfig } from "@/lib/site-config";
-import { absoluteUrl } from "@/lib/seo";
+import { absoluteUrl, buildSiteJsonLdGraph } from "@/lib/seo";
 
 import "./globals.css";
 
@@ -84,6 +84,9 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${onest.variable} ${jetbrainsMono.variable}`}>
       <body>
+        <Script id="site-jsonld-graph" type="application/ld+json" strategy="beforeInteractive">
+          {JSON.stringify(buildSiteJsonLdGraph())}
+        </Script>
         <SmoothScroll />
         <ScrollProgress />
         <div className="grain" aria-hidden="true" />

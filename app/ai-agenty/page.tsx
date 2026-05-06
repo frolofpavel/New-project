@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 
 import { LeadStrip } from "@/components/lead-strip";
 import { GlowCard } from "@/components/motion/glow-card";
@@ -7,7 +8,7 @@ import { MagneticLink } from "@/components/motion/magnetic";
 import { SectionHeading } from "@/components/section-heading";
 import { ServiceCard } from "@/components/cards";
 import { siteConfig, services } from "@/lib/site-config";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildAiAgentsLandingSchema, buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "AI-агенты под ключ",
@@ -34,6 +35,9 @@ const hhAngles = [
 export default function AiAgentsPage() {
   return (
     <>
+      <Script id="ai-agents-service-schema" type="application/ld+json" strategy="beforeInteractive">
+        {JSON.stringify(buildAiAgentsLandingSchema())}
+      </Script>
       <section className="page-hero">
         <SectionHeading
           as="h1"

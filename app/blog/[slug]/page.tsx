@@ -5,7 +5,11 @@ import { notFound } from "next/navigation";
 import { LeadStrip } from "@/components/lead-strip";
 import { Markdown } from "@/components/markdown";
 import { formatDate, getAllBlogPosts, getBlogPostBySlug } from "@/lib/content";
-import { buildBlogPostSchema, buildPageMetadata } from "@/lib/seo";
+import {
+  buildBlogPostSchema,
+  buildBreadcrumbJsonLd,
+  buildPageMetadata,
+} from "@/lib/seo";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -29,6 +33,11 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       description: item.seo.description,
       path: `/blog/${item.slug}`,
       socialTitle: item.seo.title,
+      article: {
+        publishedTime: item.publishedAt,
+        modifiedTime: item.publishedAt,
+        tags: item.tags,
+      },
     }),
   };
 }
@@ -49,6 +58,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         strategy="beforeInteractive"
       >
         {JSON.stringify(buildBlogPostSchema(item))}
+      </Script>
+      <Script
+        id={`blog-breadcrumb-${item.slug}`}
+        type="application/ld+json"
+        strategy="beforeInteractive"
+      >
+        {JSON.stringify(
+          buildBreadcrumbJsonLd([
+            { name: "Главная", path: "/" },
+            { name: "Блог", path: "/blog" },
+            { name: item.title, path: `/blog/${item.slug}` },
+          ]),
+        )}
       </Script>
       <section className="page-hero">
         <p className="section-heading__eyebrow">

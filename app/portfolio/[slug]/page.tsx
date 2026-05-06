@@ -5,7 +5,11 @@ import { notFound } from "next/navigation";
 import { LeadStrip } from "@/components/lead-strip";
 import { Markdown } from "@/components/markdown";
 import { formatDate, getAllCaseStudies, getCaseStudyBySlug } from "@/lib/content";
-import { buildCaseStudySchema, buildPageMetadata } from "@/lib/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildCaseStudySchema,
+  buildPageMetadata,
+} from "@/lib/seo";
 
 type CaseStudyPageProps = {
   params: Promise<{ slug: string }>;
@@ -49,6 +53,19 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         strategy="beforeInteractive"
       >
         {JSON.stringify(buildCaseStudySchema(item))}
+      </Script>
+      <Script
+        id={`case-breadcrumb-${item.slug}`}
+        type="application/ld+json"
+        strategy="beforeInteractive"
+      >
+        {JSON.stringify(
+          buildBreadcrumbJsonLd([
+            { name: "Главная", path: "/" },
+            { name: "Кейсы", path: "/portfolio" },
+            { name: item.title, path: `/portfolio/${item.slug}` },
+          ]),
+        )}
       </Script>
       <section className="page-hero">
         <div className="article-layout">
