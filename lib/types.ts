@@ -60,6 +60,8 @@ export type SiteConfig = {
   phone: string;
   telegram: string;
   telegramHandle: string;
+  telegramAlt: string;
+  telegramAltHandle: string;
   whatsapp: string;
   vk: string;
   instagram: string;

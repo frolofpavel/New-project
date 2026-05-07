@@ -8,6 +8,8 @@ export const siteConfig: SiteConfig = {
   phone: "+7 (905) 939-08-74",
   telegram: "https://t.me/Frolofpavel",
   telegramHandle: "@Frolofpavel",
+  telegramAlt: "https://t.me/pavel_fro_marketing",
+  telegramAltHandle: "@pavel_fro_marketing",
   whatsapp: "https://wa.me/79059390874",
   vk: "https://vk.com/frolofpavel",
   instagram: "https://instagram.com/frolofpavel",

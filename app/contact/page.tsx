@@ -35,6 +35,10 @@ export default function ContactPage() {
                 <span aria-hidden="true">💬</span>
                 <span>Telegram — {siteConfig.telegramHandle}</span>
               </a>
+              <a href={siteConfig.telegramAlt} target="_blank" rel="noreferrer">
+                <span aria-hidden="true">💬</span>
+                <span>Telegram — {siteConfig.telegramAltHandle}</span>
+              </a>
               <a href={`mailto:${siteConfig.email}`}>
                 <span aria-hidden="true">✉️</span>
                 <span>{siteConfig.email}</span>

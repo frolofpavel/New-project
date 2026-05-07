@@ -106,6 +106,7 @@ export function buildSiteJsonLdGraph() {
     },
     sameAs: [
       siteConfig.telegram,
+      siteConfig.telegramAlt,
       siteConfig.vk,
       siteConfig.instagram,
       siteConfig.whatsapp,

@@ -50,7 +50,10 @@ export function SiteFooter() {
               {siteConfig.phone}
             </a>
             <a href={siteConfig.telegram} target="_blank" rel="noreferrer">
-              Telegram
+              Telegram {siteConfig.telegramHandle}
+            </a>
+            <a href={siteConfig.telegramAlt} target="_blank" rel="noreferrer">
+              Telegram {siteConfig.telegramAltHandle}
             </a>
             <a href={siteConfig.whatsapp} target="_blank" rel="noreferrer">
               WhatsApp
