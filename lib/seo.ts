@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
 import type { BlogPost, CaseStudy } from "@/lib/types";
 
-const OG_IMAGE_PATH = "/og-cover.jpg";
+const OG_IMAGE_PATH = "/opengraph-image";
 const PERSON_IMAGE_PATH = "/foto-pavel.jpg";
 
 type BuildPageMetadataInput = {
@@ -56,15 +56,6 @@ export function buildPageMetadata({
   const ogTitle = socialTitle ?? resolveSocialTitle(title);
   const ogDescription = socialDescription ?? description;
 
-  const ogImages = [
-    {
-      url: absoluteUrl(OG_IMAGE_PATH),
-      width: 1200,
-      height: 630,
-      alt: "Павел Фролов — маркетолог и AI-архитектор",
-    },
-  ];
-
   return {
     title,
     description,
@@ -84,13 +75,11 @@ export function buildPageMetadata({
             ...(article.tags && article.tags.length > 0 ? { tags: article.tags } : {}),
           }
         : {}),
-      images: ogImages,
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description: ogDescription,
-      images: [absoluteUrl(OG_IMAGE_PATH)],
     },
   };
 }
