@@ -118,16 +118,16 @@ export default function AiAgentsPage() {
       <section className="section section--muted">
         <div className="section__inner">
           <SectionHeading
-            eyebrow="Контент и SEO"
-            title="Планы публикаций — на сайте в блоге"
-            description="Контент-план Telegram и список из шести SEO-статей по AI-агентам лежат в блоге: можно использовать как дорожную карту до запуска Директа."
+            eyebrow="Блог"
+            title="Как это работает — подробно"
+            description="Пошаговый разбор внедрения AI-агентов: от аудита процессов до production. Реальный опыт, типичные ошибки и метрики."
           />
           <div className="ai-agenty__blog-links">
-            <Link href="/blog/kontent-plan-telegram-may-2026" className="button button--secondary">
-              Контент-план Telegram (май 2026)
+            <Link href="/blog/vnedrenie-ai-agenta-v-kompanii-poshagovo" className="button button--secondary">
+              Внедрение AI-агента: пошагово от аудита до production
             </Link>
-            <Link href="/blog/seo-plan-6-statey-ai-agenty" className="button button--secondary">
-              SEO: 6 статей про AI-агентов
+            <Link href="/blog" className="button button--secondary">
+              Все статьи в блоге
             </Link>
           </div>
         </div>
