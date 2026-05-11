@@ -104,6 +104,24 @@ export default function AiAgentsPage() {
 
       <section className="section">
         <SectionHeading
+          eyebrow="Направления"
+          title="Где AI-агенты дают максимальный эффект"
+        />
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginTop: 8 }}>
+          <Link href="/optimizaciya-biznes-processov" className="button button--secondary">
+            Оптимизация бизнес-процессов
+          </Link>
+          <Link href="/ai-avtomatizaciya-marketinga" className="button button--secondary">
+            AI-автоматизация маркетинга
+          </Link>
+          <Link href="/ai-dlya-prodazh" className="button button--secondary">
+            AI для продаж
+          </Link>
+        </div>
+      </section>
+
+      <section className="section">
+        <SectionHeading
           eyebrow="Порог входа"
           title="Бесплатный аудит 30 минут"
           description="Разбираем 1–2 процесса, где теряются деньги или время. Показываю, имеет ли смысл AI-агент в вашем контексте и какой пакет логичен первым. Если задача не моя — скажу честно."
