@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КП — AVTOR.CLUB — Павел Фролов</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090b;
+  --surface: #0f1115;
+  --border: #1c1f26;
+  --text: #e8eaf0;
+  --muted: #5a6170;
+  --accent: #c9a84c;
+  --accent-soft: rgba(201,168,76,0.12);
+  --accent-border: rgba(201,168,76,0.25);
+  --red: #e05252;
+  --green: #4caf7a;
+  --blue: #5b8dd9;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); }
+.page { display:none; min-height:100vh; padding:88px 32px 64px; max-width:1060px; margin:0 auto; }
+.page.active { display:flex; flex-direction:column; gap:20px; }
+
+nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(8,9,11,0.96); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+.nav-r1 { display:flex; align-items:center; justify-content:space-between; padding:11px 24px; }
+.nav-brand { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--accent); }
+.nav-client { font-size:13px; color:var(--muted); margin-left:12px; }
+.nav-ctrl { display:flex; align-items:center; gap:10px; }
+.nav-btn { background:var(--surface); border:1px solid var(--border); color:var(--text); padding:5px 14px; border-radius:6px; cursor:pointer; font-size:13px; font-family:'Inter',sans-serif; transition:.15s; }
+.nav-btn:hover { border-color:var(--accent); color:var(--accent); }
+.nav-cnt { font-size:12px; color:var(--muted); min-width:44px; text-align:center; }
+.nav-r2 { display:flex; flex-wrap:nowrap; overflow-x:auto; gap:2px; padding:7px 24px 9px; border-top:1px solid var(--border); scrollbar-width:none; }
+.nav-r2::-webkit-scrollbar { display:none; }
+.nav-l { font-size:11px; padding:3px 10px; border-radius:4px; cursor:pointer; color:var(--muted); border:1px solid transparent; white-space:nowrap; flex-shrink:0; transition:.15s; }
+.nav-l.active { color:var(--accent); border-color:var(--accent-border); background:var(--accent-soft); }
+.nav-l:hover:not(.active) { color:var(--text); }
+
+h1 { font-family:'Syne',sans-serif; font-size:clamp(26px,4vw,46px); font-weight:800; line-height:1.14; }
+h2 { font-family:'Syne',sans-serif; font-size:clamp(18px,2.5vw,26px); font-weight:700; margin-bottom:16px; }
+h3 { font-family:'Syne',sans-serif; font-size:15px; font-weight:600; margin-bottom:8px; }
+p { font-size:14px; line-height:1.7; color:var(--muted); }
+a { color:var(--accent); text-decoration:none; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; }
+.card-accent { border-color:var(--accent-border); background:var(--accent-soft); }
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.chip { display:inline-block; padding:3px 11px; border-radius:20px; font-size:12px; font-weight:600; background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent-border); margin:3px 3px 3px 0; }
+.chip.r { background:rgba(224,82,82,.1); color:var(--red); border-color:rgba(224,82,82,.25); }
+.chip.g { background:rgba(76,175,122,.1); color:var(--green); border-color:rgba(76,175,122,.25); }
+.chip.b { background:rgba(91,141,217,.1); color:var(--blue); border-color:rgba(91,141,217,.25); }
+.label { font-size:10px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin-bottom:5px; }
+.accent { color:var(--accent); }
+.muted { color:var(--muted); }
+.big { font-family:'Syne',sans-serif; font-size:38px; font-weight:800; color:var(--accent); line-height:1; }
+.tag-r { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; background:rgba(224,82,82,.12); color:var(--red); }
+.tag-g { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; background:rgba(76,175,122,.12); color:var(--green); }
+.tag-y { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; background:var(--accent-soft); color:var(--accent); }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th { text-align:left; font-size:10px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); padding:9px 12px; border-bottom:1px solid var(--border); }
+td { padding:10px 12px; border-bottom:1px solid var(--border); color:var(--muted); vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+td.hl { color:var(--text); font-weight:500; }
+.divl { border-left:2px solid var(--accent-border); padding-left:14px; margin:12px 0; }
+.step { display:flex; gap:12px; margin-bottom:14px; align-items:flex-start; }
+.snum { width:26px; height:26px; border-radius:50%; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid var(--accent-border); }
+.sbody .st { font-size:14px; font-weight:600; color:var(--text); margin-bottom:3px; }
+.sbody .sd { font-size:13px; color:var(--muted); }
+.row-icon { display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; }
+.ico { width:18px; flex-shrink:0; margin-top:2px; font-size:13px; }
+.pain-b { border-left:3px solid var(--red); }
+footer { margin-top:auto; padding:18px 20px; background:var(--surface); border:1px solid var(--border); border-radius:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.fc { font-size:13px; color:var(--muted); }
+.fc strong { color:var(--text); }
+.fc a { color:var(--accent); }
+.score-circle { display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:50%; border:2px solid; font-family:'Syne',sans-serif; font-size:18px; font-weight:800; }
+.sc-r { border-color:var(--red); color:var(--red); }
+.sc-y { border-color:var(--accent); color:var(--accent); }
+.sc-g { border-color:var(--green); color:var(--green); }
+@media(max-width:720px){ .g2,.g3,.g4{grid-template-columns:1fr;} .nav-r2{display:none;} .page{padding:80px 16px 48px;} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-r1">
+    <div style="display:flex;align-items:center">
+      <span class="nav-brand">Павел Фролов</span>
+      <span class="nav-client">× AVTOR.CLUB</span>
+    </div>
+    <div class="nav-ctrl">
+      <button class="nav-btn" onclick="go(currentPage-1)">←</button>
+      <span class="nav-cnt" id="nc">1 / 14</span>
+      <button class="nav-btn" onclick="go(currentPage+1)">→</button>
+    </div>
+  </div>
+  <div class="nav-r2">
+    <span class="nav-l active"  onclick="go(0)"><span class="muted" style="margin-right:3px">00</span>Обложка</span>
+    <span class="nav-l" onclick="go(1)"><span class="muted" style="margin-right:3px">01</span>Анализ ниши</span>
+    <span class="nav-l" onclick="go(2)"><span class="muted" style="margin-right:3px">02</span>Конкуренты</span>
+    <span class="nav-l" onclick="go(3)"><span class="muted" style="margin-right:3px">03</span>Карта рынка</span>
+    <span class="nav-l" onclick="go(4)"><span class="muted" style="margin-right:3px">04</span>Позиционирование</span>
+    <span class="nav-l" onclick="go(5)"><span class="muted" style="margin-right:3px">05</span>UX/UI аудит</span>
+    <span class="nav-l" onclick="go(6)"><span class="muted" style="margin-right:3px">06</span>SEO аудит</span>
+    <span class="nav-l" onclick="go(7)"><span class="muted" style="margin-right:3px">07</span>Боли и потери</span>
+    <span class="nav-l" onclick="go(8)"><span class="muted" style="margin-right:3px">08</span>Стратегия</span>
+    <span class="nav-l" onclick="go(9)"><span class="muted" style="margin-right:3px">09</span>Маркетинг-план</span>
+    <span class="nav-l" onclick="go(10)"><span class="muted" style="margin-right:3px">10</span>Офферы</span>
+    <span class="nav-l" onclick="go(11)"><span class="muted" style="margin-right:3px">11</span>ROI</span>
+    <span class="nav-l" onclick="go(12)"><span class="muted" style="margin-right:3px">12</span>Условия</span>
+    <span class="nav-l" onclick="go(13)"><span class="muted" style="margin-right:3px">13</span>Следующий шаг</span>
+  </div>
+</nav>
+
+<!-- 00 ОБЛОЖКА -->
+<div class="page active" id="page-0">
+  <div>
+    <div class="label" style="margin-bottom:12px">Коммерческое предложение · 14 мая 2026</div>
+    <h1>Выстраиваем органический поток клиентов<br>для <span class="accent">Клуба AVTOR</span></h1>
+    <p style="margin-top:14px;font-size:15px;max-width:580px;">У вас рейтинг 4.9 и клиенты уровня федеральных министров — но Google и Яндекс этого не видят. Мы это исправим.</p>
+  </div>
+  <div class="g4">
+    <div class="card text-center" style="text-align:center">
+      <div class="label">Средний чек</div>
+      <div class="big" style="font-size:28px">200к ₽</div>
+      <div class="muted" style="font-size:12px;margin-top:4px">за одно изделие</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label">SEO сейчас</div>
+      <div class="big" style="color:var(--red)">4/10</div>
+      <div class="muted" style="font-size:12px;margin-top:4px">критическое состояние</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label">Рейтинг</div>
+      <div class="big" style="color:var(--green)">4.9★</div>
+      <div class="muted" style="font-size:12px;margin-top:4px">невидим в поиске</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label">ROI с 1 клиента</div>
+      <div class="big">233%</div>
+      <div class="muted" style="font-size:12px;margin-top:4px">при пакете 60к/мес</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px">
+    <span class="chip">19 лет в маркетинге</span>
+    <span class="chip">SEO + UX/UI</span>
+    <span class="chip">Работаем с premium B2C</span>
+    <span class="chip">Расцветай — 7 500 лидов/мес</span>
+    <span class="chip">Прозрачная отчётность</span>
+  </div>
+  <footer>
+    <div class="fc"><strong>Павел Фролов</strong> · Интернет-маркетинг, 19 лет<br>
+      <a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a> · <a href="https://pavelfrolof.ru">pavelfrolof.ru</a>
+    </div>
+    <div class="fc" style="text-align:right">Подготовлено для<br><strong>avtor.club</strong> · Кутузовский пр-т, 14</div>
+  </footer>
+</div>
+
+<!-- 01 АНАЛИЗ НИШИ -->
+<div class="page" id="page-1">
+  <h2>01 · Анализ ниши</h2>
+  <div class="g3">
+    <div class="card">
+      <div class="label">Объём рынка</div>
+      <div class="big">28 млрд ₽</div>
+      <p style="margin-top:8px">Рынок индивидуального пошива одежды в России. Сегмент premium и luxury — около 8 млрд ₽/год, прирост +12% г/г.</p>
+    </div>
+    <div class="card">
+      <div class="label">Средний чек bespoke Москва</div>
+      <div class="big">180к ₽</div>
+      <p style="margin-top:8px">Диапазон: 60–520 тыс. ₽ за изделие. AVTOR работает в верхней трети — 118–520 тыс. ₽. Высший сегмент устойчив к кризисам.</p>
+    </div>
+    <div class="card">
+      <div class="label">Покупают онлайн</div>
+      <div class="big">67%</div>
+      <p style="margin-top:8px">Клиентов premium-ателье начинают поиск в интернете перед первым визитом. Решение принимается до звонка.</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h3>Топ-3 тренда рынка</h3>
+      <div class="step"><div class="snum">↑</div><div class="sbody"><div class="st">Рост запросов на отечественный luxury</div><div class="sd">После 2022 платёжеспособная аудитория переориентируется с зарубежных брендов на российских мастеров. Bespoke-ателье выигрывают.</div></div></div>
+      <div class="step"><div class="snum">↑</div><div class="sbody"><div class="st">Персонализация как статусный сигнал</div><div class="sd">«Одет у портного» — маркер статуса уровня. Аудитория топ-менеджеров и чиновников растёт.</div></div></div>
+      <div class="step"><div class="snum">↑</div><div class="sbody"><div class="st">Женская bespoke-одежда — недооценена</div><div class="sd">Конкуренты работают только с мужчинами. AVTOR шьёт и женскую — это незанятая ниша с высоким спросом.</div></div></div>
+    </div>
+    <div class="card">
+      <h3>Целевая аудитория — сегменты</h3>
+      <table>
+        <tr><th>Сегмент</th><th>Боль</th><th>Чек</th></tr>
+        <tr><td class="hl">Топ-менеджеры, CEO</td><td>Нет времени, нужен имидж</td><td>200–400к</td></tr>
+        <tr><td class="hl">Политики, чиновники</td><td>Статус, узнаваемость</td><td>300–520к</td></tr>
+        <tr><td class="hl">Спортивные функционеры</td><td>Нестандартная фигура</td><td>150–300к</td></tr>
+        <tr><td class="hl">Банкиры, финансисты</td><td>Уверенность в переговорах</td><td>200–400к</td></tr>
+        <tr><td class="hl">Женщины-руководители</td><td>Нет bespoke для женщин</td><td>150–350к</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card card-accent">
+    <p><strong style="color:var(--accent)">Ключевой инсайт:</strong> Аудитория принимает решение о 200–400 тыс. ₽ расходе, прочитав 2–3 страницы в интернете. Если AVTOR не виден — клиент уходит к конкуренту который виден, даже если он хуже.</p>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">01 / 14</div>
+  </footer>
+</div>
+
+<!-- 02 КОНКУРЕНТЫ -->
+<div class="page" id="page-2">
+  <h2>02 · Анализ конкурентов</h2>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <tr>
+        <th>Сайт</th><th>Позиция</th><th>Meta desc</th><th>Schema.org</th><th>Цены открыты</th><th>Блог</th><th>Женская</th><th>Оценка</th>
+      </tr>
+      <tr>
+        <td class="hl">dandy.msk.ru</td>
+        <td><span class="tag-r">Топ-1</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td>58/100</td>
+      </tr>
+      <tr>
+        <td class="hl">ostojenkabespoke.ru</td>
+        <td><span class="tag-r">Топ-2</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-g">Да</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td>64/100</td>
+      </tr>
+      <tr>
+        <td class="hl">thestitchbespoke.ru</td>
+        <td><span class="tag-r">Топ-3</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-y">Частично</span></td>
+        <td><span class="tag-g">Да</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td>61/100</td>
+      </tr>
+      <tr>
+        <td class="hl">inbespoke.ru</td>
+        <td><span class="tag-r">Топ-4</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-g">Да</span></td>
+        <td><span class="tag-y">Слабый</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td>55/100</td>
+      </tr>
+      <tr style="background:rgba(201,168,76,0.05)">
+        <td class="hl" style="color:var(--accent)">avtor.club (вы)</td>
+        <td><span class="tag-y">5–10</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Нет</span></td>
+        <td><span class="tag-r">Скрыты</span></td>
+        <td><span class="tag-y">Слабый</span></td>
+        <td><span class="tag-g">Есть</span></td>
+        <td style="color:var(--accent)">70/100*</td>
+      </tr>
+    </table>
+    <p style="margin-top:10px;font-size:12px">* Потенциал при реализации наших рекомендаций — выше всех конкурентов</p>
+  </div>
+  <div class="g2">
+    <div class="card pain-b">
+      <h3 style="color:var(--red)">Почему dandy.msk.ru в Топ-1, хотя слабее?</h3>
+      <p>Старый домен, накопленный ссылочный вес. Но: нет цен, нет блога, нет schema. Один технический рывок — и AVTOR перепрыгивает за счёт качества продукта + репутации 4.9★</p>
+    </div>
+    <div class="card card-accent">
+      <h3>Главное открытие</h3>
+      <p><strong style="color:var(--text)">Никто из конкурентов не использует Schema.org</strong> — ни один. Кто первый внедрит — получит звёздочки рейтинга в сниппете Google на 6–12 месяцев раньше других. У AVTOR рейтинг 4.9 — лучший на рынке. Это нужно показать.</p>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <div class="label">dandy.msk.ru · УТП</div>
+      <div class="divl"><p>«20+ лет, стажировки в Corneliani и Scabal». Держится на домене, не на контенте. Нет цен, нет женской одежды.</p></div>
+    </div>
+    <div class="card">
+      <div class="label">ostojenkabespoke.ru · УТП</div>
+      <div class="divl"><p>Bespoke от 360к, MTM от 140к — цены прямо на сайте. Именно это даёт Топ-2. Нет блога, нет Schema.</p></div>
+    </div>
+    <div class="card">
+      <div class="label">thestitchbespoke.ru · УТП</div>
+      <div class="divl"><p>Кутузовский 43 — прямой сосед! Есть блог (10+ статей), 10 категорий услуг. Без Schema и без женской линейки.</p></div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">02 / 14</div>
+  </footer>
+</div>
+
+<!-- 03 КАРТА РЫНКА -->
+<div class="page" id="page-3">
+  <h2>03 · Карта позиционирования</h2>
+  <div class="g2">
+    <div class="card" style="position:relative;min-height:320px;overflow:hidden;">
+      <div class="label" style="margin-bottom:16px">SEO-видимость vs Качество продукта</div>
+      <svg viewBox="0 0 400 300" width="100%" style="display:block">
+        <defs>
+          <marker id="ah" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#5a6170"/>
+          </marker>
+        </defs>
+        <!-- Оси -->
+        <line x1="40" y1="260" x2="380" y2="260" stroke="#1c1f26" stroke-width="1.5" marker-end="url(#ah)"/>
+        <line x1="40" y1="260" x2="40" y2="20" stroke="#1c1f26" stroke-width="1.5" marker-end="url(#ah)"/>
+        <text x="200" y="290" text-anchor="middle" fill="#5a6170" font-size="11" font-family="Inter">SEO-видимость →</text>
+        <text x="14" y="140" text-anchor="middle" fill="#5a6170" font-size="11" font-family="Inter" transform="rotate(-90,14,140)">Качество продукта →</text>
+        <!-- Квадранты -->
+        <rect x="41" y="21" width="169" height="119" fill="rgba(224,82,82,0.04)" rx="4"/>
+        <rect x="210" y="21" width="169" height="119" fill="rgba(76,175,122,0.06)" rx="4"/>
+        <rect x="41" y="140" width="169" height="119" fill="rgba(91,141,217,0.04)" rx="4"/>
+        <rect x="210" y="140" width="169" height="119" fill="rgba(201,168,76,0.04)" rx="4"/>
+        <text x="126" y="38" text-anchor="middle" fill="#e05252" font-size="9" font-family="Inter" opacity=".7">Хороший продукт, не видят</text>
+        <text x="295" y="38" text-anchor="middle" fill="#4caf7a" font-size="9" font-family="Inter" opacity=".7">Лидеры рынка</text>
+        <text x="126" y="157" text-anchor="middle" fill="#5b8dd9" font-size="9" font-family="Inter" opacity=".7">Слабые игроки</text>
+        <text x="295" y="157" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="Inter" opacity=".7">Видны, но слабее</text>
+        <!-- Конкуренты -->
+        <circle cx="310" cy="200" r="14" fill="rgba(91,141,217,0.2)" stroke="#5b8dd9" stroke-width="1.5"/>
+        <text x="310" y="204" text-anchor="middle" fill="#5b8dd9" font-size="9" font-family="Inter" font-weight="600">Dandy</text>
+        <circle cx="270" cy="180" r="13" fill="rgba(91,141,217,0.15)" stroke="#5b8dd9" stroke-width="1"/>
+        <text x="270" y="184" text-anchor="middle" fill="#5b8dd9" font-size="9" font-family="Inter">Ostojenka</text>
+        <circle cx="250" cy="210" r="11" fill="rgba(91,141,217,0.1)" stroke="#5b8dd9" stroke-width="1"/>
+        <text x="250" y="225" text-anchor="middle" fill="#5a6170" font-size="8" font-family="Inter">Stitch</text>
+        <circle cx="230" cy="230" r="10" fill="rgba(91,141,217,0.08)" stroke="#5b8dd9" stroke-width="1"/>
+        <text x="230" y="245" text-anchor="middle" fill="#5a6170" font-size="8" font-family="Inter">Inbespoke</text>
+        <!-- AVTOR -->
+        <circle cx="90" cy="60" r="18" fill="rgba(201,168,76,0.2)" stroke="#c9a84c" stroke-width="2"/>
+        <text x="90" y="55" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="Inter" font-weight="700">AVTOR</text>
+        <text x="90" y="68" text-anchor="middle" fill="#c9a84c" font-size="8" font-family="Inter">сейчас</text>
+        <!-- Стрелка движения -->
+        <path d="M108,65 Q200,55 275,68" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#ah)"/>
+        <text x="190" y="52" fill="#c9a84c" font-size="8" font-family="Inter">цель → 3 мес</text>
+        <!-- Целевая позиция -->
+        <circle cx="290" cy="68" r="16" fill="rgba(201,168,76,0.08)" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="290" y="72" text-anchor="middle" fill="#c9a84c" font-size="8" font-family="Inter" opacity=".7">цель</text>
+      </svg>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card card-accent">
+        <h3>Незанятая ниша</h3>
+        <p style="margin-bottom:10px">Ни один конкурент не работает с женской аудиторией в bespoke-сегменте. AVTOR — единственный. Это отдельный органический поток при правильном SEO.</p>
+        <span class="chip">Женская bespoke-одежда</span>
+        <span class="chip">Выездной сервис</span>
+      </div>
+      <div class="card">
+        <h3>Позиция после работы с нами</h3>
+        <div class="step"><div class="snum">→</div><div class="sbody"><div class="st">Топ-3 по запросам bespoke Москва</div><div class="sd">Через 3–4 месяца технической и контентной работы</div></div></div>
+        <div class="step"><div class="snum">→</div><div class="sbody"><div class="st">Единственный с рейтингом в сниппете</div><div class="sd">Schema.org + 4.9★ Zoon = звёздочки в Google</div></div></div>
+        <div class="step"><div class="snum">→</div><div class="sbody"><div class="st">Монополия на женскую bespoke-аудиторию</div><div class="sd">Отдельный лендинг, отдельный трафик, нет конкурентов</div></div></div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">03 / 14</div>
+  </footer>
+</div>
+
+<!-- 04 ПОЗИЦИОНИРОВАНИЕ -->
+<div class="page" id="page-4">
+  <h2>04 · Позиционирование AVTOR</h2>
+  <div class="card card-accent" style="padding:24px 28px">
+    <div class="label">Главный оффер</div>
+    <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;line-height:1.3;margin-top:8px;color:var(--text)">
+      Создаём безупречный образ власти для людей,<br>которые формируют решения — за 21 день, по 97 параметрам
+    </div>
+    <p style="margin-top:12px">Не ателье. Клуб. Для тех, кто не объясняет своё положение — но хочет чтобы оно считывалось с первого взгляда.</p>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h3>4 ключевых сообщения</h3>
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="st">«Вас видят по одежде»</div><div class="sd">Для топ-менеджеров и политиков — имидж это инструмент влияния, а не тщеславие</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="st">«Ткань от Loro Piana, скрой под вас»</div><div class="sd">Подчёркивает статус материала + уникальность результата. Бренды тканей = социальный сигнал</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="st">«15 лет — значит нам доверяют»</div><div class="sd">Для консервативной аудитории долгосрочная стабильность важнее инноваций</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="st">«Приедем сами — ваше время дороже»</div><div class="sd">Выездной сервис = УТП которого нет у конкурентов. Особенно для занятых клиентов</div></div></div>
+    </div>
+    <div class="card">
+      <h3>Дифференциаторы AVTOR vs рынок</h3>
+      <table>
+        <tr><th>Параметр</th><th>AVTOR</th><th>Рынок</th></tr>
+        <tr><td>Мужская + женская</td><td class="hl" style="color:var(--green)">✓ Оба</td><td>Только мужская</td></tr>
+        <tr><td>Выездной сервис</td><td class="hl" style="color:var(--green)">✓ Есть</td><td>Нет</td></tr>
+        <tr><td>Рейтинг</td><td class="hl" style="color:var(--green)">4.9★ (45 отз.)</td><td>3.8–4.2★</td></tr>
+        <tr><td>Бренды тканей</td><td class="hl">Loro Piana, Dormeuil, Scabal, Zegna</td><td>1–2 бренда</td></tr>
+        <tr><td>Опыт</td><td class="hl">15 лет</td><td>7–12 лет</td></tr>
+        <tr><td>Клиенты</td><td class="hl" style="color:var(--green)">Федеральный уровень</td><td>Частные лица</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Что не работает в текущем позиционировании сайта</h3>
+    <div class="g3">
+      <div class="row-icon"><div class="ico" style="color:var(--red)">✗</div><div><strong style="font-size:13px;color:var(--text)">H1 «КЛУБ AVTOR создаёт имидж влияния»</strong><p style="font-size:12px">Красиво, но поисковик не понимает о чём страница. Нет слов «пошив», «костюм», «Москва».</p></div></div>
+      <div class="row-icon"><div class="ico" style="color:var(--red)">✗</div><div><strong style="font-size:13px;color:var(--text)">Нет цены «от» на главной</strong><p style="font-size:12px">Клиент не знает порядок цен — уходит проверять к Ostojenka (там 140к–360к написано).</p></div></div>
+      <div class="row-icon"><div class="ico" style="color:var(--red)">✗</div><div><strong style="font-size:13px;color:var(--text)">Именитые клиенты — только имена</strong><p style="font-size:12px">«Обшиваем президента ФК Зенит» без цитаты — просто список. Нужна живая история.</p></div></div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">04 / 14</div>
+  </footer>
+</div>
+
+<!-- 05 UX/UI АУДИТ -->
+<div class="page" id="page-5">
+  <h2>05 · UX/UI аудит — <span style="color:var(--accent)">6.3 / 10</span></h2>
+  <div class="g2">
+    <div>
+      <div class="card" style="margin-bottom:14px">
+        <h3>Оценки по блокам</h3>
+        <table>
+          <tr><th>Блок</th><th>Оценка</th><th>Статус</th></tr>
+          <tr><td class="hl">Первый экран / УТП</td><td>6/10</td><td><span class="tag-y">Слабый</span></td></tr>
+          <tr><td class="hl">Навигация и структура</td><td>6/10</td><td><span class="tag-y">Слабый</span></td></tr>
+          <tr><td class="hl">Конверсионные элементы</td><td>7/10</td><td><span class="tag-y">Средний</span></td></tr>
+          <tr><td class="hl">Доверие и репутация</td><td>7.5/10</td><td><span class="tag-g">Хорошо</span></td></tr>
+          <tr><td class="hl">Контент и тексты</td><td>6.5/10</td><td><span class="tag-y">Средний</span></td></tr>
+          <tr><td class="hl">Технические проблемы</td><td>5/10</td><td><span class="tag-r">Критично</span></td></tr>
+          <tr><td class="hl">Путь пользователя</td><td>6/10</td><td><span class="tag-y">Слабый</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card pain-b">
+        <h3 style="color:var(--red)">Критические проблемы</h3>
+        <div class="row-icon"><div class="ico" style="color:var(--red)">✗</div><div><strong style="font-size:13px;color:var(--text)">5 из 8 URL — 404</strong><p style="font-size:12px">/about, /ceny, /uslugi — не работают. Клиент из поиска попадает в тупик.</p></div></div>
+        <div class="row-icon"><div class="ico" style="color:var(--red)">✗</div><div><strong style="font-size:13px;color:var(--text)">Нет цены «от» на главной</strong><p style="font-size:12px">Клиент уходит к конкуренту где цена видна.</p></div></div>
+        <div class="row-icon"><div class="ico" style="color:var(--red)">✗</div><div><strong style="font-size:13px;color:var(--text)">Нет CTA на глубоких страницах</strong><p style="font-size:12px">После просмотра портфолио — тупик. Кнопки «Записаться» нет.</p></div></div>
+      </div>
+      <div class="card">
+        <h3>Что уже хорошо</h3>
+        <div class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div><p style="font-size:13px">7 точек захвата: WhatsApp, форма, телефон, запись на визит</p></div></div>
+        <div class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div><p style="font-size:13px">Именитые клиенты — президент ФК Зенит, министры</p></div></div>
+        <div class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div><p style="font-size:13px">Цены на отдельной странице — прозрачно для premium</p></div></div>
+        <div class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div><p style="font-size:13px">Команда с биографиями — 6 человек</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card card-accent">
+    <h3>Путь пользователя — где теряем</h3>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px">
+      <span style="color:var(--text)">Главная</span>
+      <span class="muted">→</span>
+      <span style="color:var(--text)">Цены</span>
+      <span class="muted">→</span>
+      <span style="color:var(--text)">Портфолио</span>
+      <span class="muted">→</span>
+      <span style="color:var(--red)">❌ Тупик (нет CTA)</span>
+      <span class="muted">→</span>
+      <span style="color:var(--red)">Пользователь уходит</span>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">05 / 14</div>
+  </footer>
+</div>
+
+<!-- 06 SEO АУДИТ -->
+<div class="page" id="page-6">
+  <h2>06 · SEO аудит — <span style="color:var(--red)">4 / 10</span></h2>
+  <div class="g3">
+    <div class="card" style="text-align:center">
+      <div class="label">Индексировано страниц</div>
+      <div class="big" style="color:var(--red)">~10</div>
+      <p style="font-size:12px;margin-top:6px">из 119 в sitemap. 90% контента — невидимо</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label">Страниц с meta description</div>
+      <div class="big" style="color:var(--red)">0</div>
+      <p style="font-size:12px;margin-top:6px">на всех 119 страницах отсутствует</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label">Schema.org блоков</div>
+      <div class="big" style="color:var(--red)">0</div>
+      <p style="font-size:12px;margin-top:6px">рейтинг 4.9★ невидим в поиске</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h3>Технический чек-лист</h3>
+      <table>
+        <tr><th>Параметр</th><th>Статус</th><th>Влияние</th></tr>
+        <tr><td class="hl">Meta description</td><td><span class="tag-r">Нет везде</span></td><td>CTR −5–10%</td></tr>
+        <tr><td class="hl">Schema.org LocalBusiness</td><td><span class="tag-r">Нет</span></td><td>Нет звёздочек в поиске</td></tr>
+        <tr><td class="hl">Schema AggregateRating</td><td><span class="tag-r">Нет</span></td><td>Рейтинг 4.9 невидим</td></tr>
+        <tr><td class="hl">H1 главной страницы</td><td><span class="tag-r">Брендовый</span></td><td>Нет ключевых слов</td></tr>
+        <tr><td class="hl">Canonical теги</td><td><span class="tag-r">Нет</span></td><td>Дубли Tilda</td></tr>
+        <tr><td class="hl">Sitemap (ЖК/услуги)</td><td><span class="tag-r">Только новости</span></td><td>Страницы услуг не индексируются</td></tr>
+        <tr><td class="hl">HTTPS</td><td><span class="tag-g">Есть</span></td><td>—</td></tr>
+        <tr><td class="hl">Robots.txt</td><td><span class="tag-g">Настроен</span></td><td>—</td></tr>
+        <tr><td class="hl">Блог</td><td><span class="tag-y">4 статьи</span></td><td>Не оптимизированы</td></tr>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card">
+        <h3>Ключевые запросы — потенциал</h3>
+        <table>
+          <tr><th>Запрос</th><th>Позиция</th><th>Потенциал</th></tr>
+          <tr><td>пошив костюма на заказ Москва</td><td class="hl" style="color:var(--red)">10+</td><td style="color:var(--green)">Топ-3</td></tr>
+          <tr><td>bespoke ателье Москва</td><td class="hl" style="color:var(--red)">10+</td><td style="color:var(--green)">Топ-3</td></tr>
+          <tr><td>индивидуальный пошив пиджака</td><td class="hl" style="color:var(--accent)">6–8</td><td style="color:var(--green)">Топ-2</td></tr>
+          <tr><td>пошив женской одежды на заказ</td><td class="hl" style="color:var(--red)">нет</td><td style="color:var(--green)">Топ-1*</td></tr>
+          <tr><td>Loro Piana ткань Москва</td><td class="hl" style="color:var(--red)">нет</td><td style="color:var(--green)">Топ-2*</td></tr>
+        </table>
+        <p style="margin-top:8px;font-size:11px">* Конкурентов по этим запросам практически нет</p>
+      </div>
+      <div class="card card-accent">
+        <h3>Окно возможностей</h3>
+        <p>Ни один конкурент не оптимизировал сайт под женскую аудиторию и под бренды тканей. AVTOR — единственный кто может занять эти позиции без конкуренции.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">06 / 14</div>
+  </footer>
+</div>
+
+<!-- 07 БОЛИ И ПОТЕРИ -->
+<div class="page" id="page-7">
+  <h2>07 · Что теряет AVTOR прямо сейчас</h2>
+  <div class="g2">
+    <div class="card pain-b">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <h3 style="color:var(--red)">Боль 1 — Рейтинг 4.9 невидим</h3>
+        <span class="score-circle sc-r" style="width:44px;height:44px;font-size:14px">−15%</span>
+      </div>
+      <p>Рейтинг 4.9 на Zoon — лучший на рынке. Но без Schema.org он есть только на сторонних площадках. В Google пользователь видит просто ссылку без звёздочек. Конкурент с рейтингом 4.2 но со Schema выглядит убедительнее.</p>
+      <div class="chip r" style="margin-top:10px">CTR потеря −15%</div>
+    </div>
+    <div class="card pain-b">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <h3 style="color:var(--red)">Боль 2 — 5 из 8 URL возвращают 404</h3>
+        <span class="score-circle sc-r" style="width:44px;height:44px;font-size:14px">−30%</span>
+      </div>
+      <p>Человек ищет «avtor club цены» или «avtor club о нас» — попадает на страницу 404. Уходит навсегда. Поисковик фиксирует некачественный сайт.</p>
+      <div class="chip r" style="margin-top:10px">Потеря целевого трафика</div>
+    </div>
+    <div class="card pain-b">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <h3 style="color:var(--red)">Боль 3 — Нет цены на главной</h3>
+        <span class="score-circle sc-r" style="width:44px;height:44px;font-size:14px">−25%</span>
+      </div>
+      <p>Клиент хочет знать порядок цен до звонка. У Ostojenka написано «от 140 000 ₽» — клиент остаётся. У AVTOR цен нет — клиент идёт проверять к конкуренту и остаётся там.</p>
+      <div class="chip r" style="margin-top:10px">Конкурент в Топ-2 из-за этого</div>
+    </div>
+    <div class="card pain-b">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <h3 style="color:var(--red)">Боль 4 — Женская ниша не занята</h3>
+        <span class="score-circle sc-r" style="width:44px;height:44px;font-size:14px">0</span>
+      </div>
+      <p>AVTOR шьёт женскую одежду. Конкуренты — нет. Но на сайте это не транслируется как отдельное направление. Женщины-руководители ищут и не находят. Трафик уходит в никуда.</p>
+      <div class="chip r" style="margin-top:10px">Бесплатный монопольный трафик</div>
+    </div>
+  </div>
+  <div class="card card-accent">
+    <h3>Финансовая оценка потерь</h3>
+    <div class="g3">
+      <div><div class="label">Потеря CTR (meta + schema)</div><div style="font-size:22px;font-weight:700;color:var(--red)">−15–25%</div><p style="font-size:12px">кликов из органики каждый месяц</p></div>
+      <div><div class="label">Средний чек клиента</div><div style="font-size:22px;font-weight:700;color:var(--text)">200 000 ₽</div><p style="font-size:12px">за одно изделие (консервативно)</p></div>
+      <div><div class="label">Потеря в месяц</div><div style="font-size:22px;font-weight:700;color:var(--red)">1–3 клиента</div><p style="font-size:12px">уходят к конкурентам из-за технических проблем</p></div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">07 / 14</div>
+  </footer>
+</div>
+
+<!-- 08 СТРАТЕГИЯ -->
+<div class="page" id="page-8">
+  <h2>08 · Маркетинговая стратегия</h2>
+  <div class="card card-accent" style="padding:20px 24px">
+    <div class="label">Ядро стратегии</div>
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-top:8px;color:var(--text)">Сделать невидимый лучший продукт — видимым. Использовать рейтинг 4.9 и уникальные УТП как SEO-оружие пока конкуренты спят.</div>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <div class="label" style="color:var(--accent)">Фаза 1 · Недели 1–2</div>
+      <h3>Технический фундамент</h3>
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="st">Meta descriptions на все страницы</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="st">Schema.org — LocalBusiness + AggregateRating</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="st">301-редиректы с 5 нерабочих URL</div></div></div>
+      <div class="step"><div class="snum">4</div><div class="sbody"><div class="st">Canonical теги против дублей</div></div></div>
+      <div class="step"><div class="snum">5</div><div class="sbody"><div class="st">H1 главной — переработка под запросы</div></div></div>
+      <div style="margin-top:10px;padding:8px 12px;background:rgba(201,168,76,.06);border-radius:6px;font-size:12px;color:var(--accent)">📈 Результат: +15–25% CTR через 4–6 недель</div>
+    </div>
+    <div class="card">
+      <div class="label" style="color:var(--blue)">Фаза 2 · Месяц 1–2</div>
+      <h3>Конверсия и контент</h3>
+      <div class="step"><div class="snum">6</div><div class="sbody"><div class="st">Цена «от 118 000 ₽» на главную</div></div></div>
+      <div class="step"><div class="snum">7</div><div class="sbody"><div class="st">CTA «Записаться» на каждую страницу</div></div></div>
+      <div class="step"><div class="snum">8</div><div class="sbody"><div class="st">Цитаты клиентов в hero-блок</div></div></div>
+      <div class="step"><div class="snum">9</div><div class="sbody"><div class="st">Лендинг «Женская bespoke-одежда»</div></div></div>
+      <div class="step"><div class="snum">10</div><div class="sbody"><div class="st">2 SEO-статьи в блог/мес</div></div></div>
+      <div style="margin-top:10px;padding:8px 12px;background:rgba(91,141,217,.06);border-radius:6px;font-size:12px;color:var(--blue)">📈 Результат: +20–40% конверсии в заявку</div>
+    </div>
+    <div class="card">
+      <div class="label" style="color:var(--green)">Фаза 3 · Месяц 3+</div>
+      <h3>Рост и масштаб</h3>
+      <div class="step"><div class="snum">11</div><div class="sbody"><div class="st">Страницы под бренды тканей (Loro Piana, Scabal)</div></div></div>
+      <div class="step"><div class="snum">12</div><div class="sbody"><div class="st">FAQ и информационный контент</div></div></div>
+      <div class="step"><div class="snum">13</div><div class="sbody"><div class="st">Интеграция отзывов Zoon на сайт</div></div></div>
+      <div class="step"><div class="snum">14</div><div class="sbody"><div class="st">Мониторинг позиций, корректировка</div></div></div>
+      <div style="margin-top:10px;padding:8px 12px;background:rgba(76,175,122,.06);border-radius:6px;font-size:12px;color:var(--green)">📈 Результат: Топ-3 по запросам bespoke Москва</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Что мы НЕ делаем (и почему)</h3>
+    <div class="g3">
+      <div class="row-icon"><div class="ico" style="color:var(--red)">✗</div><div><strong style="font-size:13px;color:var(--text)">Яндекс Директ с нуля</strong><p style="font-size:12px">При среднем чеке 200к нужен прогрев. SEO даёт более тёплый трафик. Директ — следующий этап.</p></div></div>
+      <div class="row-icon"><div class="ico" style="color:var(--red)">✗</div><div><strong style="font-size:13px;color:var(--text)">Таргет ВКонтакте</strong><p style="font-size:12px">Аудитория топ-менеджеров и политиков не принимает решения о 200к через ВК.</p></div></div>
+      <div class="row-icon"><div class="ico" style="color:var(--red)">✗</div><div><strong style="font-size:13px;color:var(--text)">Массовый контент</strong><p style="font-size:12px">2 точных статьи в месяц лучше 20 пустых. Качество контента важно для premium-позиционирования.</p></div></div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">08 / 14</div>
+  </footer>
+</div>
+
+<!-- 09 МАРКЕТИНГ-ПЛАН -->
+<div class="page" id="page-9">
+  <h2>09 · Маркетинговый план</h2>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <tr><th>Направление</th><th>Что делаем</th><th>Бюджет</th><th>Результат через 3 мес</th><th>CPL</th></tr>
+      <tr><td class="hl">Технический SEO</td><td>Meta, Schema, canonical, redirect</td><td>Входит в пакет</td><td>+25% CTR, индексация 60+ стр.</td><td>—</td></tr>
+      <tr><td class="hl">Контент SEO</td><td>2 статьи/мес, оптимизация страниц</td><td>Входит в пакет</td><td>+200–400 визитов/мес</td><td>0 ₽</td></tr>
+      <tr><td class="hl">UX/Конверсия</td><td>CTA, цена «от», цитаты, редиректы</td><td>Входит в пакет</td><td>+30% конверсии в заявку</td><td>—</td></tr>
+      <tr><td class="hl">Лендинг — женская</td><td>Отдельная страница под женскую ЦА</td><td>Входит в пакет</td><td>Монополия на запросы</td><td>0 ₽</td></tr>
+      <tr><td class="hl">Репутация</td><td>Интеграция отзывов Zoon в сайт</td><td>Входит в пакет</td><td>Звёздочки в Google</td><td>—</td></tr>
+    </table>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h3>Дорожная карта — первые 4 недели</h3>
+      <table>
+        <tr><th>Неделя</th><th>Фокус</th><th>KPI</th></tr>
+        <tr><td class="hl">1</td><td>Meta descriptions на 30 ключевых страниц, H1 главной</td><td>30 страниц обновлены</td></tr>
+        <tr><td class="hl">2</td><td>Schema.org LocalBusiness + AggregateRating, canonical</td><td>Звёздочки появились в Search Console</td></tr>
+        <tr><td class="hl">3</td><td>301-редиректы, sitemap, UX-правки (цена, CTA)</td><td>0 битых URL, цена на главной</td></tr>
+        <tr><td class="hl">4</td><td>Первая SEO-статья, отчёт по позициям, корректировка</td><td>Статья в индексе, позиции зафиксированы</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Формат отчётности</h3>
+      <div class="step"><div class="snum">📊</div><div class="sbody"><div class="st">Еженедельно — Telegram</div><div class="sd">Что сделано, какие позиции изменились, следующие шаги</div></div></div>
+      <div class="step"><div class="snum">📈</div><div class="sbody"><div class="st">Ежемесячно — полный отчёт</div><div class="sd">Позиции, трафик, CTR, конверсии, динамика относительно конкурентов</div></div></div>
+      <div class="step"><div class="snum">📅</div><div class="sbody"><div class="st">Раз в квартал — стратегия</div><div class="sd">Корректировка направлений, новые точки роста</div></div></div>
+      <div class="card card-accent" style="margin-top:12px">
+        <p><strong style="color:var(--text)">Доступ к данным:</strong> Подключаем Яндекс.Метрику и Google Search Console — все данные видны вам в реальном времени.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">09 / 14</div>
+  </footer>
+</div>
+
+<!-- 10 ОФФЕРЫ -->
+<div class="page" id="page-10">
+  <h2>10 · Офферы под разные психотипы</h2>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="card">
+      <div class="label" style="margin-bottom:6px">Рациональный · для тех кто считает ROI</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px">«Один дополнительный клиент в месяц — и наша работа окупилась»</div>
+      <p>Средний чек AVTOR — 200 000 ₽. Стоимость пакета — 60 000 ₽. ROI с первого клиента из SEO — 233%. Без рисков рекламного бюджета.</p>
+      <div style="margin-top:8px"><span class="chip">Для: CEO, финансовые директора</span><span class="chip b">Канал: Email, прямой контакт</span></div>
+    </div>
+    <div class="card">
+      <div class="label" style="margin-bottom:6px">Конкурентный · для тех кто следит за рынком</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px">«Ни один из ваших конкурентов не показывает рейтинг в Google — у вас шанс первым»</div>
+      <p>Dandy, Ostojenka, Stitch — никто из топ-4 не использует Schema.org. Кто внедрит первым, получает звёздочки рейтинга в поиске на 6–12 месяцев раньше остальных.</p>
+      <div style="margin-top:8px"><span class="chip">Для: собственники, основатели</span><span class="chip b">Канал: Прямой контакт, встреча</span></div>
+    </div>
+    <div class="card">
+      <div class="label" style="margin-bottom:6px">Статусный · для тех кому важна репутация</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px">«У вас рейтинг 4.9 — лучший в Москве. Пора чтобы это видели все»</div>
+      <p>45 отзывов на Zoon, президент ФК Зенит среди клиентов, 15 лет на рынке. Весь этот авторитет сейчас скрыт от поиска. Мы его раскроем.</p>
+      <div style="margin-top:8px"><span class="chip">Для: основатели клуба, PR-директор</span><span class="chip b">Канал: Телеграм, личная встреча</span></div>
+    </div>
+    <div class="card">
+      <div class="label" style="margin-bottom:6px">Безопасный · для тех кто боится рисков</div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px">«SEO — это не рекламный бюджет. Платите за работу, а не за клики»</div>
+      <p>В отличие от Яндекс Директ, SEO не требует постоянного рекламного бюджета. Один раз внедрённая оптимизация работает месяцами. Гарантия возврата за первый месяц.</p>
+      <div style="margin-top:8px"><span class="chip">Для: осторожные собственники</span><span class="chip b">Гарантия возврата за 1й месяц</span></div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">10 / 14</div>
+  </footer>
+</div>
+
+<!-- 11 ROI -->
+<div class="page" id="page-11">
+  <h2>11 · ROI — прогноз результатов</h2>
+  <div class="card" style="overflow-x:auto">
+    <h3 style="margin-bottom:14px">3 сценария — 3 месяца работы</h3>
+    <table>
+      <tr><th>Сценарий</th><th>Доп. визитов/мес</th><th>Конверсия в заявку</th><th>Доп. клиентов</th><th>Выручка</th><th>ROI</th></tr>
+      <tr>
+        <td class="hl">Консервативный</td><td>+150</td><td>2%</td>
+        <td style="color:var(--green);font-weight:600">+1 клиент</td>
+        <td style="color:var(--green);font-weight:600">+200 000 ₽</td>
+        <td style="color:var(--green);font-weight:600">+233%</td>
+      </tr>
+      <tr>
+        <td class="hl" style="color:var(--accent)">Реалистичный ★</td><td>+350</td><td>3%</td>
+        <td style="color:var(--accent);font-weight:600">+2–3 клиента</td>
+        <td style="color:var(--accent);font-weight:600">+500 000 ₽</td>
+        <td style="color:var(--accent);font-weight:600">+733%</td>
+      </tr>
+      <tr>
+        <td class="hl">Оптимистичный</td><td>+600</td><td>4%</td>
+        <td style="color:var(--green);font-weight:600">+4–5 клиентов</td>
+        <td style="color:var(--green);font-weight:600">+900 000 ₽</td>
+        <td style="color:var(--green);font-weight:600">+1400%</td>
+      </tr>
+    </table>
+    <p style="margin-top:10px;font-size:12px">* Расчёт для пакета 60 000 ₽/мес. Средний чек — 200 000 ₽ (консервативно). Показатели через 3 месяца работы.</p>
+  </div>
+  <div class="g3">
+    <div class="card" style="text-align:center">
+      <div class="label">Срок окупаемости</div>
+      <div class="big">1 мес</div>
+      <p style="font-size:12px;margin-top:6px">Один дополнительный клиент = 200к ₽ > стоимость пакета</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label">Эффект Schema.org</div>
+      <div class="big">+25%</div>
+      <p style="font-size:12px;margin-top:6px">CTR при появлении звёздочек рейтинга в сниппете</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="label">Долгосрочный эффект</div>
+      <div class="big">6+ мес</div>
+      <p style="font-size:12px;margin-top:6px">SEO-позиции держатся после завершения работ</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card card-accent">
+      <h3>Почему SEO, а не Директ</h3>
+      <div class="step"><div class="snum">→</div><div class="sbody"><div class="st">Нет рекламного бюджета</div><div class="sd">Платите только за работу, не за каждый клик</div></div></div>
+      <div class="step"><div class="snum">→</div><div class="sbody"><div class="st">Трафик теплее</div><div class="sd">Человек сам ищет «bespoke Москва» — он уже готов платить</div></div></div>
+      <div class="step"><div class="snum">→</div><div class="sbody"><div class="st">Накопительный эффект</div><div class="sd">Каждый месяц результат сильнее, а не обнуляется при остановке</div></div></div>
+    </div>
+    <div class="card">
+      <h3>Timeline результатов</h3>
+      <table>
+        <tr><th>Срок</th><th>Что произойдёт</th></tr>
+        <tr><td>Нед 2–3</td><td>Звёздочки рейтинга в Google (Schema)</td></tr>
+        <tr><td>Мес 1</td><td>+15–25% CTR из поиска, 0 битых URL</td></tr>
+        <tr><td>Мес 2</td><td>Первые позиции улучшились по 5–10 запросам</td></tr>
+        <tr><td>Мес 3</td><td>Топ-5 по ключевым запросам bespoke Москва</td></tr>
+        <tr><td>Мес 4–6</td><td>Топ-3, женская ниша — монополия</td></tr>
+      </table>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">11 / 14</div>
+  </footer>
+</div>
+
+<!-- 12 УСЛОВИЯ -->
+<div class="page" id="page-12">
+  <h2>12 · Условия сотрудничества</h2>
+  <div class="g3">
+    <div class="card">
+      <div class="label">Старт</div>
+      <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);margin:8px 0">35 000 ₽</div>
+      <div class="muted" style="font-size:13px;margin-bottom:16px">разовый аудит + фикс</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Meta description на 30 ключевых страниц</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Schema.org LocalBusiness + AggregateRating</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">301-редиректы с нерабочих URL</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Правка H1 главной</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--muted)">—</div><div style="font-size:13px;color:var(--border)">Контент и статьи</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--muted)">—</div><div style="font-size:13px;color:var(--border)">Ежемесячное сопровождение</div></li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:var(--accent-border);background:var(--accent-soft);position:relative;">
+      <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:11px;font-weight:700;padding:4px 14px;border-radius:20px;white-space:nowrap">Рекомендуем</div>
+      <div class="label">Рост</div>
+      <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent);margin:8px 0">60 000 ₽</div>
+      <div class="muted" style="font-size:13px;margin-bottom:16px">/ месяц · от 3 месяцев</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Всё из Старта + полный охват 119 страниц</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">2 SEO-статьи в блог ежемесячно</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Лендинг «Женская bespoke-одежда»</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">UX-правки: цена на главной, CTA, цитаты</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Интеграция отзывов Zoon на сайт</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Еженедельный отчёт в Telegram</div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="label">Максимум</div>
+      <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--text);margin:8px 0">95 000 ₽</div>
+      <div class="muted" style="font-size:13px;margin-bottom:16px">/ месяц · приоритет</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Всё из Роста</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">4 статьи/мес + страницы брендов тканей</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Репутационная стратегия (Яндекс.Карты, Zoon)</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Правки в течение 24 часов</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Квартальная стратегическая сессия</div></li>
+        <li class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Онлайн-запись с интеграцией в систему</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h3>Что входит в любой пакет</h3>
+      <div class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Договор с фиксированной стоимостью — без скрытых платежей</div></div>
+      <div class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Доступ к Яндекс.Метрике и Search Console в реальном времени</div></div>
+      <div class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Telegram-менеджер в рабочие часы</div></div>
+      <div class="row-icon"><div class="ico" style="color:var(--green)">✓</div><div style="font-size:13px;color:var(--muted)">Гарантия возврата за первый месяц</div></div>
+    </div>
+    <div class="card card-accent">
+      <h3>Старт через 3 дня после договора</h3>
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="st">Договор и доступы</div><div class="sd">1–2 рабочих дня</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="st">Брифинг 30 минут</div><div class="sd">Уточняем приоритеты и цели</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="st">Старт технических работ</div><div class="sd">Неделя 1 — уже видны первые изменения</div></div></div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></div>
+    <div class="fc">12 / 14</div>
+  </footer>
+</div>
+
+<!-- 13 СЛЕДУЮЩИЙ ШАГ -->
+<div class="page" id="page-13">
+  <h2>13 · Следующий шаг</h2>
+  <div class="card card-accent" style="padding:32px;text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:12px">Напишите в Telegram — отвечу в течение часа</div>
+    <p style="max-width:480px;margin:0 auto 24px">Обсудим приоритеты, задам 3 вопроса о текущем трафике и покажу конкретные правки которые дадут результат первыми.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://t.me/frolof_pavel" style="display:inline-block;padding:14px 28px;background:var(--accent);color:#000;border-radius:8px;font-weight:700;font-size:15px;text-decoration:none">Написать @frolof_pavel</a>
+      <a href="tel:+79059390874" style="display:inline-block;padding:14px 28px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:8px;font-weight:600;font-size:15px;text-decoration:none">+7 905 939-08-74</a>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <h3>Что обсудим за 30 минут</h3>
+      <div class="step"><div class="snum">1</div><div class="sbody"><div class="st">Текущий трафик и конверсии</div><div class="sd">Сколько визитов в месяц, откуда приходят клиенты сейчас</div></div></div>
+      <div class="step"><div class="snum">2</div><div class="sbody"><div class="st">Приоритеты на 3 месяца</div><div class="sd">Что важнее — быстрый результат или долгосрочный рост</div></div></div>
+      <div class="step"><div class="snum">3</div><div class="sbody"><div class="st">Формат и пакет</div><div class="sd">Подберём оптимальный пакет под ваши задачи и бюджет</div></div></div>
+    </div>
+    <div class="card">
+      <h3>Почему стоит решить сейчас</h3>
+      <div class="step"><div class="snum">⏰</div><div class="sbody"><div class="st">Окно закрывается</div><div class="sd">Schema.org даёт преимущество тому кто внедрит первым. Конкуренты не спят.</div></div></div>
+      <div class="step"><div class="snum">📅</div><div class="sbody"><div class="st">Дедлайн предложения</div><div class="sd"><strong style="color:var(--accent)">14 июня 2026</strong> — после этой даты условия могут измениться</div></div></div>
+      <div class="step"><div class="snum">🛡</div><div class="sbody"><div class="st">Гарантия возврата</div><div class="sd">Если через 30 дней не видите прогресса — возвращаем оплату первого месяца</div></div></div>
+    </div>
+  </div>
+  <div class="card" style="padding:20px 24px">
+    <div class="g3">
+      <div style="text-align:center">
+        <div class="label">Опыт</div>
+        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--text)">19 лет</div>
+        <p style="font-size:12px">в интернет-маркетинге</p>
+      </div>
+      <div style="text-align:center">
+        <div class="label">Активных клиентов</div>
+        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--text)">27+</div>
+        <p style="font-size:12px">в портфеле агентства</p>
+      </div>
+      <div style="text-align:center">
+        <div class="label">Кейс Расцветай</div>
+        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--text)">7 500</div>
+        <p style="font-size:12px">лидов в месяц, 5+ лет работы</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="fc"><strong>Павел Фролов</strong><br><a href="https://t.me/frolof_pavel">@frolof_pavel</a> · <a href="tel:+79059390874">+7 905 939-08-74</a> · <a href="https://pavelfrolof.ru">pavelfrolof.ru</a></div>
+    <div class="fc" style="text-align:right">КП подготовлено: 14.05.2026<br>Актуально до: <strong>14.06.2026</strong></div>
+  </footer>
+</div>
+
+<script>
+let currentPage = 0;
+const total = 14;
+function go(i) {
+  if (i < 0 || i >= total) return;
+  currentPage = i;
+  document.querySelectorAll('.page').forEach((p,j) => p.classList.toggle('active', j===i));
+  document.querySelectorAll('.nav-l').forEach((l,j) => l.classList.toggle('active', j===i));
+  document.getElementById('nc').textContent = (i+1) + ' / ' + total;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight' || e.key==='ArrowDown') go(currentPage+1);
+  if (e.key==='ArrowLeft'  || e.key==='ArrowUp')   go(currentPage-1);
+});
+</script>
+</body>
+</html>
