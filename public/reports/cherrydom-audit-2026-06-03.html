@@ -9,1239 +9,648 @@
   --cherry: #C62828;
   --cherry-light: #EF5350;
   --dark: #1a1a2e;
-  --bg: #f8f9fa;
+  --bg: #f5f6f8;
   --card: #ffffff;
   --green: #2E7D32;
   --orange: #E65100;
   --blue: #1565C0;
   --gray: #616161;
   --border: #e0e0e0;
+  --sidebar-w: 260px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: #333; line-height: 1.6; }
-.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
-
-/* Header */
-.header { background: linear-gradient(135deg, var(--dark) 0%, #16213e 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; }
-.header h1 { font-size: 28px; margin-bottom: 8px; }
-.header .subtitle { color: #90caf9; font-size: 16px; }
-.header .meta { display: flex; gap: 30px; margin-top: 20px; flex-wrap: wrap; }
-.header .meta-item { background: rgba(255,255,255,0.1); padding: 10px 16px; border-radius: 8px; }
-.header .meta-label { font-size: 11px; text-transform: uppercase; color: #90caf9; }
-.header .meta-value { font-size: 18px; font-weight: 700; }
-
-/* Navigation */
-.nav { background: var(--card); border-radius: 12px; padding: 16px 24px; margin-bottom: 30px; border: 1px solid var(--border); position: sticky; top: 10px; z-index: 100; }
-.nav-title { font-size: 12px; text-transform: uppercase; color: var(--gray); margin-bottom: 8px; }
-.nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
-.nav-links a { text-decoration: none; color: var(--blue); font-size: 13px; padding: 4px 10px; border-radius: 6px; background: #e3f2fd; transition: all 0.2s; }
-.nav-links a:hover { background: var(--blue); color: white; }
-
-/* Sections */
-.section { background: var(--card); border-radius: 12px; padding: 30px; margin-bottom: 24px; border: 1px solid var(--border); }
-.section h2 { font-size: 20px; color: var(--dark); margin-bottom: 6px; padding-bottom: 12px; border-bottom: 2px solid var(--cherry); display: flex; align-items: center; gap: 10px; }
-.section h2 .num { background: var(--cherry); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-.section h3 { font-size: 16px; color: var(--dark); margin: 20px 0 10px; }
-
-/* Tables */
-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
-th { background: #f5f5f5; text-align: left; padding: 10px 12px; font-weight: 600; border-bottom: 2px solid var(--border); }
-td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
-tr:hover td { background: #fafafa; }
+.layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: var(--sidebar-w); min-width: var(--sidebar-w);
+  background: var(--dark); color: white;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  overflow-y: auto; z-index: 100; transition: transform 0.3s;
+}
+.sidebar-header { padding: 24px 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-header h1 { font-size: 18px; line-height: 1.3; }
+.sidebar-header .subtitle { font-size: 12px; color: #90caf9; margin-top: 4px; }
+.sidebar-nav { padding: 12px 0; }
+.sidebar-nav a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; color: rgba(255,255,255,0.7);
+  text-decoration: none; font-size: 13px;
+  border-left: 3px solid transparent; transition: all 0.2s; cursor: pointer;
+}
+.sidebar-nav a:hover { background: rgba(255,255,255,0.05); color: white; }
+.sidebar-nav a.active { background: rgba(255,255,255,0.1); color: white; border-left-color: var(--cherry-light); font-weight: 600; }
+.sidebar-nav a .nav-num {
+  background: rgba(255,255,255,0.15); width: 22px; height: 22px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; flex-shrink: 0;
+}
+.sidebar-nav a.active .nav-num { background: var(--cherry); }
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 11px; color: rgba(255,255,255,0.4); }
+.menu-toggle {
+  display: none; position: fixed; top: 12px; left: 12px; z-index: 200;
+  background: var(--dark); color: white; border: none; padding: 8px 12px;
+  border-radius: 8px; font-size: 18px; cursor: pointer;
+}
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90; }
+.main { margin-left: var(--sidebar-w); flex: 1; padding: 30px 40px; max-width: 900px; }
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.page-header { margin-bottom: 24px; }
+.page-header h2 { font-size: 24px; color: var(--dark); margin-bottom: 4px; }
+.page-header .page-desc { color: var(--gray); font-size: 14px; }
+.page-nav { display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border); }
+.page-nav a {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 18px; border-radius: 8px; text-decoration: none;
+  font-size: 13px; font-weight: 600; transition: all 0.2s; cursor: pointer;
+}
+.page-nav .prev { background: #f5f5f5; color: var(--dark); }
+.page-nav .next { background: var(--cherry); color: white; }
+.page-nav a:hover { opacity: 0.85; transform: translateY(-1px); }
+.card { background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 20px; border: 1px solid var(--border); }
+.card h3 { font-size: 16px; color: var(--dark); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+th { background: #f8f8f8; text-align: left; padding: 10px 12px; font-weight: 600; border-bottom: 2px solid var(--border); font-size: 12px; text-transform: uppercase; color: var(--gray); }
+td { padding: 9px 12px; border-bottom: 1px solid #f0f0f0; }
+tr:hover td { background: #fafbfc; }
 .num-cell { text-align: right; font-variant-numeric: tabular-nums; }
 .good { color: var(--green); font-weight: 600; }
 .bad { color: var(--cherry); font-weight: 600; }
 .warn { color: var(--orange); font-weight: 600; }
-
-/* Metric cards */
-.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }
-.metric { background: #f5f5f5; border-radius: 10px; padding: 16px; text-align: center; }
-.metric .value { font-size: 28px; font-weight: 700; color: var(--dark); }
-.metric .label { font-size: 12px; color: var(--gray); margin-top: 4px; }
-.metric .delta { font-size: 12px; margin-top: 4px; }
-
-/* Tags */
-.tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 16px 0; }
+.metric { background: #f8f9fa; border-radius: 10px; padding: 16px; text-align: center; border: 1px solid #eee; }
+.metric .value { font-size: 26px; font-weight: 700; color: var(--dark); }
+.metric .label { font-size: 11px; color: var(--gray); margin-top: 4px; }
+.metric .delta { font-size: 11px; margin-top: 4px; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
 .tag-red { background: #ffebee; color: var(--cherry); }
 .tag-green { background: #e8f5e9; color: var(--green); }
 .tag-orange { background: #fff3e0; color: var(--orange); }
 .tag-blue { background: #e3f2fd; color: var(--blue); }
-
-/* Finding blocks */
-.finding { padding: 14px 18px; border-radius: 8px; margin: 10px 0; border-left: 4px solid; }
+.finding { padding: 14px 18px; border-radius: 8px; margin: 12px 0; border-left: 4px solid; font-size: 14px; }
 .finding-critical { background: #ffebee; border-color: var(--cherry); }
 .finding-warn { background: #fff8e1; border-color: #f9a825; }
 .finding-good { background: #e8f5e9; border-color: var(--green); }
 .finding-info { background: #e3f2fd; border-color: var(--blue); }
 .finding strong { display: block; margin-bottom: 4px; }
-
-/* Progress bars */
-.progress-bar { background: #e0e0e0; border-radius: 4px; height: 8px; margin: 4px 0; }
-.progress-fill { height: 100%; border-radius: 4px; }
-
-/* Lists */
 .check-list { list-style: none; padding: 0; }
-.check-list li { padding: 6px 0; padding-left: 24px; position: relative; }
-.check-list li::before { content: ''; position: absolute; left: 0; top: 10px; width: 14px; height: 14px; border-radius: 3px; }
-.check-list .yes::before { background: var(--green); content: '✓'; color: white; font-size: 10px; display: flex; align-items: center; justify-content: center; }
-.check-list .no::before { background: var(--cherry); content: '✗'; color: white; font-size: 10px; display: flex; align-items: center; justify-content: center; }
-.check-list .partial::before { background: var(--orange); content: '~'; color: white; font-size: 10px; display: flex; align-items: center; justify-content: center; }
-
-/* Footer */
-.footer { text-align: center; color: var(--gray); font-size: 13px; padding: 30px; }
-
-@media (max-width: 768px) {
-  .container { padding: 12px; }
-  .header { padding: 24px; }
-  .header h1 { font-size: 22px; }
-  .section { padding: 20px; }
+.check-list li { padding: 5px 0 5px 26px; position: relative; font-size: 14px; }
+.check-list li::before { position: absolute; left: 0; top: 7px; width: 16px; height: 16px; border-radius: 3px; font-size: 10px; display: flex; align-items: center; justify-content: center; color: white; }
+.check-list .yes::before { content: '\2713'; background: var(--green); }
+.check-list .no::before { content: '\2717'; background: var(--cherry); }
+.check-list .partial::before { content: '~'; background: var(--orange); }
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.summary-card { background: var(--card); border-radius: 10px; padding: 18px; border: 1px solid var(--border); }
+.summary-card h4 { font-size: 13px; text-transform: uppercase; color: var(--gray); margin-bottom: 10px; }
+@media (max-width: 860px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .menu-toggle { display: block; }
+  .overlay.open { display: block; }
+  .main { margin-left: 0; padding: 60px 16px 30px; }
   .metrics { grid-template-columns: 1fr 1fr; }
+  .summary-grid { grid-template-columns: 1fr; }
   table { font-size: 12px; }
   td, th { padding: 6px 8px; }
 }
 </style>
 </head>
 <body>
-<div class="container">
-
-<!-- HEADER -->
-<div class="header">
-  <h1>Аудит маркетинга — ЧерриДом</h1>
-  <div class="subtitle">Полный маркетинговый due diligence для LOS Agency</div>
-  <div class="meta">
-    <div class="meta-item">
-      <div class="meta-label">Дата</div>
-      <div class="meta-value">3 июня 2026</div>
-    </div>
-    <div class="meta-item">
-      <div class="meta-label">Период данных</div>
-      <div class="meta-value">Янв — Май 2026</div>
-    </div>
-    <div class="meta-item">
-      <div class="meta-label">ЖК в работе</div>
-      <div class="meta-value">7 объектов</div>
-    </div>
-    <div class="meta-item">
-      <div class="meta-label">Выполнение плана H1</div>
-      <div class="meta-value" style="color:#EF5350">23,3%</div>
-    </div>
+<button class="menu-toggle" onclick="toggleMenu()">&#9776;</button>
+<div class="overlay" onclick="toggleMenu()"></div>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h1>Аудит маркетинга</h1>
+    <div class="subtitle">ЧерриДом &mdash; 3 июня 2026</div>
   </div>
+  <nav class="sidebar-nav" id="nav"></nav>
+  <div class="sidebar-footer">LOS Agency<br>Метрика + Битрикс24 + План-факт</div>
+</aside>
+<main class="main" id="main"></main>
 </div>
-
-<!-- NAVIGATION -->
-<div class="nav">
-  <div class="nav-title">Содержание</div>
-  <div class="nav-links">
-    <a href="#summary">Сводка</a>
-    <a href="#sales">Продажи план/факт</a>
-    <a href="#crm">CRM и воронка</a>
-    <a href="#traffic">Трафик и аналитика</a>
-    <a href="#ads">Рекламные кампании</a>
-    <a href="#seo">SEO</a>
-    <a href="#site">Сайт</a>
-    <a href="#channels">Каналы привлечения</a>
-    <a href="#competitors">Конкуренты</a>
-    <a href="#positioning">Позиционирование ЖК</a>
-    <a href="#market">Рынок Вологды</a>
-    <a href="#experts">Эксперты ОП</a>
-    <a href="#bottlenecks">Узкие места</a>
-    <a href="#plan">План действий 30/60/90</a>
-  </div>
+<script>
+const PAGES = [
+{id:'summary',num:'0',title:'Сводка',html:`
+<div class="page-header"><h2>Executive Summary</h2><div class="page-desc">Ключевые выводы аудита маркетинга ЧерриДом</div></div>
+<div class="finding finding-critical"><strong>Главный вывод: план продаж выполняется на 23% &mdash; проблема системная</strong>За январь-май 2026 при плане ~2 млрд факт составил 478 млн (23,3%). Причины: недостаточный объём лидов, реклама только на 1 ЖК из 7, неработающий квиз (0,6% конверсия), 589 зависших сделок в CRM.</div>
+<div class="metrics">
+<div class="metric"><div class="value" style="color:var(--cherry)">23,3%</div><div class="label">Выполнение плана H1</div></div>
+<div class="metric"><div class="value">539,7M</div><div class="label">Факт продаж (CRM)</div></div>
+<div class="metric"><div class="value">6 022</div><div class="label">Визитов/мес</div></div>
+<div class="metric"><div class="value">~65</div><div class="label">Лидов/мес</div></div>
+<div class="metric"><div class="value">18%</div><div class="label">Лид &rarr; сделка</div></div>
+<div class="metric"><div class="value bad">589</div><div class="label">Зависших на квалификации</div></div>
 </div>
-
-<!-- 0. EXECUTIVE SUMMARY -->
-<div class="section" id="summary">
-  <h2><span class="num">0</span> Executive Summary</h2>
-
-  <div class="finding finding-critical">
-    <strong>Главный вывод: план продаж выполняется на 23% — проблема системная</strong>
-    За январь-май 2026 при плане ~2 млрд факт составил 478 млн (23,3%). Это не сезонный провал — невыполнение стабильное каждый месяц. Причины: недостаточный объём лидов, слабая рекламная диверсификация (реклама только на ЖК Чили), низкая конверсия квиза, отсутствие системной работы с «мёртвыми» сделками.
-  </div>
-
-  <div class="metrics">
-    <div class="metric">
-      <div class="value" style="color:var(--cherry)">23,3%</div>
-      <div class="label">Выполнение плана H1 2026</div>
-    </div>
-    <div class="metric">
-      <div class="value">539,7M</div>
-      <div class="label">Факт продаж (WON в CRM)</div>
-    </div>
-    <div class="metric">
-      <div class="value">6 022</div>
-      <div class="label">Визитов/мес на сайт</div>
-    </div>
-    <div class="metric">
-      <div class="value">~65</div>
-      <div class="label">Лидов/мес в CRM</div>
-    </div>
-    <div class="metric">
-      <div class="value">18%</div>
-      <div class="label">Конверсия лид→сделка</div>
-    </div>
-    <div class="metric">
-      <div class="value">589</div>
-      <div class="label">Сделок «зависло» на квалификации</div>
-    </div>
-  </div>
-
-  <h3>Топ-5 критических проблем</h3>
-  <table>
-    <tr><th>#</th><th>Проблема</th><th>Влияние</th><th>Приоритет</th></tr>
-    <tr><td>1</td><td>Реклама идёт только на ЖК Чили — остальные 6 ЖК без трафика</td><td>Моне (60M план/мес), Витязь (36M), Бёрч (25M) не получают лидов</td><td><span class="tag tag-red">P1</span></td></tr>
-    <tr><td>2</td><td>589 сделок «зависли» на квалификации — не двигаются по воронке</td><td>Потенциал ~133 млн заморожен, клиенты остывают</td><td><span class="tag tag-red">P1</span></td></tr>
-    <tr><td>3</td><td>Квиз: 647 открытий → 4 заявки (0,6% конверсия)</td><td>Главный конверсионный инструмент не работает</td><td><span class="tag tag-red">P1</span></td></tr>
-    <tr><td>4</td><td>0 целевых звонков с рекламного трафика (Метрика)</td><td>2 749 рекламных визитов не генерируют ни одного звонка</td><td><span class="tag tag-orange">P2</span></td></tr>
-    <tr><td>5</td><td>37% отказов в CRM — «пропала потребность»</td><td>Слабый прогрев между касаниями, клиенты уходят к конкурентам</td><td><span class="tag tag-orange">P2</span></td></tr>
-  </table>
+<div class="card"><h3>Топ-5 критических проблем</h3>
+<table><tr><th style="width:30px">#</th><th>Проблема</th><th>Влияние</th><th style="width:50px">P</th></tr>
+<tr><td>1</td><td>Реклама только на ЖК Чили &mdash; 6 ЖК без трафика</td><td>Моне, Витязь, Бёрч без лидов</td><td><span class="tag tag-red">P1</span></td></tr>
+<tr><td>2</td><td>589 сделок зависли на квалификации</td><td>~133 млн заморожено</td><td><span class="tag tag-red">P1</span></td></tr>
+<tr><td>3</td><td>Квиз: 647 &rarr; 4 заявки (0,6%)</td><td>Главный инструмент сломан</td><td><span class="tag tag-red">P1</span></td></tr>
+<tr><td>4</td><td>0 целевых звонков с рекламы</td><td>2 749 визитов впустую</td><td><span class="tag tag-orange">P2</span></td></tr>
+<tr><td>5</td><td>37% отказов &mdash; пропала потребность</td><td>Слабый прогрев</td><td><span class="tag tag-orange">P2</span></td></tr>
+</table></div>
+<div class="summary-grid">
+<div class="summary-card"><h4>Что работает</h4><ul class="check-list">
+<li class="yes">SEO &mdash; 1 860 визитов, отказы 9%</li>
+<li class="yes">ВК сообщество &mdash; 11 лидов/мес</li>
+<li class="yes">ИИ-прозвон &mdash; 10 лидов за 3 дня</li>
+<li class="yes">Протокол касаний &mdash; проф. уровень</li>
+<li class="yes">CallTouch подключён</li>
+</ul></div>
+<div class="summary-card"><h4>Что не работает</h4><ul class="check-list">
+<li class="no">Реклама &mdash; 1 ЖК, 0 звонков</li>
+<li class="no">Лендинг &mdash; 34-56% отказы</li>
+<li class="no">Квиз &mdash; 0,6% конверсия</li>
+<li class="no">Нет VK Ads, поиска Директ</li>
+<li class="no">Нет контент-маркетинга</li>
+</ul></div></div>
+`},
+{id:'sales',num:'1',title:'Продажи план/факт',html:`
+<div class="page-header"><h2>Продажи: план vs факт</h2><div class="page-desc">Данные: План-факт 2026.xlsx и Битрикс24 CRM</div></div>
+<div class="card"><h3>Помесячная динамика 2026</h3>
+<table><tr><th>Месяц</th><th class="num-cell">План</th><th class="num-cell">Факт</th><th class="num-cell">%</th><th class="num-cell">Сделок</th><th>Оценка</th></tr>
+<tr><td>Январь</td><td class="num-cell">349 млн</td><td class="num-cell">134 млн</td><td class="num-cell bad">38%</td><td class="num-cell">16</td><td><span class="tag tag-orange">Ниже плана</span></td></tr>
+<tr><td>Февраль</td><td class="num-cell">327 млн</td><td class="num-cell">104 млн</td><td class="num-cell bad">32%</td><td class="num-cell">16</td><td><span class="tag tag-orange">Ниже плана</span></td></tr>
+<tr><td>Март</td><td class="num-cell">331 млн</td><td class="num-cell">52 млн</td><td class="num-cell bad">16%</td><td class="num-cell">7</td><td><span class="tag tag-red">Провал</span></td></tr>
+<tr><td>Апрель</td><td class="num-cell">331 млн</td><td class="num-cell">113 млн</td><td class="num-cell bad">34%</td><td class="num-cell">12</td><td><span class="tag tag-orange">Ниже плана</span></td></tr>
+<tr><td>Май</td><td class="num-cell">348 млн</td><td class="num-cell">64 млн</td><td class="num-cell bad">18%</td><td class="num-cell">9</td><td><span class="tag tag-red">Провал</span></td></tr>
+<tr><td>Июнь (3 дня)</td><td class="num-cell">368 млн</td><td class="num-cell">10,8 млн</td><td class="num-cell">2,9%</td><td class="num-cell">&mdash;</td><td><span class="tag tag-blue">Начало</span></td></tr>
+<tr style="font-weight:700;background:#f5f5f5"><td>ИТОГО H1</td><td class="num-cell">2 053 млн</td><td class="num-cell">478 млн</td><td class="num-cell bad">23,3%</td><td class="num-cell">60</td><td></td></tr></table></div>
+<div class="card"><h3>По ЖК (план июнь)</h3>
+<table><tr><th>ЖК</th><th class="num-cell">План</th><th class="num-cell">Остаток м&sup2;</th><th>Статус</th></tr>
+<tr><td>Чили</td><td class="num-cell">95 млн</td><td class="num-cell">1 358</td><td><span class="tag tag-orange">Единственный с рекламой</span></td></tr>
+<tr><td>Моне</td><td class="num-cell">60 млн</td><td class="num-cell">2 219</td><td><span class="tag tag-red">Нет рекламы</span></td></tr>
+<tr><td>Витязь 5</td><td class="num-cell">37 млн</td><td class="num-cell">1 542</td><td><span class="tag tag-red">Нет рекламы</span></td></tr>
+<tr><td>Витязь 4</td><td class="num-cell">36 млн</td><td class="num-cell">3 309</td><td><span class="tag tag-orange">Факт 10,8 млн</span></td></tr>
+<tr><td>Бёрч</td><td class="num-cell">25 млн</td><td class="num-cell">3 567</td><td><span class="tag tag-red">Новый, нет стратегии</span></td></tr>
+<tr><td>В-Сити</td><td class="num-cell">21 млн</td><td class="num-cell">519</td><td><span class="tag tag-orange">Допродажи</span></td></tr>
+<tr><td>Смайл</td><td class="num-cell">17 млн</td><td class="num-cell">297</td><td><span class="tag tag-orange">Без движения</span></td></tr>
+<tr><td>Затон</td><td class="num-cell">17 млн</td><td class="num-cell">131</td><td><span class="tag tag-orange">Без движения</span></td></tr>
+<tr><td>Витязь 3</td><td class="num-cell">13 млн</td><td class="num-cell">78</td><td><span class="tag tag-green">Почти распродан</span></td></tr></table></div>
+<div class="card"><h3>Каналы продаж (2026)</h3>
+<table><tr><th>Канал</th><th class="num-cell">Доля</th><th>Комментарий</th></tr>
+<tr><td>Прямой (маркетинг)</td><td class="num-cell">56%</td><td>Основной</td></tr>
+<tr><td>Владис (агентский)</td><td class="num-cell">33%</td><td><span class="tag tag-orange">Зависимость, комиссия ~3%</span></td></tr>
+<tr><td>Другие АН</td><td class="num-cell">13%</td><td>Стабильно</td></tr></table>
+<div class="finding finding-warn"><strong>46% через агентов</strong>Комиссия ~220 тыс/сделку. Рост прямого канала &mdash; приоритет.</div></div>
+<div class="card"><h3>Эксперты отдела продаж</h3>
+<table><tr><th>Эксперт</th><th>Лучший месяц</th><th>Комментарий</th></tr>
+<tr><td>Разумова Вера</td><td>Янв: 74 млн (64%)</td><td><span class="tag tag-green">Лучший</span></td></tr>
+<tr><td>Манасян Лиза</td><td>Фев: 58 млн</td><td>Нестабильно</td></tr>
+<tr><td>Машукова Алина</td><td>Май: 20 млн</td><td>Ниже потенциала</td></tr></table></div>
+`},
+{id:'crm',num:'2',title:'CRM и воронка',html:`
+<div class="page-header"><h2>CRM: воронка и качество лидов</h2><div class="page-desc">Битрикс24 CRM (webhook API)</div></div>
+<div class="card"><h3>Воронка &laquo;Клиенты&raquo; &mdash; текущее состояние</h3>
+<table><tr><th>Стадия</th><th class="num-cell">Кол-во</th><th class="num-cell">Доля</th><th>Оценка</th></tr>
+<tr style="background:#fff3e0"><td>Квалификация пройдена</td><td class="num-cell bad">589</td><td class="num-cell">78%</td><td><span class="tag tag-red">Затор</span></td></tr>
+<tr><td>Встреча назначена</td><td class="num-cell">84</td><td class="num-cell">11%</td><td></td></tr>
+<tr><td>Показ проведён</td><td class="num-cell">60</td><td class="num-cell">8%</td><td></td></tr>
+<tr><td>Документы/условия</td><td class="num-cell">11</td><td class="num-cell">1,5%</td><td></td></tr>
+<tr><td>ДОУ подписан</td><td class="num-cell">5</td><td class="num-cell">0,7%</td><td></td></tr>
+<tr><td>Документы для ДКП/ДДУ</td><td class="num-cell">2</td><td class="num-cell">0,3%</td><td></td></tr>
+<tr style="font-weight:700;background:#f5f5f5"><td>ИТОГО в работе</td><td class="num-cell">754</td><td class="num-cell">100%</td><td>~133 млн</td></tr></table>
+<div class="finding finding-critical"><strong>Конверсия Квалификация &rarr; Встреча = 14%</strong>86% лидов не доходят до встречи. Сколько из 589 &mdash; &laquo;мёртвые&raquo; (&gt;30 дней)?</div></div>
+<div class="card"><h3>WON по месяцам</h3>
+<table><tr><th>Месяц</th><th class="num-cell">Сделок</th><th class="num-cell">Сумма</th><th class="num-cell">Ср. чек</th></tr>
+<tr><td>Январь</td><td class="num-cell">24</td><td class="num-cell">137,6 млн</td><td class="num-cell">5,7 млн</td></tr>
+<tr><td>Февраль</td><td class="num-cell">19</td><td class="num-cell">157,1 млн</td><td class="num-cell">8,3 млн</td></tr>
+<tr><td>Март</td><td class="num-cell bad">4</td><td class="num-cell bad">22,2 млн</td><td class="num-cell">5,6 млн</td></tr>
+<tr><td>Апрель</td><td class="num-cell">10</td><td class="num-cell">74,1 млн</td><td class="num-cell">7,4 млн</td></tr>
+<tr><td>Май</td><td class="num-cell">17</td><td class="num-cell">148,7 млн</td><td class="num-cell">8,7 млн</td></tr>
+<tr style="font-weight:700;background:#f5f5f5"><td>ИТОГО</td><td class="num-cell">74</td><td class="num-cell">539,7 млн</td><td class="num-cell">7,3 млн</td></tr></table></div>
+<div class="card"><h3>Причины отказов (118 сделок)</h3>
+<table><tr><th>Причина</th><th class="num-cell">Кол-во</th><th class="num-cell">%</th><th>Действие</th></tr>
+<tr><td>Пропала потребность</td><td class="num-cell bad">44</td><td class="num-cell">37%</td><td>Усилить прогрев</td></tr>
+<tr><td>Дорого</td><td class="num-cell">21</td><td class="num-cell">18%</td><td>Ценность, не цена</td></tr>
+<tr><td>Не выходит на связь</td><td class="num-cell">17</td><td class="num-cell">14%</td><td>Мультиканал</td></tr>
+<tr><td>Не устроили условия</td><td class="num-cell">12</td><td class="num-cell">10%</td><td>Гибкость</td></tr>
+<tr><td>Выбрали других</td><td class="num-cell">10</td><td class="num-cell">8%</td><td>Отстройка</td></tr>
+<tr><td>Нет подходящего</td><td class="num-cell">7</td><td class="num-cell">6%</td><td>Линейка</td></tr>
+<tr><td>Не устраивает район</td><td class="num-cell">4</td><td class="num-cell">3%</td><td>Таргетинг</td></tr>
+<tr><td>Отказ банка</td><td class="num-cell">3</td><td class="num-cell">3%</td><td>Брокер</td></tr></table></div>
+<div class="card"><h3>Источники лидов (июнь, 3 дня &mdash; 65)</h3>
+<table><tr><th>Источник</th><th class="num-cell">Кол-во</th><th class="num-cell">Доля</th></tr>
+<tr><td>Звонок</td><td class="num-cell">15</td><td class="num-cell">23%</td></tr>
+<tr><td>ВК сообщество</td><td class="num-cell">11</td><td class="num-cell">17%</td></tr>
+<tr><td>ИИ-прозвон</td><td class="num-cell">10</td><td class="num-cell">15%</td></tr>
+<tr><td>Сайт</td><td class="num-cell">8</td><td class="num-cell">12%</td></tr>
+<tr><td>SEO</td><td class="num-cell">7</td><td class="num-cell">11%</td></tr>
+<tr><td>Инстаграм</td><td class="num-cell">4</td><td class="num-cell">6%</td></tr>
+<tr><td>Авито</td><td class="num-cell">4</td><td class="num-cell">6%</td></tr>
+<tr><td>Calltouch</td><td class="num-cell">3</td><td class="num-cell">5%</td></tr>
+<tr><td>Прочие</td><td class="num-cell">3</td><td class="num-cell">5%</td></tr></table>
+<div class="finding finding-info"><strong>ИИ-прозвон = 15% лидов</strong>10 лидов за 3 дня &rarr; ~100/мес. Самый масштабируемый канал.</div></div>
+`},
+{id:'traffic',num:'3',title:'Трафик и аналитика',html:`
+<div class="page-header"><h2>Трафик и веб-аналитика</h2><div class="page-desc">Яндекс Метрика, cherry-dom.com, май 2026</div></div>
+<div class="metrics">
+<div class="metric"><div class="value">6 022</div><div class="label">Визитов</div><div class="delta good">+7% vs апр</div></div>
+<div class="metric"><div class="value">4 306</div><div class="label">Уников</div></div>
+<div class="metric"><div class="value">23,8%</div><div class="label">Отказы</div></div>
+<div class="metric"><div class="value">2:31</div><div class="label">Время</div></div>
+<div class="metric"><div class="value">2,2</div><div class="label">Глубина</div></div></div>
+<div class="card"><h3>По источникам</h3>
+<table><tr><th>Источник</th><th class="num-cell">Визиты</th><th class="num-cell">Доля</th><th class="num-cell">Отказы</th><th class="num-cell">Время</th><th>Оценка</th></tr>
+<tr><td>Реклама</td><td class="num-cell">2 749</td><td class="num-cell">46%</td><td class="num-cell bad">31,5%</td><td class="num-cell bad">1:19</td><td><span class="tag tag-red">Плохое качество</span></td></tr>
+<tr><td>Поиск (SEO)</td><td class="num-cell">1 860</td><td class="num-cell">31%</td><td class="num-cell good">9,1%</td><td class="num-cell good">4:07</td><td><span class="tag tag-green">Лучший канал</span></td></tr>
+<tr><td>Прямой</td><td class="num-cell">956</td><td class="num-cell">16%</td><td class="num-cell">31,6%</td><td class="num-cell">2:01</td><td></td></tr>
+<tr><td>Внутренний</td><td class="num-cell">276</td><td class="num-cell">5%</td><td class="num-cell">23,6%</td><td class="num-cell">4:33</td><td>Сотрудники</td></tr>
+<tr><td>Ссылки</td><td class="num-cell">88</td><td class="num-cell">1%</td><td class="num-cell good">8,0%</td><td class="num-cell good">5:59</td><td><span class="tag tag-green">Целевой</span></td></tr>
+<tr><td>Соцсети</td><td class="num-cell">75</td><td class="num-cell">1%</td><td class="num-cell">16,0%</td><td class="num-cell">1:49</td><td><span class="tag tag-red">Микро</span></td></tr></table></div>
+<div class="summary-grid">
+<div class="card"><h3>Устройства</h3>
+<table><tr><th>Устройство</th><th class="num-cell">Визиты</th><th class="num-cell">Отказы</th></tr>
+<tr><td>Смартфоны</td><td class="num-cell">4 051 (67%)</td><td class="num-cell">27%</td></tr>
+<tr><td>ПК</td><td class="num-cell">1 956 (32%)</td><td class="num-cell good">19%</td></tr>
+<tr><td>Планшеты</td><td class="num-cell">69 (1%)</td><td class="num-cell">23%</td></tr></table></div>
+<div class="card"><h3>География</h3>
+<table><tr><th>Город</th><th class="num-cell">Визиты</th><th class="num-cell">Доля</th></tr>
+<tr><td>Вологда</td><td class="num-cell">3 019</td><td class="num-cell">50%</td></tr>
+<tr><td>Санкт-Петербург</td><td class="num-cell">570</td><td class="num-cell">9,5%</td></tr>
+<tr><td>Москва</td><td class="num-cell">391</td><td class="num-cell">6,5%</td></tr>
+<tr><td>Череповец</td><td class="num-cell">258</td><td class="num-cell">4,3%</td></tr></table></div></div>
+<div class="card"><h3>Конверсии: май vs апрель</h3>
+<table><tr><th>Цель</th><th class="num-cell">Май</th><th class="num-cell">Апр</th><th>&Delta;</th></tr>
+<tr><td>Клик по номеру</td><td class="num-cell">148</td><td class="num-cell">188</td><td class="bad">&minus;21%</td></tr>
+<tr><td>Отправка формы</td><td class="num-cell">51</td><td class="num-cell">76</td><td class="bad">&minus;33%</td></tr>
+<tr><td>Звонки CallTouch</td><td class="num-cell">26</td><td class="num-cell">58</td><td class="bad">&minus;55%</td></tr>
+<tr><td>Целевой звонок</td><td class="num-cell">14</td><td class="num-cell">31</td><td class="bad">&minus;55%</td></tr>
+<tr><td>КВИЗ &mdash; открыли</td><td class="num-cell">647</td><td class="num-cell">&mdash;</td><td></td></tr>
+<tr><td>КВИЗ &mdash; заявка</td><td class="num-cell bad">4</td><td class="num-cell">2</td><td><span class="tag tag-red">0,6%</span></td></tr></table>
+<div class="finding finding-critical"><strong>Все конверсии упали на 20-55% при росте трафика на 7%</strong>Сигнал о деградации качества трафика или посадочных.</div></div>
+<div class="card"><h3>Топ посадочных страниц</h3>
+<table><tr><th>Страница</th><th class="num-cell">Визиты</th><th class="num-cell">Отказы</th><th class="num-cell">Время</th></tr>
+<tr><td>/ (главная)</td><td class="num-cell">1 697</td><td class="num-cell">16%</td><td class="num-cell">3:50</td></tr>
+<tr><td>/complexes/vitiaz</td><td class="num-cell">190</td><td class="num-cell good">8,4%</td><td class="num-cell">4:42</td></tr>
+<tr><td style="color:var(--cherry)">cherry-dom-35.ru (лендинг)</td><td class="num-cell">~750</td><td class="num-cell bad">34-56%</td><td class="num-cell bad">0:38</td></tr>
+<tr><td>/complexes/chili</td><td class="num-cell">158</td><td class="num-cell">16%</td><td class="num-cell">4:15</td></tr>
+<tr><td>/complexes/mone</td><td class="num-cell">121</td><td class="num-cell good">9,1%</td><td class="num-cell">4:20</td></tr>
+<tr><td>/complexes/berch</td><td class="num-cell">61</td><td class="num-cell">11,5%</td><td class="num-cell good">5:09</td></tr></table>
+<div class="finding finding-critical"><strong>Лендинг cherry-dom-35.ru &mdash; главная проблема</strong>~750 рекламных визитов с отказами 34-56%. Основной сайт &mdash; 15,8%. Вести рекламу на основной сайт.</div></div>
+`},
+{id:'ads',num:'4',title:'Рекламные кампании',html:`
+<div class="page-header"><h2>Рекламные кампании</h2><div class="page-desc">Яндекс Директ, май 2026</div></div>
+<div class="card"><h3>Активные кампании</h3>
+<table><tr><th>Кампания</th><th class="num-cell">Визиты</th><th class="num-cell">Уники</th><th class="num-cell">Отказы</th><th class="num-cell">Цел. звонки</th></tr>
+<tr><td>МК / ЖК Чили / Лэндинг</td><td class="num-cell">1 592</td><td class="num-cell">1 282</td><td class="num-cell bad">31,8%</td><td class="num-cell bad">0</td></tr>
+<tr><td>РСЯ / LAL / Охват / Чили</td><td class="num-cell">607</td><td class="num-cell">559</td><td class="num-cell">29,2%</td><td class="num-cell bad">0</td></tr>
+<tr><td>РСЯ / Конкуренты / Чили</td><td class="num-cell">168</td><td class="num-cell">158</td><td class="num-cell">29,2%</td><td class="num-cell bad">0</td></tr>
+<tr><td>РСЯ / LAL / 2154 / Чили</td><td class="num-cell">21</td><td class="num-cell">20</td><td class="num-cell bad">42,9%</td><td class="num-cell bad">0</td></tr>
+<tr style="font-weight:700;background:#f5f5f5"><td>ИТОГО</td><td class="num-cell">2 388</td><td class="num-cell">2 019</td><td class="num-cell">31%</td><td class="num-cell bad">0</td></tr></table>
+<div class="finding finding-critical"><strong>2 388 визитов &rarr; 0 целевых звонков</strong>Только Чили, только РСЯ + МК, только лендинг cherry-dom-35.ru. Поиск не используется. 6 ЖК без рекламы.</div></div>
+<div class="card"><h3>Чек-лист</h3><ul class="check-list">
+<li class="no">Реклама только на 1 из 7 ЖК</li>
+<li class="no">Нет поисковых кампаний</li>
+<li class="no">Лендинг с отказами 34-56%</li>
+<li class="no">0 целевых звонков</li>
+<li class="no">Нет ретаргетинга</li>
+<li class="no">Нет Авито/VK Ads/Циан/ДомКлик</li>
+<li class="partial">CallTouch есть, но не привязан к рекламе</li>
+<li class="yes">UTM-метки на кампаниях</li></ul></div>
+`},
+{id:'seo',num:'5',title:'SEO',html:`
+<div class="page-header"><h2>SEO и органический поиск</h2><div class="page-desc">Поисковый трафик, запросы, техническое SEO</div></div>
+<div class="metrics">
+<div class="metric"><div class="value">1 860</div><div class="label">Визитов из поиска</div></div>
+<div class="metric"><div class="value good">9,1%</div><div class="label">Отказы</div></div>
+<div class="metric"><div class="value good">4:07</div><div class="label">Время</div></div>
+<div class="metric"><div class="value good">3,6</div><div class="label">Глубина</div></div></div>
+<div class="card"><h3>Топ запросов</h3>
+<table><tr><th>Запрос</th><th class="num-cell">Визиты</th><th>Тип</th></tr>
+<tr><td>черри дом вологда</td><td class="num-cell">117</td><td><span class="tag tag-blue">Бренд</span></td></tr>
+<tr><td>черри дом</td><td class="num-cell">67</td><td><span class="tag tag-blue">Бренд</span></td></tr>
+<tr><td>чери дом вологда</td><td class="num-cell">36</td><td><span class="tag tag-blue">Бренд</span></td></tr>
+<tr><td>черри дом офиц. сайт</td><td class="num-cell">34</td><td><span class="tag tag-blue">Бренд</span></td></tr>
+<tr><td>жк витязь вологда</td><td class="num-cell">28</td><td><span class="tag tag-green">Продукт</span></td></tr>
+<tr><td>жк берч вологда</td><td class="num-cell">19</td><td><span class="tag tag-green">Продукт</span></td></tr>
+<tr><td>жк моне вологда</td><td class="num-cell">16</td><td><span class="tag tag-green">Продукт</span></td></tr>
+<tr><td>жк чили вологда</td><td class="num-cell">15</td><td><span class="tag tag-green">Продукт</span></td></tr></table>
+<div class="finding finding-warn"><strong>80%+ &mdash; брендовые запросы</strong>Небрендовые (&laquo;купить квартиру вологда&raquo;) отсутствуют. Потенциал для контент-маркетинга.</div></div>
+<div class="card"><h3>Техническое SEO</h3><ul class="check-list">
+<li class="yes">robots.txt настроен</li>
+<li class="yes">sitemap.xml есть</li>
+<li class="yes">HTTPS</li>
+<li class="yes">UTM закрыты от индексации</li>
+<li class="partial">Sitemap не полный</li>
+<li class="no">Нет блога/статей/новостей</li></ul></div>
+`},
+{id:'site',num:'6',title:'Сайт',html:`
+<div class="page-header"><h2>Сайт cherry-dom.com</h2><div class="page-desc">Структура, конверсионные элементы</div></div>
+<div class="summary-grid">
+<div class="card"><h3>Структура</h3><ul class="check-list">
+<li class="yes">Главная &mdash; отказы 16%, 3:50</li>
+<li class="yes">Страницы ЖК &mdash; 8-19%, 3-5 мин</li>
+<li class="yes">Выбор квартир /flats</li>
+<li class="partial">/service &mdash; отказы 43%</li>
+<li class="no">cherry-dom-35.ru &mdash; 34-56%</li>
+<li class="no">Нет блога</li></ul></div>
+<div class="card"><h3>Конверсионные элементы</h3><ul class="check-list">
+<li class="yes">Квиз (647 открытий)</li>
+<li class="yes">Формы обратной связи</li>
+<li class="yes">Телефон (148 кликов)</li>
+<li class="yes">CallTouch</li>
+<li class="no">Квиз не конвертит (0,6%)</li>
+<li class="no">Нет чата/мессенджера</li>
+<li class="no">Нет калькулятора ипотеки</li></ul></div></div>
+`},
+{id:'channels',num:'7',title:'Каналы привлечения',html:`
+<div class="page-header"><h2>Каналы привлечения: полная карта</h2><div class="page-desc">15 каналов: активные и неиспользуемые</div></div>
+<div class="card">
+<table><tr><th>Канал</th><th>Статус</th><th class="num-cell">Лидов/мес</th><th>Оценка</th></tr>
+<tr><td>Входящие звонки</td><td><span class="tag tag-green">Работает</span></td><td class="num-cell">~15</td><td>Основной</td></tr>
+<tr><td>ВК сообщество</td><td><span class="tag tag-green">Активен</span></td><td class="num-cell">~11</td><td>Второй</td></tr>
+<tr><td>ИИ-прозвон</td><td><span class="tag tag-green">Активен</span></td><td class="num-cell">~10</td><td>Масштабируемый</td></tr>
+<tr><td>Сайт</td><td><span class="tag tag-green">Работает</span></td><td class="num-cell">~8</td><td></td></tr>
+<tr><td>SEO</td><td><span class="tag tag-green">Работает</span></td><td class="num-cell">~7</td><td>Лучшее качество</td></tr>
+<tr><td>Авито</td><td><span class="tag tag-orange">Частично</span></td><td class="num-cell">~4</td><td></td></tr>
+<tr><td>Инстаграм</td><td><span class="tag tag-orange">Частично</span></td><td class="num-cell">~4</td><td>Только органика</td></tr>
+<tr><td>Я.Директ (РСЯ/МК)</td><td><span class="tag tag-orange">Только Чили</span></td><td class="num-cell">~1-5</td><td class="bad">0 звонков</td></tr>
+<tr><td>CallTouch</td><td><span class="tag tag-green">Настроен</span></td><td class="num-cell">~3</td><td></td></tr>
+<tr><td>Я.Недвижимость</td><td><span class="tag tag-orange">Есть</span></td><td class="num-cell">~1-3</td><td></td></tr>
+<tr style="background:#ffebee"><td>Я.Директ (Поиск)</td><td><span class="tag tag-red">НЕ используется</span></td><td class="num-cell">0</td><td class="bad">Упущен</td></tr>
+<tr style="background:#ffebee"><td>VK Ads</td><td><span class="tag tag-red">НЕ используется</span></td><td class="num-cell">0</td><td class="bad">Упущен</td></tr>
+<tr style="background:#ffebee"><td>Контент-маркетинг</td><td><span class="tag tag-red">Отсутствует</span></td><td class="num-cell">0</td><td class="bad">Нет блога</td></tr>
+<tr style="background:#ffebee"><td>Telegram</td><td><span class="tag tag-red">Минимально</span></td><td class="num-cell">~1</td><td></td></tr>
+<tr style="background:#ffebee"><td>Ретаргетинг</td><td><span class="tag tag-red">НЕ настроен</span></td><td class="num-cell">0</td><td class="bad">Упущен</td></tr></table></div>
+<div class="finding finding-critical"><strong>Из 15 каналов работают 7, и те не на полную</strong>Не используются: поиск Директ, VK Ads, контент, Telegram, ретаргетинг.</div>
+`},
+{id:'competitors',num:'8',title:'Конкуренты',html:`
+<div class="page-header"><h2>Конкурентный анализ</h2><div class="page-desc">8 застройщиков Вологды &mdash; позиционирование, каналы, слабые места, отстройка</div></div>
+<div class="finding finding-info"><strong>Источник: сравнительный анализ конкурентов ЧерриДом</strong>Анализ по открытым признакам: сайты, Авито, агрегаторы, офферы, CTA, визуал, CJM. Без доступа к рекламным кабинетам конкурентов.</div>
+<div class="card"><h3>Сводная таблица конкурентов</h3>
+<table><tr><th>Конкурент</th><th>Позиционирование</th><th>Сильные стороны</th><th>Слабые места</th></tr>
+<tr><td><strong>Maxi Life</strong></td><td>Бизнес-класс, семья, комфорт, надёжность</td><td class="good">Лучший CJM, марквиз, 3D-панорамы, школа покупателя, партнёрские подарки, сильный Авито</td><td>Системный, менее авторский бренд</td></tr>
+<tr><td><strong>ВГС / Авиатор</strong></td><td>Эконом/комфорт, опыт 50 лет, цена</td><td>Доверие через стаж, 17% жилплощади Вологды</td><td class="bad">Слабый сайт, слабая эмоциональная упаковка</td></tr>
+<tr><td><strong>Домстрой / Поэтика</strong></td><td>Клубный дом, камерность, тишина</td><td>Хорошо сформулирована камерность, есть FAQ</td><td class="bad">Визуал не доказывает обещания, много текста</td></tr>
+<tr><td><strong>Ардстрой / Ягодный</strong></td><td>Надёжный, инженерия, семья, цена от 106 тыс/м&sup2;</td><td>Газовые котлы, тёплые полы, ипотека без доплат</td><td class="bad">Слабая эмоциональная упаковка, рейтинг 3,7</td></tr>
+<tr><td><strong>Капитал Инвест / Министр</strong></td><td>Комфорт-класс, камерность, 12 квартир</td><td>Сильные рендеры, двухуровневые квартиры, короткие описания планировок</td><td>Узкое позиционирование</td></tr>
+<tr><td><strong>К-Менеджмент / Новая история</strong></td><td>Дом у реки, престиж, редкие форматы</td><td>Хорошо раскрыты уникальные форматы квартир</td><td class="bad">Визуал не соответствует заявленному уровню</td></tr>
+<tr><td><strong>СИЦ / Малая Голландия</strong></td><td>Загородный уют в 15 мин от центра</td><td>Сильные CTA, догоняющий чат, иконки инфраструктуры</td><td class="bad">Нет присутствия на Авито</td></tr>
+<tr><td><strong>ГСЗ / Олимпийский</strong></td><td>Массовый рациональный проект, цена</td><td>Цена и район</td><td class="bad">Слабый сайт, нет бренда</td></tr>
+</table></div>
+<div class="card"><h3>Что уже стало нормой рынка (не УТП)</h3>
+<table><tr><th>Характеристика</th><th>Кто использует</th><th>Вывод</th></tr>
+<tr><td>Закрытый двор / без машин</td><td>Maxi Life, Авиатор, Министр, Малая Голландия, Олимпийский</td><td>Не главный оффер &mdash; гигиена</td></tr>
+<tr><td>Шумоизоляция</td><td>Авиатор, Maxi Life и др.</td><td>Гигиена комфорта</td></tr>
+<tr><td>Большие кухни</td><td>Maxi Life, Министр, Авиатор</td><td>Обязательно в первых строках Авито</td></tr>
+<tr><td>Кладовые / келлеры</td><td>Maxi Life, Министр</td><td>Продавать через сценарии хранения</td></tr>
+<tr><td>Видеонаблюдение</td><td>Почти у всех</td><td>Раскрывать через безопасность семьи</td></tr>
+<tr><td>Ипотека / рассрочка</td><td>Maxi Life, ВГС, Ардстрой</td><td>Нужен сильный финансовый блок</td></tr>
+</table></div>
+<div class="card"><h3>Отстройка от каждого конкурента</h3>
+<table><tr><th>Конкурент</th><th>Чем силён</th><th>Как отстроиться ЧерриДом</th></tr>
+<tr><td>Maxi Life</td><td>Системность, 360-среда, сервис</td><td>Не &laquo;второй Maxi Life&raquo;. Авторские дома с характером и вишенкой vs системный девелопер</td></tr>
+<tr><td>ВГС</td><td>50 лет, надёжность, цена</td><td>Надёжность + вкус, эстетика, проектный характер</td></tr>
+<tr><td>Поэтика</td><td>Камерность</td><td>Камерность + характер + эстетика + вишенка (шире)</td></tr>
+<tr><td>Ардстрой</td><td>Цена, инженерия</td><td>Инженерия есть, но главное &mdash; проект с идеей</td></tr>
+<tr><td>Министр</td><td>Приватность, 12 квартир</td><td>Широта портфеля: коллекция авторских проектов</td></tr>
+<tr><td>Новая история</td><td>Река, виды</td><td>Качество визуала и ясность идеи</td></tr>
+<tr><td>Малая Голландия</td><td>Загородный уют + город</td><td>Не просто уют, а среда класса с вишенкой</td></tr>
+<tr><td>Олимпийский</td><td>Цена</td><td>Не ценовая война. Ценность: проект, который хочется назвать своим</td></tr>
+</table></div>
+<div class="card"><h3>Что забрать у конкурентов</h3>
+<table><tr><th>У кого</th><th>Что забрать</th><th>Как адаптировать</th></tr>
+<tr><td>Maxi Life</td><td>Марквиз</td><td>&laquo;Какой проект ЧерриДом подходит вам?&raquo;</td></tr>
+<tr><td>Maxi Life</td><td>Школа покупателя</td><td>&laquo;Школа осознанной покупки квартиры&raquo;</td></tr>
+<tr><td>Maxi Life</td><td>3D-панорамы, вид из окна</td><td>Среда вокруг: парк, школы, сценарии жизни</td></tr>
+<tr><td>Maxi Life</td><td>Партнёрские подарки</td><td>&laquo;Вишенка для новосёла&raquo;: кухня, дизайн, переезд</td></tr>
+<tr><td>Maxi Life / МГ</td><td>Постоянные CTA</td><td>На каждом экране: подбор, ипотека, подборка, встреча</td></tr>
+<tr><td>Малая Голландия</td><td>Догоняющий чат, поп-ап</td><td>&laquo;Подобрать проект под ваш стиль жизни?&raquo;</td></tr>
+<tr><td>Поэтика</td><td>FAQ</td><td>FAQ по покупке, ипотеке, срокам, сравнению</td></tr>
+<tr><td>Министр</td><td>Короткие описания планировок</td><td>Через сценарий: &laquo;для семьи с ребёнком&raquo;, &laquo;для удалёнки&raquo;</td></tr>
+</table></div>
+<div class="card"><h3>Матрица: проект &mdash; ЦА &mdash; оффер &mdash; канал</h3>
+<table><tr><th>Проект</th><th>Главная ЦА</th><th>Главный смысл</th><th>Первый оффер</th></tr>
+<tr><td><strong>Бёрч</strong></td><td>Семьи, семейная ипотека</td><td>Семейный проект у парка</td><td>&laquo;Квартира для семьи у Берёзового парка&raquo;</td></tr>
+<tr><td><strong>Чили</strong></td><td>Молодые, пары, запрос на яркость</td><td>Дом с энергией и стилем</td><td>&laquo;Дом с ярким характером для жизни со вкусом&raquo;</td></tr>
+<tr><td><strong>Моне</strong></td><td>Эстетика, статус, камерность</td><td>Архитектурный образ</td><td>&laquo;Авторский дом для тех, кто выбирает эстетику&raquo;</td></tr>
+<tr><td><strong>Витязи</strong></td><td>Современность, перспектива</td><td>Новый уровень комфорта</td><td>&laquo;Квартира в проекте с новым взглядом на город&raquo;</td></tr>
+</table></div>
+<div class="card"><h3>Модель роста: со 100 до 300 квал-лидов</h3>
+<table><tr><th>Источник</th><th>Действие</th><th class="num-cell">Потенциал</th></tr>
+<tr><td>Яндекс Поиск</td><td>Горячие запросы, коммерческое ядро</td><td class="num-cell">+30-50</td></tr>
+<tr><td>Марквиз</td><td>Общий подбор + квизы по ЖК</td><td class="num-cell">+40-60</td></tr>
+<tr><td>Авито</td><td>30-50 объявлений, продвижение, CTA</td><td class="num-cell">+40-70</td></tr>
+<tr><td>Агрегаторы</td><td>Циан, ДомКлик, Я.Недв., М2</td><td class="num-cell">+25-40</td></tr>
+<tr><td>Ретаргетинг</td><td>Возврат посетителей сайта/квиза</td><td class="num-cell">+15-30</td></tr>
+<tr><td>VK / OK / Инстаграм</td><td>Лид-формы, прогрев, 30+</td><td class="num-cell">+15-30</td></tr>
+<tr><td>Партнёры / агенты</td><td>Программа и материалы</td><td class="num-cell">+20-40</td></tr>
+<tr><td>Контент / школа покупателя</td><td>Прогрев тёплых</td><td class="num-cell">+10-20</td></tr>
+<tr style="font-weight:700;background:#f5f5f5"><td>ИТОГО потенциал</td><td></td><td class="num-cell">195-340 квал-лидов</td></tr>
+</table></div>
+<div class="finding finding-critical"><strong>Главный вывод конкурентного анализа</strong>Рынок Вологды уже продаёт все базовые характеристики. ЧерриДом не может выделиться техническими параметрами. Зона отстройки &mdash; <strong>авторский девелопер, который создаёт дома с характером и вишенкой</strong>. Это должно проявляться в каждом канале: сайт, Авито, агрегаторы, реклама, визуал, квиз, презентации.</div>
+`},
+{id:'positioning',num:'9',title:'Позиционирование ЖК',html:`
+<div class="page-header"><h2>Позиционирование ЖК</h2><div class="page-desc">Концепция, ЦА и визуальный код каждого проекта ЧерриДом</div></div>
+<div class="card"><h3>Матрица позиционирования портфеля</h3>
+<table><tr><th>ЖК</th><th>Концепция</th><th>ЦА</th><th>Характер</th><th>Визуальный код</th><th>Ключевой оффер</th></tr>
+<tr><td><strong>Моне</strong></td><td>Живопись Клода Моне, среда &laquo;с&nbsp;вишенкой&raquo;</td><td>Ценители искусства, семьи</td><td><span class="tag tag-blue">Утончённый, импрессионизм</span></td><td>Цветные витражи, маки 4 м, вертик. озеленение, мосты</td><td>&laquo;Небесные дворцы&raquo; &mdash; двухуровневые. <strong>от 7,8 млн</strong></td></tr>
+<tr><td><strong>Витязь 2&ndash;3</strong></td><td>Архитектурная легенда, символика витязей</td><td>Семьи с детьми</td><td><span class="tag tag-orange">Сказочный, мощный</span></td><td>Кони, дуб, площадка-крепость</td><td>Безбарьерная среда, спорткластер рядом</td></tr>
+<tr><td><strong>В-Сити</strong></td><td>&laquo;Тиффани среди домов&raquo; &mdash; Vice City / Нью-Йорк</td><td>Молодые пары, профессионалы</td><td><span class="tag tag-blue">Дерзкий, неоновый, luxury</span></td><td>Одри Хепбёрн, Зевс в очках, Давид-скалодром</td><td>14 этажей, 64 кв., стилобат без машин. <strong>от 9,45 млн</strong></td></tr>
+<tr><td><strong>Чили</strong></td><td>&laquo;Вкус жизни&raquo; &mdash; перец как метафора</td><td>Молодые семьи</td><td><span class="tag tag-red">Острый, дерзкий, самобытный</span></td><td>3D-кладка огня, улитки, лабиринт</td><td>Кухни 25&ndash;27 м&sup2;, потолки до 5,3 м. <strong>от 6,57 млн</strong></td></tr>
+<tr><td><strong>Бёрч</strong></td><td>&laquo;Графика лёгкой жизни&raquo; &mdash; берёза как код</td><td>Люди с тонким вкусом и юмором</td><td><span class="tag tag-green">Ироничный, графичный, камерный</span></td><td>&laquo;Конь в пальто&raquo;, панды, ч/б паттерн, 3D-кирпич</td><td>48 кв., 48 кладовых, панорамный 6-й этаж. <span class="warn">Анонс</span></td></tr>
+<tr><td><strong>Витязь 4&ndash;5</strong></td><td>Кульминация саги &laquo;Витязь&raquo;</td><td>Семьи, традиция + модерн</td><td><span class="tag tag-orange">Героический, светлый</span></td><td>Ясно солнышко, 33 богатыря, вишнёвый сад</td><td>&laquo;Небесные дворцы&raquo; на кровле, комм. цоколь</td></tr>
+</table></div>
+<div class="card"><h3>Ценовое позиционирование</h3>
+<div class="metrics">
+<div class="metric"><div class="value">6,57M</div><div class="label">Чили &mdash; 1-комн. от</div></div>
+<div class="metric"><div class="value">7,8M</div><div class="label">Моне &mdash; 1-комн. от</div></div>
+<div class="metric"><div class="value">9,45M</div><div class="label">В-Сити &mdash; 2-комн. от</div></div>
+<div class="metric"><div class="value" style="color:var(--gray)">TBD</div><div class="label">Бёрч &mdash; анонс</div></div>
+</div></div>
+<div class="finding finding-info"><strong>Бренд-архитектура: &laquo;Класс с вишенкой&raquo;</strong>Каждый ЖК имеет уникальный характер и визуальный код &mdash; от импрессионизма (Моне) до сказочного эпоса (Витязь) и неоновой иронии (В-Сити). Ни один конкурент в Вологде не строит маркетинг на нарративе. Все объекты объединены зонтичным &laquo;класс с вишенкой&raquo;.</div>
+<div class="finding finding-warn"><strong>Рекламное покрытие не соответствует портфелю</strong>6 из 7 ЖК имеют проработанные концепции с уникальным визуальным языком, но реклама идёт только на Чили. Моне (60M/мес план), Витязь 4&ndash;5 (73M), Бёрч (25M) &mdash; ноль кампаний при готовом позиционировании.</div>
+`},
+{id:'market',num:'10',title:'Рынок Вологды',html:`
+<div class="page-header"><h2>Рынок Вологды</h2><div class="page-desc">KPI первичного рынка, конкурентная карта, позиция ЧерриДом</div></div>
+<div class="metrics">
+<div class="metric"><div class="value">80</div><div class="label">ЖК в продаже</div></div>
+<div class="metric"><div class="value">105 200</div><div class="label">Средняя ₽/м&sup2;</div><div class="delta" style="color:var(--orange)">+5,7% г/г</div></div>
+<div class="metric"><div class="value">89 748</div><div class="label">Вторичка ₽/м&sup2;</div><div class="delta" style="color:var(--orange)">+6,1% п/п</div></div>
+<div class="metric"><div class="value">5,9 млн</div><div class="label">Средняя стоимость</div></div>
+<div class="metric"><div class="value">9,3%</div><div class="label">Ипотечная ставка</div></div>
+<div class="metric"><div class="value">41%</div><div class="label">Доля ТОП-3</div></div>
 </div>
-
-<!-- 1. ПРОДАЖИ ПЛАН/ФАКТ -->
-<div class="section" id="sales">
-  <h2><span class="num">1</span> Продажи: план vs факт</h2>
-
-  <h3>Помесячная динамика 2026</h3>
-  <table>
-    <tr><th>Месяц</th><th class="num-cell">План</th><th class="num-cell">Факт</th><th class="num-cell">%</th><th class="num-cell">Сделок</th><th>Оценка</th></tr>
-    <tr><td>Январь</td><td class="num-cell">349 млн</td><td class="num-cell">134 млн</td><td class="num-cell bad">38%</td><td class="num-cell">16</td><td><span class="tag tag-orange">Ниже плана</span></td></tr>
-    <tr><td>Февраль</td><td class="num-cell">327 млн</td><td class="num-cell">104 млн</td><td class="num-cell bad">32%</td><td class="num-cell">16</td><td><span class="tag tag-orange">Ниже плана</span></td></tr>
-    <tr><td>Март</td><td class="num-cell">331 млн</td><td class="num-cell">52 млн</td><td class="num-cell bad">16%</td><td class="num-cell">7</td><td><span class="tag tag-red">Провал</span></td></tr>
-    <tr><td>Апрель</td><td class="num-cell">331 млн</td><td class="num-cell">113 млн</td><td class="num-cell bad">34%</td><td class="num-cell">12</td><td><span class="tag tag-orange">Ниже плана</span></td></tr>
-    <tr><td>Май</td><td class="num-cell">348 млн</td><td class="num-cell">64 млн</td><td class="num-cell bad">18%</td><td class="num-cell">9</td><td><span class="tag tag-red">Провал</span></td></tr>
-    <tr><td>Июнь (3 дня)</td><td class="num-cell">368 млн</td><td class="num-cell">10,8 млн</td><td class="num-cell">2,9%</td><td class="num-cell">—</td><td><span class="tag tag-blue">Начало</span></td></tr>
-    <tr style="font-weight:700; background:#f5f5f5"><td>ИТОГО H1</td><td class="num-cell">2 053 млн</td><td class="num-cell">478 млн</td><td class="num-cell bad">23,3%</td><td class="num-cell">60</td><td></td></tr>
-  </table>
-
-  <h3>Выполнение по ЖК (январь — май)</h3>
-  <table>
-    <tr><th>ЖК</th><th class="num-cell">План июнь</th><th class="num-cell">Остаток S, м²</th><th>Статус</th></tr>
-    <tr><td>Чили</td><td class="num-cell">95 млн</td><td class="num-cell">1 358</td><td><span class="tag tag-orange">Единственный с рекламой, продажи есть</span></td></tr>
-    <tr><td>Моне</td><td class="num-cell">60 млн</td><td class="num-cell">2 219</td><td><span class="tag tag-red">Нет рекламы, большой остаток</span></td></tr>
-    <tr><td>Витязь 4</td><td class="num-cell">36 млн</td><td class="num-cell">3 309</td><td><span class="tag tag-orange">Единственный факт в июне (10,8 млн)</span></td></tr>
-    <tr><td>Витязь 5</td><td class="num-cell">37 млн</td><td class="num-cell">1 542</td><td><span class="tag tag-red">Нет рекламы</span></td></tr>
-    <tr><td>Бёрч</td><td class="num-cell">25 млн</td><td class="num-cell">3 567</td><td><span class="tag tag-red">Новый ЖК, нет стратегии запуска</span></td></tr>
-    <tr><td>В-Сити</td><td class="num-cell">21 млн</td><td class="num-cell">519</td><td><span class="tag tag-orange">Малый остаток, допродажи</span></td></tr>
-    <tr><td>Витязь 3</td><td class="num-cell">13 млн</td><td class="num-cell">78</td><td><span class="tag tag-green">Почти распродан</span></td></tr>
-    <tr><td>Смайл</td><td class="num-cell">17 млн</td><td class="num-cell">297</td><td><span class="tag tag-orange">Без движения</span></td></tr>
-    <tr><td>Затон</td><td class="num-cell">17 млн</td><td class="num-cell">131</td><td><span class="tag tag-orange">Без движения</span></td></tr>
-  </table>
-
-  <h3>Каналы продаж</h3>
-  <table>
-    <tr><th>Канал</th><th class="num-cell">Доля сделок 2026</th><th>Тренд</th></tr>
-    <tr><td>Прямой канал (маркетинг)</td><td class="num-cell">56%</td><td>Основной</td></tr>
-    <tr><td>Владис (агентский)</td><td class="num-cell">33%</td><td><span class="tag tag-orange">Высокая зависимость</span></td></tr>
-    <tr><td>Другие АН</td><td class="num-cell">13%</td><td>Стабильно</td></tr>
-  </table>
-
-  <div class="finding finding-warn">
-    <strong>Зависимость от агентского канала</strong>
-    33% сделок через Владис + 13% другие АН = 46% через агентов. При комиссии ~3% это серьёзная нагрузка на маржу. Рост прямого канала через маркетинг — приоритет.
-  </div>
-
-  <h3>Эксперты отдела продаж</h3>
-  <div class="finding finding-info">
-    <strong>Детальный разбор экспертов — <a href="#experts">секция 11</a></strong>
-    По итогам февраля–марта: 3 эксперта, ежедневная отчётность по двум каналам (прямой + партнёрский). Полный анализ конверсий, сделок и проблемных зон — в секции «Эксперты отдела продаж».
-  </div>
-</div>
-
-<!-- 2. CRM И ВОРОНКА -->
-<div class="section" id="crm">
-  <h2><span class="num">2</span> CRM: воронка и качество лидов</h2>
-
-  <h3>Структура воронки в Битрикс24</h3>
-  <p>Основная воронка: <strong>«Клиенты»</strong> (category_id=24) — 22 стадии от квалификации до ЭСКРОУ.</p>
-
-  <table>
-    <tr><th>Стадия воронки</th><th class="num-cell">Кол-во</th><th>Доля</th><th>Оценка</th></tr>
-    <tr style="background:#fff3e0"><td>Квалификация пройдена</td><td class="num-cell bad">589</td><td>78%</td><td><span class="tag tag-red">Затор — клиенты не двигаются</span></td></tr>
-    <tr><td>Встреча назначена</td><td class="num-cell">84</td><td>11%</td><td></td></tr>
-    <tr><td>Показ проведён</td><td class="num-cell">60</td><td>8%</td><td></td></tr>
-    <tr><td>Документы/условия согласованы</td><td class="num-cell">11</td><td>1,5%</td><td></td></tr>
-    <tr><td>ДОУ подписан</td><td class="num-cell">5</td><td>0,7%</td><td></td></tr>
-    <tr><td>Документы для ДКП/ДДУ</td><td class="num-cell">2</td><td>0,3%</td><td></td></tr>
-    <tr style="font-weight:700"><td>ИТОГО в работе</td><td class="num-cell">754</td><td>100%</td><td>Сумма: ~133 млн ₽</td></tr>
-  </table>
-
-  <div class="finding finding-critical">
-    <strong>589 сделок «зависли» на квалификации (78% воронки)</strong>
-    Конверсия «Квалификация → Встреча назначена» = 14%. Это значит 86% квалифицированных лидов не доходят до встречи. Необходим аудит: сколько из 589 — «мёртвые» (>30 дней без касания), сколько — в работе.
-  </div>
-
-  <h3>WON-сделки по месяцам (CRM)</h3>
-  <table>
-    <tr><th>Месяц</th><th class="num-cell">Сделок</th><th class="num-cell">Сумма</th><th>Ср. чек</th></tr>
-    <tr><td>Январь</td><td class="num-cell">24</td><td class="num-cell">137,6 млн</td><td class="num-cell">5,7 млн</td></tr>
-    <tr><td>Февраль</td><td class="num-cell">19</td><td class="num-cell">157,1 млн</td><td class="num-cell">8,3 млн</td></tr>
-    <tr><td>Март</td><td class="num-cell bad">4</td><td class="num-cell bad">22,2 млн</td><td class="num-cell">5,6 млн</td></tr>
-    <tr><td>Апрель</td><td class="num-cell">10</td><td class="num-cell">74,1 млн</td><td class="num-cell">7,4 млн</td></tr>
-    <tr><td>Май</td><td class="num-cell">17</td><td class="num-cell">148,7 млн</td><td class="num-cell">8,7 млн</td></tr>
-    <tr style="font-weight:700"><td>ИТОГО</td><td class="num-cell">74</td><td class="num-cell">539,7 млн</td><td class="num-cell">7,3 млн</td></tr>
-  </table>
-
-  <h3>Причины отказов (118 проигранных сделок за 2026)</h3>
-  <table>
-    <tr><th>Причина</th><th class="num-cell">Кол-во</th><th class="num-cell">Доля</th><th>Действие</th></tr>
-    <tr><td>Пропала потребность</td><td class="num-cell bad">44</td><td class="num-cell">37%</td><td>Усилить прогрев, касания по протоколу</td></tr>
-    <tr><td>Дорого</td><td class="num-cell">21</td><td class="num-cell">18%</td><td>Работа с ценностью, не ценой. Рассрочки, ипотека</td></tr>
-    <tr><td>Не выходит на связь</td><td class="num-cell">17</td><td class="num-cell">14%</td><td>Мультиканальные касания (МАХ, ТГ, ВК)</td></tr>
-    <tr><td>Не устроили условия</td><td class="num-cell">12</td><td class="num-cell">10%</td><td>Гибкость условий, индивидуальные решения</td></tr>
-    <tr><td>Выбрали других</td><td class="num-cell">10</td><td class="num-cell">8%</td><td>Конкурентный анализ, отстройка</td></tr>
-    <tr><td>Нет подходящего предложения</td><td class="num-cell">7</td><td class="num-cell">6%</td><td>Расширение линейки форматов</td></tr>
-    <tr><td>Не устраивает район</td><td class="num-cell">4</td><td class="num-cell">3%</td><td>Таргетинг на правильную аудиторию</td></tr>
-    <tr><td>Отказ банка</td><td class="num-cell">3</td><td class="num-cell">3%</td><td>Брокер, альтернативные банки</td></tr>
-  </table>
-
-  <h3>Источники лидов (июнь, 3 дня — 65 лидов)</h3>
-  <table>
-    <tr><th>Источник</th><th class="num-cell">Кол-во</th><th class="num-cell">Доля</th></tr>
-    <tr><td>Звонок (входящий)</td><td class="num-cell">15</td><td class="num-cell">23%</td></tr>
-    <tr><td>ВК сообщество</td><td class="num-cell">11</td><td class="num-cell">17%</td></tr>
-    <tr><td>ИИ-прозвон</td><td class="num-cell">10</td><td class="num-cell">15%</td></tr>
-    <tr><td>Сайт</td><td class="num-cell">8</td><td class="num-cell">12%</td></tr>
-    <tr><td>Яндекс SEO + Google SEO</td><td class="num-cell">7</td><td class="num-cell">11%</td></tr>
-    <tr><td>Инстаграм</td><td class="num-cell">4</td><td class="num-cell">6%</td></tr>
-    <tr><td>Авито</td><td class="num-cell">4</td><td class="num-cell">6%</td></tr>
-    <tr><td>Calltouch</td><td class="num-cell">3</td><td class="num-cell">5%</td></tr>
-    <tr><td>Прочие</td><td class="num-cell">3</td><td class="num-cell">5%</td></tr>
-  </table>
-
-  <div class="finding finding-info">
-    <strong>ИИ-прозвон — уже 15% лидов</strong>
-    Канал «ИИ-прозвон» генерирует 10 лидов за 3 дня. Это ~100/мес — потенциально самый масштабируемый канал. Требуется анализ качества этих лидов и конверсии в сделки.
-  </div>
-</div>
-
-<!-- 3. ТРАФИК И АНАЛИТИКА -->
-<div class="section" id="traffic">
-  <h2><span class="num">3</span> Трафик и веб-аналитика</h2>
-
-  <h3>Общие показатели (Яндекс Метрика, май 2026)</h3>
-  <div class="metrics">
-    <div class="metric">
-      <div class="value">6 022</div>
-      <div class="label">Визитов</div>
-      <div class="delta" style="color:var(--green)">+7% vs апрель (5 604)</div>
-    </div>
-    <div class="metric">
-      <div class="value">4 306</div>
-      <div class="label">Уникальных посетителей</div>
-    </div>
-    <div class="metric">
-      <div class="value">23,8%</div>
-      <div class="label">Отказы</div>
-      <div class="delta">Стабильно</div>
-    </div>
-    <div class="metric">
-      <div class="value">2:31</div>
-      <div class="label">Среднее время на сайте</div>
-    </div>
-    <div class="metric">
-      <div class="value">2,2</div>
-      <div class="label">Глубина просмотра</div>
-    </div>
-  </div>
-
-  <h3>Трафик по источникам</h3>
-  <table>
-    <tr><th>Источник</th><th class="num-cell">Визиты</th><th class="num-cell">Доля</th><th class="num-cell">Отказы</th><th class="num-cell">Время</th><th>Оценка</th></tr>
-    <tr><td>Реклама</td><td class="num-cell">2 749</td><td class="num-cell">46%</td><td class="num-cell bad">31,5%</td><td class="num-cell bad">1:19</td><td><span class="tag tag-red">Высокие отказы, мало времени</span></td></tr>
-    <tr><td>Поиск (SEO)</td><td class="num-cell">1 860</td><td class="num-cell">31%</td><td class="num-cell good">9,1%</td><td class="num-cell good">4:07</td><td><span class="tag tag-green">Лучшее качество</span></td></tr>
-    <tr><td>Прямой</td><td class="num-cell">956</td><td class="num-cell">16%</td><td class="num-cell">31,6%</td><td class="num-cell">2:01</td><td></td></tr>
-    <tr><td>Внутренний</td><td class="num-cell">276</td><td class="num-cell">5%</td><td class="num-cell">23,6%</td><td class="num-cell">4:33</td><td>Сотрудники</td></tr>
-    <tr><td>Ссылки</td><td class="num-cell">88</td><td class="num-cell">1%</td><td class="num-cell good">8,0%</td><td class="num-cell good">5:59</td><td><span class="tag tag-green">Целевой трафик</span></td></tr>
-    <tr><td>Соцсети</td><td class="num-cell">75</td><td class="num-cell">1%</td><td class="num-cell">16,0%</td><td class="num-cell">1:49</td><td><span class="tag tag-red">Микроскопический</span></td></tr>
-  </table>
-
-  <h3>Устройства</h3>
-  <table>
-    <tr><th>Устройство</th><th class="num-cell">Визиты</th><th class="num-cell">Доля</th><th class="num-cell">Отказы</th></tr>
-    <tr><td>Смартфоны</td><td class="num-cell">4 051</td><td class="num-cell">67%</td><td class="num-cell">27,0%</td></tr>
-    <tr><td>ПК</td><td class="num-cell">1 956</td><td class="num-cell">32%</td><td class="num-cell good">19,0%</td></tr>
-    <tr><td>Планшеты</td><td class="num-cell">69</td><td class="num-cell">1%</td><td class="num-cell">23,2%</td></tr>
-  </table>
-
-  <h3>География</h3>
-  <table>
-    <tr><th>Город</th><th class="num-cell">Визиты</th><th class="num-cell">Доля</th></tr>
-    <tr><td>Вологда</td><td class="num-cell">3 019</td><td class="num-cell">50%</td></tr>
-    <tr><td>Санкт-Петербург</td><td class="num-cell">570</td><td class="num-cell">9,5%</td></tr>
-    <tr><td>Москва</td><td class="num-cell">391</td><td class="num-cell">6,5%</td></tr>
-    <tr><td>Череповец</td><td class="num-cell">258</td><td class="num-cell">4,3%</td></tr>
-    <tr><td>Великий Устюг, Сокол, Грязовец</td><td class="num-cell">115</td><td class="num-cell">1,9%</td></tr>
-  </table>
-
-  <div class="finding finding-info">
-    <strong>50% трафика из Вологды — целевое ГЕО</strong>
-    СПб и Москва (16%) — потенциальные покупатели на инвестиции и релокацию. Есть ли отдельная стратегия на них?
-  </div>
-
-  <h3>Конверсии (Яндекс Метрика, май 2026)</h3>
-  <table>
-    <tr><th>Цель</th><th class="num-cell">Май</th><th class="num-cell">Апрель</th><th>Δ</th></tr>
-    <tr><td>Клик по номеру телефона</td><td class="num-cell">148</td><td class="num-cell">188</td><td class="bad">−21%</td></tr>
-    <tr><td>Отправка формы</td><td class="num-cell">51</td><td class="num-cell">76</td><td class="bad">−33%</td></tr>
-    <tr><td>Звонки CallTouch</td><td class="num-cell">26</td><td class="num-cell">58</td><td class="bad">−55%</td></tr>
-    <tr><td>Целевой звонок</td><td class="num-cell">14</td><td class="num-cell">31</td><td class="bad">−55%</td></tr>
-    <tr><td>Отправил контактные данные</td><td class="num-cell">13</td><td class="num-cell">13</td><td>—</td></tr>
-    <tr><td>КВИЗ — открыли</td><td class="num-cell">647</td><td class="num-cell">—</td><td>—</td></tr>
-    <tr><td>КВИЗ — заявка</td><td class="num-cell bad">4</td><td class="num-cell">2</td><td><span class="tag tag-red">Конверсия 0,6%</span></td></tr>
-  </table>
-
-  <div class="finding finding-critical">
-    <strong>Все конверсии упали в мае на 20-55% vs апрель</strong>
-    Звонки CallTouch: −55%, формы: −33%, клики по номеру: −21%. При росте трафика на 7% — это сигнал о падении качества трафика или деградации посадочных страниц.
-  </div>
-
-  <h3>Топ посадочных страниц</h3>
-  <table>
-    <tr><th>Страница</th><th class="num-cell">Визиты</th><th class="num-cell">Отказы</th><th class="num-cell">Время</th></tr>
-    <tr><td>/ (главная)</td><td class="num-cell">1 697</td><td class="num-cell">16,0%</td><td class="num-cell">3:50</td></tr>
-    <tr><td>/complexes/vitiaz</td><td class="num-cell">190</td><td class="num-cell good">8,4%</td><td class="num-cell">4:42</td></tr>
-    <tr><td>cherry-dom-35.ru (лендинг Чили)</td><td class="num-cell bad">~750</td><td class="num-cell bad">34-56%</td><td class="num-cell bad">0:38-1:01</td></tr>
-    <tr><td>/complexes/chili</td><td class="num-cell">158</td><td class="num-cell">15,8%</td><td class="num-cell">4:15</td></tr>
-    <tr><td>/complexes/mone</td><td class="num-cell">121</td><td class="num-cell good">9,1%</td><td class="num-cell">4:20</td></tr>
-    <tr><td>/complexes</td><td class="num-cell">106</td><td class="num-cell">17,0%</td><td class="num-cell">4:27</td></tr>
-    <tr><td>/complexes/smail</td><td class="num-cell">101</td><td class="num-cell good">5,9%</td><td class="num-cell">2:44</td></tr>
-    <tr><td>/service</td><td class="num-cell">95</td><td class="num-cell bad">43,2%</td><td class="num-cell bad">1:25</td></tr>
-    <tr><td>/complexes/v-siti</td><td class="num-cell">88</td><td class="num-cell">19,3%</td><td class="num-cell">3:31</td></tr>
-    <tr><td>/complexes/berch</td><td class="num-cell">61</td><td class="num-cell">11,5%</td><td class="num-cell">5:09</td></tr>
-  </table>
-
-  <div class="finding finding-critical">
-    <strong>Лендинг cherry-dom-35.ru — главная проблема рекламы</strong>
-    ~750 визитов с рекламы идут на отдельный лендинг cherry-dom-35.ru с отказами 34-56% и временем 38-61 сек. Для сравнения: основной сайт /complexes/chili — отказы 15,8%, время 4:15. Рекламный трафик «сливается» на плохом лендинге.
-  </div>
-</div>
-
-<!-- 4. РЕКЛАМНЫЕ КАМПАНИИ -->
-<div class="section" id="ads">
-  <h2><span class="num">4</span> Рекламные кампании</h2>
-
-  <h3>Активные кампании (Яндекс Директ, май 2026)</h3>
-  <table>
-    <tr><th>Кампания</th><th class="num-cell">Визиты</th><th class="num-cell">Уники</th><th class="num-cell">Отказы</th><th class="num-cell">Целевые звонки</th></tr>
-    <tr><td>МК / ЖК Чили / Лэндинг</td><td class="num-cell">1 592</td><td class="num-cell">1 282</td><td class="num-cell bad">31,8%</td><td class="num-cell bad">0</td></tr>
-    <tr><td>РСЯ / LAL / Охват / Чили</td><td class="num-cell">607</td><td class="num-cell">559</td><td class="num-cell">29,2%</td><td class="num-cell bad">0</td></tr>
-    <tr><td>РСЯ / Конкуренты + Бренды / Чили</td><td class="num-cell">168</td><td class="num-cell">158</td><td class="num-cell">29,2%</td><td class="num-cell bad">0</td></tr>
-    <tr><td>РСЯ / LAL / Охват 2154 / Чили</td><td class="num-cell">21</td><td class="num-cell">20</td><td class="num-cell bad">42,9%</td><td class="num-cell bad">0</td></tr>
-    <tr style="font-weight:700"><td>ИТОГО</td><td class="num-cell">2 388</td><td class="num-cell">2 019</td><td class="num-cell">31,0%</td><td class="num-cell bad">0</td></tr>
-  </table>
-
-  <div class="finding finding-critical">
-    <strong>2 388 рекламных визитов → 0 целевых звонков</strong>
-    Вся реклама в Директе: только ЖК Чили, только через лендинг cherry-dom-35.ru, только РСЯ + МК. Ни одного целевого звонка. Поиск (текстовые кампании) не используется. Остальные 6 ЖК не рекламируются вообще.
-  </div>
-
-  <h3>Что не так с рекламой</h3>
-  <ul class="check-list">
-    <li class="no">Реклама только на 1 из 7 ЖК (Чили)</li>
-    <li class="no">Нет поисковых кампаний — только РСЯ и Мастер кампаний</li>
-    <li class="no">Лендинг cherry-dom-35.ru с отказами 34-56%</li>
-    <li class="no">0 целевых звонков с рекламы за месяц</li>
-    <li class="no">Нет ретаргетинга по посетителям сайта</li>
-    <li class="no">Нет рекламы на Авито, ВК, Циан, ДомКлик</li>
-    <li class="partial">Есть CallTouch (подменные номера) — но трекинг не настроен на рекламу</li>
-    <li class="yes">Есть UTM-метки на кампаниях</li>
-  </ul>
-</div>
-
-<!-- 5. SEO -->
-<div class="section" id="seo">
-  <h2><span class="num">5</span> SEO и органический поиск</h2>
-
-  <h3>Поисковый трафик</h3>
-  <div class="metrics">
-    <div class="metric">
-      <div class="value">1 860</div>
-      <div class="label">Визитов из поиска/мес</div>
-    </div>
-    <div class="metric">
-      <div class="value good">9,1%</div>
-      <div class="label">Отказы (vs 31% реклама)</div>
-    </div>
-    <div class="metric">
-      <div class="value good">4:07</div>
-      <div class="label">Среднее время</div>
-    </div>
-    <div class="metric">
-      <div class="value good">3,6</div>
-      <div class="label">Глубина просмотра</div>
-    </div>
-  </div>
-
-  <h3>Топ поисковых запросов</h3>
-  <table>
-    <tr><th>Запрос</th><th class="num-cell">Визиты</th><th>Тип</th></tr>
-    <tr><td>черри дом вологда</td><td class="num-cell">117</td><td><span class="tag tag-blue">Бренд</span></td></tr>
-    <tr><td>черри дом</td><td class="num-cell">67</td><td><span class="tag tag-blue">Бренд</span></td></tr>
-    <tr><td>чери дом вологда</td><td class="num-cell">36</td><td><span class="tag tag-blue">Бренд (ошибка)</span></td></tr>
-    <tr><td>черри дом вологда официальный сайт</td><td class="num-cell">34</td><td><span class="tag tag-blue">Бренд</span></td></tr>
-    <tr><td>жк витязь вологда</td><td class="num-cell">28</td><td><span class="tag tag-green">Продуктовый</span></td></tr>
-    <tr><td>чери дом</td><td class="num-cell">22</td><td><span class="tag tag-blue">Бренд (ошибка)</span></td></tr>
-    <tr><td>жк берч вологда</td><td class="num-cell">19</td><td><span class="tag tag-green">Продуктовый</span></td></tr>
-    <tr><td>жк моне вологда</td><td class="num-cell">16</td><td><span class="tag tag-green">Продуктовый</span></td></tr>
-    <tr><td>жк чили вологда</td><td class="num-cell">15</td><td><span class="tag tag-green">Продуктовый</span></td></tr>
-  </table>
-
-  <div class="finding finding-warn">
-    <strong>80%+ трафика — брендовые запросы</strong>
-    SEO почти не привлекает небрендовый трафик. Запросы типа «купить квартиру вологда», «новостройки вологда», «квартира от застройщика вологда» — отсутствуют в топе. Потенциал для роста через контент-маркетинг и SEO-оптимизацию посадочных.
-  </div>
-
-  <h3>Техническое SEO</h3>
-  <ul class="check-list">
-    <li class="yes">robots.txt настроен корректно</li>
-    <li class="yes">sitemap.xml есть, обновляется (lastmod 01.06.2026)</li>
-    <li class="yes">HTTPS работает</li>
-    <li class="yes">UTM-параметры закрыты от индексации в robots.txt</li>
-    <li class="partial">Sitemap содержит основные страницы, но не все ЖК</li>
-    <li class="no">Нет контент-раздела (блог, статьи, новости стройки)</li>
-  </ul>
-</div>
-
-<!-- 6. САЙТ -->
-<div class="section" id="site">
-  <h2><span class="num">6</span> Сайт cherry-dom.com</h2>
-
-  <h3>Структура</h3>
-  <ul class="check-list">
-    <li class="yes">Главная страница — отказы 16%, время 3:50 (хорошо)</li>
-    <li class="yes">Страницы ЖК (/complexes/*) — отказы 8-19%, время 3-5 мин (отлично)</li>
-    <li class="yes">Выбор квартир (/flats) — функционал есть</li>
-    <li class="partial">Страница /service — отказы 43% (проблема)</li>
-    <li class="no">Лендинг cherry-dom-35.ru — отказы 34-56% (критично)</li>
-    <li class="no">Нет блога / контент-раздела</li>
-    <li class="no">Нет отзывов на сайте</li>
-  </ul>
-
-  <h3>Конверсионные элементы</h3>
-  <ul class="check-list">
-    <li class="yes">Квиз интегрирован (647 открытий/мес)</li>
-    <li class="yes">Формы обратной связи</li>
-    <li class="yes">Номер телефона (148 кликов/мес)</li>
-    <li class="yes">CallTouch (подменные номера)</li>
-    <li class="no">Квиз не конвертит (0,6% конверсия)</li>
-    <li class="no">Нет онлайн-чата / виджета мессенджера</li>
-    <li class="no">Нет калькулятора ипотеки</li>
-  </ul>
-</div>
-
-<!-- 7. КАНАЛЫ ПРИВЛЕЧЕНИЯ -->
-<div class="section" id="channels">
-  <h2><span class="num">7</span> Каналы привлечения: полная карта</h2>
-
-  <table>
-    <tr><th>Канал</th><th>Статус</th><th class="num-cell">Лидов/мес</th><th>Оценка</th></tr>
-    <tr><td>Яндекс Директ (РСЯ + МК)</td><td><span class="tag tag-orange">Активен, только Чили</span></td><td class="num-cell">~1-5</td><td class="bad">0 целевых звонков, лендинг плохой</td></tr>
-    <tr><td>SEO (Яндекс + Google)</td><td><span class="tag tag-green">Работает</span></td><td class="num-cell">~7-10</td><td class="good">Лучшее качество, но только бренд</td></tr>
-    <tr><td>ВК сообщество</td><td><span class="tag tag-green">Активен</span></td><td class="num-cell">~11</td><td>Второй канал по лидам</td></tr>
-    <tr><td>ИИ-прозвон</td><td><span class="tag tag-green">Активен</span></td><td class="num-cell">~10</td><td>Новый канал, масштабируемый</td></tr>
-    <tr><td>Входящие звонки</td><td><span class="tag tag-green">Работает</span></td><td class="num-cell">~15</td><td>Основной канал</td></tr>
-    <tr><td>Авито</td><td><span class="tag tag-orange">Частично</span></td><td class="num-cell">~4</td><td>Есть, но мало</td></tr>
-    <tr><td>Инстаграм</td><td><span class="tag tag-orange">Частично</span></td><td class="num-cell">~4</td><td>Органика, нет рекламы</td></tr>
-    <tr><td>CallTouch</td><td><span class="tag tag-green">Настроен</span></td><td class="num-cell">~3</td><td>Аналитика звонков</td></tr>
-    <tr><td>Яндекс Недвижимость</td><td><span class="tag tag-orange">Есть</span></td><td class="num-cell">~1-3</td><td>Слабо</td></tr>
-    <tr><td>Циан</td><td><span class="tag tag-orange">Есть</span></td><td class="num-cell">~1</td><td>Минимально</td></tr>
-    <tr style="background:#ffebee"><td>ДомКлик</td><td><span class="tag tag-red">Есть в CRM, трафик?</span></td><td class="num-cell">?</td><td>Не виден в метрике</td></tr>
-    <tr style="background:#ffebee"><td>Яндекс Директ (Поиск)</td><td><span class="tag tag-red">НЕ используется</span></td><td class="num-cell">0</td><td class="bad">Упущенный канал</td></tr>
-    <tr style="background:#ffebee"><td>VK Ads (таргет)</td><td><span class="tag tag-red">НЕ используется</span></td><td class="num-cell">0</td><td class="bad">Упущенный канал</td></tr>
-    <tr style="background:#ffebee"><td>Telegram</td><td><span class="tag tag-red">Минимально</span></td><td class="num-cell">~1</td><td>Не развит</td></tr>
-    <tr style="background:#ffebee"><td>Контент-маркетинг</td><td><span class="tag tag-red">Отсутствует</span></td><td class="num-cell">0</td><td class="bad">Нет блога, нет видео</td></tr>
-  </table>
-
-  <div class="finding finding-critical">
-    <strong>Из 15 возможных каналов работают 6-7, и те не на полную мощность</strong>
-    Не используются: поисковые кампании Директ, VK Ads, контент-маркетинг, Telegram, ретаргетинг. Реклама ведётся только на 1 ЖК из 7.
-  </div>
-</div>
-
-<!-- 8. КОНКУРЕНТЫ (обогащённый) -->
-<div class="section" id="competitors">
-  <h2><span class="num">8</span> Конкурентный анализ</h2>
-
-  <p>На основе данных ЕРЗ РФ (март 2026), ЦИАН, Этажи и <strong>vologda_competitive_analysis</strong> (Perplexity Computer, июнь 2026).</p>
-
-  <h3>Ключевые конкуренты</h3>
-  <table>
-    <tr><th>#</th><th>Застройщик</th><th>Позиционирование</th><th>Цена р/м2</th><th>УТП</th></tr>
-    <tr><td>1</td><td><strong>ЖСИ</strong></td><td>Надёжный застройщик Вологды</td><td class="num-cell">93 тыс.</td><td>Крупнейший объём, микрорайон на Конева</td></tr>
-    <tr><td>2</td><td><strong>ВСЗ</strong></td><td>Доступное жильё у природы</td><td class="num-cell">95 тыс.</td><td>Осановская роща, студии от 2.2 млн, цены -11% за 18 мес.</td></tr>
-    <tr><td>3</td><td><strong>ГСЗ</strong></td><td>Квартиры для жизни</td><td class="num-cell">107 тыс.</td><td>Дворы без машин, стеклянные подъезды, свой газовый котёл</td></tr>
-    <tr><td>4</td><td><strong>Maxi Life</strong></td><td>Новые стандарты жилья</td><td class="num-cell">133 тыс.</td><td>Московское бюро Studio-TA, квартиры с патио</td></tr>
-    <tr><td>6</td><td><strong>Профит</strong></td><td>Комфорт рядом с центром</td><td class="num-cell">96 тыс.</td><td>5 мин до центра, стены 90 см, кладовые</td></tr>
-    <tr style="background:#fff3e0; font-weight:600"><td>11</td><td>ЧерриДом</td><td>Класс с вишенкой</td><td class="num-cell">165 тыс.</td><td>Авторская архитектура, арт-объекты, Небесные дворцы, 100% в срок</td></tr>
-  </table>
-
-  <div class="finding finding-good">
-    <strong>Нарратив с вишенкой — уникален на рынке</strong>
-    Конкуренты продают доступно, природа, современно — эмоционально слабее. Ни один застройщик не имеет авторской концепции уровня ЧерриДом.
-  </div>
-
-  <div class="finding finding-warn">
-    <strong>Ближайший конкурент Maxi Life перехватывает нарратив</strong>
-    Maxi Life (133 тыс./м2) претендует на новые стандарты — московское бюро, патио, бельгийский профиль. Цены выросли +9.8% за полгода.
-  </div>
-
-  <div class="finding finding-critical">
-    <strong>Цена по запросу на сайте — барьер конверсии</strong>
-    ЧерриДом не публикует цены. При бюджете от 6.5 млн покупатель ожидает прозрачности. Рекомендация: публиковать от или создать стартовый оффер.
-  </div>
-</div>
-
-
-<!-- 8. ПОЗИЦИОНИРОВАНИЕ ЖК -->
-<div class="section" id="positioning">
-  <h2><span class="num">9</span> Позиционирование ЖК</h2>
-
-  <h3>Матрица позиционирования портфеля</h3>
-  <table>
-    <tr>
-      <th>ЖК</th>
-      <th>Концепция</th>
-      <th>ЦА</th>
-      <th>Характер</th>
-      <th>Визуальный код</th>
-      <th>Класс / Этажность</th>
-      <th>Ключевой оффер</th>
-    </tr>
-    <tr>
-      <td><strong>Моне</strong></td>
-      <td>Живопись Клода Моне, среда «с&nbsp;вишенкой»</td>
-      <td>Ценители искусства и красоты, семьи, ценящие эстетику</td>
-      <td><span class="tag tag-blue">Утончённый, художественный, импрессионистский</span></td>
-      <td>Цветные витражи, 4-м маки, вертик. озеленение, мосты между корпусами</td>
-      <td>Бизнес+ / средняя этажность</td>
-      <td>«Небесные дворцы» — двухуровневые на верхних этажах. <span class="num-cell">от 7,8 млн (1-комн.)</span></td>
-    </tr>
-    <tr>
-      <td><strong>Витязь 2–3</strong></td>
-      <td>Продолжение архитектурной легенды, символика витязей</td>
-      <td>Семьи с детьми, ценящие безопасность и символизм</td>
-      <td><span class="tag tag-orange">Сказочный, мощный, семейный</span></td>
-      <td>Металлические кони, сохранённый дуб, площадка-крепость</td>
-      <td>Бизнес / 4 этажа + лифты</td>
-      <td>Безбарьерная среда, спорткластер «Витязь» рядом</td>
-    </tr>
-    <tr>
-      <td><strong>В-Сити</strong></td>
-      <td>«Тиффани среди домов» — Vice City / Нью-Йорк / «Завтрак у Тиффани»</td>
-      <td>Молодые пары и профессионалы, любящие дерзость и стиль</td>
-      <td><span class="tag tag-blue">Дерзкий, неоновый, ирония + luxury</span></td>
-      <td>Одри Хепбёрн граффити, голова Зевса в розовых очках, Давид-скалодром</td>
-      <td>Премиум / 14 этажей, 64 кв.</td>
-      <td>Стилобат без машин, 2–3 комн. семейные. <span class="num-cell">от 9,45 млн (2-комн.)</span></td>
-    </tr>
-    <tr>
-      <td><strong>Чили</strong></td>
-      <td>«Вкус жизни в архитектуре» — перец чили как метафора</td>
-      <td>Молодые семьи, любящие характер и вкус</td>
-      <td><span class="tag tag-red">Острый, дерзкий, самобытный</span></td>
-      <td>3D-кладка огненных языков, инсталляции-улитки, лабиринт</td>
-      <td>Бизнес / средняя этажность</td>
-      <td>Кухни-гостиные 25–27 м², потолки до 5,3 м. <span class="num-cell">от 6,57 млн (1-комн.)</span></td>
-    </tr>
-    <tr>
-      <td><strong>Бёрч</strong></td>
-      <td>«Графика лёгкой жизни» — берёза как визуальный код</td>
-      <td>Люди с тонким вкусом и юмором, ценящие камерность</td>
-      <td><span class="tag tag-green">Ироничный, графичный, камерный</span></td>
-      <td>Чёрно-белый паттерн, «Конь в пальто», панды на фасадах, 3D-кирпич</td>
-      <td>Бизнес / 6 этажей, 48 кв.</td>
-      <td>48 тёплых кладовых, панорамный 6-й этаж. <span class="warn">Анонс — цена TBD</span></td>
-    </tr>
-    <tr>
-      <td><strong>Витязь 4–5</strong></td>
-      <td>Кульминация саги «Витязь» — «Сражение за светлое будущее»</td>
-      <td>Семьи, ценящие русскую архитектурную традицию с современным прочтением</td>
-      <td><span class="tag tag-orange">Героический, светлый, вишнёвый</span></td>
-      <td>Ясно солнышко, 33 богатыря, вишнёвый сад, «Небесные дворцы» на кровле</td>
-      <td>Бизнес / 4 этажа + гаражи</td>
-      <td>Комм. помещения на цоколе (кафе, цветочные)</td>
-    </tr>
-  </table>
-
-  <h3>Ценовое позиционирование (стартовые цены)</h3>
-  <div class="metrics">
-    <div class="metric">
-      <div class="value">6,57M</div>
-      <div class="label">Чили — 1-комн. от</div>
-    </div>
-    <div class="metric">
-      <div class="value">7,8M</div>
-      <div class="label">Моне — 1-комн. от</div>
-    </div>
-    <div class="metric">
-      <div class="value">9,45M</div>
-      <div class="label">В-Сити — 2-комн. от</div>
-    </div>
-    <div class="metric">
-      <div class="value" style="color:var(--gray)">TBD</div>
-      <div class="label">Бёрч — анонс</div>
-    </div>
-  </div>
-
-  <div class="finding finding-info">
-    <strong>Бренд-архитектура: «Класс с вишенкой»</strong>
-    Каждый ЖК имеет уникальный характер и визуальный код — от импрессионизма (Моне) до сказочного эпоса (Витязь) и неоновой иронии (В-Сити). Это сильная дифференциация: ни один конкурент в Вологде не строит на нарративе. Все объекты объединены под зонтичным позиционированием «класс с вишенкой» — бизнес/премиум-класс с авторской архитектурой и арт-средой. Риск: уникальность каждого ЖК требует отдельной рекламной стратегии и посадочных страниц — универсальный подход не работает.
-  </div>
-
-  <div class="finding finding-warn">
-    <strong>Рекламное покрытие не соответствует портфелю</strong>
-    6 из 7 ЖК имеют проработанные концепции с уникальным визуальным языком, но реклама идёт только на Чили. Моне (план 60M/мес), Витязь 4–5 (73M), Бёрч (25M) — ноль рекламных кампаний при готовом позиционировании. Арт-объекты, «Небесные дворцы», «Конь в пальто» — сильный контент для соцсетей и таргетинга, который не используется.
-  </div>
-</div>
-
-<!-- 9. РЫНОК ВОЛОГДЫ -->
-<div class="section" id="market">
-  <h2><span class="num">10</span> Рынок Вологды</h2>
-
-  <div class="metrics">
-    <div class="metric">
-      <div class="value">80</div>
-      <div class="label">ЖК в продаже</div>
-    </div>
-    <div class="metric">
-      <div class="value">105 200 ₽</div>
-      <div class="label">Средняя цена за м²</div>
-      <div class="delta" style="color:var(--orange)">+5,7% г/г</div>
-    </div>
-    <div class="metric">
-      <div class="value">89 748 ₽</div>
-      <div class="label">Вторичка ₽/м²</div>
-      <div class="delta" style="color:var(--orange)">+6,1% п/п</div>
-    </div>
-    <div class="metric">
-      <div class="value">5,9 млн</div>
-      <div class="label">Средняя стоимость квартиры</div>
-    </div>
-    <div class="metric">
-      <div class="value">9,3%</div>
-      <div class="label">Средняя ипотечная ставка (новостройки)</div>
-    </div>
-    <div class="metric">
-      <div class="value">18,1%</div>
-      <div class="label">Доля ТОП-3 застройщиков</div>
-    </div>
-  </div>
-
-  <h3>Конкурентная карта застройщиков</h3>
-  <table>
-    <tr>
-      <th>#</th>
-      <th>Застройщик</th>
-      <th class="num-cell">Объём, м²</th>
-      <th class="num-cell">Доля рынка</th>
-      <th>Класс</th>
-      <th class="num-cell">Цена ₽/м²</th>
-      <th class="num-cell">ЕРЗ</th>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td><strong>ЖСИ</strong></td>
-      <td class="num-cell">123 127</td>
-      <td class="num-cell">18,96%</td>
-      <td><span class="tag tag-blue">Комфорт</span></td>
-      <td class="num-cell">93 тыс.</td>
-      <td class="num-cell">1</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td><strong>ВСЗ</strong></td>
-      <td class="num-cell">84 488</td>
-      <td class="num-cell">13,01%</td>
-      <td><span class="tag tag-blue">Экон + Комфорт</span></td>
-      <td class="num-cell">95 тыс.</td>
-      <td class="num-cell">5</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td><strong>ГСЗ</strong></td>
-      <td class="num-cell">58 511</td>
-      <td class="num-cell">9,01%</td>
-      <td><span class="tag tag-blue">Комфорт</span></td>
-      <td class="num-cell">107 тыс.</td>
-      <td class="num-cell">0,5</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td><strong>Maxi Life</strong></td>
-      <td class="num-cell">44 157</td>
-      <td class="num-cell">6,80%</td>
-      <td><span class="tag tag-orange">Бизнес</span></td>
-      <td class="num-cell">133 тыс.</td>
-      <td class="num-cell">5</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td><strong>Профит</strong></td>
-      <td class="num-cell">18 572</td>
-      <td class="num-cell">2,86%</td>
-      <td><span class="tag tag-blue">Комфорт</span></td>
-      <td class="num-cell">96 тыс.</td>
-      <td class="num-cell">—</td>
-    </tr>
-    <tr style="background:#fff3e0; font-weight:600">
-      <td>11</td>
-      <td>ЧерриДом</td>
-      <td class="num-cell">18 072</td>
-      <td class="num-cell">2,78%</td>
-      <td><span class="tag tag-red">Бизнес+</span></td>
-      <td class="num-cell">165 тыс.</td>
-      <td class="num-cell good">5</td>
-    </tr>
-  </table>
-
-  <h3>Ключевые инсайты рынка</h3>
-
-  <div class="finding finding-info">
-    <strong>Рынок сконцентрирован сверху, открыт снизу</strong>
-    ТОП-3 застройщика (ЖСИ, ВСЗ, ГСЗ) контролируют 41% рынка, но все работают в сегменте «Комфорт» по 93–107 тыс./м². В бизнес-классе конкуренция ниже: ближайший конкурент Maxi Life (133 тыс./м²) отстаёт от ЧерриДом по цене на 24%. ЧерриДом фактически один в нише «бизнес+ с авторской архитектурой».
-  </div>
-
-  <div class="finding finding-good">
-    <strong>Ценовой разрыв — главная точка дифференциации</strong>
-    ЧерриДом продаёт по 155–170 тыс./м² — в 1,5–1,6 раза выше среднего рынка (105 тыс.). Это не слабость, а позиционирование: при наличии нарратива «класс с вишенкой», арт-объектов и авторской архитектуры ценовая премия обоснована. Задача маркетинга — коммуницировать ценность, а не скидки.
-  </div>
-
-  <div class="finding finding-warn">
-    <strong>Ипотечный фактор</strong>
-    Средняя одобренная ставка 9,3% для новостроек. Льготные программы (семейная от 5,9–6%) частично смягчают давление, но при средней квартире ЧерриДом от 6,5–9,5 млн ежемесячный платёж ощутим. Конкуренты слабо коммуницируют акции — возможность для ЧерриДом занять нишу «прозрачной ипотечной выгоды».
-  </div>
-
-  <div class="finding finding-good">
-    <strong>Нарратив «с вишенкой» — уникален на рынке</strong>
-    Ни один из 80 ЖК в Вологде не использует авторскую архитектурную концепцию как основу маркетинга. Конкуренты продают метры — ЧерриДом продаёт среду. Максимальный рейтинг ЕРЗ (5) подтверждает качество продукта. Слабое место: этот нарратив почти не транслируется в рекламных каналах.
-  </div>
-
-  <div class="finding finding-critical">
-    <strong>2,78% рынка при премиальном продукте — маркетинг не соответствует качеству</strong>
-    ЧерриДом — #11 по объёму (18 072 м²) при лучшем в городе продукте по архитектуре и ЕРЗ. Maxi Life с менее выраженным позиционированием имеет 6,8% рынка. Разрыв объясняется не продуктом, а объёмом маркетинговой коммуникации и трафика.
-  </div>
-</div>
-
-<!-- 10. ЭКСПЕРТЫ ОТДЕЛА ПРОДАЖ -->
-<div class="section" id="experts">
-  <h2><span class="num">11</span> Эксперты отдела продаж</h2>
-
-  <h3>Февраль — общие показатели</h3>
-  <div class="metrics">
-    <div class="metric">
-      <div class="value">122</div>
-      <div class="label">Лидов (прямой)</div>
-    </div>
-    <div class="metric">
-      <div class="value">87</div>
-      <div class="label">Встреч назначено</div>
-    </div>
-    <div class="metric">
-      <div class="value">60</div>
-      <div class="label">Встреч проведено</div>
-    </div>
-    <div class="metric">
-      <div class="value">9</div>
-      <div class="label">ДДУ заключено</div>
-    </div>
-    <div class="metric">
-      <div class="value">56,4M</div>
-      <div class="label">Сумма ДДУ</div>
-    </div>
-    <div class="metric">
-      <div class="value">5,6%</div>
-      <div class="label">Конверсия лид &rarr; сделка</div>
-    </div>
-  </div>
-
-  <h3>Март — общие показатели</h3>
-  <div class="metrics">
-    <div class="metric">
-      <div class="value">89</div>
-      <div class="label">Лидов (прямой)</div>
-      <div class="delta bad">-27% к фев</div>
-    </div>
-    <div class="metric">
-      <div class="value">84</div>
-      <div class="label">Встреч назначено</div>
-    </div>
-    <div class="metric">
-      <div class="value">52</div>
-      <div class="label">Встреч проведено</div>
-      <div class="delta bad">-13% к фев</div>
-    </div>
-    <div class="metric">
-      <div class="value" style="color:var(--cherry)">6</div>
-      <div class="label">ДДУ заключено</div>
-      <div class="delta bad">-33% к фев</div>
-    </div>
-    <div class="metric">
-      <div class="value">35,3M</div>
-      <div class="label">Сумма ДДУ</div>
-      <div class="delta bad">-37% к фев</div>
-    </div>
-    <div class="metric">
-      <div class="value warn">11,5%</div>
-      <div class="label">Проведено &rarr; ДДУ</div>
-    </div>
-  </div>
-
-  <div class="finding finding-critical">
-    <strong>Март: 0 ДДУ через прямой канал — все 6 сделок через партнёров</strong>
-    В марте прямой канал не закрыл ни одной сделки при 89 входящих лидах и 24 проведённых встречах. Все 6 ДДУ (35,3M) прошли через партнёрский канал. Это означает, что маркетинговый трафик не конвертируется в продажи — либо качество лидов низкое, либо прямая конверсия сломана.
-  </div>
-
-  <h3>Конверсия по каналам: февраль vs март</h3>
-  <table>
-    <tr>
-      <th>Этап воронки</th>
-      <th class="num-cell">Февраль — прямой</th>
-      <th class="num-cell">Февраль — партнёрский</th>
-      <th class="num-cell">Март — прямой</th>
-      <th class="num-cell">Март — партнёрский</th>
-    </tr>
-    <tr>
-      <td>Лиды / Фиксации</td>
-      <td class="num-cell">122</td>
-      <td class="num-cell">33</td>
-      <td class="num-cell">89</td>
-      <td class="num-cell">39</td>
-    </tr>
-    <tr>
-      <td>Квалифицировано / Подтверждено</td>
-      <td class="num-cell">66 (54%)</td>
-      <td class="num-cell">28 (85%)</td>
-      <td class="num-cell">26 (29%)</td>
-      <td class="num-cell">39 (100%)</td>
-    </tr>
-    <tr>
-      <td>Встреч назначено</td>
-      <td class="num-cell">59</td>
-      <td class="num-cell">28</td>
-      <td class="num-cell">44</td>
-      <td class="num-cell">40</td>
-    </tr>
-    <tr>
-      <td>Встреч проведено</td>
-      <td class="num-cell">37</td>
-      <td class="num-cell">23</td>
-      <td class="num-cell">24</td>
-      <td class="num-cell">28</td>
-    </tr>
-    <tr>
-      <td>ДДУ</td>
-      <td class="num-cell">4</td>
-      <td class="num-cell good">5</td>
-      <td class="num-cell bad">0</td>
-      <td class="num-cell good">6</td>
-    </tr>
-    <tr>
-      <td>Сумма ДДУ</td>
-      <td class="num-cell">31,8M</td>
-      <td class="num-cell">24,5M</td>
-      <td class="num-cell bad">0</td>
-      <td class="num-cell">35,3M</td>
-    </tr>
-    <tr style="font-weight:700; background:#f5f5f5">
-      <td>Конверсия проведено &rarr; ДДУ</td>
-      <td class="num-cell">10,8%</td>
-      <td class="num-cell good">21,7%</td>
-      <td class="num-cell bad">0%</td>
-      <td class="num-cell good">21,4%</td>
-    </tr>
-  </table>
-
-  <h3>Результаты по экспертам</h3>
-  <table>
-    <tr>
-      <th rowspan="2">Эксперт</th>
-      <th colspan="5" style="text-align:center; background:#e3f2fd">Февраль</th>
-      <th colspan="5" style="text-align:center; background:#fff3e0">Март</th>
-    </tr>
-    <tr>
-      <th class="num-cell">Лидов</th>
-      <th class="num-cell">Назнач.</th>
-      <th class="num-cell">Провед.</th>
-      <th class="num-cell">ДДУ</th>
-      <th class="num-cell">Сумма</th>
-      <th class="num-cell">Лидов</th>
-      <th class="num-cell">Назнач.</th>
-      <th class="num-cell">Провед.</th>
-      <th class="num-cell">ДДУ</th>
-      <th class="num-cell">Сумма</th>
-    </tr>
-    <tr>
-      <td><strong>Разумова Вера</strong></td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">3 <span style="font-size:11px;color:var(--gray)">(1 пр. + 2 п.)</span></td>
-      <td class="num-cell">14,4M</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell good">6 <span style="font-size:11px;color:var(--gray)">(все парт.)</span></td>
-      <td class="num-cell good">35,3M</td>
-    </tr>
-    <tr>
-      <td><strong>Манасян Елизавета</strong></td>
-      <td class="num-cell">16</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">3 <span style="font-size:11px;color:var(--gray)">(все парт.)</span></td>
-      <td class="num-cell">21,7M</td>
-      <td class="num-cell">36</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell bad">0</td>
-      <td class="num-cell bad">0</td>
-    </tr>
-    <tr>
-      <td><strong>Машукова Алина</strong></td>
-      <td class="num-cell">16</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell bad">0</td>
-      <td class="num-cell">0</td>
-      <td class="num-cell">33</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell bad">0 <span style="font-size:11px;color:var(--gray)">(прямой)</span></td>
-      <td class="num-cell">0</td>
-    </tr>
-  </table>
-
-  <div class="finding finding-good">
-    <strong>Разумова Вера — якорный эксперт партнёрского канала</strong>
-    Февраль: 3 ДДУ (1 прямой на 10,1M + 2 партнёрских на 4,3M). Март: 6 ДДУ (все партнёрские, 35,3M) — 100% всех сделок марта. Сильнейшая динамика роста: сумма ДДУ выросла в 2,5 раза. Но зависимость всех продаж от одного эксперта и одного канала — риск.
-  </div>
-
-  <div class="finding finding-warn">
-    <strong>Манасян Елизавета — нестабильная конверсия</strong>
-    Февраль: 3 ДДУ через партнёров (21,7M) при 16 лидах прямого канала. Март: 36 лидов прямого канала, 0 ДДУ по обоим каналам. Рост объёма лидов не привёл к сделкам — возможна проблема с качеством работы на этапе проведённая встреча &rarr; ДДУ.
-  </div>
-
-  <div class="finding finding-warn">
-    <strong>Машукова Алина — нулевой результат в обоих месяцах по прямому каналу</strong>
-    Февраль: 16 лидов, 0 ДДУ. Март: 33 лида, 0 ДДУ. При растущем потоке лидов ни одной закрытой сделки за 2 месяца. Необходим аудит работы с клиентами: CRM-активность, качество встреч, follow-up.
-  </div>
-
-  <div class="finding finding-critical">
-    <strong>Системная проблема: прямой канал не конвертирует</strong>
-    За 2 месяца прямой канал дал 211 лидов, 61 проведённую встречу — и только 4 ДДУ (все в феврале, 1 у Разумовой). В марте — ноль. Партнёрский канал стабильно даёт 5–6 ДДУ/мес при меньшем потоке. Гипотеза: партнёрские лиды приходят более «тёплыми» (агент уже провёл первичную квалификацию), а прямые лиды с рекламы — холодные и эксперты не умеют их дожимать. Нужен скрипт прогрева для рекламных лидов.
-  </div>
-
-  <h3>Воронка: февраль vs март (общие)</h3>
-  <table>
-    <tr>
-      <th>Этап</th>
-      <th class="num-cell">Февраль</th>
-      <th class="num-cell">Конверсия</th>
-      <th class="num-cell">Март</th>
-      <th class="num-cell">Конверсия</th>
-      <th>Динамика</th>
-    </tr>
-    <tr>
-      <td>Лиды (прямой)</td>
-      <td class="num-cell">122</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">89</td>
-      <td class="num-cell">—</td>
-      <td><span class="tag tag-red">-27%</span></td>
-    </tr>
-    <tr>
-      <td>Квалифицированные</td>
-      <td class="num-cell">66</td>
-      <td class="num-cell">59,6%</td>
-      <td class="num-cell">26</td>
-      <td class="num-cell bad">47,4%</td>
-      <td><span class="tag tag-red">-12 п.п.</span></td>
-    </tr>
-    <tr>
-      <td>Квал &rarr; Назначено</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">90,6%</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">—</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Назначено (общие)</td>
-      <td class="num-cell">87</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">84</td>
-      <td class="num-cell">—</td>
-      <td><span class="tag tag-orange">-3%</span></td>
-    </tr>
-    <tr>
-      <td>Проведено</td>
-      <td class="num-cell">60</td>
-      <td class="num-cell">69,0%</td>
-      <td class="num-cell">52</td>
-      <td class="num-cell warn">61,9%</td>
-      <td><span class="tag tag-orange">-7 п.п.</span></td>
-    </tr>
-    <tr>
-      <td>ДДУ</td>
-      <td class="num-cell">9</td>
-      <td class="num-cell">15,0%</td>
-      <td class="num-cell">6</td>
-      <td class="num-cell warn">11,5%</td>
-      <td><span class="tag tag-red">-3,5 п.п.</span></td>
-    </tr>
-    <tr style="font-weight:700; background:#f5f5f5">
-      <td>Сумма ДДУ</td>
-      <td class="num-cell">56,4M</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">35,3M</td>
-      <td class="num-cell">—</td>
-      <td><span class="tag tag-red">-37%</span></td>
-    </tr>
-    <tr style="font-weight:700; background:#f5f5f5">
-      <td>Лид &rarr; сделка (прямой)</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell">5,6%</td>
-      <td class="num-cell">—</td>
-      <td class="num-cell bad">0%</td>
-      <td><span class="tag tag-red">Критично</span></td>
-    </tr>
-  </table>
-</div>
-
-
-<!-- 9. ВОРОНКА ПРОДАЖ (ПРОТОКОЛ) -->
-<div class="section">
-  <h2><span class="num">12</span> Воронка продаж: протокол касаний</h2>
-
-  <div class="finding finding-good">
-    <strong>Протокол «Точки касания» — профессиональный</strong>
-    Документ содержит 15+ точек касания от лида до ДДУ, скрипты, реанимацию (30-180 дней), допродажи. Это сильная сторона. Вопрос: выполняется ли протокол реально?
-  </div>
-
-  <h3>Ключевые этапы воронки (по протоколу)</h3>
-  <table>
-    <tr><th>Этап</th><th>Касаний</th><th>Формат</th><th>Вопрос</th></tr>
-    <tr><td>Лид не на связи</td><td>5 за 7 дней</td><td>Звонки + сообщения МАХ/ТГ/ВК</td><td>Выполняется?</td></tr>
-    <tr><td>После квалификации</td><td>5 за 14 дней</td><td>Визуал, видео стройки, планировки</td><td>Есть материалы?</td></tr>
-    <tr><td>После встречи</td><td>5 за 10 дней</td><td>Варианты, материалы, вывод на бронь</td><td>CRM фиксирует?</td></tr>
-    <tr><td>После бронирования</td><td>4 касания</td><td>Поздравление, алгоритм, усиление</td><td>Автоматизировано?</td></tr>
-    <tr><td>Реанимация</td><td>6 за 180 дней</td><td>Визуал, стройка, инвест. составляющая</td><td><span class="tag tag-red">589 «мёртвых» на квалификации</span></td></tr>
-  </table>
-
-  <div class="finding finding-warn">
-    <strong>При 589 сделках на квалификации — протокол реанимации не работает</strong>
-    Если бы 589 сделок проходили через 6-этапный протокол реанимации, часть бы вернулась. Гипотеза: протокол написан, но не выполняется системно.
-  </div>
-</div>
-
-<!-- 10. УЗКИЕ МЕСТА -->
-<div class="section" id="bottlenecks">
-  <h2><span class="num">13</span> Узкие места</h2>
-
-  <h3>В маркетинге</h3>
-  <table>
-    <tr><th>#</th><th>Узкое место</th><th>Влияние</th><th>Решение</th></tr>
-    <tr><td>1</td><td class="bad">Реклама только на Чили</td><td>6 ЖК без рекламного трафика</td><td>Запустить кампании на Моне, Витязь 4/5, Бёрч</td></tr>
-    <tr><td>2</td><td class="bad">Лендинг cherry-dom-35.ru</td><td>~750 визитов/мес с отказами 34-56%</td><td>Вести рекламу на основной сайт /complexes/chili</td></tr>
-    <tr><td>3</td><td class="bad">Нет поисковых кампаний</td><td>Горячий спрос не перехватывается</td><td>Поиск Директ по запросам «квартиры вологда»</td></tr>
-    <tr><td>4</td><td class="bad">Квиз: конверсия 0,6%</td><td>647 открытий → 4 заявки</td><td>Переделать квиз или заменить на калькулятор</td></tr>
-    <tr><td>5</td><td class="warn">Нет VK Ads</td><td>ВК сообщество даёт 11 лидов, таргет даст x3-5</td><td>Запустить таргет ВК</td></tr>
-    <tr><td>6</td><td class="warn">75 визитов из соцсетей</td><td>Контент не генерирует трафик</td><td>Контент-стратегия + регулярный постинг</td></tr>
-    <tr><td>7</td><td class="warn">Нет контент-маркетинга</td><td>Не набирается небрендовый SEO-трафик</td><td>Блог на сайте, статьи о районах, стройке</td></tr>
-  </table>
-
-  <h3>В продажах (вне маркетинга)</h3>
-  <table>
-    <tr><th>#</th><th>Узкое место</th><th>Влияние</th></tr>
-    <tr><td>1</td><td>589 сделок «зависли» на квалификации</td><td>~133 млн заморожено</td></tr>
-    <tr><td>2</td><td>37% отказов — «пропала потребность»</td><td>Слабый follow-up</td></tr>
-    <tr><td>3</td><td>Конверсия «Квалификация→Встреча» = 14%</td><td>86% лидов теряются</td></tr>
-    <tr><td>4</td><td>46% продаж через агентов</td><td>Высокие комиссии</td></tr>
-    <tr><td>5</td><td>Март/Май — провал (16-18%)</td><td>Нестабильность, нет подушки</td></tr>
-  </table>
-</div>
-
-<!-- 11. ПЛАН ДЕЙСТВИЙ 30/60/90 -->
-<div class="section" id="plan">
-  <h2><span class="num">14</span> План действий: 30 / 60 / 90 дней</h2>
-
-  <h3>Первые 30 дней — «Стабилизация и диагностика»</h3>
-  <table>
-    <tr><th>#</th><th>Действие</th><th>Срок</th><th>Ожидаемый результат</th></tr>
-    <tr><td>1</td><td><strong>Переключить рекламу с cherry-dom-35.ru на основной сайт</strong></td><td>Неделя 1</td><td>Снижение отказов с 34% до 15-20%</td></tr>
-    <tr><td>2</td><td><strong>Запустить поисковые кампании Директ</strong> по запросам «квартиры вологда», «новостройки вологда»</td><td>Неделя 1-2</td><td>+200-400 целевых визитов/мес</td></tr>
-    <tr><td>3</td><td><strong>Запустить рекламу на Моне и Витязь 4</strong> (приоритет по остаткам)</td><td>Неделя 2</td><td>Лиды на 2 крупнейших ЖК</td></tr>
-    <tr><td>4</td><td><strong>Аудит 589 «мёртвых» сделок в CRM</strong> — выгрузить, сегментировать по давности</td><td>Неделя 1</td><td>Выделить 100-150 «тёплых» для реанимации</td></tr>
-    <tr><td>5</td><td><strong>Починить/заменить квиз</strong></td><td>Неделя 2-3</td><td>Конверсия с 0,6% до 3-5%</td></tr>
-    <tr><td>6</td><td><strong>Получить доступы:</strong> Директ, CallTouch, Авито кабинет</td><td>Неделя 1</td><td>Полная картина расходов и ROI</td></tr>
-    <tr><td>7</td><td><strong>Настроить ежедневную отчётность</strong></td><td>Неделя 1</td><td>Прозрачность для клиента</td></tr>
-  </table>
-
-  <h3>30-60 дней — «Масштабирование каналов»</h3>
-  <table>
-    <tr><th>#</th><th>Действие</th><th>Ожидаемый результат</th></tr>
-    <tr><td>8</td><td>Запустить VK Ads (таргет) по всем ЖК</td><td>+15-30 лидов/мес</td></tr>
-    <tr><td>9</td><td>Усилить Авито: отдельные карточки по ЖК, оптимизация</td><td>+10-15 лидов/мес</td></tr>
-    <tr><td>10</td><td>Рекламу на Бёрч (новый ЖК) — стратегия запуска</td><td>Первые лиды на новый объект</td></tr>
-    <tr><td>11</td><td>Контент-план: посты, рилсы, видео стройки</td><td>Рост охватов в соцсетях</td></tr>
-    <tr><td>12</td><td>Конкурентный анализ (RESEARCH) — полный</td><td>Стратегия отстройки</td></tr>
-    <tr><td>13</td><td>Реанимация «мёртвых» сделок — запуск по протоколу</td><td>5-10 возвратов в воронку</td></tr>
-  </table>
-
-  <h3>60-90 дней — «Системный рост»</h3>
-  <table>
-    <tr><th>#</th><th>Действие</th><th>Ожидаемый результат</th></tr>
-    <tr><td>14</td><td>SEO: контент-стратегия, блог на сайте</td><td>+500-1000 небрендовых визитов/мес</td></tr>
-    <tr><td>15</td><td>Ретаргетинг по посетителям сайта</td><td>Возврат 5-10% ушедших</td></tr>
-    <tr><td>16</td><td>Маркетинговая модель: CPL/конверсии/ROAS по каналам</td><td>Прогнозирование лидов под план продаж</td></tr>
-    <tr><td>17</td><td>Автоматизация CRM: напоминания, триггерные касания</td><td>Протокол «Точки касания» работает автоматически</td></tr>
-    <tr><td>18</td><td>Подключение Telegram-канала, E-mail рассылки</td><td>Новые точки контакта</td></tr>
-  </table>
-
-  <h3>KPI на ближайший месяц</h3>
-  <div class="metrics">
-    <div class="metric">
-      <div class="value">100+</div>
-      <div class="label">Лидов в CRM / мес (сейчас ~65)</div>
-    </div>
-    <div class="metric">
-      <div class="value">4+</div>
-      <div class="label">ЖК с рекламой (сейчас 1)</div>
-    </div>
-    <div class="metric">
-      <div class="value">&lt;20%</div>
-      <div class="label">Отказы с рекламы (сейчас 31%)</div>
-    </div>
-    <div class="metric">
-      <div class="value">3-5%</div>
-      <div class="label">Конверсия квиза (сейчас 0,6%)</div>
-    </div>
-  </div>
-</div>
-
-<!-- 12. ЧТО НУЖНО ОТ ЧЕРРИДОМ -->
-<div class="section">
-  <h2><span class="num">15</span> Запрос к ЧерриДом</h2>
-
-  <table>
-    <tr><th>#</th><th>Что нужно</th><th>Для чего</th></tr>
-    <tr><td>1</td><td><strong>Доступ к Яндекс Директ</strong> (логин/пароль или гостевой)</td><td>Аудит кампаний, бюджетов, ставок</td></tr>
-    <tr><td>2</td><td><strong>Доступ к CallTouch</strong></td><td>Аналитика звонков, источники, качество</td></tr>
-    <tr><td>3</td><td><strong>Доступ к Авито Pro/кабинету</strong></td><td>Объявления, статистика, позиции</td></tr>
-    <tr><td>4</td><td><strong>План продаж по ЖК на июнь</strong> (в штуках квартир и рублях)</td><td>Расчёт маркетинговой модели</td></tr>
-    <tr><td>5</td><td><strong>Список конкурентов</strong> (кто, сколько квартир не продано)</td><td>Конкурентный анализ и отстройка</td></tr>
-    <tr><td>6</td><td><strong>Позиционирование ЖК</strong> (документ)</td><td>Креативная стратегия</td></tr>
-    <tr><td>7</td><td><strong>Бюджет на маркетинг</strong> (текущий и целевой)</td><td>Распределение по каналам</td></tr>
-    <tr><td>8</td><td><strong>Выгрузка из CRM:</strong> 589 сделок на квалификации — даты, источники</td><td>Аудит «мёртвых» сделок</td></tr>
-  </table>
-</div>
-
-<!-- FOOTER -->
-<div class="footer">
-  <p>Аудит подготовлен: LOS Agency | 3 июня 2026</p>
-  <p>Данные: Яндекс Метрика, Битрикс24 CRM, План-факт 2026.xlsx, эксперты.xlsx, vologda_competitive_analysis.pdf, Концепции ЖК</p>
-  <p>Следующий шаг: получить доступы (п.12), запустить первые действия (п.11)</p>
-</div>
-
-</div>
+<div class="card"><h3>Конкурентная карта застройщиков</h3>
+<table><tr><th>#</th><th>Застройщик</th><th class="num-cell">Объём, м&sup2;</th><th class="num-cell">Доля</th><th>Класс</th><th class="num-cell">Цена ₽/м&sup2;</th><th class="num-cell">ЕРЗ</th></tr>
+<tr><td>1</td><td><strong>ЖСИ</strong></td><td class="num-cell">123 127</td><td class="num-cell">18,96%</td><td><span class="tag tag-blue">Комфорт</span></td><td class="num-cell">93 тыс.</td><td class="num-cell">1</td></tr>
+<tr><td>2</td><td><strong>ВСЗ</strong></td><td class="num-cell">84 488</td><td class="num-cell">13,01%</td><td><span class="tag tag-blue">Экон+Комф</span></td><td class="num-cell">95 тыс.</td><td class="num-cell">5</td></tr>
+<tr><td>3</td><td><strong>ГСЗ</strong></td><td class="num-cell">58 511</td><td class="num-cell">9,01%</td><td><span class="tag tag-blue">Комфорт</span></td><td class="num-cell">107 тыс.</td><td class="num-cell">0,5</td></tr>
+<tr><td>4</td><td><strong>Maxi Life</strong></td><td class="num-cell">44 157</td><td class="num-cell">6,80%</td><td><span class="tag tag-orange">Бизнес</span></td><td class="num-cell">133 тыс.</td><td class="num-cell">5</td></tr>
+<tr><td>6</td><td><strong>Профит</strong></td><td class="num-cell">18 572</td><td class="num-cell">2,86%</td><td><span class="tag tag-blue">Комфорт</span></td><td class="num-cell">96 тыс.</td><td class="num-cell">&mdash;</td></tr>
+<tr style="background:#fff3e0; font-weight:600"><td>11</td><td>ЧерриДом</td><td class="num-cell">18 072</td><td class="num-cell">2,78%</td><td><span class="tag tag-red">Бизнес+</span></td><td class="num-cell">165 тыс.</td><td class="num-cell good">5</td></tr>
+</table></div>
+<div class="finding finding-info"><strong>Рынок сконцентрирован сверху, открыт снизу</strong>ТОП-3 (ЖСИ, ВСЗ, ГСЗ) контролируют 41% рынка в сегменте &laquo;Комфорт&raquo; по 93&ndash;107 тыс./м&sup2;. В бизнес-классе конкуренция ниже: Maxi Life (133 тыс.) отстаёт от ЧерриДом по цене на 24%.</div>
+<div class="finding finding-good"><strong>Ценовой разрыв &mdash; главная дифференциация</strong>ЧерриДом продаёт по 155&ndash;170 тыс./м&sup2; &mdash; в 1,5&ndash;1,6 раза выше среднего рынка. При нарративе &laquo;класс с вишенкой&raquo; и арт-объектах ценовая премия обоснована. Задача маркетинга &mdash; коммуницировать ценность, а не скидки.</div>
+<div class="finding finding-warn"><strong>Ипотечный фактор</strong>Средняя ставка 9,3%. Льготные программы (семейная от 5,9&ndash;6%) частично компенсируют, но при средней квартире от 6,5&ndash;9,5 млн платёж ощутим. Конкуренты слабо коммуницируют акции &mdash; возможность для ЧерриДом.</div>
+<div class="finding finding-critical"><strong>2,78% рынка при премиальном продукте</strong>ЧерриДом &mdash; #11 по объёму при лучшем в городе продукте по архитектуре и ЕРЗ. Maxi Life с менее выраженным позиционированием имеет 6,8%. Разрыв объясняется не продуктом, а объёмом маркетинговой коммуникации.</div>
+`},
+{id:'experts',num:'11',title:'Эксперты ОП',html:`
+<div class="page-header"><h2>Эксперты отдела продаж</h2><div class="page-desc">Детальный анализ по экспертам за февраль&ndash;март 2026</div></div>
+<div class="card"><h3>Сводка по каналам: февраль vs март</h3>
+<table><tr><th>Показатель</th><th class="num-cell">Фев (прям.)</th><th class="num-cell">Фев (парт.)</th><th class="num-cell">Мар (прям.)</th><th class="num-cell">Мар (парт.)</th></tr>
+<tr><td>Лидов/фиксаций</td><td class="num-cell">122</td><td class="num-cell">33</td><td class="num-cell">89</td><td class="num-cell">39</td></tr>
+<tr><td>Квал лидов</td><td class="num-cell">66</td><td class="num-cell">28</td><td class="num-cell">26</td><td class="num-cell">39</td></tr>
+<tr><td>Встреч назначено</td><td class="num-cell">59</td><td class="num-cell">28</td><td class="num-cell">44</td><td class="num-cell">40</td></tr>
+<tr><td>Встреч проведено</td><td class="num-cell">37</td><td class="num-cell">23</td><td class="num-cell">24</td><td class="num-cell">28</td></tr>
+<tr><td>ДДУ подписано</td><td class="num-cell">4</td><td class="num-cell">5</td><td class="num-cell bad">0</td><td class="num-cell good">6</td></tr>
+<tr><td>Сумма ДДУ</td><td class="num-cell">31,8M</td><td class="num-cell">24,5M</td><td class="num-cell bad">0</td><td class="num-cell good">35,3M</td></tr>
+</table></div>
+<div class="finding finding-critical"><strong>Март: 0 ДДУ через прямой канал</strong>Все 6 сделок марта &mdash; через партнёрский канал. Прямой канал (89 лидов, 24 встречи) не конвертировал ни одного ДДУ. Это системная проблема &mdash; либо качество лидов, либо продажи, либо продукт не закрывается на встрече.</div>
+<div class="card"><h3>Конверсии (общие)</h3>
+<table><tr><th>Конверсия</th><th class="num-cell">Февраль</th><th class="num-cell">Март</th><th>Тренд</th></tr>
+<tr><td>Лид &rarr; квал лид</td><td class="num-cell">59,6%</td><td class="num-cell">47,4%</td><td class="bad">&darr; падает</td></tr>
+<tr><td>Квал &rarr; назначено</td><td class="num-cell">90,6%</td><td class="num-cell">131%</td><td class="good">&uarr; перевыполнение</td></tr>
+<tr><td>Назначено &rarr; проведено</td><td class="num-cell">69%</td><td class="num-cell">61,9%</td><td class="bad">&darr; падает</td></tr>
+<tr><td>Проведено &rarr; ДДУ</td><td class="num-cell">15%</td><td class="num-cell">11,5%</td><td class="bad">&darr; падает</td></tr>
+<tr><td>Лид &rarr; сделка</td><td class="num-cell">5,6%</td><td class="num-cell bad">3,5%</td><td class="bad">&darr; критично</td></tr>
+</table></div>
+<div class="card"><h3>По экспертам</h3>
+<table><tr><th>Эксперт</th><th>Канал</th><th class="num-cell">Фев ДДУ</th><th class="num-cell">Фев сумма</th><th class="num-cell">Мар ДДУ</th><th class="num-cell">Мар сумма</th><th>Комментарий</th></tr>
+<tr><td><strong>Разумова Вера</strong></td><td>Прямой</td><td class="num-cell">1</td><td class="num-cell">10,1M</td><td class="num-cell bad">0</td><td class="num-cell bad">0</td><td rowspan="2"><span class="tag tag-green">Сильная на партнёрском</span></td></tr>
+<tr><td></td><td>Партнёрский</td><td class="num-cell">2</td><td class="num-cell">4,3M</td><td class="num-cell good">6</td><td class="num-cell good">35,3M</td></tr>
+<tr><td><strong>Манасян Лиза</strong></td><td>Прямой</td><td class="num-cell">3</td><td class="num-cell">21,7M</td><td class="num-cell bad">0</td><td class="num-cell bad">0</td><td rowspan="2"><span class="tag tag-orange">Нестабильная</span></td></tr>
+<tr><td></td><td>Партнёрский</td><td class="num-cell">0</td><td class="num-cell">0</td><td class="num-cell bad">0</td><td class="num-cell bad">0</td></tr>
+<tr><td><strong>Машукова Алина</strong></td><td>Прямой</td><td class="num-cell">0</td><td class="num-cell">0</td><td class="num-cell bad">0</td><td class="num-cell bad">0</td><td><span class="tag tag-red">0 ДДУ за 2 мес (прям.)</span></td></tr>
+</table></div>
+<div class="finding finding-warn"><strong>Разумова &mdash; якорь партнёрского канала</strong>Март: 6 из 6 ДДУ = 35,3M. Февраль: 3 ДДУ суммарно. Без Разумовой весь канал &mdash; 0. Риск зависимости от одного эксперта.</div>
+<div class="finding finding-warn"><strong>Манасян &mdash; нестабильная</strong>Февраль: 21,7M через прямой. Март: полный ноль. Нужен разбор &mdash; что изменилось.</div>
+<div class="finding finding-critical"><strong>Системная проблема: конверсия прямого канала падает</strong>Лид&rarr;сделка: 5,6% (фев) &rarr; 3,5% (мар). При 89 лидах и 24 проведённых встречах &mdash; 0 ДДУ. Вопрос к качеству лидов из рекламы и работе экспертов на встречах.</div>
+`},
+{id:'funnel',num:'12',title:'Воронка продаж',html:`
+
+<div class="page-header"><h2>Воронка продаж: протокол касаний</h2><div class="page-desc">Документ &laquo;Точки касания&raquo; vs реальность CRM</div></div>
+<div class="finding finding-good"><strong>Протокол касаний &mdash; профессиональный</strong>15+ касаний от лида до ДДУ, скрипты, реанимация (30-180 дней), допродажи.</div>
+<div class="card"><h3>Этапы по протоколу</h3>
+<table><tr><th>Этап</th><th>Касаний</th><th>Формат</th><th>Вопрос</th></tr>
+<tr><td>Лид не на связи</td><td>5 за 7 дней</td><td>Звонки + МАХ/ТГ/ВК</td><td>Выполняется?</td></tr>
+<tr><td>После квалификации</td><td>5 за 14 дней</td><td>Визуал, видео, планировки</td><td>Есть материалы?</td></tr>
+<tr><td>После встречи</td><td>5 за 10 дней</td><td>Варианты, вывод на бронь</td><td>CRM фиксирует?</td></tr>
+<tr><td>После бронирования</td><td>4 касания</td><td>Поздравление, алгоритм</td><td>Автоматизировано?</td></tr>
+<tr><td>Реанимация</td><td>6 за 180 дней</td><td>Визуал, стройка, инвест.</td><td><span class="tag tag-red">589 мёртвых</span></td></tr>
+<tr><td>Допродажи</td><td>5 за 60 дней</td><td>Паркинг, кладовая, гараж</td><td>Работает?</td></tr></table></div>
+<div class="finding finding-warn"><strong>589 на квалификации &rarr; протокол реанимации не работает</strong>Гипотеза: написан, но не выполняется системно.</div>
+`},
+{id:'bottlenecks',num:'13',title:'Узкие места',html:`
+<div class="page-header"><h2>Узкие места</h2><div class="page-desc">Что мешает выполнению плана продаж</div></div>
+<div class="card"><h3>В маркетинге (7)</h3>
+<table><tr><th>#</th><th>Проблема</th><th>Влияние</th><th>Решение</th></tr>
+<tr><td>1</td><td class="bad">Реклама только на Чили</td><td>6 ЖК без трафика</td><td>Кампании по ЖК</td></tr>
+<tr><td>2</td><td class="bad">Лендинг cherry-dom-35.ru</td><td>750 визитов, 34-56%</td><td>На основной сайт</td></tr>
+<tr><td>3</td><td class="bad">Нет поиска Директ</td><td>Горячий спрос упущен</td><td>Поисковые кампании</td></tr>
+<tr><td>4</td><td class="bad">Квиз 0,6%</td><td>647&rarr;4</td><td>Переделать</td></tr>
+<tr><td>5</td><td class="warn">Нет VK Ads</td><td>ВК = 11 лидов органически</td><td>Таргет x3-5</td></tr>
+<tr><td>6</td><td class="warn">75 визитов соцсети</td><td>Нет трафика</td><td>Контент-стратегия</td></tr>
+<tr><td>7</td><td class="warn">Нет контент-маркетинга</td><td>Нет небрендового SEO</td><td>Блог</td></tr></table></div>
+<div class="card"><h3>Вне маркетинга (5)</h3>
+<table><tr><th>#</th><th>Проблема</th><th>Влияние</th></tr>
+<tr><td>1</td><td>589 на квалификации</td><td>~133 млн заморожено</td></tr>
+<tr><td>2</td><td>37% &laquo;пропала потребность&raquo;</td><td>Слабый follow-up</td></tr>
+<tr><td>3</td><td>Конверсия в встречу = 14%</td><td>86% теряются</td></tr>
+<tr><td>4</td><td>46% через агентов</td><td>Комиссии</td></tr>
+<tr><td>5</td><td>Март/Май провал</td><td>Нестабильность</td></tr></table></div>
+`},
+{id:'plan',num:'14',title:'План 30/60/90',html:`
+<div class="page-header"><h2>План действий: 30 / 60 / 90 дней</h2><div class="page-desc">Конкретные шаги с ожидаемым результатом</div></div>
+<div class="card"><h3>Первые 30 дней &mdash; &laquo;Стабилизация&raquo;</h3>
+<table><tr><th>#</th><th>Действие</th><th>Срок</th><th>Результат</th></tr>
+<tr><td>1</td><td><strong>Переключить рекламу на основной сайт</strong></td><td>Нед. 1</td><td>Отказы 34%&rarr;15-20%</td></tr>
+<tr><td>2</td><td><strong>Поисковые кампании Директ</strong></td><td>Нед. 1-2</td><td>+200-400 визитов</td></tr>
+<tr><td>3</td><td><strong>Реклама на Моне и Витязь 4</strong></td><td>Нед. 2</td><td>Лиды на 2 ЖК</td></tr>
+<tr><td>4</td><td><strong>Аудит 589 мёртвых сделок</strong></td><td>Нед. 1</td><td>100-150 тёплых</td></tr>
+<tr><td>5</td><td><strong>Починить квиз</strong></td><td>Нед. 2-3</td><td>0,6%&rarr;3-5%</td></tr>
+<tr><td>6</td><td><strong>Получить доступы</strong></td><td>Нед. 1</td><td>Полная картина</td></tr>
+<tr><td>7</td><td><strong>Ежедневная отчётность</strong></td><td>Нед. 1</td><td>Прозрачность</td></tr></table></div>
+<div class="card"><h3>30-60 дней &mdash; &laquo;Масштабирование&raquo;</h3>
+<table><tr><th>#</th><th>Действие</th><th>Результат</th></tr>
+<tr><td>8</td><td>VK Ads по всем ЖК</td><td>+15-30 лидов/мес</td></tr>
+<tr><td>9</td><td>Усилить Авито</td><td>+10-15 лидов/мес</td></tr>
+<tr><td>10</td><td>Стратегия запуска Бёрч</td><td>Первые лиды</td></tr>
+<tr><td>11</td><td>Контент-план</td><td>Охваты</td></tr>
+<tr><td>12</td><td>Конкурентный анализ</td><td>Отстройка</td></tr>
+<tr><td>13</td><td>Реанимация мёртвых сделок</td><td>5-10 возвратов</td></tr></table></div>
+<div class="card"><h3>60-90 дней &mdash; &laquo;Системный рост&raquo;</h3>
+<table><tr><th>#</th><th>Действие</th><th>Результат</th></tr>
+<tr><td>14</td><td>SEO контент, блог</td><td>+500-1000 небренд.</td></tr>
+<tr><td>15</td><td>Ретаргетинг</td><td>Возврат 5-10%</td></tr>
+<tr><td>16</td><td>Модель CPL/ROAS</td><td>Прогнозирование</td></tr>
+<tr><td>17</td><td>Автоматизация CRM</td><td>Протокол работает</td></tr>
+<tr><td>18</td><td>Telegram + E-mail</td><td>Новые точки</td></tr></table></div>
+<div class="card"><h3>KPI на месяц</h3>
+<div class="metrics">
+<div class="metric"><div class="value">100+</div><div class="label">Лидов/мес (сейчас ~65)</div></div>
+<div class="metric"><div class="value">4+</div><div class="label">ЖК с рекламой (сейчас 1)</div></div>
+<div class="metric"><div class="value">&lt;20%</div><div class="label">Отказы рекламы (31%)</div></div>
+<div class="metric"><div class="value">3-5%</div><div class="label">Конверсия квиза (0,6%)</div></div></div></div>
+`},
+{id:'requests',num:'15',title:'Запрос к клиенту',html:`
+<div class="page-header"><h2>Запрос к ЧерриДом</h2><div class="page-desc">Что нужно получить для продолжения работы</div></div>
+<div class="card"><h3>Доступы и данные</h3>
+<table><tr><th>#</th><th>Что нужно</th><th>Для чего</th></tr>
+<tr><td>1</td><td><strong>Доступ к Яндекс Директ</strong></td><td>Аудит кампаний, бюджетов</td></tr>
+<tr><td>2</td><td><strong>Доступ к CallTouch</strong></td><td>Аналитика звонков</td></tr>
+<tr><td>3</td><td><strong>Доступ к Авито Pro</strong></td><td>Объявления, статистика</td></tr>
+<tr><td>4</td><td><strong>План продаж по ЖК на июнь</strong></td><td>Маркетинговая модель</td></tr>
+<tr><td>5</td><td><strong>Список конкурентов</strong></td><td>Конкурентный анализ</td></tr>
+<tr><td>6</td><td><strong>Позиционирование ЖК</strong></td><td>Креативная стратегия</td></tr>
+<tr><td>7</td><td><strong>Бюджет на маркетинг</strong></td><td>Распределение по каналам</td></tr>
+<tr><td>8</td><td><strong>Выгрузка 589 сделок</strong></td><td>Аудит мёртвых сделок</td></tr></table></div>
+<div style="text-align:center;color:var(--gray);font-size:13px;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)">
+<p>Аудит подготовлен: LOS Agency | 3 июня 2026</p>
+<p>Источники: Яндекс Метрика &middot; Битрикс24 CRM &middot; План-факт 2026.xlsx &middot; Точки касания.xlsx &middot; Концепции ЖК &middot; эксперты.xlsx &middot; vologda_competitive_analysis.pdf</p></div>
+`}
+];
+
+// Build nav
+const nav = document.getElementById('nav');
+PAGES.forEach(p => {
+  const a = document.createElement('a');
+  a.dataset.page = p.id;
+  a.innerHTML = '<span class="nav-num">'+p.num+'</span> '+p.title;
+  if(p.id==='summary') a.classList.add('active');
+  nav.appendChild(a);
+});
+
+// Build pages
+const main = document.getElementById('main');
+PAGES.forEach((p,i) => {
+  const div = document.createElement('div');
+  div.className = 'page' + (p.id==='summary'?' active':'');
+  div.id = 'page-'+p.id;
+  let pnav = '<div class="page-nav">';
+  if(i>0) pnav += '<a class="prev" data-page="'+PAGES[i-1].id+'">&larr; '+PAGES[i-1].title+'</a>'; else pnav += '<span></span>';
+  if(i<PAGES.length-1) pnav += '<a class="next" data-page="'+PAGES[i+1].id+'">'+PAGES[i+1].title+' &rarr;</a>'; else pnav += '<span></span>';
+  pnav += '</div>';
+  div.innerHTML = p.html + pnav;
+  main.appendChild(div);
+});
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-nav a').forEach(a=>a.classList.remove('active'));
+  const t = document.getElementById('page-'+id);
+  if(t) t.classList.add('active');
+  document.querySelectorAll('.sidebar-nav a').forEach(a=>{ if(a.dataset.page===id) a.classList.add('active'); });
+  window.scrollTo(0,0);
+  if(window.innerWidth<=860){ document.getElementById('sidebar').classList.remove('open'); document.querySelector('.overlay').classList.remove('open'); }
+  history.replaceState(null,'','#'+id);
+}
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-page]');
+  if(a){ e.preventDefault(); showPage(a.dataset.page); }
+});
+
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('open');
+}
+
+const hash = location.hash.replace('#','');
+if(hash) showPage(hash);
+</script>
 </body>
 </html>
