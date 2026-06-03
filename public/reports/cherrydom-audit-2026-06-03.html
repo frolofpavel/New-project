@@ -543,30 +543,30 @@ const PAGES = [
 <div class="metric"><div class="value">368M</div><div class="label">План июнь</div></div>
 <div class="metric"><div class="value">7,3M</div><div class="label">Средний чек (CRM)</div></div>
 <div class="metric"><div class="value bad">50</div><div class="label">ДДУ нужно</div></div>
-<div class="metric"><div class="value bad">~500</div><div class="label">Лидов нужно (при 10%)</div></div>
+<div class="metric"><div class="value bad">750</div><div class="label">Лидов нужно (цель)</div></div>
 <div class="metric"><div class="value">65</div><div class="label">Лидов сейчас/мес</div></div>
-<div class="metric"><div class="value bad">x7,7</div><div class="label">Разрыв</div></div>
+<div class="metric"><div class="value bad">x11,5</div><div class="label">Разрыв</div></div>
 </div>
 <table><tr><th>Сценарий</th><th class="num-cell">Конверсия лид&rarr;ДДУ</th><th class="num-cell">Лидов нужно</th><th class="num-cell">Дефицит</th><th>Оценка</th></tr>
 <tr><td>Текущий (факт мар)</td><td class="num-cell bad">3,5%</td><td class="num-cell bad">1 429</td><td class="num-cell bad">1 364</td><td><span class="tag tag-red">Нереально</span></td></tr>
-<tr><td>Средний (факт фев)</td><td class="num-cell">5,6%</td><td class="num-cell">893</td><td class="num-cell bad">828</td><td><span class="tag tag-red">Очень сложно</span></td></tr>
-<tr><td>Оптимистичный</td><td class="num-cell">10%</td><td class="num-cell">500</td><td class="num-cell warn">435</td><td><span class="tag tag-orange">Амбициозно</span></td></tr>
-<tr style="background:#e8f5e9"><td>Реалистичный (с ростом конверсии + каналов)</td><td class="num-cell good">12-15%</td><td class="num-cell">333&ndash;417</td><td class="num-cell">268&ndash;352</td><td><span class="tag tag-green">Цель</span></td></tr>
+<tr><td>Средний (факт фев)</td><td class="num-cell">5,6%</td><td class="num-cell">893</td><td class="num-cell bad">828</td><td><span class="tag tag-orange">Тяжело</span></td></tr>
+<tr style="background:#fff3e0"><td><strong>Целевой</strong></td><td class="num-cell"><strong>6,5&ndash;7%</strong></td><td class="num-cell"><strong>750</strong></td><td class="num-cell bad"><strong>685</strong></td><td><span class="tag tag-orange">Цель</span></td></tr>
+<tr><td>Оптимистичный</td><td class="num-cell">10%</td><td class="num-cell">500</td><td class="num-cell">435</td><td><span class="tag tag-green">Если конверсия вырастет</span></td></tr>
 </table>
-<div class="finding finding-critical"><strong>Главный вывод: при текущих 65 лидах план 368M невыполним</strong>Даже при идеальной конверсии 15% нужно 333 лида &mdash; в 5 раз больше. Два рычага: 1) нарастить трафик (каналы + бюджет), 2) поднять конверсию (589 мёртвых &rarr; реанимация + квиз + качество встреч).</div>
+<div class="finding finding-critical"><strong>Цель: 750 лидов/мес (сейчас 65 &mdash; разрыв x11,5)</strong>При конверсии лид&rarr;ДДУ 6,5&ndash;7% (реалистичный рост с текущих 5,6%) для 50 ДДУ нужно 750 лидов. Дефицит 685 лидов &mdash; закрывается платными каналами + масштабированием бесплатных (ИИ-прозвон, реанимация 589, партнёры).</div>
 </div>
 
-<div class="card"><h3>Декомпозиция по ЖК: лидов на план</h3>
-<table><tr><th>ЖК</th><th class="num-cell">План</th><th class="num-cell">ДДУ нужно</th><th class="num-cell">Лидов (при 12%)</th><th>Текущая реклама</th><th>Действие</th></tr>
-<tr><td><strong>Чили</strong></td><td class="num-cell">108M</td><td class="num-cell">15</td><td class="num-cell">125</td><td><span class="tag tag-green">Есть</span></td><td>Усилить, добавить поиск</td></tr>
-<tr><td><strong>Моне</strong></td><td class="num-cell">64M</td><td class="num-cell">8</td><td class="num-cell">67</td><td><span class="tag tag-red">Нет</span></td><td><strong>Запустить срочно</strong></td></tr>
-<tr><td><strong>Витязь 4+5</strong></td><td class="num-cell">85M</td><td class="num-cell">12</td><td class="num-cell">100</td><td><span class="tag tag-red">Нет</span></td><td><strong>Запустить срочно</strong></td></tr>
-<tr><td><strong>Бёрч</strong></td><td class="num-cell">25M</td><td class="num-cell">3</td><td class="num-cell">25</td><td><span class="tag tag-red">Нет</span></td><td>Запуск старта продаж</td></tr>
-<tr><td><strong>В-Сити</strong></td><td class="num-cell">22M</td><td class="num-cell">3</td><td class="num-cell">25</td><td><span class="tag tag-orange">Мало</span></td><td>Допродажи (519 м&sup2;)</td></tr>
-<tr><td>Смайл</td><td class="num-cell">18M</td><td class="num-cell">2</td><td class="num-cell">17</td><td><span class="tag tag-red">Нет</span></td><td>Авито + ретаргетинг</td></tr>
-<tr><td>Затон</td><td class="num-cell">17M</td><td class="num-cell">2</td><td class="num-cell">17</td><td><span class="tag tag-red">Нет</span></td><td>Авито + ретаргетинг</td></tr>
-<tr><td>Витязь 2+3</td><td class="num-cell">29M</td><td class="num-cell">5</td><td class="num-cell">42</td><td><span class="tag tag-red">Нет</span></td><td>Допродажи остатков</td></tr>
-<tr style="font-weight:700;background:#f5f5f5"><td>ИТОГО</td><td class="num-cell">368M</td><td class="num-cell">50</td><td class="num-cell">418</td><td></td><td></td></tr>
+<div class="card"><h3>Декомпозиция по ЖК: лидов на план (цель 750)</h3>
+<table><tr><th>ЖК</th><th class="num-cell">План</th><th class="num-cell">Доля</th><th class="num-cell">ДДУ</th><th class="num-cell">Лидов (при 6,7%)</th><th>Реклама</th><th>Действие</th></tr>
+<tr><td><strong>Чили</strong></td><td class="num-cell">108M</td><td class="num-cell">29%</td><td class="num-cell">15</td><td class="num-cell"><strong>220</strong></td><td><span class="tag tag-green">Есть</span></td><td>Усилить, добавить поиск</td></tr>
+<tr><td><strong>Моне</strong></td><td class="num-cell">64M</td><td class="num-cell">17%</td><td class="num-cell">9</td><td class="num-cell"><strong>130</strong></td><td><span class="tag tag-red">Нет</span></td><td><strong>Запустить срочно</strong></td></tr>
+<tr><td><strong>Витязь 4+5</strong></td><td class="num-cell">85M</td><td class="num-cell">23%</td><td class="num-cell">12</td><td class="num-cell"><strong>175</strong></td><td><span class="tag tag-red">Нет</span></td><td><strong>Запустить срочно</strong></td></tr>
+<tr><td><strong>Бёрч</strong></td><td class="num-cell">25M</td><td class="num-cell">7%</td><td class="num-cell">3</td><td class="num-cell"><strong>50</strong></td><td><span class="tag tag-red">Нет</span></td><td>Запуск старта продаж</td></tr>
+<tr><td><strong>В-Сити</strong></td><td class="num-cell">22M</td><td class="num-cell">6%</td><td class="num-cell">3</td><td class="num-cell"><strong>45</strong></td><td><span class="tag tag-orange">Мало</span></td><td>Допродажи (519 м&sup2;)</td></tr>
+<tr><td>Смайл</td><td class="num-cell">18M</td><td class="num-cell">5%</td><td class="num-cell">2</td><td class="num-cell">35</td><td><span class="tag tag-red">Нет</span></td><td>Авито + ретаргетинг</td></tr>
+<tr><td>Затон</td><td class="num-cell">17M</td><td class="num-cell">5%</td><td class="num-cell">2</td><td class="num-cell">35</td><td><span class="tag tag-red">Нет</span></td><td>Авито + ретаргетинг</td></tr>
+<tr><td>Витязь 2+3</td><td class="num-cell">29M</td><td class="num-cell">8%</td><td class="num-cell">4</td><td class="num-cell">60</td><td><span class="tag tag-red">Нет</span></td><td>Допродажи остатков</td></tr>
+<tr style="font-weight:700;background:#f5f5f5"><td>ИТОГО</td><td class="num-cell">368M</td><td class="num-cell">100%</td><td class="num-cell">50</td><td class="num-cell bad">750</td><td></td><td></td></tr>
 </table></div>
 
 <div class="card"><h3>Unit-экономика: CPC &rarr; CPL &rarr; бюджет</h3>
@@ -589,27 +589,38 @@ const PAGES = [
 <div class="finding finding-critical"><strong>CPL 18 000 ₽ &mdash; реальная цена лида в недвижимости Вологды</strong>При CPC 60 ₽ и текущей конверсии сайта ~0,33% для рекламного трафика (холодная аудитория конвертируется хуже органики). Квиз 0,6% не спасает &mdash; его нужно переделать до 3&ndash;5%.</div>
 </div>
 
-<div class="card"><h3>Медиаплан по каналам (CPL 18 000)</h3>
+<div class="card"><h3>Медиаплан по каналам &mdash; цель 750 лидов (CPL 18 000)</h3>
 <table><tr><th>Канал</th><th class="num-cell">Лидов/мес</th><th class="num-cell">CPL</th><th class="num-cell">Бюджет/мес</th><th>ЖК</th><th>Приоритет</th></tr>
-<tr><td><strong>Я.Директ (поиск)</strong></td><td class="num-cell">40&ndash;60</td><td class="num-cell">15 000&ndash;20 000</td><td class="num-cell">700K&ndash;1,2M</td><td>Чили, Моне, Витязь</td><td><span class="tag tag-red">P0</span></td></tr>
-<tr><td><strong>Я.Директ (РСЯ/МК)</strong></td><td class="num-cell">15&ndash;25</td><td class="num-cell">18 000&ndash;25 000</td><td class="num-cell">300&ndash;600K</td><td>Чили (есть) + Моне, Бёрч</td><td><span class="tag tag-red">P0</span></td></tr>
-<tr><td><strong>VK Ads</strong></td><td class="num-cell">15&ndash;25</td><td class="num-cell">15 000&ndash;22 000</td><td class="num-cell">250&ndash;500K</td><td>Чили, Моне, Бёрч</td><td><span class="tag tag-orange">P1</span></td></tr>
-<tr><td><strong>Авито</strong></td><td class="num-cell">20&ndash;35</td><td class="num-cell">8 000&ndash;15 000</td><td class="num-cell">200&ndash;500K</td><td>Все, 30+ объявлений</td><td><span class="tag tag-orange">P1</span></td></tr>
-<tr><td>Ретаргетинг</td><td class="num-cell">10&ndash;20</td><td class="num-cell">8 000&ndash;12 000</td><td class="num-cell">100&ndash;200K</td><td>Посетители сайта/квиза</td><td><span class="tag tag-orange">P1</span></td></tr>
-<tr><td>Агрегаторы (Циан, ДомКлик)</td><td class="num-cell">10&ndash;20</td><td class="num-cell">10 000&ndash;18 000</td><td class="num-cell">100&ndash;350K</td><td>Все</td><td><span class="tag tag-orange">P2</span></td></tr>
+<tr><td><strong>Я.Директ (поиск)</strong></td><td class="num-cell">100&ndash;140</td><td class="num-cell">15 000&ndash;20 000</td><td class="num-cell">1,5&ndash;2,8M</td><td>Все ЖК по кампаниям</td><td><span class="tag tag-red">P0</span></td></tr>
+<tr><td><strong>Я.Директ (РСЯ/МК)</strong></td><td class="num-cell">40&ndash;60</td><td class="num-cell">18 000&ndash;25 000</td><td class="num-cell">720K&ndash;1,5M</td><td>Чили, Моне, Витязь, Бёрч</td><td><span class="tag tag-red">P0</span></td></tr>
+<tr><td><strong>VK Ads</strong></td><td class="num-cell">40&ndash;60</td><td class="num-cell">15 000&ndash;22 000</td><td class="num-cell">600K&ndash;1,3M</td><td>Чили, Моне, Бёрч, Витязь</td><td><span class="tag tag-orange">P1</span></td></tr>
+<tr><td><strong>Авито</strong></td><td class="num-cell">40&ndash;60</td><td class="num-cell">8 000&ndash;15 000</td><td class="num-cell">320K&ndash;900K</td><td>Все, 50+ объявлений</td><td><span class="tag tag-orange">P1</span></td></tr>
+<tr><td>Ретаргетинг</td><td class="num-cell">20&ndash;30</td><td class="num-cell">8 000&ndash;12 000</td><td class="num-cell">160&ndash;360K</td><td>Посетители сайта/квиза</td><td><span class="tag tag-orange">P1</span></td></tr>
+<tr><td>Агрегаторы (Циан, ДомКлик, М2)</td><td class="num-cell">20&ndash;30</td><td class="num-cell">10 000&ndash;18 000</td><td class="num-cell">200&ndash;540K</td><td>Все</td><td><span class="tag tag-orange">P2</span></td></tr>
+<tr style="font-weight:700;background:#ffebee"><td>ИТОГО платные</td><td class="num-cell">260&ndash;380</td><td class="num-cell"></td><td class="num-cell bad">3,5&ndash;7,4M</td><td></td><td></td></tr>
 <tr style="background:#e8f5e9"><td colspan="6"><strong>Бесплатные / условно-бесплатные каналы</strong></td></tr>
-<tr><td>ИИ-прозвон</td><td class="num-cell">80&ndash;100</td><td class="num-cell">500&ndash;1 500</td><td class="num-cell">50&ndash;100K</td><td>Все</td><td><span class="tag tag-green">Масштабировать!</span></td></tr>
-<tr><td>Реанимация 589 сделок</td><td class="num-cell">30&ndash;50</td><td class="num-cell">0</td><td class="num-cell">0</td><td>Все</td><td><span class="tag tag-red">P0 &mdash; бесплатно</span></td></tr>
-<tr><td>ВК сообщество (орг.)</td><td class="num-cell">15&ndash;20</td><td class="num-cell">0</td><td class="num-cell">0</td><td>Все</td><td><span class="tag tag-green">Работает</span></td></tr>
-<tr><td>SEO (органика)</td><td class="num-cell">20&ndash;30</td><td class="num-cell">0</td><td class="num-cell">0</td><td>Все</td><td><span class="tag tag-green">Работает</span></td></tr>
-<tr><td>Партнёрский (АН)</td><td class="num-cell">30&ndash;40</td><td class="num-cell">0 (комиссия ~3%)</td><td class="num-cell">0</td><td>Все</td><td><span class="tag tag-green">Работает</span></td></tr>
-<tr style="font-weight:700;background:#f5f5f5"><td>ИТОГО платные</td><td class="num-cell">110&ndash;185</td><td class="num-cell"></td><td class="num-cell bad">1,65&ndash;3,35M</td><td></td><td></td></tr>
-<tr style="font-weight:700;background:#e8f5e9"><td>ИТОГО бесплатные</td><td class="num-cell">175&ndash;240</td><td class="num-cell"></td><td class="num-cell good">50&ndash;100K</td><td></td><td></td></tr>
-<tr style="font-weight:700;background:#fff3e0"><td>ВСЕГО</td><td class="num-cell">285&ndash;425</td><td class="num-cell"></td><td class="num-cell">1,7&ndash;3,45M</td><td></td><td></td></tr>
+<tr><td>ИИ-прозвон</td><td class="num-cell">100&ndash;150</td><td class="num-cell">500&ndash;1 500</td><td class="num-cell">50&ndash;150K</td><td>Все</td><td><span class="tag tag-green">Масштабировать x3!</span></td></tr>
+<tr><td>Реанимация 589 сделок</td><td class="num-cell">50&ndash;80</td><td class="num-cell">0</td><td class="num-cell">0</td><td>Все</td><td><span class="tag tag-red">P0 &mdash; бесплатно</span></td></tr>
+<tr><td>ВК сообщество (орг.)</td><td class="num-cell">20&ndash;30</td><td class="num-cell">0</td><td class="num-cell">0</td><td>Все</td><td><span class="tag tag-green">Работает</span></td></tr>
+<tr><td>SEO (органика)</td><td class="num-cell">25&ndash;40</td><td class="num-cell">0</td><td class="num-cell">0</td><td>Все</td><td><span class="tag tag-green">Работает</span></td></tr>
+<tr><td>Партнёрский (АН)</td><td class="num-cell">40&ndash;60</td><td class="num-cell">0 (комиссия ~3%)</td><td class="num-cell">0</td><td>Все</td><td><span class="tag tag-green">Работает</span></td></tr>
+<tr><td>Инстаграм / Telegram (орг.)</td><td class="num-cell">10&ndash;20</td><td class="num-cell">0</td><td class="num-cell">0</td><td>Все</td><td><span class="tag tag-orange">Развивать</span></td></tr>
+<tr style="font-weight:700;background:#e8f5e9"><td>ИТОГО бесплатные</td><td class="num-cell">245&ndash;380</td><td class="num-cell"></td><td class="num-cell good">50&ndash;150K</td><td></td><td></td></tr>
+<tr style="font-weight:700;background:#fff3e0;font-size:15px"><td>ВСЕГО</td><td class="num-cell">505&ndash;760</td><td class="num-cell"></td><td class="num-cell">3,55&ndash;7,55M</td><td></td><td></td></tr>
 </table>
-<div class="finding finding-critical"><strong>При CPL 18K рекламный бюджет &mdash; 1,7&ndash;3,5M/мес</strong>Это реальность рынка недвижимости. CAC ~150K при ср. чеке 7,3M &mdash; 2,1% от сделки, в норме. Но бюджет серьёзный. Ключевой рычаг снижения CPL: починить квиз (0,6% &rarr; 3&ndash;5%), улучшить посадочные &rarr; CPL может упасть до 8&ndash;12K.</div>
-<div class="finding finding-good"><strong>Бесплатные каналы дают 175&ndash;240 лидов &mdash; это 42&ndash;57% от потребности</strong>ИИ-прозвон (100), реанимация 589 (50), ВК орг. (20), SEO (30), партнёры (40) &mdash; почти половина лидов без бюджета. Это главный козырь: наращивать бесплатные каналы, платным &mdash; закрывать дефицит.</div>
-<div class="finding finding-warn"><strong>Рычаги снижения CPL</strong>1) Починить квиз 0,6% &rarr; 3% &mdash; CPL падает с 18K до 6K. 2) Посадочные по ЖК вместо общего лендинга &mdash; CR x2. 3) Ретаргетинг возвращает тёплых дешевле (CPL 8&ndash;12K). 4) Авито &mdash; CPL ниже Директа (8&ndash;15K).</div>
+
+<div class="finding finding-critical"><strong>Цена вопроса: 3,5&ndash;7,5M/мес на 750 лидов</strong>При CPL 18K платные каналы дают 260&ndash;380 лидов. Остальные 370&ndash;490 &mdash; бесплатные. CAC ~150K при ср. чеке 7,3M = 2,1% от сделки (норма для недвижимости 2&ndash;5%). Рекламный бюджет на план 368M &mdash; до 2% от выручки.</div>
+
+<div class="finding finding-good"><strong>Бесплатные каналы &mdash; 33&ndash;50% от цели</strong>ИИ-прозвон (150), реанимация 589 (80), партнёры (60), SEO (40), ВК орг. (30) = до 380 лидов бесплатно. Это ключевой рычаг: каждый бесплатный лид экономит 18K рекламного бюджета. Максимальный приоритет &mdash; масштабирование ИИ-прозвона и реанимации.</div>
+
+<div class="card" style="background:#fff8e1;border-color:#f9a825"><h3>Сценарии бюджета</h3>
+<table><tr><th>Сценарий</th><th class="num-cell">Платных лидов</th><th class="num-cell">Бесплатных</th><th class="num-cell">Всего</th><th class="num-cell">Бюджет/мес</th><th>% от плана</th></tr>
+<tr><td>Минимум (только Директ + Авито)</td><td class="num-cell">200</td><td class="num-cell">300</td><td class="num-cell">500</td><td class="num-cell">3,5M</td><td>0,95%</td></tr>
+<tr style="background:#fff3e0"><td><strong>Рабочий (все каналы)</strong></td><td class="num-cell"><strong>320</strong></td><td class="num-cell"><strong>380</strong></td><td class="num-cell"><strong>700</strong></td><td class="num-cell"><strong>5,5M</strong></td><td><strong>1,5%</strong></td></tr>
+<tr><td>Агрессивный (макс. охват)</td><td class="num-cell">400</td><td class="num-cell">380</td><td class="num-cell">780</td><td class="num-cell">7,5M</td><td>2,0%</td></tr>
+</table></div>
+
+<div class="finding finding-warn"><strong>Рычаги снижения CPL (с 18K до 8&ndash;10K)</strong>1) Починить квиз 0,6% &rarr; 3&ndash;5% &mdash; CPL падает в 3 раза. 2) Посадочные по ЖК вместо общего лендинга &mdash; CR &times;2. 3) Ретаргетинг &mdash; CPL 8&ndash;12K (тёплые). 4) Авито с правильными CTA &mdash; CPL 8&ndash;15K. При CPL 10K тот же бюджет 5,5M даёт не 320, а <strong>550 платных лидов</strong>.</div>
 </div>
 `},
 {id:'offers',num:'13',title:'Офферы на июнь',html:`
