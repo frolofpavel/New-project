@@ -781,7 +781,94 @@ const PAGES = [
 <div class="finding finding-warn"><strong>Нужны посадочные страницы по ЖК</strong> Сейчас реклама ведёт на лендинг cherry-dom-35.ru (отказы 34&ndash;56%). Каждый ЖК должен иметь свою страницу на cherry-dom.com с CTA, планировками, ипотечным калькулятором и квизом. <strong>Без посадочных офферы теряют 40&ndash;60% конверсии.</strong></div>
 <div class="finding finding-critical"><strong>Первый приоритет на понедельник: запустить Моне и Витязь 4 в рекламу</strong> Сейчас крутится только Чили (29% плана). Моне (17%) и Витязь 4 (11%) &mdash; ноль кампаний при 105M суммарного плана. Минимум: скопировать работающую кампанию Чили, адаптировать креативы и посадочную.</div>
 `},
-{id:'roadmap',num:'14',title:'План 14 дней',html:`
+{id:'ksyusha-plan',num:'14',title:'Анализ медиаплана (Ксюша)',html:`
+<div class="page-header"><h2>Анализ предложенного медиаплана</h2><div class="page-desc">Ксюша Б. &mdash; структура РК + медиаплан, июнь 2026. Разбор перед постановкой задач в понедельник</div></div>
+
+<h3>Что предложено</h3>
+<div class="summary-grid">
+<div class="summary-card">
+<h4>Бюджет</h4>
+<div class="metrics">
+<div class="metric"><div class="value">6.14M &nbsp;&nbsp;</div><div class="label">общий бюджет</div></div>
+<div class="metric"><div class="value bad">6 958 &nbsp;&nbsp;</div><div class="label">CPL в плане</div></div>
+<div class="metric"><div class="value">882</div><div class="label">лидов/мес</div></div>
+<div class="metric"><div class="value">31</div><div class="label">сделок (план)</div></div>
+</div>
+</div>
+<div class="summary-card">
+<h4>Воронка (допущения Ксюши)</h4>
+<div class="metrics">
+<div class="metric"><div class="value">1%</div><div class="label">CR сайта</div></div>
+<div class="metric"><div class="value">35%</div><div class="label">квалификация</div></div>
+<div class="metric"><div class="value">10%</div><div class="label">конверсия в сделку</div></div>
+<div class="metric"><div class="value">10M</div><div class="label">средний чек</div></div>
+</div>
+</div>
+</div>
+
+<h3>Структура кампаний по ЖК</h3>
+<table>
+<tr><th>ЖК</th><th>Бюджет Яндекс</th><th>Лидов</th><th>CPC</th><th>CPL</th><th>Проблема</th></tr>
+<tr><td>Чили</td><td>357K</td><td>38</td><td>94 &nbsp;&nbsp;</td><td>9 395</td><td>&mdash;</td></tr>
+<tr><td>Моне</td><td>357K</td><td>38</td><td>94 &nbsp;&nbsp;</td><td>9 395</td><td style="color:var(--cherry)">Идентичный бюджет при разном приоритете</td></tr>
+<tr><td>Смайл</td><td>357K</td><td>38</td><td>94 &nbsp;&nbsp;</td><td>9 395</td><td style="color:var(--cherry)">Допродажа &mdash; нужен другой бюджет</td></tr>
+<tr><td>Бёрч</td><td>357K</td><td>38</td><td>94 &nbsp;&nbsp;</td><td>9 395</td><td style="color:var(--cherry)">Допродажа &mdash; минимальный бюджет</td></tr>
+<tr><td>Затон</td><td>357K</td><td>38</td><td>94 &nbsp;&nbsp;</td><td>9 395</td><td style="color:var(--cherry)">2&ndash;3 квартиры &mdash; нет смысла лить 357K</td></tr>
+<tr><td>Витязь 4</td><td>357K</td><td>38</td><td>94 &nbsp;&nbsp;</td><td>9 395</td><td>&mdash;</td></tr>
+<tr><td>Мастер-бренд</td><td>541K</td><td>26</td><td>&mdash;</td><td>20 808</td><td>&mdash;</td></tr>
+</table>
+
+<div class="finding finding-critical"><strong>Проблема #1: CPL 6 958 &nbsp;&nbsp; нереалистичен</strong>
+Валидированный CPL по данным Метрики: <strong>18 000 &nbsp;&nbsp;</strong> (CPC 60 &nbsp;&nbsp;, CR сайта ~0.33%). Ксюша использует CR сайта 1% (реально 0.33%) и CPC 94 &nbsp;&nbsp; &mdash; арифметика: 94 &nbsp;&nbsp; / 1% = 9 400 &nbsp;&nbsp; за лид с Яндекса, но общий CPL 6 958 получен за счёт Авито с фантастическим CPL 700 &nbsp;&nbsp;. Если убрать Авито &mdash; CPL = 12&ndash;14K, что ближе к реальности, но всё равно ниже проверенных 18K.</div>
+
+<div class="finding finding-critical"><strong>Проблема #2: Авито &mdash; 150 лидов по 700 &nbsp;&nbsp;</strong>
+Бюджет 105K на Авито при 150 лидах = CPL 700 &nbsp;&nbsp;. Для недвижимости класса &laquo;Комфорт+&raquo; в Вологде при среднем чеке 7&ndash;10M &mdash; это фантазия. Реальный CPL на Авито для девелопера: 3 000&ndash;8 000 &nbsp;&nbsp;. Эти 150 лидов составляют <strong>17% всего плана</strong> &mdash; если канал не даст &mdash; план рушится.</div>
+
+<div class="finding finding-critical"><strong>Проблема #3: одинаковый бюджет на все ЖК</strong>
+Каждый ЖК получает 357K + 38 лидов. Но ЖК Затон &mdash; это 2&ndash;3 квартиры (допродажа), ЖК Смайл &mdash; тоже допродажа. Тратить столько же, сколько на Чили (план 190M) или Моне (план 105M) &mdash; выброшенный бюджет. Нет учёта стадии жизненного цикла ЖК (запуск / активные продажи / допродажа).</div>
+
+<div class="finding finding-warn"><strong>Проблема #4: нет дифференциации офферов</strong>
+В структуре кампаний каждый ЖК получает одинаковую связку: Бренд Поиск + Ретаргетинг Поиск + Ретаргетинг РСЯ + Товарная Автомат. Но УТП и ЦА разные: Чили &mdash; молодые пары и инвесторы, Моне &mdash; ценители искусства, Витязь &mdash; семьи. Одна структура не продаст и то, и другое.</div>
+
+<h3>Каналы: что сходится, что нет</h3>
+<table>
+<tr><th>Канал</th><th>Бюджет</th><th>Лидов</th><th>CPL</th><th>Вердикт</th></tr>
+<tr><td>Яндекс Поиск (мастер + ЖК)</td><td>3.04M</td><td>304</td><td>10K</td><td><span class="tag tag-green">ОК</span> основной канал, но CPC завышен</td></tr>
+<tr><td>ВК ADS</td><td>206K</td><td>48</td><td>4 292</td><td><span class="tag tag-orange">Оптимистично</span> реально 6&ndash;10K в недвижке</td></tr>
+<tr><td>ВК посевы</td><td>97K</td><td>19</td><td>5 105</td><td><span class="tag tag-green">ОК</span></td></tr>
+<tr><td>МТС Маркетолог</td><td>116K</td><td>17</td><td>6 824</td><td><span class="tag tag-green">ОК</span> тестируем</td></tr>
+<tr><td>Telegram чаты</td><td>137K</td><td>18</td><td>7 611</td><td><span class="tag tag-green">ОК</span></td></tr>
+<tr><td>Telegram ADS</td><td>86K</td><td>27</td><td>3 185</td><td><span class="tag tag-orange">Оптимистично</span></td></tr>
+<tr><td>Instagram</td><td>173K</td><td>18</td><td>9 611</td><td><span class="tag tag-orange">Нужен тест</span></td></tr>
+<tr style="background:#ffebee"><td><strong>Авито</strong></td><td>105K</td><td>150</td><td>700</td><td><span class="tag tag-red">Фантазия</span> реально 15&ndash;25 лидов</td></tr>
+<tr><td>Я.Недвижимость</td><td>204K</td><td>28</td><td>7 286</td><td><span class="tag tag-green">ОК</span></td></tr>
+<tr><td>ЦИАН</td><td>451K</td><td>55</td><td>8 200</td><td><span class="tag tag-green">ОК</span></td></tr>
+<tr><td>SEO</td><td>220K</td><td>20</td><td>11K</td><td><span class="tag tag-green">ОК</span> долгосрочная инвестиция</td></tr>
+<tr><td>Наружка</td><td>600K</td><td>40</td><td>15K</td><td><span class="tag tag-orange">Дорого</span> но нужна для бренда</td></tr>
+<tr><td>Радио</td><td>240K</td><td>20</td><td>12K</td><td><span class="tag tag-orange">Тестируем</span></td></tr>
+<tr><td>SMS</td><td>100K</td><td>50</td><td>2K</td><td><span class="tag tag-green">ОК</span> CRM-реактивация</td></tr>
+</table>
+
+<h3>Что хорошо в плане Ксюши</h3>
+<div class="finding finding-good"><strong>Комплексное каналоведение</strong> 15 каналов &mdash; широкий охват. Включены Telegram, МТС Маркетолог, SMS-реактивация &mdash; не только Яндекс. Это правильно для девелопера с 7 ЖК.</div>
+<div class="finding finding-good"><strong>CRM-реактивация через SMS</strong> 100K на 50 лидов = CPL 2K. Правильный подход &mdash; дешёвые лиды из базы. Нужно добавить email-цепочки.</div>
+<div class="finding finding-good"><strong>Клиентский паспорт и ЦА</strong> 10 сегментов ЦА, описание болей и USP по каждому ЖК &mdash; хорошая база. Но не переведено в конкретные настройки кампаний.</div>
+
+<h3>Рекомендация: бюджет по приоритету ЖК</h3>
+<table>
+<tr><th>ЖК</th><th>Стадия</th><th>% бюджета</th><th>Бюджет (от 6.14M)</th><th>Обоснование</th></tr>
+<tr style="background:#e8f5e9"><td><strong>Чили</strong></td><td>Активные продажи</td><td>30%</td><td>1.84M</td><td>План 190M, основной генератор выручки</td></tr>
+<tr style="background:#e8f5e9"><td><strong>Моне</strong></td><td>Запуск</td><td>25%</td><td>1.54M</td><td>План 105M, ноль кампаний &mdash; нужен старт</td></tr>
+<tr style="background:#e8f5e9"><td><strong>Витязь 4</strong></td><td>Запуск</td><td>20%</td><td>1.23M</td><td>План 79M, семейный сегмент, конкурент Олимпийскому</td></tr>
+<tr><td>Бренд/Мастер</td><td>Постоянно</td><td>15%</td><td>920K</td><td>Бренд-поиск, ретаргет, конкуренты</td></tr>
+<tr><td>Смайл + Бёрч</td><td>Допродажа</td><td>7%</td><td>430K</td><td>Минимальный трафик, ретаргет, CRM</td></tr>
+<tr><td>Затон</td><td>Остатки</td><td>3%</td><td>184K</td><td>2&ndash;3 квартиры &mdash; только ретаргет</td></tr>
+</table>
+
+<div class="finding finding-info"><strong>Итог: план Ксюши = хорошая база, но нуждается в корректировке</strong>
+Каналы правильные, бюджет адекватный. Но CPL занижен в 2.5&times;, Авито переоценён, бюджеты не дифференцированы по ЖК. На понедельник: <strong>1)</strong> перераспределить бюджет по приоритету ЖК, <strong>2)</strong> убрать 150 лидов Авито из плана (заложить 20&ndash;25), <strong>3)</strong> пересчитать CPL с CR 0.33% вместо 1%, <strong>4)</strong> адаптировать офферы по ЖК (см. стр. 13).</div>
+`},
+{id:'roadmap',num:'15',title:'План 14 дней',html:`
 <div class="page-header"><h2>Детальный план работ: 14 дней</h2><div class="page-desc">4&ndash;17 июня 2026 &mdash; пошаговая дорожная карта запуска</div></div>
 
 <div class="card" style="background:#fff3e0;border-color:#f9a825"><h3>Исходная точка</h3>
@@ -875,7 +962,7 @@ const PAGES = [
 <tr><td>Агрегаторы</td><td colspan="12"></td><td style="background:var(--blue);color:white" colspan="2">P2</td></tr>
 </table></div>
 `},
-{id:'funnel',num:'15',title:'Воронка продаж',html:`
+{id:'funnel',num:'16',title:'Воронка продаж',html:`
 
 <div class="page-header"><h2>Воронка продаж: протокол касаний</h2><div class="page-desc">Документ &laquo;Точки касания&raquo; vs реальность CRM</div></div>
 <div class="finding finding-good"><strong>Протокол касаний &mdash; профессиональный</strong>15+ касаний от лида до ДДУ, скрипты, реанимация (30-180 дней), допродажи.</div>
@@ -889,7 +976,7 @@ const PAGES = [
 <tr><td>Допродажи</td><td>5 за 60 дней</td><td>Паркинг, кладовая, гараж</td><td>Работает?</td></tr></table></div>
 <div class="finding finding-warn"><strong>589 на квалификации &rarr; протокол реанимации не работает</strong>Гипотеза: написан, но не выполняется системно.</div>
 `},
-{id:'bottlenecks',num:'16',title:'Узкие места',html:`
+{id:'bottlenecks',num:'17',title:'Узкие места',html:`
 <div class="page-header"><h2>Узкие места</h2><div class="page-desc">Что мешает выполнению плана продаж</div></div>
 <div class="card"><h3>В маркетинге (7)</h3>
 <table><tr><th>#</th><th>Проблема</th><th>Влияние</th><th>Решение</th></tr>
@@ -908,7 +995,7 @@ const PAGES = [
 <tr><td>4</td><td>46% через агентов</td><td>Комиссии</td></tr>
 <tr><td>5</td><td>Март/Май провал</td><td>Нестабильность</td></tr></table></div>
 `},
-{id:'plan',num:'17',title:'План 30/60/90',html:`
+{id:'plan',num:'18',title:'План 30/60/90',html:`
 <div class="page-header"><h2>План действий: 30 / 60 / 90 дней</h2><div class="page-desc">Конкретные шаги с ожидаемым результатом</div></div>
 <div class="card"><h3>Первые 30 дней &mdash; &laquo;Стабилизация&raquo;</h3>
 <table><tr><th>#</th><th>Действие</th><th>Срок</th><th>Результат</th></tr>
@@ -941,7 +1028,7 @@ const PAGES = [
 <div class="metric"><div class="value">&lt;20%</div><div class="label">Отказы рекламы (31%)</div></div>
 <div class="metric"><div class="value">3-5%</div><div class="label">Конверсия квиза (0,6%)</div></div></div></div>
 `},
-{id:'requests',num:'18',title:'Запрос к клиенту',html:`
+{id:'requests',num:'19',title:'Запрос к клиенту',html:`
 <div class="page-header"><h2>Запрос к ЧерриДом</h2><div class="page-desc">Что нужно получить для продолжения работы</div></div>
 <div class="card"><h3>Доступы и данные</h3>
 <table><tr><th>#</th><th>Что нужно</th><th>Для чего</th></tr>
