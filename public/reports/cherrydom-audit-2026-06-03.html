@@ -678,53 +678,108 @@ const PAGES = [
 </div>
 `},
 {id:'offers',num:'13',title:'Офферы на июнь',html:`
-<div class="page-header"><h2>Офферы по ЖК на июнь</h2><div class="page-desc">Конкретные рекламные связки: оффер + CTA + канал + посадочная</div></div>
+<div class="page-header"><h2>Рекламные офферы на июнь 2026</h2><div class="page-desc">По каждому ЖК: рыночный контекст &rarr; офферы (продукт + цена + условия) &rarr; каналы &rarr; KPI. На основе анализа локации и конкурентов.</div></div>
 
-<div class="card"><h3>Чили &mdash; 108M (29% плана)</h3>
-<table><tr><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
-<tr><td>&laquo;Квартира со вкусом от 6,57 млн. Потолки 5,3 м, кухня 27 м&sup2;, паркинг с входом в подъезд&raquo;</td><td>Записаться на экскурсию по стройке</td><td>Директ Поиск + РСЯ</td><td>Молодые семьи 28&ndash;40</td></tr>
-<tr><td>&laquo;Тёплый паркинг в &laquo;Чили&raquo; &mdash; из машины в лифт за 30 секунд&raquo;</td><td>Забронировать место</td><td>Авито, Ретаргетинг</td><td>Автовладельцы</td></tr>
-<tr><td>&laquo;Небесный дворец: 2 уровня, потолки 5,3 м, терраса на крыше&raquo;</td><td>Посмотреть планировки</td><td>VK Ads, Инстаграм</td><td>Премиум 35&ndash;50</td></tr>
-</table></div>
-
-<div class="card"><h3>Моне &mdash; 64M (17% плана)</h3>
-<table><tr><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
-<tr><td>&laquo;Дом как картина Моне. Цветные витражи, 4-метровые маки, сад на стилобате&raquo;</td><td>Увидеть своими глазами &mdash; запись на экскурсию</td><td>VK Ads, Инстаграм (визуал!)</td><td>Ценители эстетики 30&ndash;50</td></tr>
-<tr><td>&laquo;Квартира от 7,8 млн в авторском доме. Мосты, витражи, вертикальные сады&raquo;</td><td>Подобрать планировку</td><td>Директ Поиск</td><td>Семьи с бюджетом 8&ndash;15M</td></tr>
-<tr><td>&laquo;Небесный дворец в &laquo;Моне&raquo;: двухуровневая квартира с панорамным видом&raquo;</td><td>Узнать стоимость</td><td>Авито, агрегаторы</td><td>Премиум</td></tr>
-</table></div>
-
-<div class="card"><h3>Витязь 4+5 &mdash; 85M (23% плана)</h3>
-<table><tr><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
-<tr><td>&laquo;Дом-крепость для вашей семьи. 4 этажа, вишнёвый сад, &laquo;Небесные дворцы&raquo; на крыше&raquo;</td><td>Посмотреть свободные квартиры</td><td>Директ, VK Ads</td><td>Семьи с детьми 30&ndash;45</td></tr>
-<tr><td>&laquo;Витязь 4: кафе и цветочная на первом этаже, ваш двор &mdash; вишнёвый сад&raquo;</td><td>Записаться на показ</td><td>Авито</td><td>Молодые семьи</td></tr>
-<tr><td>&laquo;Семейная ипотека 6% &mdash; квартира в &laquo;Витязь 5&raquo; от 24 900 ₽/мес&raquo;</td><td>Рассчитать ипотеку</td><td>Директ Поиск, ретаргетинг</td><td>Ипотечники</td></tr>
-</table></div>
-
-<div class="card"><h3>Бёрч &mdash; 25M (7%, старт продаж)</h3>
-<table><tr><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
-<tr><td>&laquo;СТАРТ ПРОДАЖ: Бёрч &mdash; 48 квартир, &laquo;Конь в пальто&raquo; во дворе, панорамный 6-й этаж&raquo;</td><td>Забронировать на старте</td><td>VK Ads, Инстаграм, Директ</td><td>Ценители камерности 30&ndash;50</td></tr>
-<tr><td>&laquo;Первые 5 квартир в &laquo;Бёрч&raquo; по специальной цене старта&raquo;</td><td>Узнать цену первым</td><td>ВК сообщество, E-mail, ретаргетинг</td><td>База CRM + подписчики</td></tr>
-</table>
-<div class="finding finding-info"><strong>Бёрч &mdash; event-запуск</strong>Камерность (48 кв.) + яркий образ (&laquo;Конь в пальто&raquo;, панды) = идеальный инфоповод. Стратегия: закрытая презентация для базы &rarr; пост-ажиотаж &rarr; открытые продажи.</div>
+<div class="card" style="background:#fff3e0;border-color:#f9a825"><h3>Стратегия офферов: почему не &laquo;скидки&raquo;</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">
+<div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #eee">
+<div style="font-size:12px;color:var(--gray);text-transform:uppercase;font-weight:600;margin-bottom:6px">Позиция Черри на рынке</div>
+<div style="font-size:14px">Продажи: <strong>131 090 ₽/м&sup2;</strong> &mdash; +14% к рынку</div>
+<div style="font-size:14px">Чек: <strong>9,1M</strong> &mdash; x1,7 к медиане (5,5M)</div>
+<div style="font-size:14px">Доля: <strong>36%</strong> локации при самой высокой цене</div>
+</div>
+<div style="background:#fff;border-radius:8px;padding:14px;border:1px solid #eee">
+<div style="font-size:12px;color:var(--gray);text-transform:uppercase;font-weight:600;margin-bottom:6px">Конкурентный вывод</div>
+<div style="font-size:14px">Авиатор (96K) и Олимпийский (110K) давят ценой &mdash; <strong>не конкуренты</strong></div>
+<div style="font-size:14px">Maxi Life (130&ndash;138K) &mdash; ближайший, но без истории</div>
+<div style="font-size:14px">Министр (168K) &mdash; дороже, но нишевый (12 кв.)</div>
+</div>
+</div>
+<div class="finding finding-info"><strong>Черри продаёт ценность, а не метры</strong> Каждый оффер ниже строится на формуле: <em>уникальная концепция ЖК + конкретная выгода + понятное условие покупки</em>. Скидочные офферы запрещены &mdash; они обесценивают премию.</div>
 </div>
 
-<div class="card"><h3>В-Сити &mdash; 22M (допродажи, 519 м&sup2;)</h3>
-<table><tr><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
-<tr><td>&laquo;Последние квартиры в небоскрёбе Вологды. 14 этажей, Одри Хепбёрн во дворе&raquo;</td><td>Успеть до конца июня</td><td>Ретаргетинг, Авито</td><td>Молодые пары</td></tr>
-<tr><td>&laquo;2-комн. от 9,45 млн с видом на Софийский собор&raquo;</td><td>Забронировать</td><td>Авито, агрегаторы</td><td>Все</td></tr>
-</table></div>
+<div class="card"><h3>01. Чили &mdash; 108M (29% плана) | Локомотив</h3>
+<p style="font-size:13px;color:var(--gray);margin-bottom:8px">Конкурентный контекст: Maxi Life Новгородская &mdash; 129K/м&sup2; (бизнес, 71 кв.) &mdash; ближайший по цене, но без характера. Авиатор &mdash; 109K (эконом, 311 кв.) &mdash; давит объёмом в низком сегменте.</p>
+<table><tr><th style="width:30px">#</th><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
+<tr><td>1.1</td><td><strong>&laquo;Квартира со вкусом: потолки 5,3 м, кухня 27 м&sup2;, паркинг с входом в лифт&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Продуктовый оффер. Работает на горячих &mdash; человек сравнивает параметры</span></td><td>Записаться на экскурсию по готовой стройке</td><td>Директ Поиск (горячие запросы &laquo;купить квартиру Вологда&raquo;)</td><td>Семьи 28&ndash;42, бюджет 7&ndash;12M</td></tr>
+<tr><td>1.2</td><td><strong>&laquo;Дом, где живут улитки и растёт перец чили. 3D-кладка фасада, арт-объекты во дворе&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Эмоциональный. Выделяет из ленты &mdash; ничего подобного у конкурентов</span></td><td>Посмотреть фото и планировки</td><td>VK Ads лид-форма, Инстаграм Reels</td><td>Ценители 30&ndash;50, стиль жизни</td></tr>
+<tr><td>1.3</td><td><strong>&laquo;Тёплый паркинг + кладовая в Чили. Из машины &mdash; в лифт за 30 сек&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Утилитарный. Конкуренты (Авиатор, Олимпийский) &mdash; только гостевой паркинг</span></td><td>Забронировать паркинг + квартиру</td><td>Авито (допы), Ретаргетинг</td><td>Автовладельцы, семьи 2+ авто</td></tr>
+<tr><td>1.4</td><td><strong>&laquo;Небесный дворец в Чили: 2 уровня, терраса, вид на город&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Премиум-оффер. Аналогов в Вологде нет &mdash; ни у Maxi Life, ни у Министра</span></td><td>Узнать стоимость &laquo;Небесного дворца&raquo;</td><td>Директ РСЯ (аудитория &laquo;элитная недвижимость&raquo;), Авито премиум</td><td>Топ-сегмент 35&ndash;55, чек 12&ndash;18M</td></tr>
+<tr><td>1.5</td><td><strong>&laquo;Семейная ипотека 6% &mdash; квартира в Чили от 36 000 ₽/мес&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Финансовый. При чеке 6,57M, ПВ 20%, 25 лет &mdash; ~36K/мес. Конкуренты не коммуницируют платёж</span></td><td>Рассчитать ипотеку за 2 минуты</td><td>Директ Поиск (&laquo;ипотека Вологда&raquo;, &laquo;семейная ипотека&raquo;)</td><td>Молодые семьи с детьми, ипотечники</td></tr>
+</table>
+<div class="finding finding-good"><strong>Чили &mdash; якорный ЖК</strong> Самый большой объём (29% плана), работающая кампания в Директ (есть данные). Задача: масштабировать с 1 кампании до 5 офферов по разным каналам и ЦА.</div>
+</div>
 
-<div class="card"><h3>Смайл + Затон + Витязь 2+3 &mdash; остатки</h3>
-<table><tr><th>ЖК</th><th>Стратегия</th><th>Канал</th></tr>
-<tr><td>Смайл (297 м&sup2;)</td><td>Допродажи через Авито + ретаргетинг по базе. Оффер: &laquo;Готовый дом, заезжай сейчас&raquo;</td><td>Авито, база CRM</td></tr>
-<tr><td>Затон (131 м&sup2;)</td><td>Допродажи. &laquo;Последние квартиры у воды&raquo;</td><td>Авито</td></tr>
-<tr><td>Витязь 3 (78 м&sup2;)</td><td>Почти распродан. Без рекламы, только входящие</td><td>&mdash;</td></tr>
-<tr><td>Витязь 2</td><td>Гаражи 4,1M &mdash; допродажа жителям. &laquo;Ваш гараж в &laquo;Витязь 2&raquo; &mdash; со скидкой для жителей&raquo;</td><td>E-mail, ВК</td></tr>
-</table></div>
+<div class="card"><h3>02. Моне &mdash; 64M (17% плана) | Визуальный лидер</h3>
+<p style="font-size:13px;color:var(--gray);margin-bottom:8px">Конкурентный контекст: единственный дом в городе с импрессионистской концепцией. Maxi Life Возрождения (138K) &mdash; &laquo;бизнес&raquo;, но без визуальной истории. Моне &mdash; идеальный продукт для VK/Инстаграм.</p>
+<table><tr><th style="width:30px">#</th><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
+<tr><td>2.1</td><td><strong>&laquo;Дом как картина Моне. Витражи, 4-метровые маки, вертикальные сады у окон&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Визуальный хук. Фото/видео маков + витражи &mdash; стоп-эффект в ленте</span></td><td>Увидеть своими глазами &mdash; запись на экскурсию</td><td>VK Ads (карусель/видео), Инстаграм Reels</td><td>Эстеты 28&ndash;50, женщины 60%</td></tr>
+<tr><td>2.2</td><td><strong>&laquo;Квартира от 45 м&sup2; в авторском доме на Ленинградской. Кирпичный фасад, который стареет красиво&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Продуктовый. Керамический кирпич &mdash; конкуренты строят монолит (Maxi Life) или обычный кирпич (Авиатор)</span></td><td>Подобрать планировку в Моне</td><td>Директ Поиск (&laquo;квартира Ленинградская&raquo;, &laquo;кирпичный дом Вологда&raquo;)</td><td>Семьи, бюджет 8&ndash;15M</td></tr>
+<tr><td>2.3</td><td><strong>&laquo;Двухуровневый &laquo;Небесный дворец&raquo; в Моне &mdash; 2 этажа + панорама города&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Уникальный формат. У конкурентов нет двухуровневых &mdash; даже у Министра (168K) только стандартные планировки</span></td><td>Узнать стоимость &laquo;Небесного дворца&raquo;</td><td>Авито премиум, агрегаторы (ЦИАН, ДомКлик)</td><td>Премиум 35&ndash;55</td></tr>
+<tr><td>2.4</td><td><strong>&laquo;Рассрочка 0% от застройщика + фиксация цены на 90 дней. Моне, сдача 2026&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Финансовый + срочность. Сдача в Q3 2026 &mdash; скоро. Рассрочка без процентов &mdash; конкуренты этого не дают</span></td><td>Зафиксировать цену до сдачи</td><td>Ретаргетинг (посетители сайта), E-mail по базе</td><td>Готовые к решению, бюджет 8&ndash;12M</td></tr>
+</table>
+<div class="finding finding-warn"><strong>Моне = 0 рекламных кампаний при 64M плана</strong> Самый визуально яркий проект без единого рубля в рекламе. VK/Инстаграм &mdash; приоритетный канал: визуал маков и витражей даст стоп-эффект, которого нет у конкурентов.</div>
+</div>
 
-<div class="finding finding-good"><strong>Принцип: каждый ЖК = свой оффер, своя ЦА, своя посадочная</strong>Универсальная реклама &laquo;купить квартиру в Вологде&raquo; не работает для &laquo;класса с вишенкой&raquo;. Каждый ЖК продаёт свою историю: Чили &mdash; вкус, Моне &mdash; искусство, Бёрч &mdash; ирония, Витязь &mdash; семья.</div>
-<div class="finding finding-warn"><strong>Нужны посадочные страницы по ЖК</strong>Сейчас реклама ведёт на лендинг cherry-dom-35.ru (отказы 34&ndash;56%). Каждый ЖК должен иметь свою страницу на cherry-dom.com с CTA, планировками, ипотечным калькулятором и квизом.</div>
+<div class="card"><h3>03. Витязь 4 &mdash; 41M (11%) | Семейный</h3>
+<p style="font-size:13px;color:var(--gray);margin-bottom:8px">Конкурентный контекст: Олимпийский (Капитал Инвест, 110K, 290 кв.) &mdash; главный конкурент по ЦА (семьи), но эконом. Витязь &mdash; камерный (4 этажа) + вишнёвый сад + детская площадка-крепость.</p>
+<table><tr><th style="width:30px">#</th><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
+<tr><td>3.1</td><td><strong>&laquo;4 этажа, вишнёвый сад, площадка-крепость &mdash; дом, где дети растут среди историй&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Семейный хук. Олимпийский (290 кв., 22-этажки) &mdash; муравейник. Витязь &mdash; камерный, с характером</span></td><td>Посмотреть квартиры для семьи</td><td>VK Ads (аудитория &laquo;семьи с детьми&raquo;), Директ</td><td>Семьи с детьми 3&ndash;12 лет</td></tr>
+<tr><td>3.2</td><td><strong>&laquo;Кафе и цветочная на 1-м этаже, ваш двор &mdash; не парковка. Витязь 4&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Инфраструктурный. У Авиатора и Олимпийского нет коммерции на 1-м этаже</span></td><td>Записаться на показ</td><td>Авито (&laquo;квартира в новостройке Вологда&raquo;)</td><td>Молодые семьи 25&ndash;38</td></tr>
+<tr><td>3.3</td><td><strong>&laquo;Семейная ипотека 6% &mdash; 3-комн. в Витязь 4 от 42 000 ₽/мес. Сдача 2026&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Финансовый + семейный. Ставка 6% vs рыночная 9,3% &mdash; экономия 35% на платеже</span></td><td>Рассчитать ипотеку за 2 минуты</td><td>Директ Поиск (&laquo;семейная ипотека Вологда&raquo;)</td><td>Ипотечники с детьми</td></tr>
+</table>
+</div>
+
+<div class="card"><h3>04. Витязь 5 &mdash; 43M (12%) | Финал саги</h3>
+<p style="font-size:13px;color:var(--gray);margin-bottom:8px">Конкурентный контекст: кульминация серии из 4 домов &mdash; ни один застройщик в городе не строит &laquo;сагу&raquo;. 33 богатыря, &laquo;Ясно солнышко&raquo;. Маркетинговый ресурс: база жителей Витязь 2&ndash;4.</p>
+<table><tr><th style="width:30px">#</th><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
+<tr><td>4.1</td><td><strong>&laquo;Витязь 5 &mdash; финальная глава: 33 богатыря, &laquo;Ясно солнышко&raquo;, двор как продолжение сказки&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Нарративный. Сага из 4 домов &mdash; уникальный маркетинговый актив, которого нет ни у кого в городе</span></td><td>Посмотреть финальную главу</td><td>VK Ads (ретаргетинг жители Витязь 2&ndash;4), Инстаграм</td><td>Фанаты серии + новые семьи</td></tr>
+<tr><td>4.2</td><td><strong>&laquo;Соседи, которых вы уже знаете. Витязь 5 &mdash; рядом с Витязь 2, 3, 4&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Для жителей Витязь и их знакомых. Рекомендация = самый дешёвый лид</span></td><td>Привести друга &mdash; бонус обоим</td><td>E-mail + SMS по базе жителей Витязь</td><td>Действующие жители + рефералы</td></tr>
+<tr><td>4.3</td><td><strong>&laquo;Trade-in: переезжайте из старой квартиры в Витязь 5. Зачёт + помощь с продажей&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Снятие барьера. Средний чек 9,1M &mdash; большинству нужно продать текущую квартиру</span></td><td>Рассчитать trade-in за 5 минут</td><td>Директ Поиск (&laquo;обменять квартиру Вологда&raquo;)</td><td>Вторичники 30&ndash;50</td></tr>
+</table>
+</div>
+
+<div class="card"><h3>05. Бёрч &mdash; 25M (7%) | Старт продаж &mdash; EVENT</h3>
+<p style="font-size:13px;color:var(--gray);margin-bottom:8px">Конкурентный контекст: 48 квартир &mdash; самый камерный проект в локации (Олимпийский &mdash; 290, Авиатор &mdash; 311). Графический код &laquo;берёза&raquo;, арт-объект &laquo;Конь в пальто&raquo; &mdash; вирусный потенциал.</p>
+<table><tr><th style="width:30px">#</th><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
+<tr><td>5.1</td><td><strong>&laquo;СТАРТ ПРОДАЖ: Бёрч &mdash; 48 квартир, 6 этажей. Конь в пальто во дворе. Всерьёз&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Event + ирония. &laquo;Конь в пальто&raquo; &mdash; мем-формат, виральность. Камерность = дефицит</span></td><td>Забронировать на старте &mdash; первые 10 квартир</td><td>VK Ads (широкая Вологда), Инстаграм, Директ</td><td>Ценители 30&ndash;50, камерность</td></tr>
+<tr><td>5.2</td><td><strong>&laquo;Закрытая презентация Бёрч: 48 квартир, которые не будут ждать. Только для клиентов ЧерриДом&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Эксклюзив. Сначала база CRM + жители других ЖК, потом открытые продажи</span></td><td>Зарегистрироваться на закрытый показ</td><td>E-mail рассылка по базе, ВК сообщество ЧерриКлуб</td><td>Тёплая база CRM, жители ЧерриДом</td></tr>
+<tr><td>5.3</td><td><strong>&laquo;Цена старта: самый выгодный метр в ЧерриДом прямо сейчас&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Ценовой + срочность. На старте цена ниже &mdash; инвестиционный аргумент для тех, кто следит за ЧерриДом</span></td><td>Узнать цену на старте первым</td><td>Ретаргетинг (посетители cherry-dom.com), агрегаторы</td><td>Инвесторы, охотники за стартом</td></tr>
+</table>
+<div class="finding finding-info"><strong>Стратегия запуска Бёрч: 3 волны</strong> <strong>Волна 1 (нед. 1):</strong> закрытая презентация для CRM-базы и жителей &rarr; <strong>Волна 2 (нед. 2):</strong> пост-ажиотаж (&laquo;50% забронировано&raquo;) &rarr; <strong>Волна 3 (нед. 3+):</strong> открытые продажи с контент-серией &laquo;Конь в пальто&raquo;.</div>
+</div>
+
+<div class="card"><h3>06. В-Сити &mdash; 22M (6%) | Допродажи &mdash; срочность</h3>
+<p style="font-size:13px;color:var(--gray);margin-bottom:8px">Конкурентный контекст: 14-этажная башня, неоновая эстетика Tiffany/Vice City, скульптура Одри Хепбёрн. Финальные квартиры &mdash; 64 из 64 планировок, остатки. Нет прямого конкурента по формату.</p>
+<table><tr><th style="width:30px">#</th><th>Оффер</th><th>CTA</th><th>Канал</th><th>ЦА</th></tr>
+<tr><td>6.1</td><td><strong>&laquo;Последние квартиры в самом высоком доме ЧерриДом. 14 этажей, Одри во дворе, неон в подъезде&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Дефицит + стиль. В-Сити &mdash; единственная &laquo;башня&raquo; в портфеле, финальные позиции</span></td><td>Успеть до конца июня</td><td>Ретаргетинг, Авито</td><td>Молодые пары 25&ndash;35, стиль</td></tr>
+<tr><td>6.2</td><td><strong>&laquo;Готовый дом. Ключи через 30 дней. В-Сити, ул. [адрес]&raquo;</strong><br><span style="font-size:12px;color:var(--gray)">Утилитарный. Когда конкуренты (Олимпийский, Авиатор) сдаются в 27&ndash;28 гг., В-Сити &mdash; сейчас</span></td><td>Забронировать и заехать через месяц</td><td>Авито, агрегаторы (ЦИАН, ДомКлик)</td><td>Срочный переезд, все возрасты</td></tr>
+</table>
+</div>
+
+<div class="card"><h3>07. Остатки: Смайл + Затон + Витязь 2+3</h3>
+<table><tr><th>ЖК</th><th>Оффер</th><th>Стратегия</th><th>Канал</th></tr>
+<tr><td><strong>Смайл</strong> (297 м&sup2;)</td><td>&laquo;Готовый дом &mdash; заезжай сегодня. Последние квартиры в Смайл&raquo;</td><td>Допродажи через дефицит. Без бюджета на рекламу &mdash; только Авито + база</td><td>Авито, CRM-рассылка</td></tr>
+<tr><td><strong>Затон</strong> (131 м&sup2;)</td><td>&laquo;Квартира у воды &mdash; осталось 2. Затон, ЧерриДом&raquo;</td><td>Финальные позиции. Локационный оффер &mdash; вода уникальна</td><td>Авито</td></tr>
+<tr><td><strong>Витязь 3</strong> (78 м&sup2;)</td><td>&mdash;</td><td>Почти распродан. Без рекламы, только входящие запросы</td><td>&mdash;</td></tr>
+<tr><td><strong>Витязь 2</strong> (гаражи)</td><td>&laquo;Гараж в Витязь 2 для жителей &mdash; спеццена до конца июня&raquo;</td><td>Допродажа жителям. Персональное предложение, не реклама</td><td>E-mail + SMS по жителям</td></tr>
+</table>
+</div>
+
+<div class="card"><h3>Сводная матрица: ЖК &times; каналы &times; бюджет</h3>
+<table><tr><th>ЖК</th><th>Директ</th><th>VK Ads</th><th>Авито</th><th>Ретарг.</th><th>CRM/E-mail</th><th>Приоритет бюджета</th></tr>
+<tr style="background:#fff3e0"><td><strong>Чили</strong></td><td class="good">Поиск + РСЯ</td><td class="good">Лид-форма</td><td class="good">5+ объяв.</td><td class="good">Да</td><td>&mdash;</td><td><span class="tag tag-red">35%</span></td></tr>
+<tr><td><strong>Моне</strong></td><td class="good">Поиск</td><td class="good">Видео + карусель</td><td class="good">5+ объяв.</td><td class="good">Да</td><td>&mdash;</td><td><span class="tag tag-red">25%</span></td></tr>
+<tr><td><strong>Витязь 4</strong></td><td class="good">Поиск</td><td class="good">Семьи</td><td class="good">3+ объяв.</td><td>&mdash;</td><td>&mdash;</td><td><span class="tag tag-orange">15%</span></td></tr>
+<tr><td><strong>Витязь 5</strong></td><td>&mdash;</td><td class="good">Ретарг. жители</td><td class="good">3+ объяв.</td><td class="good">Да</td><td class="good">Жители</td><td><span class="tag tag-orange">10%</span></td></tr>
+<tr><td><strong>Бёрч</strong></td><td class="good">Event</td><td class="good">Широкая</td><td>&mdash;</td><td class="good">Да</td><td class="good">Закрытый показ</td><td><span class="tag tag-orange">10%</span></td></tr>
+<tr><td><strong>В-Сити</strong></td><td>&mdash;</td><td>&mdash;</td><td class="good">2+ объяв.</td><td class="good">Да</td><td>&mdash;</td><td><span class="tag tag-blue">5%</span></td></tr>
+</table>
+</div>
+
+<div class="finding finding-good"><strong>Принцип: каждый ЖК = свой оффер, своя ЦА, своя посадочная</strong> Универсальная реклама &laquo;купить квартиру в Вологде&raquo; не работает для &laquo;класса с вишенкой&raquo;. Каждый ЖК продаёт свою историю: Чили &mdash; вкус, Моне &mdash; искусство, Бёрч &mdash; ирония, Витязь &mdash; семья. Все офферы выше привязаны к конкурентному контексту &mdash; не абстрактные, а &laquo;почему мы, а не они&raquo;.</div>
+<div class="finding finding-warn"><strong>Нужны посадочные страницы по ЖК</strong> Сейчас реклама ведёт на лендинг cherry-dom-35.ru (отказы 34&ndash;56%). Каждый ЖК должен иметь свою страницу на cherry-dom.com с CTA, планировками, ипотечным калькулятором и квизом. <strong>Без посадочных офферы теряют 40&ndash;60% конверсии.</strong></div>
+<div class="finding finding-critical"><strong>Первый приоритет на понедельник: запустить Моне и Витязь 4 в рекламу</strong> Сейчас крутится только Чили (29% плана). Моне (17%) и Витязь 4 (11%) &mdash; ноль кампаний при 105M суммарного плана. Минимум: скопировать работающую кампанию Чили, адаптировать креативы и посадочную.</div>
 `},
 {id:'roadmap',num:'14',title:'План 14 дней',html:`
 <div class="page-header"><h2>Детальный план работ: 14 дней</h2><div class="page-desc">4&ndash;17 июня 2026 &mdash; пошаговая дорожная карта запуска</div></div>
