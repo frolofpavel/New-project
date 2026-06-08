@@ -651,7 +651,7 @@ const PAGES = [
 <tr><td>Ср. чек</td><td class="num-cell">7,3M</td><td class="num-cell">10M</td><td>Ксюша завысила &mdash; по CRM 7.3M</td></tr>
 <tr><td>CAC</td><td class="num-cell">150K</td><td class="num-cell">&mdash;</td><td>2,1% от чека (норма 2&ndash;5%)</td></tr>
 </table>
-<div class="finding finding-critical"><strong>CPL 18 000 &#8381; &mdash; реальная цена лида</strong> Медиаплан Ксюши заложил CR 1% (факт 0,33%) и получил CPL 6 958. Если пересчитать с реальным CR &mdash; CPL = 18K. Ксюша также занесла Авито с CPL 700 &#8381; (150 лидов, 17% плана) &mdash; это фантазия, реально 20&ndash;25 лидов по 4&ndash;8K.</div>
+<div class="finding finding-critical"><strong>CPL Яндекса 18 000 &#8381;, но Авито &mdash; 1 610 &#8381; (факт)</strong> CPL Ксюши 6 958 по Яндексу ошибочен (CR 1% вместо 0,33%). Но по Авито аудит подтвердил CPL 1 610 &#8381; &mdash; канал реально дешёвый. Ксюша заложила CPL 700 (занижен в 2&times;) и 150 лидов (завышено &mdash; факт 96 контактов/мес при бюджете 155K). При пересборке карточек и увеличении бюджета до 200&ndash;300K реально 120&ndash;180 контактов/мес.</div>
 </div>
 
 <div class="card"><h3>Каналы: медиаплан Ксюши vs. наша оценка</h3>
@@ -663,7 +663,7 @@ const PAGES = [
 <tr><td>Telegram чаты</td><td class="num-cell">137K</td><td class="num-cell">18</td><td class="num-cell">7 611</td><td class="num-cell">15&ndash;18</td><td><span class="tag tag-green">ОК</span></td></tr>
 <tr><td>Telegram ADS</td><td class="num-cell">86K</td><td class="num-cell">27</td><td class="num-cell">3 185</td><td class="num-cell">10&ndash;15</td><td><span class="tag tag-orange">Оптимистично</span></td></tr>
 <tr><td>Instagram</td><td class="num-cell">173K</td><td class="num-cell">18</td><td class="num-cell">9 611</td><td class="num-cell">12&ndash;18</td><td><span class="tag tag-orange">Нужен тест</span></td></tr>
-<tr style="background:#ffebee"><td><strong>Авито</strong></td><td class="num-cell">105K</td><td class="num-cell bad">150</td><td class="num-cell bad">700</td><td class="num-cell">20&ndash;25</td><td><span class="tag tag-red">Фантазия</span> CPL 4&ndash;8K, не 700</td></tr>
+<tr style="background:#e8f5e9"><td><strong>Авито</strong></td><td class="num-cell">105K</td><td class="num-cell bad">150</td><td class="num-cell bad">700</td><td class="num-cell">60&ndash;96</td><td><span class="tag tag-green">Факт CPL 1 610 &#8381;</span> аудит Авито подтвердил</td></tr>
 <tr><td>Я.Недвижимость</td><td class="num-cell">204K</td><td class="num-cell">28</td><td class="num-cell">7 286</td><td class="num-cell">20&ndash;28</td><td><span class="tag tag-green">ОК</span></td></tr>
 <tr><td>ЦИАН</td><td class="num-cell">451K</td><td class="num-cell">55</td><td class="num-cell">8 200</td><td class="num-cell">40&ndash;55</td><td><span class="tag tag-green">ОК</span></td></tr>
 <tr><td>SEO</td><td class="num-cell">220K</td><td class="num-cell">20</td><td class="num-cell">11K</td><td class="num-cell">25&ndash;40</td><td><span class="tag tag-green">ОК</span> долгосрочная</td></tr>
@@ -678,6 +678,36 @@ const PAGES = [
 </table>
 
 <div class="finding finding-good"><strong>Что хорошо в медиаплане Ксюши</strong> 15 каналов &mdash; широкое покрытие. Включены Telegram, МТС Маркетолог, SMS-реактивация, ЦИАН, Я.Недвижимость &mdash; правильно для девелопера с 7 ЖК. Бюджет 6.14M адекватен (1,7% от плана 368M).</div>
+</div>
+
+<div class="card" style="border-color:var(--green)"><h3>Аудит Авито (факт: 05.05&ndash;05.06.2026)</h3>
+<div class="metrics">
+<div class="metric"><div class="value">164K</div><div class="label">показов</div></div>
+<div class="metric"><div class="value">18 846</div><div class="label">просмотров</div></div>
+<div class="metric"><div class="value">11,46%</div><div class="label">CTR показ&rarr;просмотр</div></div>
+<div class="metric"><div class="value">96</div><div class="label">контактов</div></div>
+<div class="metric"><div class="value bad">0,51%</div><div class="label">CR просмотр&rarr;контакт</div></div>
+<div class="metric"><div class="value good">1 610 &#8381;</div><div class="label">CPL (факт)</div></div>
+</div>
+
+<h4>Эффективность по ЖК</h4>
+<table><tr><th>ЖК</th><th class="num-cell">Объявл.</th><th class="num-cell">Показы</th><th class="num-cell">Просм.</th><th class="num-cell">CTR</th><th class="num-cell">Контакты</th><th class="num-cell">CR</th><th class="num-cell">CPL</th></tr>
+<tr style="background:#e8f5e9"><td><strong>Затон</strong></td><td class="num-cell">2</td><td class="num-cell">60 906</td><td class="num-cell">5 549</td><td class="num-cell">9,11%</td><td class="num-cell"><strong>26</strong></td><td class="num-cell">0,47%</td><td class="num-cell good"><strong>523 &#8381;</strong></td></tr>
+<tr style="background:#e8f5e9"><td><strong>Витязь</strong></td><td class="num-cell">37</td><td class="num-cell">43 142</td><td class="num-cell">5 509</td><td class="num-cell">12,77%</td><td class="num-cell"><strong>25</strong></td><td class="num-cell">0,45%</td><td class="num-cell">1 954 &#8381;</td></tr>
+<tr style="background:#e8f5e9"><td><strong>Чили</strong></td><td class="num-cell">15</td><td class="num-cell">26 449</td><td class="num-cell">2 787</td><td class="num-cell">10,54%</td><td class="num-cell"><strong>22</strong></td><td class="num-cell good">0,79%</td><td class="num-cell">1 601 &#8381;</td></tr>
+<tr><td>Моне</td><td class="num-cell">18</td><td class="num-cell">18 881</td><td class="num-cell">2 405</td><td class="num-cell">12,74%</td><td class="num-cell">14</td><td class="num-cell">0,58%</td><td class="num-cell bad">2 914 &#8381;</td></tr>
+<tr><td>В-Сити</td><td class="num-cell">8</td><td class="num-cell">6 837</td><td class="num-cell">839</td><td class="num-cell">12,27%</td><td class="num-cell">5</td><td class="num-cell">0,60%</td><td class="num-cell bad">3 208 &#8381;</td></tr>
+<tr><td>Бёрч</td><td class="num-cell">25</td><td class="num-cell">3 201</td><td class="num-cell">776</td><td class="num-cell good">24,24%</td><td class="num-cell">2</td><td class="num-cell bad">0,26%</td><td class="num-cell">&mdash;</td></tr>
+<tr><td>Смайл</td><td class="num-cell">3</td><td class="num-cell">3 712</td><td class="num-cell">690</td><td class="num-cell">18,59%</td><td class="num-cell">1</td><td class="num-cell bad">0,14%</td><td class="num-cell">&mdash;</td></tr>
+</table>
+
+<div class="finding finding-critical"><strong>79 из 112 объявлений &mdash; ноль контактов</strong> 70,5% карточек не дали ни одного обращения. Проблема не в охвате (CTR 11,46% нормальный), а в конверсии после клика: слабые первые слайды, заголовки, нет планировок, нет CTA. Два дубля по Гагарина 13,3M потратили 27K без единого контакта.</div>
+
+<div class="finding finding-good"><strong>Затон &mdash; эталон: CPL 523 &#8381;, 26 контактов с 2 объявлений</strong> Лучший ЖК по CPL. Карточки Затона &mdash; эталон для пересборки остальных. Чили &mdash; лучший CR (0,79%). Бёрч &mdash; максимальный CTR (24,24%), но контактов мало &mdash; нужен тестовый бюджет.</div>
+
+<div class="finding finding-warn"><strong>Сегмент 12&ndash;15M &#8381; проваливается</strong> 44 объявления, 2 762 просмотра, 7 контактов, CPL ~6 800 &#8381;. Самый дорогой ценовой сегмент &mdash; пересобрать первым: статус, метраж, вид, паркинг на первый слайд.</div>
+
+<div class="finding finding-info"><strong>План по Авито на 14 дней</strong> <strong>Дни 1&ndash;2:</strong> обновить профиль (цифры доверия, проекты, банки-партнёры). <strong>Дни 3&ndash;5:</strong> пересобрать 20 главных карточек (Затон, Чили, Моне, Бёрч, Витязь) &mdash; первый слайд, планировка, CTA. <strong>Дни 6&ndash;7:</strong> пауза на карточки с расходом и нулём контактов, убрать дубли. <strong>Дни 8&ndash;10:</strong> A/B тесты первых фото. <strong>Дни 11&ndash;14:</strong> перенести бюджет на конвертящие карточки.</div>
 </div>
 
 <div class="card"><h3>Распределение бюджета по ЖК (итог)</h3>
@@ -702,9 +732,9 @@ const PAGES = [
 <div style="font-size:12px;color:var(--gray);margin-top:4px">* 882 лида по медиаплану &mdash; нереально (CPL занижен). Реально ~550 при скорректированном CPL.</div>
 </div>
 
-<div class="finding finding-warn"><strong>Рычаги снижения CPL (с 18K до 8&ndash;10K)</strong>1) Починить квиз 0,6% &rarr; 3&ndash;5% &mdash; CPL падает в 3 раза. 2) Посадочные по ЖК вместо общего лендинга &mdash; CR &times;2. 3) Ретаргетинг &mdash; CPL 8&ndash;12K (тёплые). 4) Авито с правильными CTA &mdash; CPL 4&ndash;8K. При CPL 10K тот же бюджет 5,5M даёт не 320, а <strong>550 платных лидов</strong>.</div>
+<div class="finding finding-warn"><strong>Рычаги снижения CPL (с 18K до 8&ndash;10K)</strong>1) Починить квиз 0,6% &rarr; 3&ndash;5% &mdash; CPL падает в 3 раза. 2) Посадочные по ЖК вместо общего лендинга &mdash; CR &times;2. 3) Ретаргетинг &mdash; CPL 8&ndash;12K (тёплые). 4) <strong>Авито &mdash; CPL 1 610 &#8381; (факт!)</strong> при пересборке карточек и росте CR с 0,51% до 0,8&ndash;1,0% &mdash; CPL падает до 1 000&ndash;1 200 &#8381;. При CPL 10K средний и бюджете 5,5M &mdash; <strong>550 платных лидов</strong>.</div>
 
-<div class="finding finding-info"><strong>Задачи на понедельник по медиаплану</strong> <strong>1)</strong> Перераспределить бюджет Ксюши по приоритету ЖК (см. таблицу выше). <strong>2)</strong> Убрать 150 лидов Авито &mdash; заложить 20&ndash;25. <strong>3)</strong> Пересчитать CPL с CR 0,33% вместо 1%. <strong>4)</strong> Добавить бесплатные каналы (ИИ-прозвон, реанимация CRM, партнёры). <strong>5)</strong> Адаптировать офферы по ЖК (см. стр. 13).</div>
+<div class="finding finding-info"><strong>Задачи на понедельник по медиаплану</strong> <strong>1)</strong> Перераспределить бюджет Ксюши по приоритету ЖК. <strong>2)</strong> Авито: пересобрать 20 карточек по эталону Затон/Чили, поставить на паузу 79 пустых (CPL 1 610 &#8381; &mdash; самый дешёвый канал!). <strong>3)</strong> Пересчитать CPL Яндекса с CR 0,33% вместо 1%. <strong>4)</strong> Добавить бесплатные каналы (ИИ-прозвон, реанимация CRM, партнёры). <strong>5)</strong> Адаптировать офферы по ЖК (см. стр. 13).</div>
 `},
 {id:'offers',num:'13',title:'Офферы на июнь',html:`
 <div class="page-header"><h2>Рекламные офферы на июнь 2026</h2><div class="page-desc">По каждому ЖК: рыночный контекст &rarr; офферы (продукт + цена + условия) &rarr; каналы &rarr; KPI. На основе анализа локации и конкурентов.</div></div>
@@ -976,16 +1006,16 @@ const PAGES = [
 <table><tr><th>#</th><th>Что нужно</th><th>Статус</th><th>Для чего</th><th>Комментарий</th></tr>
 <tr style="background:#e8f5e9"><td>1</td><td><strong>Доступ к Яндекс Директ</strong></td><td><span class="tag tag-green">Получено</span></td><td>Аудит кампаний, бюджетов</td><td>Аудит кампаний выполнен (стр. 4)</td></tr>
 <tr><td>2</td><td><strong>Доступ к CallTouch</strong></td><td><span class="tag tag-red">Ждём</span></td><td>Аналитика звонков</td><td>Нужен для оценки качества лидов и атрибуции</td></tr>
-<tr><td>3</td><td><strong>Доступ к Авито Pro</strong></td><td><span class="tag tag-red">Ждём</span></td><td>Объявления, статистика</td><td>Критично для проверки CPL 700&nbsp;&#8381; из медиаплана</td></tr>
+<tr style="background:#e8f5e9"><td>3</td><td><strong>Доступ к Авито Pro</strong></td><td><span class="tag tag-green">Получено</span></td><td>Объявления, статистика</td><td>Аудит Авито: 112 объявл., CPL 1 610 &#8381;, 96 контактов &mdash; стр. 12</td></tr>
 <tr style="background:#e8f5e9"><td>4</td><td><strong>План продаж по ЖК на июнь</strong></td><td><span class="tag tag-green">Получено</span></td><td>Маркетинговая модель</td><td>План-факт 2026.xlsx &mdash; разбор на стр. 1</td></tr>
 <tr style="background:#e8f5e9"><td>5</td><td><strong>Список конкурентов</strong></td><td><span class="tag tag-green">Получено</span></td><td>Конкурентный анализ</td><td>Анализ локации Вологда.pdf &mdash; 8 проектов, стр. 10</td></tr>
 <tr style="background:#e8f5e9"><td>6</td><td><strong>Позиционирование ЖК</strong></td><td><span class="tag tag-green">Получено</span></td><td>Креативная стратегия</td><td>Клиентский паспорт от Ксюши &mdash; 7 ЖК + 10 сегментов ЦА</td></tr>
 <tr style="background:#e8f5e9"><td>7</td><td><strong>Бюджет на маркетинг</strong></td><td><span class="tag tag-green">Получено</span></td><td>Распределение по каналам</td><td>Медиаплан 6.14M &mdash; анализ на стр. 14</td></tr>
 <tr style="background:#e8f5e9"><td>8</td><td><strong>Выгрузка сделок из CRM</strong></td><td><span class="tag tag-green">Есть доступ</span></td><td>Аудит мёртвых сделок</td><td>Доступ к Битрикс24 &mdash; выгрузка напрямую</td></tr></table>
-<div style="margin-top:12px"><strong>Итого:</strong> получено 6 из 8. Осталось: CallTouch, Авито Pro.</div></div>
+<div style="margin-top:12px"><strong>Итого:</strong> получено 7 из 8. Осталось: CallTouch.</div></div>
 <div style="text-align:center;color:var(--gray);font-size:13px;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)">
 <p>Аудит подготовлен: LOS Agency | 3 июня 2026</p>
-<p>Источники: Яндекс Метрика &middot; Битрикс24 CRM &middot; План-факт 2026.xlsx &middot; Точки касания.xlsx &middot; Концепции ЖК &middot; эксперты.xlsx &middot; Анализ локации Вологда.pdf &middot; Медиаплан Ксюши (Google Sheets) &middot; Структура РК (Google Docs)</p></div>
+<p>Источники: Яндекс Метрика &middot; Битрикс24 CRM &middot; План-факт 2026.xlsx &middot; Точки касания.xlsx &middot; Концепции ЖК &middot; эксперты.xlsx &middot; Анализ локации Вологда.pdf &middot; Медиаплан Ксюши (Google Sheets) &middot; Структура РК (Google Docs) &middot; Аудит Авито (05.05&ndash;05.06.2026)</p></div>
 `}
 ];
 
