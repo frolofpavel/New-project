@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КП - Big Bro Burger и Gusto Pizza - Павел Фролов</title>
+<style>
+:root{
+  --bg:#160b08;
+  --bg2:#23110d;
+  --card:#2b1712;
+  --card2:#351d15;
+  --border:rgba(255,210,117,.20);
+  --border2:rgba(255,210,117,.42);
+  --text:#fff7eb;
+  --muted:#d6bfa7;
+  --accent:#ffcc4d;
+  --accent2:#ff5a3d;
+  --green:#5bd183;
+  --warn:#ffb547;
+  --bad:#ff6b6b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255,204,77,.16), transparent 28%),
+    radial-gradient(circle at 85% 12%, rgba(255,90,61,.12), transparent 24%),
+    linear-gradient(180deg,var(--bg) 0%,#100705 100%);
+  color:var(--text);
+  min-height:100vh;
+}
+body:before{
+  content:"";
+  position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:44px 44px;
+  pointer-events:none;
+}
+a{color:var(--accent);text-decoration:none}
+p{color:#f1dfcb;line-height:1.65}
+ul{padding-left:18px;color:#f1dfcb;line-height:1.6}
+li+li{margin-top:6px}
+h1,h2,h3{line-height:1.12;letter-spacing:0}
+h1{font-size:clamp(32px,5vw,58px);max-width:920px}
+h2{font-size:clamp(24px,3vw,36px);margin-bottom:20px}
+h3{font-size:18px;margin-bottom:10px}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:20;
+  background:rgba(22,11,8,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-row1{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 22px;border-bottom:1px solid rgba(255,204,77,.10)}
+.nav-left{display:flex;align-items:center;gap:12px}
+.logo{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#1b0805;font-weight:900}
+.brand{font-weight:800;color:var(--accent)}
+.subbrand{font-size:12px;color:var(--muted);margin-top:2px}
+.nav-controls{display:flex;align-items:center;gap:8px}
+.nav-btn{border:1px solid var(--border2);background:var(--card);color:var(--text);border-radius:6px;padding:8px 12px;cursor:pointer}
+.counter{font-size:13px;color:var(--muted);min-width:56px;text-align:center}
+.nav-row2{display:flex;gap:4px;overflow-x:auto;padding:8px 14px 10px;scrollbar-width:none}
+.nav-row2::-webkit-scrollbar{display:none}
+.nav-link{white-space:nowrap;border:1px solid transparent;border-radius:6px;padding:6px 10px;font-size:12px;color:var(--muted);cursor:pointer}
+.nav-link.active{border-color:var(--accent);color:var(--accent);background:rgba(255,204,77,.08)}
+.page{display:none;position:relative;z-index:1;max-width:1180px;margin:0 auto;min-height:100vh;padding:132px 24px 56px}
+.page.active{display:block}
+.hero-card,.card{
+  background:linear-gradient(180deg,rgba(53,29,21,.96),rgba(35,17,13,.96));
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:24px;
+  box-shadow:0 22px 60px rgba(0,0,0,.22);
+}
+.hero-card{padding:34px}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.lead{font-size:19px;max-width:900px;margin-top:18px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{border:1px solid var(--border2);background:rgba(255,204,77,.08);color:var(--accent);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800}
+.metric{font-size:34px;font-weight:900;color:var(--accent);line-height:1}
+.metric small{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-top:8px;line-height:1.35}
+.muted{color:var(--muted)}
+.accent{color:var(--accent)}
+.red{color:var(--accent2)}
+.good{color:var(--green)}
+.warn{color:var(--warn)}
+.bad{color:var(--bad)}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{border-bottom:1px solid var(--border);padding:12px;text-align:left;vertical-align:top;color:#f5e4d2}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start}
+.phase{border-left:4px solid var(--accent);padding:14px 16px;background:rgba(255,204,77,.07);border-radius:0 8px 8px 0}
+.score{display:inline-flex;align-items:center;justify-content:center;width:54px;height:32px;border-radius:6px;background:rgba(255,90,61,.14);border:1px solid rgba(255,90,61,.45);color:#ffd5cb;font-weight:900}
+.ad{background:#1c0d0a;border:1px solid var(--border);border-radius:8px;padding:16px}
+.proto{background:#fff7ec;color:#24100b;border-radius:12px;overflow:hidden;border:1px solid #ffd88a}
+.proto *{color:inherit}
+.proto-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 18px;background:#1b0b07;color:#fff7eb}
+.proto-logo{font-weight:900;color:#ffcc4d}
+.proto-hero{padding:30px;background:linear-gradient(135deg,#fff7ec,#ffe1b1)}
+.proto-hero h3{font-size:30px}
+.proto-btn{display:inline-block;background:#ff4f32;color:#fff;padding:12px 16px;border-radius:7px;font-weight:900;margin-top:16px}
+.quiz{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.quiz button{border:1px solid #f2bd66;background:#fff;border-radius:7px;padding:10px;cursor:pointer;font-weight:700}
+.footer{margin-top:26px;color:var(--muted);font-size:13px}
+@media(max-width:860px){
+  .grid-2,.grid-3,.grid-4,.split{grid-template-columns:1fr}
+  .nav-row2{display:none}
+  .page{padding-top:94px}
+  .hero-card{padding:24px}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-row1">
+    <div class="nav-left">
+      <div class="logo">BB</div>
+      <div>
+        <div class="brand">Павел Фролов</div>
+        <div class="subbrand">Стратегия роста продаж для Big Bro Burger и Gusto Pizza</div>
+      </div>
+    </div>
+    <div class="nav-controls">
+      <button class="nav-btn" onclick="go(currentPage-1)">←</button>
+      <span class="counter" id="counter">1 / 13</span>
+      <button class="nav-btn" onclick="go(currentPage+1)">→</button>
+    </div>
+  </div>
+  <div class="nav-row2" id="navlinks">
+    <span class="nav-link active" onclick="go(0)">00 Обложка</span>
+    <span class="nav-link" onclick="go(1)">01 Ниша</span>
+    <span class="nav-link" onclick="go(2)">02 Конкуренты</span>
+    <span class="nav-link" onclick="go(3)">03 Карта</span>
+    <span class="nav-link" onclick="go(4)">04 Позиционирование</span>
+    <span class="nav-link" onclick="go(5)">05 Стратегия</span>
+    <span class="nav-link" onclick="go(6)">06 Медиаплан</span>
+    <span class="nav-link" onclick="go(7)">07 UX/UI</span>
+    <span class="nav-link" onclick="go(8)">08 SEO</span>
+    <span class="nav-link" onclick="go(9)">09 Офферы</span>
+    <span class="nav-link" onclick="go(10)">10 Реклама</span>
+    <span class="nav-link" onclick="go(11)">11 Прототип</span>
+    <span class="nav-link" onclick="go(12)">12 План</span>
+    <span class="nav-link" onclick="go(13)">13 Обо мне</span>
+  </div>
+</nav>
+
+<main>
+  <section class="page active">
+    <div class="hero-card">
+      <div class="kicker">Коммерческое предложение в свободной форме</div>
+      <h1>Выстраиваю систему роста продаж для Big Bro Burger и Gusto Pizza</h1>
+      <p class="lead">Сейчас задача не в том, чтобы “вести соцсети” или “настроить рекламу”. Задача - остановить падение чеков, собрать управляемый маркетинг с нуля и превратить 5 ресторанов в единую систему повторных заказов, локального спроса и понятных офферов.</p>
+      <div class="chips">
+        <span class="chip">19 лет в маркетинге</span>
+        <span class="chip">Бюджеты до 50 млн ₽/мес</span>
+        <span class="chip">ROMI 300%+</span>
+        <span class="chip">HoReCa / доставка / performance</span>
+      </div>
+    </div>
+    <div class="grid-4" style="margin-top:16px">
+      <div class="card"><div class="metric bad">-27,6%<small>падение чеков: март 14 345 → май 10 388</small></div></div>
+      <div class="card"><div class="metric">5<small>точек: 3 ресторана в Симферополе и 2 в Севастополе</small></div></div>
+      <div class="card"><div class="metric">90 дней<small>первый цикл: фундамент, запуск, масштабирование</small></div></div>
+      <div class="card"><div class="metric good">+20-35%<small>ориентир роста заказов после настройки системы</small></div></div>
+    </div>
+    <p class="footer">Контакты: Павел Фролов · wwwfrolof@yandex.ru · +7 (905) 939-08-74 · frolofpavel.ru</p>
+  </section>
+
+  <section class="page">
+    <h2>01. Анализ ниши и текущей ситуации</h2>
+    <div class="split">
+      <div class="card">
+        <h3>Что видно по входным данным</h3>
+        <ul>
+          <li>Маркетинг нужно строить почти с нуля: УТП не сформировано, воронок нет, аналитика кроме выгрузки трафика не ведётся.</li>
+          <li>Трафик в чеках падает второй месяц подряд: апрель к марту -14,5%, май к апрелю -15,3%.</li>
+          <li>Средний уровень за 3 месяца - 12 332 чека, но май уже ниже среднего на 1 944 чека.</li>
+          <li>Оба бренда имеют продуктовую базу: Big Bro - бургеры, шаурма, снеки; Gusto - неаполитанская пицца, паста, комбо.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Разбор вакансии и запроса</h3>
+        <ul>
+          <li>По публичным зеркалам вакансии: компания «Расцвет-Юг», направление Big Bro / Gusto Pizza, позиция маркетолога в офис, ориентир оплаты от 70 000 ₽.</li>
+          <li>Реальная функция вакансии шире обычного маркетолога: требуется человек, который соберёт систему продаж, аналитику, офферы, рекламу и регулярное управление каналами.</li>
+          <li>Ключевая боль для собственника: падение чеков уже видно, а управляемой маркетинговой модели пока нет.</li>
+          <li>Вывод: нужен не исполнитель отдельных задач, а внешний CMO/Head of Marketing с командой подрядчиков и понятной ответственностью за рост продаж.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="split" style="margin-top:16px">
+      <div class="card">
+        <h3>Почему это решаемо</h3>
+        <p>Рынок доставки еды уже стал обязательной частью ресторанного бизнеса: по Data Insight, доставка есть у 64% заведений общепита в России. Значит, конкуренция высокая, но инструменты понятны: локальный поиск, карты, агрегаторы, CRM-повторы, акции, performance и контроль юнит-экономики.</p>
+        <p class="muted">Дополнительный рыночный ориентир: по открытым обзорам, рынок готовой еды в России в 2025 году оценивается выше 1 трлн ₽, а HoReCa - в триллионы рублей. В такой категории выигрывает не тот, кто громче, а тот, кто точнее управляет повторными заказами и локальным спросом.</p>
+      </div>
+      <div class="card">
+        <h3>Инсайт для письма собственнику</h3>
+        <p>Я бы не начинал с “креативов” или “ведения соцсетей”. Первые 2 недели нужно навести управляемость: понять, какие точки, блюда, акции и каналы реально дают чеки, после чего запускать рекламу и CRM не на охват, а на повторяемый заказ.</p>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:16px">
+      <div class="card"><h3>ЦА 1: быстрый обед</h3><p>Офисные сотрудники, студенты, сотрудники ТЦ. Нужны скорость, комбо, понятный чек, повтор заказа.</p></div>
+      <div class="card"><h3>ЦА 2: вечер дома</h3><p>Семьи и пары. Нужны наборы, “на двоих/семью/компанию”, доставка без сюрпризов.</p></div>
+      <div class="card"><h3>ЦА 3: компания</h3><p>Дни рождения, вечеринки, просмотры матчей. Нужны большие комбо, предзаказ, выгода за объём.</p></div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>02. Конкурентное поле</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>Конкурент</th><th>Оффер / что видно</th><th>Сильная сторона</th><th>Уязвимость для атаки</th></tr></thead>
+        <tbody>
+          <tr><td>Додо Пицца</td><td>Федеральный бренд, доставка от 30 минут, сильное приложение.</td><td>Доверие, скорость, IT-система.</td><td>Менее локальный характер, сложнее быть “своими” для Крыма.</td></tr>
+          <tr><td>Ниндзя</td><td>Доставка еды в Симферополе, бесплатная доставка от 1000 ₽, акции и бонусы.</td><td>Сильный мультикухонный конкурент.</td><td>Можно выигрывать специализацией: бургер как продукт и неаполитанская пицца как вкус.</td></tr>
+          <tr><td>DARVIN</td><td>Доставка еды в Симферополе, среднее время 30-50 минут, кухни всего мира.</td><td>Широта меню, понятный delivery-оффер.</td><td>Размытое позиционирование: много всего, меньше фокуса.</td></tr>
+          <tr><td>Типичная Доставка</td><td>Комбо-пиццы, фикс-прайс наборы, много готовых предложений.</td><td>Сильная работа с выгодой и наборами.</td><td>Можно отстроиться качеством продукта и брендовым характером.</td></tr>
+          <tr><td>Майя</td><td>Пицца, роллы, бургеры, горячие блюда, супы, салаты.</td><td>Широкий ассортимент.</td><td>У Big Bro и Gusto можно сделать более чёткую роль каждого бренда.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card"><h3>Вывод</h3><p>Конкуренты продают либо скорость, либо широту меню, либо скидочные наборы. Свободная позиция для клиента: “две сильные специализации под разные сценарии еды” - мощный бургер/стритфуд и настоящая неаполитанская пицца.</p></div>
+      <div class="card"><h3>Что нельзя делать</h3><p>Нельзя объединять бренды в кашу “доставка еды”. Нужно развести роли: Big Bro закрывает голод, мясо, драйв, компанию; Gusto закрывает пиццу, пасту, итальянский вечер, семью и комбо.</p></div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>03. Карта позиционирования</h2>
+    <div class="card">
+      <div style="position:relative;height:430px;border:1px solid var(--border);border-radius:10px;background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,204,77,.08));overflow:hidden">
+        <div style="position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed rgba(255,255,255,.22)"></div>
+        <div style="position:absolute;left:0;right:0;top:50%;border-top:1px dashed rgba(255,255,255,.22)"></div>
+        <div style="position:absolute;left:18px;top:16px;color:var(--muted);font-size:13px">Больше продуктового характера</div>
+        <div style="position:absolute;right:18px;bottom:16px;color:var(--muted);font-size:13px">Больше скидок и агрегаторности</div>
+        <div style="position:absolute;left:16%;top:24%" class="chip">Gusto Pizza</div>
+        <div style="position:absolute;left:18%;top:63%" class="chip">Big Bro</div>
+        <div style="position:absolute;left:69%;top:28%" class="chip">Додо</div>
+        <div style="position:absolute;left:63%;top:56%" class="chip">Типичная</div>
+        <div style="position:absolute;left:58%;top:72%" class="chip">Ниндзя / DARVIN / Майя</div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card"><h3>Незанятая ниша</h3><p>Локальная ресторанная сеть с характером продукта и управляемой доставкой: не просто “привезём еду”, а “у нас есть правильный сценарий под ваш голод: бургер, пицца, комбо, офис, семья, компания”.</p></div>
+      <div class="card"><h3>Стратегическое решение</h3><p>Сделать два бренда не конкурентами внутри компании, а двумя входами в одну CRM-систему: разные креативы, разные офферы, единая аналитика, повторные касания и кросс-продажи.</p></div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>04. Позиционирование клиента</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Big Bro Burger</h3>
+        <p><strong class="accent">Большие бургеры и стритфуд для тех, кто хочет наесться по-настоящему.</strong></p>
+        <p>Доказательства: меню с шеф-бургерами, котлетой из мраморной говядины или фермерской курицы, хитами, боксами, шаурмой, снеками и доставкой в Симферополе и Севастополе.</p>
+        <div class="chips"><span class="chip">Сытно</span><span class="chip">Мясо / курица</span><span class="chip">Компания</span><span class="chip">Доставка</span></div>
+      </div>
+      <div class="card">
+        <h3>Gusto Pizza</h3>
+        <p><strong class="accent">Неаполитанская пицца, паста и комбо для вечера, семьи и компании.</strong></p>
+        <p>Доказательства: пицца 26/35 см, паста, комбо, акции 3/5/7 пицц, быстрый delivery-аргумент “в районе 1 часа в любой конец города”.</p>
+        <div class="chips"><span class="chip">Пицца</span><span class="chip">Паста</span><span class="chip">Комбо</span><span class="chip">Семья</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Единое сообщение группы</h3>
+      <p class="lead" style="margin-top:0">Big Bro и Gusto - два локальных бренда еды в Крыму: когда нужен мощный бургер, настоящая пицца, быстрый обед или набор на компанию. Заказывайте напрямую, получайте бонусы и повторяйте любимые блюда в один клик.</p>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>05. Маркетинговая стратегия</h2>
+    <div class="card">
+      <div class="kicker">Ядро стратегии</div>
+      <h3>Из “сайта с меню” в управляемую систему заказов, повторов и локального спроса.</h3>
+      <p>Первый этап - не масштабирование бюджета, а сборка фундамента: аналитика, события, воронки, понятные офферы, сегменты и карта каналов. После этого подключается performance и CRM, чтобы каждый рубль рекламы работал не на разовый чек, а на повторный заказ.</p>
+    </div>
+    <div class="grid-3" style="margin-top:16px">
+      <div class="phase"><h3>1. Фундамент, 1-2 недели</h3><p>Аналитика, цели, пиксели, коллтрекинг/события, аудит сайтов, карты, агрегаторы, разбор меню и маржинальности.</p></div>
+      <div class="phase"><h3>2. Запуск, 3-6 недели</h3><p>Яндекс Директ, РСЯ, ретаргетинг, VK, Telegram, акции по сценариям, посадочные страницы и квиз под бренды.</p></div>
+      <div class="phase"><h3>3. Масштаб, 7-12 недели</h3><p>CRM-повторы, бонусы, push/SMS/мессенджеры, работа с отзывами, SEO, локальные кампании по точкам.</p></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Воронка</h3>
+      <table>
+        <tr><th>Шаг</th><th>Механика</th><th>Метрика</th></tr>
+        <tr><td>Привлечение</td><td>Поиск “пицца/бургеры/доставка”, карты, агрегаторы, соцсети, посевы.</td><td>CTR, CPC, показы в картах.</td></tr>
+        <tr><td>Выбор</td><td>Оффер под сценарий: обед, семья, компания, late dinner, самовывоз.</td><td>Добавления в корзину, CR меню.</td></tr>
+        <tr><td>Заказ</td><td>Упрощение корзины, быстрый повтор, оплата, понятная доставка.</td><td>Заказы, средний чек, брошенные корзины.</td></tr>
+        <tr><td>Повтор</td><td>CRM: 3-й, 7-й, 14-й день; бонус за повтор; комбо по прошлому заказу.</td><td>Repeat rate, LTV, доля прямых заказов.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>06. Маркетинговый план и бюджет</h2>
+    <div class="card">
+      <p>Стартовый медиаплан нужен не “на всю страну”, а на две зоны: Симферополь и Севастополь, с раздельной аналитикой по брендам и точкам. Бюджет ниже - рабочая гипотеза на первый месяц, уточняется после доступа к Метрике, рекламным кабинетам, агрегаторам и маржинальности.</p>
+      <table>
+        <thead><tr><th>Канал</th><th>Что делаем</th><th>Бюджет</th><th>Цель</th></tr></thead>
+        <tbody>
+          <tr><td>Яндекс Директ</td><td>Поиск + РСЯ: доставка пиццы, бургеров, еды, конкуренты, бренд.</td><td>180 000 ₽</td><td>Заказы здесь и сейчас.</td></tr>
+          <tr><td>Карты и геосервисы</td><td>Яндекс/2ГИС: карточки, акции, фото, отзывы, маршруты, меню.</td><td>40 000 ₽</td><td>Локальный трафик в точки и доставку.</td></tr>
+          <tr><td>VK / Telegram Ads</td><td>Районы, интересы, ретаргетинг, промо наборов.</td><td>90 000 ₽</td><td>Спрос на комбо и повторные касания.</td></tr>
+          <tr><td>Посевы и блогеры</td><td>Локальные городские каналы, обзоры меню, промокоды.</td><td>70 000 ₽</td><td>Охват и доверие.</td></tr>
+          <tr><td>CRM / мессенджеры</td><td>Повторы, реактивация, промокоды, день рождения.</td><td>35 000 ₽</td><td>Снижение зависимости от платной рекламы.</td></tr>
+          <tr><td>SEO / контент</td><td>Страницы под блюда, районы, бренды, акции.</td><td>35 000 ₽</td><td>Органический спрос.</td></tr>
+          <tr><td><strong>Итого</strong></td><td>Первый тестовый месяц</td><td><strong>450 000 ₽</strong></td><td>Вернуть динамику и собрать управляемую модель.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid-4" style="margin-top:16px">
+      <div class="card"><div class="metric">30%<small>поиск и горячий спрос</small></div></div>
+      <div class="card"><div class="metric">20%<small>ретаргетинг и соцсети</small></div></div>
+      <div class="card"><div class="metric">16%<small>посевы и блогеры</small></div></div>
+      <div class="card"><div class="metric">34%<small>карты, CRM, SEO, тесты</small></div></div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>07. UX/UI аудит сайтов</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Gusto Pizza <span class="score">58/100</span></h3>
+        <ul>
+          <li>Плюс: меню индексируется, есть акции 3/5/7 пицц, понятные цены.</li>
+          <li>Минус: первый экран не формулирует УТП достаточно ясно, сайт выглядит как каталог.</li>
+          <li>Минус: много длинного меню до блока преимуществ, нет сценариев “семья/компания/обед”.</li>
+          <li>Решение: отдельные посадочные под акции, комбо и “неаполитанская пицца в Симферополе”.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Big Bro Burger <span class="score">55/100</span></h3>
+        <ul>
+          <li>Плюс: сильный продуктовый характер, много хитов, понятные категории.</li>
+          <li>Минус: на странице сразу каталог, слабый первый оффер и мало объяснения “почему Big Bro”.</li>
+          <li>Минус: не хватает сборки комбо и сценариев заказа для компании.</li>
+          <li>Решение: hero с позиционированием, блок хитов, комбо, повтор заказа, отзывы и карты.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Приоритетные правки</h3>
+      <table>
+        <tr><th>Правка</th><th>Эффект</th><th>Приоритет</th></tr>
+        <tr><td>Собрать первый экран: УТП, доставка, акции, CTA.</td><td>Рост клика в меню и корзину.</td><td>P0</td></tr>
+        <tr><td>Развести сценарии: обед, семья, компания, самовывоз.</td><td>Рост среднего чека и конверсии.</td><td>P0</td></tr>
+        <tr><td>Добавить события аналитики: клик, корзина, заказ, повтор.</td><td>Появится управляемость рекламы.</td><td>P0</td></tr>
+        <tr><td>Сделать страницы акций и комбо под рекламу.</td><td>Снижение CPC/CPO за счёт релевантности.</td><td>P1</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>08. SEO и локальный поиск</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>SEO-аудит: стартовая оценка <span class="score">52/100</span></h3>
+        <ul>
+          <li>Есть меню и товарные карточки, но мало посадочных под спрос.</li>
+          <li>Нужны страницы “доставка пиццы Симферополь”, “бургеры Симферополь”, “бургеры Севастополь”, “комбо пицца”, “доставка еды ночью/вечером”.</li>
+          <li>Нужно связать SEO с карточками Яндекс/2ГИС и отзывами.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Ключевые группы запросов</h3>
+        <ul>
+          <li>доставка пиццы Симферополь</li>
+          <li>неаполитанская пицца Симферополь</li>
+          <li>бургеры Симферополь доставка</li>
+          <li>бургеры Севастополь доставка</li>
+          <li>комбо пицца Симферополь</li>
+          <li>доставка еды Симферополь / Севастополь</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>План на 3 месяца</h3>
+      <table>
+        <tr><th>Месяц</th><th>Работы</th><th>Результат</th></tr>
+        <tr><td>1</td><td>Техаудит, мета, микроразметка, карта страниц, карточки заведений.</td><td>Основа для индексации и локального спроса.</td></tr>
+        <tr><td>2</td><td>Посадочные под блюда, районы, комбо и доставку.</td><td>Рост органических входов и качества рекламы.</td></tr>
+        <tr><td>3</td><td>Контент, отзывы, FAQ, сравнение сценариев, перелинковка.</td><td>Укрепление позиций и снижение зависимости от рекламы.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>09. Офферы</h2>
+    <div class="grid-2">
+      <div class="card"><h3>Рациональный</h3><p><strong>Горячий заказ без долгого выбора</strong><br>Комбо под обед, вечер или компанию. Быстро выбрать, легко повторить.</p></div>
+      <div class="card"><h3>Эмоциональный</h3><p><strong>Когда хочется нормальной еды, а не “что-нибудь”</strong><br>Большие бургеры, пицца и комбо, которые закрывают вечер без готовки.</p></div>
+      <div class="card"><h3>Конкурентный</h3><p><strong>Не безликая доставка, а два локальных бренда с характером</strong><br>Big Bro для мощного голода, Gusto для пиццы и итальянского вечера.</p></div>
+      <div class="card"><h3>Социальный</h3><p><strong>Еда, которую удобно брать на компанию</strong><br>Наборы для друзей, семьи, офиса и вечеринки с понятной выгодой.</p></div>
+      <div class="card"><h3>CRM</h3><p><strong>Повтори любимый заказ и получи бонус</strong><br>Персональные предложения на 3-й, 7-й и 14-й день после заказа.</p></div>
+      <div class="card"><h3>Локальный</h3><p><strong>Рядом с вами в Симферополе и Севастополе</strong><br>Ближайшая точка, самовывоз, доставка и акции по району.</p></div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>10. Рекламные объявления</h2>
+    <div class="grid-3">
+      <div class="ad"><h3>Яндекс Директ: Gusto</h3><p><strong>Неаполитанская пицца в Симферополе</strong><br>Пицца, паста и выгодные комбо. 3 пиццы за 999 ₽. Закажите доставку сегодня.</p></div>
+      <div class="ad"><h3>Яндекс Директ: Big Bro</h3><p><strong>Бургеры Big Bro с доставкой</strong><br>Шеф-бургеры, шаурма, снеки и боксы. Большой вкус, быстрый заказ, доставка по городу.</p></div>
+      <div class="ad"><h3>Яндекс Директ: компания</h3><p><strong>Еда на компанию без долгого выбора</strong><br>Пицца, бургеры, комбо и напитки. Подберите набор под офис, семью или друзей.</p></div>
+      <div class="ad"><h3>Telegram Ads</h3><p><strong>Вечер без готовки</strong><br>Big Bro или Gusto? Бургер, пицца, комбо - выбирайте сценарий, а мы привезём.</p></div>
+      <div class="ad"><h3>VK</h3><p><strong>3 пиццы за 999 ₽</strong><br>Пепперони, курица-грибы и 4 сыра. Забирайте комбо для вечера дома.</p></div>
+      <div class="ad"><h3>Ретаргетинг</h3><p><strong>Вы смотрели меню - оставим промокод?</strong><br>Вернитесь к заказу сегодня и получите бонус к любимому блюду.</p></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Нативный посев</h3>
+      <p>“Нашли вариант для тех вечеров, когда готовить уже не хочется. В Big Bro берём бургеры и боксы, в Gusto - пиццу и пасту. Удобно, что можно выбрать по ситуации: на одного, на семью или на компанию. Для первого заказа дали промокод, а дальше обещают бонусы за повтор. Сохраняйте, пригодится в пятницу вечером.”</p>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>11. Прототип нового входа в заказ</h2>
+    <div class="proto">
+      <div class="proto-head">
+        <div class="proto-logo">Big Bro × Gusto</div>
+        <div>Меню · Акции · Доставка · Бонусы</div>
+      </div>
+      <div class="proto-hero">
+        <h3>Выберите сценарий - мы соберём вкусный заказ</h3>
+        <p>Бургеры Big Bro, неаполитанская пицца Gusto, комбо для семьи, офиса и компании. Быстрый выбор, бонусы за повтор и доставка по Симферополю и Севастополю.</p>
+        <a class="proto-btn">Подобрать заказ</a>
+        <div class="quiz">
+          <button onclick="setQuiz('Обед: быстрые комбо, самовывоз, доставка к офису')">Обед</button>
+          <button onclick="setQuiz('Вечер: пицца, паста, бургеры и напитки')">Вечер дома</button>
+          <button onclick="setQuiz('Компания: большие наборы и выгода за объём')">Компания</button>
+        </div>
+        <p id="quiz-result" style="margin-top:12px;font-weight:800">Выберите сценарий выше.</p>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:16px">
+      <div class="card"><h3>Hero</h3><p>Не каталог, а выбор сценария: “хочу бургер”, “хочу пиццу”, “нужен набор”.</p></div>
+      <div class="card"><h3>Квиз</h3><p>3-5 вопросов до готовой подборки. Без тяжёлой механики, но с событиями аналитики.</p></div>
+      <div class="card"><h3>CRM</h3><p>После заказа собираем повтор: бонус, любимое блюдо, промокод на следующий сценарий.</p></div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>12. План работ на первые 4 недели</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>Неделя</th><th>Что делаем</th><th>Результат недели</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Доступы, аудит сайтов, Метрика, цели, события, карты, агрегаторы, выгрузки чеков, структура меню и маржинальности.</td><td>Понятная картина: где теряются заказы, какие точки и блюда продвигать.</td></tr>
+          <tr><td>2</td><td>УТП, офферы, посадочные под акции, карта рекламных кампаний, CRM-сценарии, ТЗ на правки сайтов.</td><td>Готов фундамент запуска, тексты, объявления, события и посадочные.</td></tr>
+          <tr><td>3</td><td>Запуск Директа, VK/TG, ретаргетинга, карт, первых посевов, тест промокодов по брендам.</td><td>Первые данные по CPO, конверсии и спросу по сценариям.</td></tr>
+          <tr><td>4</td><td>Оптимизация, отключение слабых связок, усиление рабочих офферов, CRM-повторы, отчёт собственнику.</td><td>Первая управляемая модель: бюджет → заказы → повтор → выручка.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card"><h3>Формат отчётности</h3><p>Ежедневно в Telegram: что запущено, бюджет, заказы/лиды, проблемы, решения. Раз в неделю: таблица KPI, выводы, план на следующую неделю.</p></div>
+      <div class="card"><h3>Первое ключевое действие</h3><p>Собрать сквозную таблицу: дата, точка, бренд, канал, чеки, выручка, средний чек, промокод, повтор. Без этого маркетинг останется набором мнений.</p></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Источники для подготовки</h3>
+      <p>Сайты клиента: gusto-pizza.online, bigbroburger.online. Открытые источники: Data Insight по доставке еды, TAdviser по рынку готовой еды, сайты и выдача конкурентов в Симферополе и Севастополе. Данные клиента: чеки март 14 345, апрель 12 262, май 10 388.</p>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="hero-card">
+      <div class="kicker">13. Обо мне</div>
+      <h1>Павел Фролов - маркетинг-директор, который собирает продажи в систему</h1>
+      <p class="lead">Я подключаюсь не как исполнитель одной рекламной задачи, а как удалённый CMO / Head of Marketing: разбираю экономику, офферы, аналитику, сайт, рекламу, подрядчиков и ежедневное управление ростом.</p>
+      <div class="chips">
+        <span class="chip">19 лет в маркетинге</span>
+        <span class="chip">8+ лет на руководящих позициях</span>
+        <span class="chip">Своя команда подрядчиков</span>
+        <span class="chip">Удалённо + регулярная отчётность</span>
+      </div>
+    </div>
+    <div class="grid-4" style="margin-top:16px">
+      <div class="card"><div class="metric">50 млн ₽<small>рекламные бюджеты в управлении в месяц</small></div></div>
+      <div class="card"><div class="metric">300%+<small>ROMI в проектах с выстроенной аналитикой</small></div></div>
+      <div class="card"><div class="metric">7 500<small>лидов в месяц у клиента на долгосрочном ведении</small></div></div>
+      <div class="card"><div class="metric">25-40%<small>снижение CPL после настройки связок</small></div></div>
+    </div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Что беру на себя</h3>
+        <ul>
+          <li>Стратегия роста продаж и понятная карта KPI для собственника.</li>
+          <li>УТП, офферы, рекламные гипотезы, посадочные страницы и сценарии повторных заказов.</li>
+          <li>Яндекс Директ, VK, Telegram, ретаргетинг, карты, SEO и CRM-коммуникации.</li>
+          <li>Постановка задач дизайнерам, разработчикам, контенту и рекламе.</li>
+          <li>Еженедельная управленческая отчётность: что сработало, что отключили, куда двигаем бюджет.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Почему это подходит Big Bro и Gusto</h3>
+        <p>У вас уже есть продукт, точки, меню и поток чеков. Не хватает связки между спросом, каналами, офферами и повторными покупками. Моя роль - быстро собрать эту связку, чтобы маркетинг перестал быть набором активностей и стал управляемым механизмом роста.</p>
+        <p>Первый фокус - вернуть просевший объём чеков. Второй - увеличить повторные заказы и средний чек. Третий - масштабировать только те каналы и офферы, где видна экономика.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Формат сотрудничества</h3>
+      <table>
+        <tr><th>Роль</th><td>Удалённый CMO / Head of Marketing с подключением команды под задачи.</td></tr>
+        <tr><th>Коммуникация</th><td>Ежедневный короткий статус в Telegram, еженедельный отчёт по KPI, отдельные созвоны по решениям собственника.</td></tr>
+        <tr><th>Первые 30 дней</th><td>Аналитика, офферы, рекламные запуски, карты, ретаргетинг, CRM-повторы, первые выводы по экономике.</td></tr>
+        <tr><th>Контакты</th><td>wwwfrolof@yandex.ru · +7 (905) 939-08-74 · frolofpavel.ru</td></tr>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+let currentPage=0;
+const pages=[...document.querySelectorAll('.page')];
+const links=[...document.querySelectorAll('.nav-link')];
+function go(i){
+  if(i<0||i>=pages.length)return;
+  currentPage=i;
+  pages.forEach((p,n)=>p.classList.toggle('active',n===i));
+  links.forEach((l,n)=>l.classList.toggle('active',n===i));
+  document.getElementById('counter').textContent=(i+1)+' / '+pages.length;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function setQuiz(text){document.getElementById('quiz-result').textContent=text;}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')go(currentPage+1);
+  if(e.key==='ArrowLeft')go(currentPage-1);
+});
+</script>
+</body>
+</html>
