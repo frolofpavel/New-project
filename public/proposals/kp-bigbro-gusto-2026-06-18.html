@@ -280,6 +280,48 @@ nav{
   background:rgba(255,255,255,.035);
 }
 .proof-item strong{display:block;color:var(--accent);margin-bottom:6px}
+.money-band{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:16px;
+  margin-top:16px;
+}
+.price-total{
+  border:1px solid rgba(255,204,77,.52);
+  background:
+    radial-gradient(circle at 80% 0%, rgba(255,204,77,.20), transparent 34%),
+    linear-gradient(180deg,rgba(65,32,20,.98),rgba(35,17,13,.98));
+}
+.price-number{
+  font-size:clamp(34px,5vw,56px);
+  line-height:1;
+  font-weight:900;
+  color:var(--accent);
+  margin:12px 0 8px;
+}
+.price-note{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+}
+.package-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:16px;
+}
+.package-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+  background:rgba(255,255,255,.035);
+}
+.package-card.recommended{
+  border-color:rgba(255,204,77,.58);
+  background:rgba(255,204,77,.08);
+}
+.package-card .pkg-price{font-size:24px;font-weight:900;color:var(--accent);margin:8px 0}
+.package-card .pkg-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:800}
 .card,.ad,.phase{transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease}
 .card:hover,.ad:hover,.phase:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 26px 70px rgba(0,0,0,.26)}
 .kicker{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
@@ -326,7 +368,7 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
 @keyframes sliceWobble{0%,100%{transform:rotate(-22deg) translateY(0)}50%{transform:rotate(-15deg) translateY(-12px)}}
 @keyframes ingredientFall{0%,100%{transform:translateY(0) rotate(0deg);opacity:.75}50%{transform:translateY(16px) rotate(28deg);opacity:1}}
 @media(max-width:860px){
-  .grid-2,.grid-3,.grid-4,.split,.hero-layout,.food-strip,.about-hero,.proof-list{grid-template-columns:1fr}
+  .grid-2,.grid-3,.grid-4,.split,.hero-layout,.food-strip,.about-hero,.proof-list,.money-band,.package-grid{grid-template-columns:1fr}
   .nav-row2{display:none}
   .page{padding-top:94px}
   .hero-card{padding:24px}
@@ -406,8 +448,8 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
     <div class="grid-4" style="margin-top:16px">
       <div class="card"><div class="metric bad">-27,6%<small>падение чеков: март 14 345 → май 10 388</small></div></div>
       <div class="card"><div class="metric">5<small>точек: 3 ресторана в Симферополе и 2 в Севастополе</small></div></div>
-      <div class="card"><div class="metric">90 дней<small>первый цикл: фундамент, запуск, масштабирование</small></div></div>
-      <div class="card"><div class="metric good">+20-35%<small>ориентир роста заказов после настройки системы</small></div></div>
+      <div class="card"><div class="metric">630К ₽<small>рекомендуемый бюджет первого месяца: работа + реклама</small></div></div>
+      <div class="card"><div class="metric good">180К ₽<small>стоимость работы Павла и команды в месяц</small></div></div>
     </div>
     <div class="food-strip">
       <div class="food-card burger-card"><strong>Big Bro</strong><p>Бургеры, боксы, шаурма и снеки для сильного голода.</p></div>
@@ -574,6 +616,45 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
           <tr><td><strong>Итого</strong></td><td>Первый тестовый месяц</td><td><strong>450 000 ₽</strong></td><td>Вернуть динамику и собрать управляемую модель.</td></tr>
         </tbody>
       </table>
+    </div>
+    <div class="money-band">
+      <div class="card price-total">
+        <div class="kicker">Финансовое предложение</div>
+        <h3>Сколько нужно заложить на старт</h3>
+        <div class="price-number">630 000 ₽</div>
+        <p><strong>Итого на первый месяц:</strong> 180 000 ₽ работа Павла и команды + 450 000 ₽ рекомендуемый рекламный бюджет.</p>
+        <p class="price-note">Рекламный бюджет оплачивается напрямую в кабинеты и сервисы клиента. Моя стоимость - управление маркетингом, аналитика, стратегия, постановка задач, контроль подрядчиков, запуск и оптимизация каналов.</p>
+      </div>
+      <div class="card">
+        <h3>Что входит в 180 000 ₽/мес</h3>
+        <ul>
+          <li>Роль внешнего Head of Marketing / CMO.</li>
+          <li>Сбор аналитики, KPI, отчётности и карты воронки.</li>
+          <li>УТП, офферы, медиаплан, рекламные гипотезы.</li>
+          <li>Постановка задач дизайну, сайту, рекламе, CRM и контенту.</li>
+          <li>Еженедельный отчёт собственнику: цифры, выводы, решения.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="package-grid">
+      <div class="package-card">
+        <div class="pkg-label">Минимальный старт</div>
+        <h3>Тест</h3>
+        <div class="pkg-price">370 000 ₽</div>
+        <p>120 000 ₽ работа + 250 000 ₽ реклама. Подходит, если нужно осторожно проверить спрос и собрать аналитику без агрессивного масштаба.</p>
+      </div>
+      <div class="package-card recommended">
+        <div class="pkg-label">Рекомендую</div>
+        <h3>Рост</h3>
+        <div class="pkg-price">630 000 ₽</div>
+        <p>180 000 ₽ работа + 450 000 ₽ реклама. Оптимальный старт для 5 точек, двух городов и двух брендов.</p>
+      </div>
+      <div class="package-card">
+        <div class="pkg-label">Масштаб</div>
+        <h3>Агрессивный рост</h3>
+        <div class="pkg-price">1 050 000 ₽</div>
+        <p>250 000 ₽ работа + 800 000 ₽ реклама. Подходит после подтверждения экономики: когда понятны CPO, средний чек и повторные заказы.</p>
+      </div>
     </div>
     <div class="grid-4" style="margin-top:16px">
       <div class="card"><div class="metric">30%<small>поиск и горячий спрос</small></div></div>
