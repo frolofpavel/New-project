@@ -27,7 +27,7 @@ body{
   background:
     radial-gradient(circle at 10% 0%, rgba(255,204,77,.16), transparent 28%),
     radial-gradient(circle at 85% 12%, rgba(255,90,61,.12), transparent 24%),
-    linear-gradient(180deg,var(--bg) 0%,#100705 100%);
+    linear-gradient(135deg,#110604 0%,var(--bg) 44%,#27110b 100%);
   color:var(--text);
   min-height:100vh;
 }
@@ -78,8 +78,17 @@ nav{
 .nav-link.active{border-color:var(--accent);color:var(--accent);background:rgba(255,204,77,.08)}
 .page{display:none;position:relative;z-index:1;max-width:1180px;margin:0 auto;min-height:100vh;padding:132px 24px 56px}
 .page.active{display:block}
+.page:before{
+  content:"";
+  position:absolute;
+  left:24px;right:24px;top:104px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border2),transparent);
+  opacity:.7;
+}
 .hero-card,.card{
-  background:linear-gradient(180deg,rgba(53,29,21,.96),rgba(35,17,13,.96));
+  background:
+    linear-gradient(180deg,rgba(67,34,23,.96),rgba(35,17,13,.96)),
+    radial-gradient(circle at 100% 0%,rgba(255,204,77,.12),transparent 40%);
   border:1px solid var(--border);
   border-radius:12px;
   padding:24px;
@@ -326,12 +335,25 @@ nav{
 .card:hover,.ad:hover,.phase:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 26px 70px rgba(0,0,0,.26)}
 .kicker{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
 .lead{font-size:19px;max-width:900px;margin-top:18px}
+h2{
+  position:relative;
+  display:inline-block;
+  padding-bottom:12px;
+}
+h2:after{
+  content:"";
+  position:absolute;
+  left:0;bottom:0;
+  width:72px;height:3px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--accent2),var(--accent));
+}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .chip{border:1px solid var(--border2);background:rgba(255,204,77,.08);color:var(--accent);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800}
-.metric{font-size:34px;font-weight:900;color:var(--accent);line-height:1}
+.metric{font-size:34px;font-weight:900;color:var(--accent);line-height:1;text-shadow:0 0 26px rgba(255,204,77,.18)}
 .metric small{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-top:8px;line-height:1.35}
 .muted{color:var(--muted)}
 .accent{color:var(--accent)}
@@ -339,9 +361,11 @@ nav{
 .good{color:var(--green)}
 .warn{color:var(--warn)}
 .bad{color:var(--bad)}
-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+table{width:100%;border-collapse:separate;border-spacing:0;margin-top:12px;font-size:14px;overflow:hidden;border:1px solid var(--border);border-radius:10px}
 th,td{border-bottom:1px solid var(--border);padding:12px;text-align:left;vertical-align:top;color:#f5e4d2}
 th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(odd) td{background:rgba(255,255,255,.025)}
 .split{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start}
 .phase{border-left:4px solid var(--accent);padding:14px 16px;background:rgba(255,204,77,.07);border-radius:0 8px 8px 0}
 .score{display:inline-flex;align-items:center;justify-content:center;width:54px;height:32px;border-radius:6px;background:rgba(255,90,61,.14);border:1px solid rgba(255,90,61,.45);color:#ffd5cb;font-weight:900}
@@ -363,12 +387,38 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
 .quiz{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .quiz button{border:1px solid #f2bd66;background:#fff;border-radius:7px;padding:10px;cursor:pointer;font-weight:700}
 .footer{margin-top:26px;color:var(--muted);font-size:13px}
+.executive-strip{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:16px;
+  margin-top:16px;
+}
+.big-quote{
+  position:relative;
+  padding:22px;
+  border-radius:12px;
+  border:1px solid rgba(255,204,77,.38);
+  background:linear-gradient(135deg,rgba(255,204,77,.12),rgba(255,90,61,.06));
+}
+.big-quote strong{display:block;font-size:22px;line-height:1.22;color:var(--accent);margin-bottom:8px}
+.timeline-card{
+  position:relative;
+  padding-left:22px;
+}
+.timeline-card:before{
+  content:"";
+  position:absolute;
+  left:0;top:8px;bottom:8px;width:3px;
+  border-radius:999px;
+  background:linear-gradient(var(--accent),var(--accent2));
+}
+.timeline-card div+div{margin-top:12px}
 @keyframes pantryDrift{from{background-position:0 0,0 0,0 0}to{background-position:130px 130px,-170px 170px,190px -190px}}
 @keyframes floatFood{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(3deg)}}
 @keyframes sliceWobble{0%,100%{transform:rotate(-22deg) translateY(0)}50%{transform:rotate(-15deg) translateY(-12px)}}
 @keyframes ingredientFall{0%,100%{transform:translateY(0) rotate(0deg);opacity:.75}50%{transform:translateY(16px) rotate(28deg);opacity:1}}
 @media(max-width:860px){
-  .grid-2,.grid-3,.grid-4,.split,.hero-layout,.food-strip,.about-hero,.proof-list,.money-band,.package-grid{grid-template-columns:1fr}
+  .grid-2,.grid-3,.grid-4,.split,.hero-layout,.food-strip,.about-hero,.proof-list,.money-band,.package-grid,.executive-strip{grid-template-columns:1fr}
   .nav-row2{display:none}
   .page{padding-top:94px}
   .hero-card{padding:24px}
@@ -456,6 +506,17 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
       <div class="food-card"><strong>Gusto Pizza</strong><p>Неаполитанская пицца, паста и комбо для вечера.</p></div>
       <div class="food-card combo-card"><strong>Комбо</strong><p>Наборы для офиса, семьи, компании и самовывоза.</p></div>
       <div class="food-card"><strong>Повтор</strong><p>CRM-сценарии, бонусы и любимый заказ в один клик.</p></div>
+    </div>
+    <div class="executive-strip">
+      <div class="big-quote">
+        <strong>Предлагаю не “продвижение”, а перезапуск системы продаж.</strong>
+        <p>Первый месяц - восстановить управляемость и вернуть динамику чеков. Второй - усилить повторные заказы и средний чек. Третий - масштабировать только те каналы, где видна экономика.</p>
+      </div>
+      <div class="card timeline-card">
+        <div><strong class="accent">1-2 недели</strong><p>Аналитика, офферы, карта воронки, события, ТЗ на сайт.</p></div>
+        <div><strong class="accent">3-6 недели</strong><p>Реклама, карты, посевы, ретаргетинг, первые CRM-повторы.</p></div>
+        <div><strong class="accent">7-12 недели</strong><p>Масштабирование рабочих связок и отчёт собственнику.</p></div>
+      </div>
     </div>
     <p class="footer">Контакты: Павел Фролов · wwwfrolof@yandex.ru · +7 (905) 939-08-74 · pavelfrolof.ru</p>
   </section>
