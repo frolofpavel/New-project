@@ -368,7 +368,43 @@ tr:last-child td{border-bottom:none}
 tbody tr:nth-child(odd) td{background:rgba(255,255,255,.025)}
 .split{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start}
 .phase{border-left:4px solid var(--accent);padding:14px 16px;background:rgba(255,204,77,.07);border-radius:0 8px 8px 0}
-.score{display:inline-flex;align-items:center;justify-content:center;width:54px;height:32px;border-radius:6px;background:rgba(255,90,61,.14);border:1px solid rgba(255,90,61,.45);color:#ffd5cb;font-weight:900}
+.audit-card{position:relative;padding-top:22px}
+.audit-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.audit-head h3{margin:0;max-width:68%}
+.score{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:6px;
+  min-width:118px;
+}
+.score strong{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:76px;
+  height:34px;
+  padding:0 10px;
+  border-radius:8px;
+  background:rgba(255,90,61,.14);
+  border:1px solid rgba(255,90,61,.45);
+  color:#ffd5cb;
+  font-weight:900;
+}
+.score-bar{
+  width:112px;
+  height:7px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(255,255,255,.12);
+}
+.score-bar span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--accent2),var(--accent));
+}
+.score small{font-size:11px;color:var(--muted);text-align:right}
 .ad{background:#1c0d0a;border:1px solid var(--border);border-radius:8px;padding:16px}
 .proto{background:#fff7ec;color:#24100b;border-radius:12px;overflow:hidden;border:1px solid #ffd88a}
 .proto *{color:inherit}
@@ -427,6 +463,9 @@ tbody tr:nth-child(odd) td{background:rgba(255,255,255,.025)}
   .burger{width:158px;height:108px}
   .slice{transform:scale(.75) rotate(-22deg);right:8px}
   .portrait-card,.portrait-card img{min-height:340px}
+  .audit-head{flex-direction:column}
+  .audit-head h3{max-width:none}
+  .score{align-items:flex-start}
 }
 </style>
 </head>
@@ -728,8 +767,11 @@ tbody tr:nth-child(odd) td{background:rgba(255,255,255,.025)}
   <section class="page">
     <h2>07. UX/UI аудит сайтов</h2>
     <div class="grid-2">
-      <div class="card">
-        <h3>Gusto Pizza <span class="score">58/100</span></h3>
+      <div class="card audit-card">
+        <div class="audit-head">
+          <h3>Gusto Pizza</h3>
+          <div class="score"><strong>58/100</strong><div class="score-bar"><span style="width:58%"></span></div><small>стартовая оценка</small></div>
+        </div>
         <ul>
           <li>Плюс: меню индексируется, есть акции 3/5/7 пицц, понятные цены.</li>
           <li>Минус: первый экран не формулирует УТП достаточно ясно, сайт выглядит как каталог.</li>
@@ -737,8 +779,11 @@ tbody tr:nth-child(odd) td{background:rgba(255,255,255,.025)}
           <li>Решение: отдельные посадочные под акции, комбо и “неаполитанская пицца в Симферополе”.</li>
         </ul>
       </div>
-      <div class="card">
-        <h3>Big Bro Burger <span class="score">55/100</span></h3>
+      <div class="card audit-card">
+        <div class="audit-head">
+          <h3>Big Bro Burger</h3>
+          <div class="score"><strong>55/100</strong><div class="score-bar"><span style="width:55%"></span></div><small>стартовая оценка</small></div>
+        </div>
         <ul>
           <li>Плюс: сильный продуктовый характер, много хитов, понятные категории.</li>
           <li>Минус: на странице сразу каталог, слабый первый оффер и мало объяснения “почему Big Bro”.</li>
@@ -763,7 +808,10 @@ tbody tr:nth-child(odd) td{background:rgba(255,255,255,.025)}
     <h2>08. SEO и локальный поиск</h2>
     <div class="grid-2">
       <div class="card">
-        <h3>SEO-аудит: стартовая оценка <span class="score">52/100</span></h3>
+        <div class="audit-head">
+          <h3>SEO-аудит</h3>
+          <div class="score"><strong>52/100</strong><div class="score-bar"><span style="width:52%"></span></div><small>стартовая оценка</small></div>
+        </div>
         <ul>
           <li>Есть меню и товарные карточки, но мало посадочных под спрос.</li>
           <li>Нужны страницы “доставка пиццы Симферополь”, “бургеры Симферополь”, “бургеры Севастополь”, “комбо пицца”, “доставка еды ночью/вечером”.</li>
