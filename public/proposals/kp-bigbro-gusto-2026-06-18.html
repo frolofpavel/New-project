@@ -220,6 +220,66 @@ nav{
   transform:rotate(-12deg);
   background:linear-gradient(135deg,#ffcc4d,#ff5a3d);
 }
+.about-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) 340px;
+  gap:26px;
+  align-items:center;
+  position:relative;
+  z-index:1;
+}
+.portrait-card{
+  position:relative;
+  min-height:420px;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--border2);
+  background:#120705;
+  box-shadow:0 24px 80px rgba(0,0,0,.34);
+}
+.portrait-card img{
+  width:100%;
+  height:100%;
+  min-height:420px;
+  object-fit:cover;
+  display:block;
+}
+.portrait-card:after{
+  content:"Павел Фролов";
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:16px;
+  padding:12px 14px;
+  border-radius:8px;
+  background:rgba(22,11,8,.78);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,204,77,.25);
+  color:var(--accent);
+  font-weight:900;
+}
+.contact-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.contact-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid var(--border2);
+  background:rgba(255,204,77,.08);
+  color:var(--text);
+  border-radius:8px;
+  padding:10px 12px;
+  font-size:14px;
+  font-weight:800;
+}
+.contact-link:hover{background:rgba(255,204,77,.15);transform:translateY(-1px)}
+.proof-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+.proof-item{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px;
+  background:rgba(255,255,255,.035);
+}
+.proof-item strong{display:block;color:var(--accent);margin-bottom:6px}
 .card,.ad,.phase{transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease}
 .card:hover,.ad:hover,.phase:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 26px 70px rgba(0,0,0,.26)}
 .kicker{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
@@ -266,7 +326,7 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
 @keyframes sliceWobble{0%,100%{transform:rotate(-22deg) translateY(0)}50%{transform:rotate(-15deg) translateY(-12px)}}
 @keyframes ingredientFall{0%,100%{transform:translateY(0) rotate(0deg);opacity:.75}50%{transform:translateY(16px) rotate(28deg);opacity:1}}
 @media(max-width:860px){
-  .grid-2,.grid-3,.grid-4,.split,.hero-layout,.food-strip{grid-template-columns:1fr}
+  .grid-2,.grid-3,.grid-4,.split,.hero-layout,.food-strip,.about-hero,.proof-list{grid-template-columns:1fr}
   .nav-row2{display:none}
   .page{padding-top:94px}
   .hero-card{padding:24px}
@@ -274,6 +334,7 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
   .pizza{width:154px;height:154px}
   .burger{width:158px;height:108px}
   .slice{transform:scale(.75) rotate(-22deg);right:8px}
+  .portrait-card,.portrait-card img{min-height:340px}
 }
 </style>
 </head>
@@ -354,7 +415,7 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
       <div class="food-card combo-card"><strong>Комбо</strong><p>Наборы для офиса, семьи, компании и самовывоза.</p></div>
       <div class="food-card"><strong>Повтор</strong><p>CRM-сценарии, бонусы и любимый заказ в один клик.</p></div>
     </div>
-    <p class="footer">Контакты: Павел Фролов · wwwfrolof@yandex.ru · +7 (905) 939-08-74 · frolofpavel.ru</p>
+    <p class="footer">Контакты: Павел Фролов · wwwfrolof@yandex.ru · +7 (905) 939-08-74 · pavelfrolof.ru</p>
   </section>
 
   <section class="page">
@@ -670,14 +731,26 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
 
   <section class="page">
     <div class="hero-card">
-      <div class="kicker">13. Обо мне</div>
-      <h1>Павел Фролов - маркетинг-директор, который собирает продажи в систему</h1>
-      <p class="lead">Я подключаюсь не как исполнитель одной рекламной задачи, а как удалённый CMO / Head of Marketing: разбираю экономику, офферы, аналитику, сайт, рекламу, подрядчиков и ежедневное управление ростом.</p>
-      <div class="chips">
-        <span class="chip">19 лет в маркетинге</span>
-        <span class="chip">8+ лет на руководящих позициях</span>
-        <span class="chip">Своя команда подрядчиков</span>
-        <span class="chip">Удалённо + регулярная отчётность</span>
+      <div class="about-hero">
+        <div>
+          <div class="kicker">13. Обо мне</div>
+          <h1>Павел Фролов - маркетинг-директор, который отвечает за систему продаж</h1>
+          <p class="lead">Я захожу в проект не как “специалист по рекламе”, а как внешний Head of Marketing: нахожу, где теряются деньги, собираю офферы, аналитику, сайт, рекламу, CRM и команду в один управляемый контур.</p>
+          <div class="chips">
+            <span class="chip">19 лет в маркетинге</span>
+            <span class="chip">8+ лет на руководящих позициях</span>
+            <span class="chip">Performance + стратегия</span>
+            <span class="chip">Своя команда под задачи</span>
+          </div>
+          <div class="contact-row">
+            <a class="contact-link" href="https://pavelfrolof.ru/" target="_blank" rel="noopener">pavelfrolof.ru</a>
+            <a class="contact-link" href="mailto:wwwfrolof@yandex.ru">wwwfrolof@yandex.ru</a>
+            <a class="contact-link" href="tel:+79059390874">+7 905 939-08-74</a>
+          </div>
+        </div>
+        <div class="portrait-card">
+          <img src="foto-pavel.jpg" alt="Павел Фролов">
+        </div>
       </div>
     </div>
     <div class="grid-4" style="margin-top:16px">
@@ -688,14 +761,14 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
     </div>
     <div class="grid-2" style="margin-top:16px">
       <div class="card">
-        <h3>Что беру на себя</h3>
-        <ul>
-          <li>Стратегия роста продаж и понятная карта KPI для собственника.</li>
-          <li>УТП, офферы, рекламные гипотезы, посадочные страницы и сценарии повторных заказов.</li>
-          <li>Яндекс Директ, VK, Telegram, ретаргетинг, карты, SEO и CRM-коммуникации.</li>
-          <li>Постановка задач дизайнерам, разработчикам, контенту и рекламе.</li>
-          <li>Еженедельная управленческая отчётность: что сработало, что отключили, куда двигаем бюджет.</li>
-        </ul>
+        <h3>Моя роль в проекте</h3>
+        <p>Я беру на себя маркетинг как управленческую функцию: от стратегии до ежедневных решений по каналам, гипотезам и подрядчикам. Для Big Bro и Gusto это значит не “посты и объявления”, а понятная система: чек, заказ, повтор, выручка, экономика.</p>
+        <div class="proof-list">
+          <div class="proof-item"><strong>Фокус на продажах</strong><span>каждая активность привязана к заказу, повтору или среднему чеку.</span></div>
+          <div class="proof-item"><strong>Быстрый запуск</strong><span>первые гипотезы и аналитика собираются в течение 1-2 недель.</span></div>
+          <div class="proof-item"><strong>Команда</strong><span>подключаю дизайнеров, разработчиков, рекламу и контент без найма в штат.</span></div>
+          <div class="proof-item"><strong>Отчётность</strong><span>собственник видит решения, цифры и следующий шаг каждую неделю.</span></div>
+        </div>
       </div>
       <div class="card">
         <h3>Почему это подходит Big Bro и Gusto</h3>
@@ -709,7 +782,7 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
         <tr><th>Роль</th><td>Удалённый CMO / Head of Marketing с подключением команды под задачи.</td></tr>
         <tr><th>Коммуникация</th><td>Ежедневный короткий статус в Telegram, еженедельный отчёт по KPI, отдельные созвоны по решениям собственника.</td></tr>
         <tr><th>Первые 30 дней</th><td>Аналитика, офферы, рекламные запуски, карты, ретаргетинг, CRM-повторы, первые выводы по экономике.</td></tr>
-        <tr><th>Контакты</th><td>wwwfrolof@yandex.ru · +7 (905) 939-08-74 · frolofpavel.ru</td></tr>
+        <tr><th>Контакты</th><td><a href="https://pavelfrolof.ru/" target="_blank" rel="noopener">pavelfrolof.ru</a> · <a href="mailto:wwwfrolof@yandex.ru">wwwfrolof@yandex.ru</a> · <a href="tel:+79059390874">+7 905 939-08-74</a></td></tr>
       </table>
     </div>
   </section>
