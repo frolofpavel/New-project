@@ -38,6 +38,18 @@ body:before{
   background-size:44px 44px;
   pointer-events:none;
 }
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,204,77,.08) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 28%, rgba(255,90,61,.07) 0 1px, transparent 2px),
+    radial-gradient(circle at 42% 74%, rgba(91,209,131,.055) 0 1px, transparent 2px);
+  background-size:130px 130px, 170px 170px, 190px 190px;
+  pointer-events:none;
+  animation:pantryDrift 26s linear infinite;
+}
 a{color:var(--accent);text-decoration:none}
 p{color:#f1dfcb;line-height:1.65}
 ul{padding-left:18px;color:#f1dfcb;line-height:1.6}
@@ -73,7 +85,143 @@ nav{
   padding:24px;
   box-shadow:0 22px 60px rgba(0,0,0,.22);
 }
-.hero-card{padding:34px}
+.hero-card{padding:34px;position:relative;overflow:hidden}
+.hero-card:before{
+  content:"";
+  position:absolute;
+  width:260px;height:260px;right:-80px;top:-92px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,204,77,.28), rgba(255,90,61,.08) 54%, transparent 70%);
+  filter:blur(2px);
+  pointer-events:none;
+}
+.hero-layout{display:grid;grid-template-columns:minmax(0,1.25fr) 360px;gap:24px;align-items:center;position:relative;z-index:1}
+.food-stage{
+  min-height:330px;
+  position:relative;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:
+    radial-gradient(circle at 55% 42%, rgba(255,204,77,.16), transparent 36%),
+    linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  overflow:hidden;
+}
+.food-stage.small{min-height:230px}
+.pizza{
+  position:absolute;
+  width:210px;height:210px;
+  border-radius:50%;
+  background:#f7bf52;
+  border:13px solid #d98631;
+  box-shadow:0 24px 70px rgba(0,0,0,.34), inset 0 0 0 7px rgba(255,255,255,.14);
+  animation:floatFood 6.5s ease-in-out infinite;
+}
+.pizza.hero-pizza{right:28px;top:28px}
+.pizza:before,.pizza:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 20% 25%, #c9372a 0 10px, transparent 11px),
+    radial-gradient(circle at 67% 31%, #c9372a 0 12px, transparent 13px),
+    radial-gradient(circle at 38% 62%, #c9372a 0 11px, transparent 12px),
+    radial-gradient(circle at 76% 72%, #c9372a 0 9px, transparent 10px),
+    radial-gradient(circle at 52% 48%, #f5ead6 0 7px, transparent 8px),
+    radial-gradient(circle at 22% 74%, #6ebf57 0 6px, transparent 7px);
+  inset:14px;
+}
+.pizza:after{
+  clip-path:polygon(50% 50%,100% 30%,100% 72%);
+  background:rgba(65,25,14,.16);
+}
+.slice{
+  position:absolute;
+  width:0;height:0;
+  border-left:76px solid transparent;
+  border-right:76px solid transparent;
+  border-top:150px solid #f6bd43;
+  filter:drop-shadow(0 22px 34px rgba(0,0,0,.28));
+  transform:rotate(-22deg);
+  animation:sliceWobble 5.8s ease-in-out infinite;
+}
+.slice:before{
+  content:"";
+  position:absolute;
+  left:-60px;top:-140px;
+  width:120px;height:22px;border-radius:22px;
+  background:#d98631;
+}
+.slice:after{
+  content:"";
+  position:absolute;
+  left:-48px;top:-112px;
+  width:96px;height:96px;
+  background:
+    radial-gradient(circle at 22% 30%, #c9372a 0 9px, transparent 10px),
+    radial-gradient(circle at 65% 58%, #c9372a 0 8px, transparent 9px),
+    radial-gradient(circle at 43% 75%, #f5ead6 0 6px, transparent 7px);
+}
+.burger{
+  position:absolute;
+  width:210px;height:142px;
+  left:28px;bottom:38px;
+  animation:floatFood 7.2s ease-in-out infinite reverse;
+}
+.burger span{position:absolute;left:0;right:0;border-radius:999px;box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.bun-top{height:58px;top:0;background:linear-gradient(#f3b45d,#d78735)}
+.bun-top:before{
+  content:"";
+  position:absolute;inset:13px 44px auto 34px;height:5px;border-radius:999px;
+  background:repeating-linear-gradient(90deg,#fff0bd 0 10px,transparent 10px 24px);
+}
+.cheese{height:28px;top:52px;background:#ffd858;clip-path:polygon(0 0,100% 0,100% 64%,82% 54%,67% 100%,50% 55%,31% 100%,16% 55%,0 68%)}
+.patty{height:36px;top:72px;background:#5c2b1b}
+.greens{height:23px;top:96px;background:#54ad55;clip-path:polygon(0 40%,10% 10%,22% 55%,34% 8%,49% 52%,64% 10%,78% 56%,91% 12%,100% 42%,100% 100%,0 100%)}
+.bun-bottom{height:34px;bottom:0;background:linear-gradient(#de9342,#b96528)}
+.ingredient{
+  position:absolute;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--accent2);
+  box-shadow:0 10px 22px rgba(0,0,0,.18);
+  animation:ingredientFall 7s ease-in-out infinite;
+}
+.ingredient.cheese-dot{background:var(--accent);border-radius:4px}
+.ingredient.leaf{background:var(--green);border-radius:70% 20% 70% 20%}
+.ingredient.i1{left:34px;top:26px;animation-delay:.2s}
+.ingredient.i2{right:34px;top:164px;animation-delay:1.4s}
+.ingredient.i3{left:164px;top:238px;animation-delay:2.1s}
+.ingredient.i4{right:146px;top:72px;animation-delay:3s}
+.food-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.food-card{
+  position:relative;
+  min-height:128px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px;
+  overflow:hidden;
+  background:linear-gradient(145deg,rgba(255,204,77,.12),rgba(255,90,61,.06));
+}
+.food-card strong{position:relative;z-index:1}
+.food-card p{position:relative;z-index:1;font-size:13px;margin-top:6px}
+.food-card:after{
+  content:"";
+  position:absolute;
+  width:90px;height:90px;right:-22px;bottom:-24px;border-radius:50%;
+  background:radial-gradient(circle,#f8bd48 0 48%,#d98631 49% 62%,transparent 63%);
+  opacity:.72;
+}
+.food-card.burger-card:after{
+  width:108px;height:64px;bottom:-8px;
+  background:linear-gradient(#f3b45d 0 32%,#ffd858 33% 44%,#5c2b1b 45% 68%,#54ad55 69% 79%,#b96528 80%);
+  border-radius:999px;
+}
+.food-card.combo-card:after{
+  border-radius:8px;
+  transform:rotate(-12deg);
+  background:linear-gradient(135deg,#ffcc4d,#ff5a3d);
+}
+.card,.ad,.phase{transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease}
+.card:hover,.ad:hover,.phase:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 26px 70px rgba(0,0,0,.26)}
 .kicker{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
 .lead{font-size:19px;max-width:900px;margin-top:18px}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -100,17 +248,32 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
 .proto *{color:inherit}
 .proto-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 18px;background:#1b0b07;color:#fff7eb}
 .proto-logo{font-weight:900;color:#ffcc4d}
-.proto-hero{padding:30px;background:linear-gradient(135deg,#fff7ec,#ffe1b1)}
+.proto-hero{padding:30px;background:linear-gradient(135deg,#fff7ec,#ffe1b1);position:relative;overflow:hidden}
+.proto-hero:after{
+  content:"";
+  position:absolute;right:18px;top:22px;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,#f7bf52 0 48%,#d98631 49% 62%,transparent 63%);
+  opacity:.9;
+  animation:floatFood 6s ease-in-out infinite;
+}
 .proto-hero h3{font-size:30px}
 .proto-btn{display:inline-block;background:#ff4f32;color:#fff;padding:12px 16px;border-radius:7px;font-weight:900;margin-top:16px}
 .quiz{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .quiz button{border:1px solid #f2bd66;background:#fff;border-radius:7px;padding:10px;cursor:pointer;font-weight:700}
 .footer{margin-top:26px;color:var(--muted);font-size:13px}
+@keyframes pantryDrift{from{background-position:0 0,0 0,0 0}to{background-position:130px 130px,-170px 170px,190px -190px}}
+@keyframes floatFood{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+@keyframes sliceWobble{0%,100%{transform:rotate(-22deg) translateY(0)}50%{transform:rotate(-15deg) translateY(-12px)}}
+@keyframes ingredientFall{0%,100%{transform:translateY(0) rotate(0deg);opacity:.75}50%{transform:translateY(16px) rotate(28deg);opacity:1}}
 @media(max-width:860px){
-  .grid-2,.grid-3,.grid-4,.split{grid-template-columns:1fr}
+  .grid-2,.grid-3,.grid-4,.split,.hero-layout,.food-strip{grid-template-columns:1fr}
   .nav-row2{display:none}
   .page{padding-top:94px}
   .hero-card{padding:24px}
+  .food-stage{min-height:260px}
+  .pizza{width:154px;height:154px}
+  .burger{width:158px;height:108px}
+  .slice{transform:scale(.75) rotate(-22deg);right:8px}
 }
 </style>
 </head>
@@ -126,7 +289,7 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
     </div>
     <div class="nav-controls">
       <button class="nav-btn" onclick="go(currentPage-1)">←</button>
-      <span class="counter" id="counter">1 / 13</span>
+      <span class="counter" id="counter">1 / 14</span>
       <button class="nav-btn" onclick="go(currentPage+1)">→</button>
     </div>
   </div>
@@ -151,14 +314,32 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
 <main>
   <section class="page active">
     <div class="hero-card">
-      <div class="kicker">Коммерческое предложение в свободной форме</div>
-      <h1>Выстраиваю систему роста продаж для Big Bro Burger и Gusto Pizza</h1>
-      <p class="lead">Сейчас задача не в том, чтобы “вести соцсети” или “настроить рекламу”. Задача - остановить падение чеков, собрать управляемый маркетинг с нуля и превратить 5 ресторанов в единую систему повторных заказов, локального спроса и понятных офферов.</p>
-      <div class="chips">
-        <span class="chip">19 лет в маркетинге</span>
-        <span class="chip">Бюджеты до 50 млн ₽/мес</span>
-        <span class="chip">ROMI 300%+</span>
-        <span class="chip">HoReCa / доставка / performance</span>
+      <div class="hero-layout">
+        <div>
+          <div class="kicker">Коммерческое предложение в свободной форме</div>
+          <h1>Выстраиваю систему роста продаж для Big Bro Burger и Gusto Pizza</h1>
+          <p class="lead">Сейчас задача не в том, чтобы “вести соцсети” или “настроить рекламу”. Задача - остановить падение чеков, собрать управляемый маркетинг с нуля и превратить 5 ресторанов в единую систему повторных заказов, локального спроса и понятных офферов.</p>
+          <div class="chips">
+            <span class="chip">19 лет в маркетинге</span>
+            <span class="chip">Бюджеты до 50 млн ₽/мес</span>
+            <span class="chip">ROMI 300%+</span>
+            <span class="chip">HoReCa / доставка / performance</span>
+          </div>
+        </div>
+        <div class="food-stage" aria-hidden="true">
+          <div class="pizza hero-pizza"></div>
+          <div class="burger">
+            <span class="bun-top"></span>
+            <span class="cheese"></span>
+            <span class="patty"></span>
+            <span class="greens"></span>
+            <span class="bun-bottom"></span>
+          </div>
+          <span class="ingredient i1"></span>
+          <span class="ingredient cheese-dot i2"></span>
+          <span class="ingredient leaf i3"></span>
+          <span class="ingredient cheese-dot i4"></span>
+        </div>
       </div>
     </div>
     <div class="grid-4" style="margin-top:16px">
@@ -166,6 +347,12 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
       <div class="card"><div class="metric">5<small>точек: 3 ресторана в Симферополе и 2 в Севастополе</small></div></div>
       <div class="card"><div class="metric">90 дней<small>первый цикл: фундамент, запуск, масштабирование</small></div></div>
       <div class="card"><div class="metric good">+20-35%<small>ориентир роста заказов после настройки системы</small></div></div>
+    </div>
+    <div class="food-strip">
+      <div class="food-card burger-card"><strong>Big Bro</strong><p>Бургеры, боксы, шаурма и снеки для сильного голода.</p></div>
+      <div class="food-card"><strong>Gusto Pizza</strong><p>Неаполитанская пицца, паста и комбо для вечера.</p></div>
+      <div class="food-card combo-card"><strong>Комбо</strong><p>Наборы для офиса, семьи, компании и самовывоза.</p></div>
+      <div class="food-card"><strong>Повтор</strong><p>CRM-сценарии, бонусы и любимый заказ в один клик.</p></div>
     </div>
     <p class="footer">Контакты: Павел Фролов · wwwfrolof@yandex.ru · +7 (905) 939-08-74 · frolofpavel.ru</p>
   </section>
@@ -253,6 +440,19 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
 
   <section class="page">
     <h2>04. Позиционирование клиента</h2>
+    <div class="food-stage small" style="margin-bottom:16px" aria-hidden="true">
+      <div class="pizza" style="left:42px;top:18px;width:150px;height:150px"></div>
+      <div class="burger" style="left:auto;right:48px;bottom:38px;width:180px;height:120px">
+        <span class="bun-top"></span>
+        <span class="cheese"></span>
+        <span class="patty"></span>
+        <span class="greens"></span>
+        <span class="bun-bottom"></span>
+      </div>
+      <span class="ingredient i1"></span>
+      <span class="ingredient leaf i2"></span>
+      <span class="ingredient cheese-dot i4"></span>
+    </div>
     <div class="grid-2">
       <div class="card">
         <h3>Big Bro Burger</h3>
@@ -426,6 +626,7 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute
         <div>Меню · Акции · Доставка · Бонусы</div>
       </div>
       <div class="proto-hero">
+        <div class="slice" style="right:145px;top:42px"></div>
         <h3>Выберите сценарий - мы соберём вкусный заказ</h3>
         <p>Бургеры Big Bro, неаполитанская пицца Gusto, комбо для семьи, офиса и компании. Быстрый выбор, бонусы за повтор и доставка по Симферополю и Севастополю.</p>
         <a class="proto-btn">Подобрать заказ</a>
