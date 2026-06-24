@@ -17,7 +17,7 @@ export const siteConfig: SiteConfig = {
   tagline: "Я проектирую системы. Не кампании.",
   hero: {
     eyebrow: "// Внедрение AI-агентов под ключ",
-    eyebrowLive: "2 live системы в production",
+    eyebrowLive: "3 live системы в production",
     titleLines: [
       { text: "AI-агенты" },
       { text: "в бизнес-процессах.", variant: "accent" },
@@ -101,6 +101,16 @@ export const siteConfig: SiteConfig = {
         { value: "29", label: "клиентских агентов" },
         { value: "4", label: "автоматических цикла" },
         { value: "−80%", label: "ручной работы" },
+      ],
+    },
+    {
+      tag: "Live · Agent Studio",
+      title: "Agent Studio",
+      description:
+        "Среда для запуска и оркестрации AI-агентов: скиллы, память, задачи, маршрутизация. Часть экосистемы IRI Lab — Intelligence Runtime в действии.",
+      metrics: [
+        { value: "100+", label: "скиллов и агентов" },
+        { value: "IRI", label: "Lab open source" },
       ],
     },
     {

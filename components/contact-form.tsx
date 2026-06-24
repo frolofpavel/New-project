@@ -24,7 +24,7 @@ export function ContactForm() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("/contact.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

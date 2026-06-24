@@ -34,11 +34,15 @@ export function SiteFooter() {
           <h4>Навигация</h4>
           <div className="site-footer__links">
             <Link href="/">Главная</Link>
+            <Link href="/ai-agenty">AI-агенты</Link>
             <Link href="/services">Услуги</Link>
             <Link href="/portfolio">Кейсы</Link>
             <Link href="/blog">Блог</Link>
             <Link href="/about">Обо мне</Link>
             <Link href="/contact">Контакт</Link>
+            <a href="https://agi-iri.ru" target="_blank" rel="noreferrer">
+              IRI Lab
+            </a>
           </div>
         </div>
 

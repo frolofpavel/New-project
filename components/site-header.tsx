@@ -72,8 +72,8 @@ export function SiteHeader() {
             <span>{time || "Нск"}</span>
             <span className="live-status__text">· ответ в рабочий день</span>
           </div>
-          <Link href="/contact" className="button button--primary button--sm">
-            → обсудить
+          <Link href="/ai-agenty" className="button button--primary button--sm">
+            AI-агенты ↗
           </Link>
         </div>
       </div>

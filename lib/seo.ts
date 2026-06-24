@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
 import type { BlogPost, CaseStudy } from "@/lib/types";
 
-const OG_IMAGE_PATH = "/opengraph-image";
+const OG_IMAGE_PATH = "/og-cover.jpg";
 const PERSON_IMAGE_PATH = "/foto-pavel.jpg";
 
 type BuildPageMetadataInput = {

@@ -16,7 +16,8 @@ export const metadata: Metadata = buildPageMetadata({
   description: siteConfig.seo.description,
   path: "/",
   socialTitle: siteConfig.seo.title,
-  socialDescription: "Павел Фролов — маркетолог-стратег с 19 лет опытом. Проектирую AI-системы для маркетинга.",
+  socialDescription:
+    "Павел Фролов — внедрение AI-агентов под ключ. Аудит, пилот, система в production. 19 лет в маркетинге и AI-архитектуре.",
 });
 
 function renderBody(markdown: string) {
