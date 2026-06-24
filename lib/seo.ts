@@ -55,6 +55,7 @@ export function buildPageMetadata({
   const url = absoluteUrl(normalizedPath);
   const ogTitle = socialTitle ?? resolveSocialTitle(title);
   const ogDescription = socialDescription ?? description;
+  const ogImage = absoluteUrl(OG_IMAGE_PATH);
 
   return {
     title,
@@ -68,6 +69,7 @@ export function buildPageMetadata({
       title: ogTitle,
       description: ogDescription,
       locale: "ru_RU",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: ogTitle }],
       ...(article
         ? {
             publishedTime: article.publishedTime,
@@ -80,6 +82,7 @@ export function buildPageMetadata({
       card: "summary_large_image",
       title: ogTitle,
       description: ogDescription,
+      images: [ogImage],
     },
   };
 }

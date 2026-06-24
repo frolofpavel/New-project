@@ -1,0 +1,22 @@
+# IRI Lab / Pavel Frolov — pavelfrolof.ru
+
+> Внедрение AI-агентов под ключ для бизнеса. Архитектор AI-систем, 19 лет в маркетинге.
+
+## Основное
+
+- [Главная](https://pavelfrolof.ru/): AI-агенты в бизнес-процессах под ключ
+- [AI-агенты — продукт](https://pavelfrolof.ru/ai-agenty/): пакеты аудит / пилот / система
+- [Услуги](https://pavelfrolof.ru/services/)
+- [Кейсы](https://pavelfrolof.ru/portfolio/)
+- [Блог](https://pavelfrolof.ru/blog/)
+- [Контакт](https://pavelfrolof.ru/contact/)
+
+## Лаборатория и продукты
+
+- [IRI Lab — AGI Runtime](https://agi-iri.ru/)
+- [Verstak — open-source AI IDE](https://agi-iri.ru/verstak/)
+
+## Контакт
+
+- Email: wwwfrolof@yandex.ru
+- Telegram: https://t.me/Frolofpavel

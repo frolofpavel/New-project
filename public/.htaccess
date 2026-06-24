@@ -1,0 +1,4 @@
+RewriteEngine On
+
+RewriteCond %{HTTP_HOST} ^www\.pavelfrolof\.ru$ [NC]
+RewriteRule ^ https://pavelfrolof.ru%{REQUEST_URI} [L,R=301]

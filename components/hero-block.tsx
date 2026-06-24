@@ -135,6 +135,9 @@ export function HeroBlock() {
           </motion.div>
 
           <h1 className="hero__h1">
+            <span className="sr-only">
+              {siteConfig.hero.titleLines.map((line) => line.text).join(" ")}
+            </span>
             {siteConfig.hero.titleLines.map((line, index) => (
               <span
                 key={index}

@@ -9,9 +9,11 @@ export function SmoothScroll() {
     let cancelled = false;
 
     (async () => {
-      if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        return;
-      }
+      if (typeof window === "undefined") return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (window.matchMedia("(max-width: 960px)").matches) return;
+      if (window.matchMedia("(pointer: coarse)").matches) return;
+
       const { default: Lenis } = await import("lenis");
       if (cancelled) return;
       lenis = new Lenis({

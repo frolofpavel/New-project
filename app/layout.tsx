@@ -15,14 +15,14 @@ import "./globals.css";
 
 const onest = Onest({
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -52,18 +52,25 @@ export const metadata: Metadata = {
     url: siteConfig.baseUrl,
     siteName: siteConfig.name,
     locale: "ru_RU",
+    images: [{ url: "/og-cover.jpg", width: 1200, height: 630, alt: siteConfig.seo.title }],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.seo.title,
     description: siteConfig.seo.description,
+    images: ["/og-cover.jpg"],
   },
   robots: {
     index: true,
     follow: true,
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/icon.svg",
   },
 };
 
@@ -74,6 +81,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className={`${onest.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://mc.yandex.ru" />
+        <link rel="dns-prefetch" href="https://mc.yandex.ru" />
+      </head>
       <body>
         <Script id="site-jsonld-graph" type="application/ld+json" strategy="beforeInteractive">
           {JSON.stringify(buildSiteJsonLdGraph())}
@@ -96,7 +107,7 @@ export default function RootLayout({
                 k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
             })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108712700', 'ym');
 
-            ym(108712700, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+            ym(108712700, 'init', {ssr:true, webvisor:false, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
           `}
         </Script>
         <noscript>

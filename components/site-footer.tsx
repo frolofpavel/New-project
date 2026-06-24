@@ -63,7 +63,7 @@ export function SiteFooter() {
               WhatsApp
             </a>
             <a href={siteConfig.vk} target="_blank" rel="noreferrer">
-              VK
+              vk.com/frolofpavel
             </a>
             <a href={siteConfig.instagram} target="_blank" rel="noreferrer">
               Instagram

@@ -49,6 +49,14 @@ export function ContactForm() {
         type: "success",
         message: data.message,
       });
+
+      if (typeof window !== "undefined" && "ym" in window) {
+        (window as Window & { ym?: (...args: unknown[]) => void }).ym?.(
+          108712700,
+          "reachGoal",
+          "contact_form_submit",
+        );
+      }
     } catch (error) {
       setState({
         type: "error",

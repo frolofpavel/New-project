@@ -22,8 +22,21 @@ if (-not (Test-Path $OutDir)) {
     throw "out/ not found. Run npm run build first."
 }
 
+$IconSvg = Join-Path $ProjectRoot "public/icon.svg"
+$FaviconOut = Join-Path $OutDir "favicon.ico"
+if (Test-Path $IconSvg) {
+    Copy-Item $IconSvg $FaviconOut -Force
+}
+
 Write-Host "==> scp out/ -> Timeweb public_html"
 scp -i $SshKey -r "$OutDir/*" $Remote
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+$Htaccess = Join-Path $OutDir ".htaccess"
+if (Test-Path $Htaccess) {
+    Write-Host "==> scp .htaccess (dotfile)"
+    scp -i $SshKey $Htaccess "frolof@novoe.online:~/pavelfrolof.ru/public_html/.htaccess"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
 
 Write-Host "OK: deploy done. Check https://pavelfrolof.ru"

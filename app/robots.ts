@@ -9,7 +9,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
+      disallow: ["/proposals/", "/kp/", "/reports/", "/cgi-bin/"],
     },
     sitemap: `${siteConfig.baseUrl}/sitemap.xml`,
+    host: siteConfig.baseUrl.replace(/^https?:\/\//, ""),
   };
 }
