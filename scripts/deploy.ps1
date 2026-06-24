@@ -1,5 +1,4 @@
-# Деплой pavelfrolof.ru → Timeweb
-
+# Deploy pavelfrolof.ru to Timeweb
 param(
     [switch]$SkipBuild
 )
@@ -20,17 +19,11 @@ if (-not $SkipBuild) {
 }
 
 if (-not (Test-Path $OutDir)) {
-    Write-Error "Папка out/ не найдена. Сначала npm run build."
+    throw "out/ not found. Run npm run build first."
 }
 
-Write-Host "==> rsync/scp out/ -> Timeweb public_html"
-Write-Host "    (proposals/ на сервере не трогаем — только заливка out/*)"
-
-# scp рекурсивно: содержимое out/, не удаляет лишние файлы на сервере
+Write-Host "==> scp out/ -> Timeweb public_html"
 scp -i $SshKey -r "$OutDir/*" $Remote
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host ""
-Write-Host "OK: деплой завершён. Проверка:"
-Write-Host "  curl.exe -sI https://pavelfrolof.ru | findstr HTTP"
-Write-Host ""
-Write-Host "Форма: contact.php + ~/pavelfrolof.ru/contact_config.php (вне public_html)"
+Write-Host "OK: deploy done. Check https://pavelfrolof.ru"
