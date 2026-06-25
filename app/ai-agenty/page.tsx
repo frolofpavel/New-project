@@ -5,10 +5,12 @@ import Script from "next/script";
 import { LeadStrip } from "@/components/lead-strip";
 import { GlowCard } from "@/components/motion/glow-card";
 import { MagneticLink } from "@/components/motion/magnetic";
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
+import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { ServiceCard } from "@/components/cards";
-import { siteConfig, services } from "@/lib/site-config";
-import { buildAiAgentsLandingSchema, buildPageMetadata } from "@/lib/seo";
+import { aiAgentsFaqs, siteConfig, services } from "@/lib/site-config";
+import { buildAiAgentsLandingSchema, buildFaqSchema, buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "AI-агенты под ключ",
@@ -38,7 +40,16 @@ export default function AiAgentsPage() {
       <Script id="ai-agents-service-schema" type="application/ld+json" strategy="beforeInteractive">
         {JSON.stringify(buildAiAgentsLandingSchema())}
       </Script>
+      <Script id="ai-agents-faq-schema" type="application/ld+json" strategy="beforeInteractive">
+        {JSON.stringify(buildFaqSchema(aiAgentsFaqs))}
+      </Script>
       <section className="page-hero">
+        <PageBreadcrumbs
+          items={[
+            { name: "Главная", path: "/" },
+            { name: "AI-агенты", path: "/ai-agenty" },
+          ]}
+        />
         <SectionHeading
           as="h1"
           eyebrow="Продукт"
@@ -135,6 +146,20 @@ export default function AiAgentsPage() {
 
       <section className="section section--muted">
         <div className="section__inner">
+          <SectionHeading eyebrow="FAQ" title="Частые вопросы про AI-агентов" />
+          <dl className="faq-list">
+            {aiAgentsFaqs.map((item) => (
+              <div key={item.question} className="faq-list__item">
+                <dt>{item.question}</dt>
+                <dd>{item.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      <section className="section section--muted">
+        <div className="section__inner">
           <SectionHeading
             eyebrow="Блог"
             title="Как это работает — подробно"
@@ -151,6 +176,7 @@ export default function AiAgentsPage() {
         </div>
       </section>
 
+      <SeoTopicHub excludePath="/ai-agenty" />
       <LeadStrip />
     </>
   );

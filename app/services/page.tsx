@@ -5,7 +5,9 @@ import Script from "next/script";
 import { ServiceCard } from "@/components/cards";
 import { GlowCard } from "@/components/motion/glow-card";
 import { LeadStrip } from "@/components/lead-strip";
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
+import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { services } from "@/lib/site-config";
 import { buildPageMetadata, buildServiceSchema } from "@/lib/seo";
 
@@ -41,6 +43,12 @@ export default function ServicesPage() {
         {JSON.stringify(buildServiceSchema())}
       </Script>
       <section className="page-hero">
+        <PageBreadcrumbs
+          items={[
+            { name: "Главная", path: "/" },
+            { name: "Услуги", path: "/services" },
+          ]}
+        />
         <SectionHeading
           as="h1"
           eyebrow="Услуги"
@@ -84,6 +92,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      <SeoTopicHub excludePath="/services" />
       <LeadStrip />
     </>
   );

@@ -8,6 +8,7 @@ import { GlowCard } from "@/components/motion/glow-card";
 import { HugeMarquee } from "@/components/motion/huge-marquee";
 import { MagneticLink } from "@/components/motion/magnetic";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
+import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { siteConfig } from "@/lib/site-config";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -108,6 +109,11 @@ export default function HomePage() {
           ))}
         </Stagger>
       </section>
+
+      <SeoTopicHub
+        title="Внедрение AI-агентов"
+        description="Посадочные страницы под ключевые запросы — от оптимизации процессов до продаж и маркетинга."
+      />
 
       {/* ══ СИСТЕМЫ ══ */}
       <section id="systems" className="section--muted has-bg-video">

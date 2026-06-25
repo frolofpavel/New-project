@@ -5,7 +5,9 @@ import Script from "next/script";
 import { LeadStrip } from "@/components/lead-strip";
 import { GlowCard } from "@/components/motion/glow-card";
 import { MagneticLink } from "@/components/motion/magnetic";
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
+import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { ServiceCard } from "@/components/cards";
 import { siteConfig, services } from "@/lib/site-config";
 import { buildPageMetadata, absoluteUrl, siteEntityIds } from "@/lib/seo";
@@ -85,6 +87,12 @@ export default function AiDlyaProdazhPage() {
       </Script>
 
       <section className="page-hero">
+        <PageBreadcrumbs
+          items={[
+            { name: "Главная", path: "/" },
+            { name: "AI для продаж", path: "/ai-dlya-prodazh" },
+          ]}
+        />
         <SectionHeading
           as="h1"
           eyebrow="AI для продаж"
@@ -190,6 +198,7 @@ export default function AiDlyaProdazhPage() {
         </div>
       </section>
 
+      <SeoTopicHub excludePath="/ai-dlya-prodazh" />
       <LeadStrip />
     </>
   );

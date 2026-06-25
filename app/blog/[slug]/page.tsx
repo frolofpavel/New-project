@@ -4,10 +4,11 @@ import { notFound } from "next/navigation";
 
 import { LeadStrip } from "@/components/lead-strip";
 import { Markdown } from "@/components/markdown";
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
+import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { formatDate, getAllBlogPosts, getBlogPostBySlug } from "@/lib/content";
 import {
   buildBlogPostSchema,
-  buildBreadcrumbJsonLd,
   buildPageMetadata,
 } from "@/lib/seo";
 
@@ -59,20 +60,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       >
         {JSON.stringify(buildBlogPostSchema(item))}
       </Script>
-      <Script
-        id={`blog-breadcrumb-${item.slug}`}
-        type="application/ld+json"
-        strategy="beforeInteractive"
-      >
-        {JSON.stringify(
-          buildBreadcrumbJsonLd([
+      <section className="page-hero">
+        <PageBreadcrumbs
+          items={[
             { name: "Главная", path: "/" },
             { name: "Блог", path: "/blog" },
             { name: item.title, path: `/blog/${item.slug}` },
-          ]),
-        )}
-      </Script>
-      <section className="page-hero">
+          ]}
+        />
         <p className="section-heading__eyebrow">
           {formatDate(item.publishedAt)} · {item.readingTime}
         </p>
@@ -113,6 +108,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       </section>
 
+      <SeoTopicHub title="Дальше по теме" description="Посадочные страницы и услуги по внедрению AI-агентов." />
       <LeadStrip />
     </>
   );

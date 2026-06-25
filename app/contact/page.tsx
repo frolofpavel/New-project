@@ -1,21 +1,33 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import { ContactForm } from "@/components/contact-form";
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
+import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { siteConfig } from "@/lib/site-config";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildContactPageSchema, buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Контакт",
   description:
-    "Обсудить проект с Павлом Фроловым. Оставьте заявку или напишите в Telegram — отвечаю в течение дня.",
+    "Обсудить внедрение AI-агентов под ключ с Павлом Фроловым. Заявка, Telegram, email — ответ в рабочий день.",
   path: "/contact",
 });
 
 export default function ContactPage() {
   return (
     <>
+      <Script id="contact-page-schema" type="application/ld+json" strategy="beforeInteractive">
+        {JSON.stringify(buildContactPageSchema())}
+      </Script>
       <section className="page-hero">
+        <PageBreadcrumbs
+          items={[
+            { name: "Главная", path: "/" },
+            { name: "Контакт", path: "/contact" },
+          ]}
+        />
         <SectionHeading
           as="h1"
           eyebrow="Контакт"
@@ -65,6 +77,8 @@ export default function ContactPage() {
           <ContactForm />
         </div>
       </section>
+
+      <SeoTopicHub title="Полезные материалы" description="Перед созвоном — посадочные и статья про пошаговое внедрение." />
     </>
   );
 }

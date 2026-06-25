@@ -175,6 +175,40 @@ export function buildServiceSchema() {
   };
 }
 
+export function buildFaqSchema(faqs: Array<{ question: string; answer: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+export function buildContactPageSchema() {
+  const ids = siteEntityIds();
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Контакт — Павел Фролов",
+    url: absoluteUrl("/contact"),
+    description: "Обсудить внедрение AI-агентов под ключ: форма, Telegram, email.",
+    mainEntity: {
+      "@type": "Person",
+      "@id": ids.person,
+      name: "Павел Фролов",
+      email: siteConfig.email,
+      telephone: siteConfig.phone,
+      url: siteConfig.baseUrl,
+    },
+  };
+}
+
 export function buildBreadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
   return {
     "@context": "https://schema.org",
