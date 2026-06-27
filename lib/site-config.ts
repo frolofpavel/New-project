@@ -278,6 +278,11 @@ export const seoHubPages = [
     description: "От аудита до production без хаоса — разбор для владельца.",
   },
   {
+    href: "/blog/nayti-ai-specialista-ili-vnedrenie-pod-klyuch",
+    title: "Найм vs внедрение под ключ",
+    description: "Сравнение затрат: AI-специалист в штат или проект с фиксом.",
+  },
+  {
     href: "/services",
     title: "Услуги и пакеты",
     description: "Аудит процессов, пилот одного агента, система под ключ.",

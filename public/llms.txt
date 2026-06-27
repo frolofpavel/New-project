@@ -6,6 +6,7 @@
 
 - [Главная](https://pavelfrolof.ru/): AI-агенты в бизнес-процессах под ключ
 - [AI-агенты — продукт](https://pavelfrolof.ru/ai-agenty/): пакеты аудит / пилот / система
+- [Блог — найм vs внедрение](https://pavelfrolof.ru/blog/nayti-ai-specialista-ili-vnedrenie-pod-klyuch/)
 - [Услуги](https://pavelfrolof.ru/services/)
 - [Кейсы](https://pavelfrolof.ru/portfolio/)
 - [Блог](https://pavelfrolof.ru/blog/)

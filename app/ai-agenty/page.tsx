@@ -166,6 +166,9 @@ export default function AiAgentsPage() {
             description="Пошаговый разбор внедрения AI-агентов: от аудита процессов до production. Реальный опыт, типичные ошибки и метрики."
           />
           <div className="ai-agenty__blog-links">
+            <Link href="/blog/nayti-ai-specialista-ili-vnedrenie-pod-klyuch" className="button button--secondary">
+              Нанять AI-специалиста или внедрение под ключ
+            </Link>
             <Link href="/blog/vnedrenie-ai-agenta-v-kompanii-poshagovo" className="button button--secondary">
               Внедрение AI-агента: пошагово от аудита до production
             </Link>
