@@ -356,10 +356,10 @@ export default function HomePage() {
             <div className="about-portrait-wrap">
               <div className="about-portrait">
                 <Image
-                  src="/images/pavel-formal.jpg"
+                  src="/images/pavel-formal.webp"
                   alt="Павел Фролов — маркетолог и AI-архитектор"
-                  width={440}
-                  height={540}
+                  width={900}
+                  height={1125}
                   className="about-portrait__img"
                 />
                 <div className="about-portrait__veil" />
@@ -419,7 +419,7 @@ export default function HomePage() {
             <p className="cta-section__sub">{siteConfig.ctaSub}</p>
 
             <div className="cta-section__btns">
-              <MagneticLink href={siteConfig.telegram} className="button button--primary" external>
+              <MagneticLink href={siteConfig.telegram} className="button button--primary" external goal="lead_telegram">
                 → написать в Telegram
               </MagneticLink>
               <Link href={`mailto:${siteConfig.email}`} className="button button--secondary">

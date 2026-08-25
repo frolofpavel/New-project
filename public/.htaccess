@@ -1,4 +1,48 @@
 RewriteEngine On
 
+# www → non-www (HTTPS)
 RewriteCond %{HTTP_HOST} ^www\.pavelfrolof\.ru$ [NC]
 RewriteRule ^ https://pavelfrolof.ru%{REQUEST_URI} [L,R=301]
+
+# HTTP → HTTPS.
+# Проверено на сервере 21.08.2026: по HTTP переменная HTTPS и заголовок
+# X-Forwarded-Proto ОТСУТСТВУЮТ, по HTTPS приходят HTTPS='On' и
+# X-Forwarded-Proto='https'. Старое условие искало X-Forwarded-Proto='http'
+# и поэтому не срабатывало никогда. Сравнение с [NC]: значение 'On' с
+# заглавной, без [NC] редирект зациклится.
+RewriteCond %{HTTPS} !=on [NC]
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https [NC]
+RewriteRule ^ https://pavelfrolof.ru%{REQUEST_URI} [L,R=301]
+
+# Trailing slash для директорий (совпадает с trailingSlash: true в Next.js)
+RewriteCond %{REQUEST_URI} !/$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !\.[^./]+$
+RewriteRule ^(.*)$ https://pavelfrolof.ru/$1/ [L,R=301]
+
+ErrorDocument 404 /404.html
+
+# Cache static assets (PageSpeed / CWV)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 30 days"
+  ExpiresByType application/javascript "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 90 days"
+  ExpiresByType image/png "access plus 90 days"
+  ExpiresByType image/webp "access plus 90 days"
+  ExpiresByType image/svg+xml "access plus 90 days"
+  ExpiresByType image/x-icon "access plus 90 days"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 30 days"
+  ExpiresByType video/webm "access plus 30 days"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|woff2|webp|png|jpg|jpeg|svg|ico|mp4|webm)$">
+    Header set Cache-Control "public, max-age=2592000, immutable"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript application/json image/svg+xml
+</IfModule>

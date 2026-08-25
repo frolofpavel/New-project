@@ -2,7 +2,9 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 import { LeadStrip } from "@/components/lead-strip";
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
+import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { siteConfig } from "@/lib/site-config";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -57,6 +59,12 @@ export default function AboutPage() {
   return (
     <>
       <section className="page-hero about-page-hero">
+        <PageBreadcrumbs
+          items={[
+            { name: "Главная", path: "/" },
+            { name: "Обо мне", path: "/about" },
+          ]}
+        />
         <div className="about-page-hero__grid">
           <SectionHeading
             as="h1"
@@ -91,10 +99,10 @@ export default function AboutPage() {
             <div className="about-portrait-wrap about-story-portrait-wrap">
               <div className="about-portrait about-story-portrait">
                 <Image
-                  src="/images/pavel-about-2026.png"
+                  src="/images/pavel-about-2026.webp"
                   alt="Павел Фролов — маркетолог и AI-архитектор"
-                  width={2048}
-                  height={1152}
+                  width={2200}
+                  height={1238}
                   priority
                   className="about-portrait__img about-story-portrait__img"
                 />
@@ -260,6 +268,8 @@ export default function AboutPage() {
           </aside>
         </div>
       </section>
+
+      <SeoTopicHub title="Материалы по AI-агентам" description="Посадочные страницы и статьи для владельцев бизнеса." />
 
       <LeadStrip />
     </>
