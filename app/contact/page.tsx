@@ -5,6 +5,7 @@ import { ContactForm } from "@/components/contact-form";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
 import { SeoTopicHub } from "@/components/seo-topic-hub";
+import { TrackedTelegramLink } from "@/components/tracked-telegram-link";
 import { siteConfig } from "@/lib/site-config";
 import { buildContactPageSchema, buildPageMetadata } from "@/lib/seo";
 
@@ -43,14 +44,14 @@ export default function ContactPage() {
               Прямые каналы
             </h3>
             <div className="contact-points">
-              <a href={siteConfig.telegram} target="_blank" rel="noreferrer">
+              <TrackedTelegramLink href={siteConfig.telegram}>
                 <span aria-hidden="true">💬</span>
                 <span>Telegram — {siteConfig.telegramHandle}</span>
-              </a>
-              <a href={siteConfig.telegramAlt} target="_blank" rel="noreferrer">
+              </TrackedTelegramLink>
+              <TrackedTelegramLink href={siteConfig.telegramAlt}>
                 <span aria-hidden="true">💬</span>
                 <span>Telegram — {siteConfig.telegramAltHandle}</span>
-              </a>
+              </TrackedTelegramLink>
               <a href={`mailto:${siteConfig.email}`}>
                 <span aria-hidden="true">✉️</span>
                 <span>{siteConfig.email}</span>

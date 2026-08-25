@@ -1,6 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useState } from "react";
+
+import { metrikaGoals, reachGoal } from "@/lib/metrika";
 
 type FormState = {
   type: "idle" | "success" | "error";
@@ -12,7 +15,23 @@ const initialState: FormState = {
   message: "",
 };
 
-export function ContactForm() {
+type ContactFormProps = {
+  /** Показать поле телефона и сделать его обязательным (посадочные под платный трафик). */
+  withPhone?: boolean;
+  /** Подпись кнопки отправки. */
+  submitLabel?: string;
+  /** Подпись поля «что за задача» — на посадочных формулировка другая. */
+  messageLabel?: string;
+  /** Цель Метрики. По умолчанию — общая цель формы. */
+  goal?: string;
+};
+
+export function ContactForm({
+  withPhone = false,
+  submitLabel = "Отправить заявку",
+  messageLabel = "Что хотите запустить или улучшить",
+  goal = metrikaGoals.contactForm,
+}: ContactFormProps = {}) {
   const [state, setState] = useState<FormState>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,6 +50,7 @@ export function ContactForm() {
         },
         body: JSON.stringify({
           name: formData.get("name"),
+          phone: formData.get("phone"),
           email: formData.get("email"),
           company: formData.get("company"),
           message: formData.get("message"),
@@ -50,12 +70,8 @@ export function ContactForm() {
         message: data.message,
       });
 
-      if (typeof window !== "undefined" && "ym" in window) {
-        (window as Window & { ym?: (...args: unknown[]) => void }).ym?.(
-          108712700,
-          "reachGoal",
-          "contact_form_submit",
-        );
+      if (typeof window !== "undefined") {
+        reachGoal(goal);
       }
     } catch (error) {
       setState({
@@ -77,9 +93,30 @@ export function ContactForm() {
         <input name="name" type="text" placeholder="Как к вам обращаться" required />
       </label>
 
+      {withPhone ? (
+        <label>
+          <span>Телефон</span>
+          <input
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder="+7 (___) ___-__-__"
+            required
+          />
+        </label>
+      ) : null}
+
       <label>
         <span>Email</span>
-        <input name="email" type="email" placeholder="you@example.com" required />
+        <input
+          name="email"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          placeholder="you@example.com"
+          required={!withPhone}
+        />
       </label>
 
       <label>
@@ -97,17 +134,25 @@ export function ContactForm() {
       />
 
       <label className="lead-form__full">
-        <span>Что хотите запустить или улучшить</span>
+        <span>{messageLabel}</span>
         <textarea
           name="message"
           rows={5}
           placeholder="Опишите задачу, сроки и желаемый результат"
-          required
+          required={!withPhone}
         />
       </label>
 
+      <label className="lead-form__consent">
+        <input name="consent" type="checkbox" required defaultChecked={false} />
+        <span>
+          Даю согласие на обработку персональных данных и принимаю{" "}
+          <Link href="/politika-konfidencialnosti">политику конфиденциальности</Link>
+        </span>
+      </label>
+
       <button className="button button--primary" type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Отправляю..." : "Отправить заявку"}
+        {isSubmitting ? "Отправляю..." : submitLabel}
       </button>
 
       {state.message ? (
