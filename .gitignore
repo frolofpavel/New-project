@@ -11,3 +11,6 @@ tmp/
 # в них цены и данные клиентов, а репозиторий на GitHub.
 public/proposals/*.html
 content/drafts/
+
+# Служебные файлы браузерной автоматизации
+.playwright-mcp/
