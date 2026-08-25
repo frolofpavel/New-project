@@ -1,0 +1,1904 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ЖК «Чили» — интерактивная 3D-визуализация | ЧерриДом</title>
+<style>
+:root{
+  --brick:#D9D3C6;
+  --brick-dim:#BCB5A6;
+  --red:#C0392B;
+  --red-lt:#D9503F;
+  --panel:rgba(17,17,19,.80);
+  --hair:rgba(233,226,214,.15);
+  --text:#F2EEE7;
+  --text-dim:#A8A29A;
+  --text-faint:#726D66;
+  --display:"Constantia","Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --ui:"Segoe UI Variable Text","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:#0B0B0C;color:var(--text);font-family:var(--ui);
+  overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overscroll-behavior:none;
+}
+canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+canvas.dragging{cursor:grabbing}
+canvas.over{cursor:pointer}
+
+#stage{position:fixed;inset:0}
+#vignette{position:fixed;inset:0;pointer-events:none;
+  background:radial-gradient(122% 92% at 50% 44%,transparent 46%,rgba(5,5,7,.44) 100%);
+  mix-blend-mode:multiply;z-index:2}
+
+.panel{
+  background:var(--panel);
+  -webkit-backdrop-filter:blur(18px) saturate(120%);backdrop-filter:blur(18px) saturate(120%);
+  border:1px solid var(--hair);
+  box-shadow:0 18px 50px -20px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.05);
+}
+.eyebrow{font-size:10px;letter-spacing:.19em;text-transform:uppercase;color:var(--text-faint);font-weight:600}
+
+/* ---------- шильд ---------- */
+#plate{position:fixed;top:20px;left:20px;z-index:6;padding:16px 20px 14px;max-width:min(360px,72vw);border-radius:2px}
+#plate .brand{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+#plate .mark{width:17px;height:17px;flex:none;position:relative;border-radius:2px;background:var(--red)}
+#plate .mark::after{content:"";position:absolute;left:3px;top:5px;width:9px;height:7px;
+  background:#fff;border-radius:60% 20% 55% 25%;opacity:.9}
+#plate .brand span{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--text-dim);font-weight:600}
+#plate h1{font-family:var(--display);font-weight:400;font-size:31px;line-height:1.04;margin:0 0 6px;letter-spacing:-.005em}
+#plate h1 em{font-style:normal;color:var(--red-lt)}
+#plate .addr{font-size:12.5px;color:var(--text-dim);line-height:1.45;margin:0}
+#plate .rule{height:1px;background:var(--hair);margin:13px 0 11px}
+#plate .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+#plate .kpi b{display:block;font-family:var(--display);font-size:19px;font-weight:400;line-height:1;
+  font-variant-numeric:tabular-nums;margin-bottom:4px}
+#plate .kpi i{display:block;font-style:normal;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-faint);line-height:1.3}
+#cta{display:inline-flex;align-items:center;gap:8px;margin-top:15px;padding:11px 17px;
+  background:var(--red);color:#fff;text-decoration:none;border-radius:2px;
+  font-size:12.5px;font-weight:600;letter-spacing:.03em;
+  transition:background .2s var(--ease),transform .2s var(--ease);
+  box-shadow:0 8px 22px -10px rgba(192,57,43,.9)}
+#cta:hover{background:var(--red-lt);transform:translateY(-1px)}
+#cta svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- нижняя панель ---------- */
+#rail{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:6;
+  display:flex;align-items:stretch;border-radius:2px;overflow:hidden;max-width:calc(100vw - 40px)}
+.rail-group{display:flex;align-items:center;gap:1px;padding:5px 7px}
+.rail-group + .rail-group{border-left:1px solid var(--hair)}
+.rail-label{font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--text-faint);
+  font-weight:600;padding:0 7px 0 2px;white-space:nowrap}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.tab{padding:5px 9px;font-size:11.5px;color:var(--text-dim);border:1px solid transparent;border-radius:1px;
+  white-space:nowrap;transition:color .18s var(--ease),background .18s var(--ease),border-color .18s var(--ease)}
+.tab:hover{color:var(--text);background:rgba(233,226,214,.06)}
+.tab[aria-pressed="true"]{color:#fff;background:var(--red);border-color:var(--red);font-weight:600}
+.icon-btn{width:28px;height:28px;display:grid;place-items:center;color:var(--text-dim);
+  border:1px solid transparent;transition:color .18s var(--ease),background .18s var(--ease)}
+.icon-btn:hover{color:var(--text);background:rgba(233,226,214,.06)}
+.icon-btn[aria-pressed="true"]{color:var(--red-lt)}
+.icon-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:2px solid var(--red-lt);outline-offset:2px}
+
+/* ---------- карточка ---------- */
+#dossier{position:fixed;top:20px;right:20px;z-index:6;width:304px;max-width:calc(100vw - 40px);
+  border-radius:2px;padding:0;transform:translateX(calc(100% + 28px));opacity:0;pointer-events:none;
+  transition:transform .5s var(--ease),opacity .35s var(--ease);max-height:calc(100vh - 40px);overflow-y:auto}
+#dossier.on{transform:none;opacity:1;pointer-events:auto}
+#dossier .head{padding:15px 18px 13px;border-bottom:1px solid var(--hair);position:relative}
+#dossier .tagline{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+#dossier .swatch{width:9px;height:9px;flex:none;background:var(--red)}
+#dossier h2{font-family:var(--display);font-weight:400;font-size:22px;margin:0 0 3px;line-height:1.1}
+#dossier .sub{font-size:12px;color:var(--text-dim);margin:0}
+#close{position:absolute;top:11px;right:11px;width:26px;height:26px;color:var(--text-faint);
+  display:grid;place-items:center;font-size:17px;line-height:1;transition:color .18s var(--ease)}
+#close:hover{color:var(--text)}
+#dossier dl{margin:0;padding:6px 18px 14px}
+#dossier .row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  padding:9px 0;border-bottom:1px solid rgba(233,226,214,.07)}
+#dossier .row:last-child{border-bottom:0}
+#dossier dt{font-size:11.5px;color:var(--text-faint)}
+#dossier dd{margin:0;font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+#dossier .note{padding:0 18px 16px;font-size:11.5px;line-height:1.55;color:var(--text-dim)}
+
+/* ---------- цены ---------- */
+#prices{position:fixed;left:20px;bottom:78px;z-index:6;border-radius:2px;padding:12px 16px 13px;display:none}
+#prices.on{display:block}
+#prices table{border-collapse:collapse;font-variant-numeric:tabular-nums}
+#prices th{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);
+  font-weight:600;text-align:left;padding:0 16px 7px 0}
+#prices th:last-child,#prices td:last-child{padding-right:0;text-align:right}
+#prices td{font-size:12.5px;padding:4px 16px 4px 0;color:var(--text-dim);white-space:nowrap}
+#prices td:first-child{color:var(--text)}
+#prices td b{font-weight:600;color:var(--red-lt)}
+#prices .src{margin:9px 0 0;font-size:9.5px;letter-spacing:.06em;color:var(--text-faint)}
+
+#hint{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);z-index:5;font-size:11.5px;
+  color:var(--text-faint);letter-spacing:.03em;white-space:nowrap;transition:opacity .6s var(--ease);
+  pointer-events:none;text-shadow:0 1px 8px rgba(0,0,0,.9)}
+#hint.gone{opacity:0}
+#credit{position:fixed;right:20px;bottom:22px;z-index:5;font-size:10px;letter-spacing:.1em;
+  color:rgba(233,226,214,.30);text-transform:uppercase;text-align:right;line-height:1.7;pointer-events:none}
+#loader{position:fixed;inset:0;z-index:20;background:#0B0B0C;display:grid;place-items:center;
+  transition:opacity .7s var(--ease)}
+#loader.gone{opacity:0;pointer-events:none}
+#loader .in{text-align:center}
+#loader .mark{width:26px;height:26px;background:var(--red);margin:0 auto 18px;border-radius:3px;
+  animation:spin 2.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loader p{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-faint);margin:0}
+#fallback{max-width:420px;padding:28px;text-align:center;font-size:14px;line-height:1.6;color:var(--text-dim)}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+
+@media (max-width:900px){
+  #plate{top:12px;left:12px;padding:12px 15px 11px;max-width:calc(100vw - 24px)}
+  #plate h1{font-size:25px}
+  #plate .kpi b{font-size:16px}
+  #cta{margin-top:11px;padding:9px 14px;font-size:12px}
+  #prices{display:none !important}
+  #dossier{top:auto;bottom:78px;right:12px;left:12px;width:auto;max-height:46vh}
+  #dossier.on{transform:none}
+  #dossier:not(.on){transform:translateY(calc(100% + 24px))}
+  #rail{bottom:12px;overflow-x:auto;justify-content:flex-start}
+  .rail-label{display:none}
+  #hint{display:none}
+  #credit{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="stage"><canvas id="gl"></canvas></div>
+<div id="vignette"></div>
+
+<div id="plate" class="panel">
+  <div class="brand"><span class="mark"></span><span>ЧерриДом</span></div>
+  <h1>ЖК «<em>Чили</em>»</h1>
+  <p class="addr">Вологда, ул. Спирина, 6<br>Клинкерный кирпич, 3D-укладка · двор без машин</p>
+  <div class="rule"></div>
+  <div class="kpis">
+    <div class="kpi"><b>8</b><i>этажей</i></div>
+    <div class="kpi"><b>87</b><i>квартир</i></div>
+    <div class="kpi"><b>12</b><i>соток двор</i></div>
+  </div>
+  <a id="cta" href="https://cherry-dom.com/complexes/chili" target="_blank" rel="noopener">
+    Смотреть квартиры
+    <svg viewBox="0 0 24 24"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+
+<aside id="dossier" class="panel" aria-live="polite">
+  <div class="head">
+    <button id="close" aria-label="Закрыть карточку">×</button>
+    <div class="tagline"><span class="swatch"></span><span class="eyebrow" id="d-kicker">Объект</span></div>
+    <h2 id="d-title">—</h2>
+    <p class="sub" id="d-sub">—</p>
+  </div>
+  <dl id="d-rows"></dl>
+  <p class="note" id="d-note"></p>
+</aside>
+
+<div id="prices" class="panel">
+  <table>
+    <thead><tr><th>Планировка</th><th>Площадь</th><th>Цена</th></tr></thead>
+    <tbody>
+      <tr><td>2-комнатная</td><td>52 м²</td><td><b>9,2 млн ₽</b></td></tr>
+      <tr><td>2-комнатная</td><td>64 м²</td><td><b>от 9,8 млн ₽</b></td></tr>
+      <tr><td>2-комнатная</td><td>96 м²</td><td><b>13,7 млн ₽</b></td></tr>
+      <tr><td>«Небесный дворец»</td><td>2 уровня</td><td><b>по запросу</b></td></tr>
+    </tbody>
+  </table>
+  <p class="src">Остатки и цены — cherry-dom.com, июль 2026</p>
+</div>
+
+<nav id="rail" class="panel" aria-label="Управление просмотром">
+  <div class="rail-group">
+    <span class="rail-label">Ракурс</span>
+    <button class="tab" data-view="0" aria-pressed="true">Общий</button>
+    <button class="tab" data-view="1" aria-pressed="false">С птичьего</button>
+    <button class="tab" data-view="2" aria-pressed="false">Двор</button>
+    <button class="tab" data-view="3" aria-pressed="false">Фасад</button>
+    <button class="tab" data-view="4" aria-pressed="false">Гаражи</button>
+    <button class="tab" data-view="5" aria-pressed="false">Вход</button>
+  </div>
+  <div class="rail-group">
+    <span class="rail-label">Время</span>
+    <button class="tab" data-time="0" aria-pressed="false">Утро</button>
+    <button class="tab" data-time="1" aria-pressed="true">День</button>
+    <button class="tab" data-time="2" aria-pressed="false">Закат</button>
+    <button class="tab" data-time="3" aria-pressed="false">Вечер</button>
+  </div>
+  <div class="rail-group">
+    <button class="icon-btn" id="btn-spin" aria-pressed="false" title="Автооблёт" aria-label="Автооблёт">
+      <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v4h-4"/></svg>
+    </button>
+    <button class="icon-btn" id="btn-prices" aria-pressed="true" title="Цены" aria-label="Цены">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h9"/></svg>
+    </button>
+    <button class="icon-btn" id="btn-shot" title="Сохранить кадр" aria-label="Сохранить кадр">
+      <svg viewBox="0 0 24 24"><path d="M4 8h3l1.6-2h6.8L17 8h3v11H4z"/><circle cx="12" cy="13.2" r="3.4"/></svg>
+    </button>
+    <button class="icon-btn" id="btn-full" title="На весь экран" aria-label="На весь экран">
+      <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+    </button>
+  </div>
+</nav>
+
+<p id="hint">Зажмите и тяните — поворот · колесо — приближение · клик по объёму — характеристики</p>
+<p id="credit">ЧерриДом · Вологда<br>интерактивная модель</p>
+
+<div id="loader"><div class="in">
+  <div class="mark"></div>
+  <p id="loader-txt">Собираем дом</p>
+</div></div>
+
+<script>
+"use strict";
+(function(){
+
+/* ══════════════════════════════════════════════════════════════
+   0. МАТЕМАТИКА
+   ══════════════════════════════════════════════════════════════ */
+const M4 = {
+  mul(a,b,o){o=o||new Float32Array(16);
+    for(let i=0;i<4;i++)for(let j=0;j<4;j++){let s=0;
+      for(let k=0;k<4;k++)s+=a[k*4+j]*b[i*4+k];o[i*4+j]=s}
+    return o},
+  ident:()=>new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]),
+  persp(fov,asp,n,f){const t=1/Math.tan(fov/2),o=new Float32Array(16);
+    o[0]=t/asp;o[5]=t;o[10]=(f+n)/(n-f);o[11]=-1;o[14]=2*f*n/(n-f);return o},
+  ortho(l,r,b,t,n,f){const o=new Float32Array(16);
+    o[0]=2/(r-l);o[5]=2/(t-b);o[10]=-2/(f-n);o[15]=1;
+    o[12]=-(r+l)/(r-l);o[13]=-(t+b)/(t-b);o[14]=-(f+n)/(f-n);return o},
+  look(e,c,up){
+    let zx=e[0]-c[0],zy=e[1]-c[1],zz=e[2]-c[2];
+    let l=Math.hypot(zx,zy,zz)||1; zx/=l;zy/=l;zz/=l;
+    let xx=up[1]*zz-up[2]*zy, xy=up[2]*zx-up[0]*zz, xz=up[0]*zy-up[1]*zx;
+    l=Math.hypot(xx,xy,xz)||1; xx/=l;xy/=l;xz/=l;
+    const yx=zy*xz-zz*xy, yy=zz*xx-zx*xz, yz=zx*xy-zy*xx;
+    return new Float32Array([xx,yx,zx,0, xy,yy,zy,0, xz,yz,zz,0,
+      -(xx*e[0]+xy*e[1]+xz*e[2]), -(yx*e[0]+yy*e[1]+yz*e[2]), -(zx*e[0]+zy*e[1]+zz*e[2]), 1])},
+  inv(m){
+    const o=new Float32Array(16),
+    a00=m[0],a01=m[1],a02=m[2],a03=m[3], a10=m[4],a11=m[5],a12=m[6],a13=m[7],
+    a20=m[8],a21=m[9],a22=m[10],a23=m[11], a30=m[12],a31=m[13],a32=m[14],a33=m[15],
+    b00=a00*a11-a01*a10, b01=a00*a12-a02*a10, b02=a00*a13-a03*a10,
+    b03=a01*a12-a02*a11, b04=a01*a13-a03*a11, b05=a02*a13-a03*a12,
+    b06=a20*a31-a21*a30, b07=a20*a32-a22*a30, b08=a20*a33-a23*a30,
+    b09=a21*a32-a22*a31, b10=a21*a33-a23*a31, b11=a22*a33-a23*a32;
+    let d=b00*b11-b01*b10+b02*b09+b03*b08-b04*b07+b05*b06;
+    if(!d) return o; d=1/d;
+    o[0]=(a11*b11-a12*b10+a13*b09)*d;  o[1]=(a02*b10-a01*b11-a03*b09)*d;
+    o[2]=(a31*b05-a32*b04+a33*b03)*d;  o[3]=(a22*b04-a21*b05-a23*b03)*d;
+    o[4]=(a12*b08-a10*b11-a13*b07)*d;  o[5]=(a00*b11-a02*b08+a03*b07)*d;
+    o[6]=(a32*b02-a30*b05-a33*b01)*d;  o[7]=(a20*b05-a22*b02+a23*b01)*d;
+    o[8]=(a10*b10-a11*b08+a13*b06)*d;  o[9]=(a01*b08-a00*b10-a03*b06)*d;
+    o[10]=(a30*b04-a31*b02+a33*b00)*d; o[11]=(a21*b02-a20*b04-a23*b00)*d;
+    o[12]=(a11*b07-a10*b09-a12*b06)*d; o[13]=(a00*b09-a01*b07+a02*b06)*d;
+    o[14]=(a31*b01-a30*b03-a32*b00)*d; o[15]=(a20*b03-a21*b01+a22*b00)*d;
+    return o}
+};
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+/* На телефонах режем дальний контекст и мелочь двора, но НИКОГДА не фасад «Чили» —
+   он и есть предмет показа. */
+const MOBILE = (window.matchMedia &&
+  window.matchMedia('(max-width:900px),(pointer:coarse)').matches) || false;
+// детерминированный ГПСЧ — модель одинакова при каждой загрузке
+let _s=0x9E3779B9;
+function rnd(){_s|=0;_s=_s+0x6D2B79F5|0;let t=Math.imul(_s^_s>>>15,1|_s);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}
+const rr=(a,b)=>a+rnd()*(b-a);
+const ri=(a,b)=>Math.floor(rr(a,b+1));
+const hash1=v=>{const s=Math.sin(v*127.1)*43758.5453; return s-Math.floor(s);};
+const hex=h=>[parseInt(h.slice(1,3),16)/255,parseInt(h.slice(3,5),16)/255,parseInt(h.slice(5,7),16)/255];
+const tint=(c,k)=>[Math.min(1,c[0]*k),Math.min(1,c[1]*k),Math.min(1,c[2]*k)];
+
+/* ══════════════════════════════════════════════════════════════
+   1. БУФЕР ГЕОМЕТРИИ
+   attrib: pos(3) nrm(3) col(3) flg(3 = kind, объект, зерно)
+   kind: 0 кирпич · 1 остекление · 2 светящееся · 3 листва · 4 земля · 5 мощение · 6 гладкое
+   ══════════════════════════════════════════════════════════════ */
+const STRIDE=12;
+let buf=new Float32Array(1<<22), cur=0;
+function grow(n){ if(cur+n<=buf.length) return;
+  let cap=buf.length; while(cap<cur+n) cap*=2;
+  const nb=new Float32Array(cap); nb.set(buf.subarray(0,cur)); buf=nb; }
+function vtx(p,n,c,f){ buf[cur++]=p[0];buf[cur++]=p[1];buf[cur++]=p[2];
+  buf[cur++]=n[0];buf[cur++]=n[1];buf[cur++]=n[2];
+  buf[cur++]=c[0];buf[cur++]=c[1];buf[cur++]=c[2];
+  buf[cur++]=f[0];buf[cur++]=f[1];buf[cur++]=f[2]; }
+/** четырёхугольник a→b→c→d (CCW снаружи) */
+function quad(a,b,c,d,c0,f){
+  grow(6*STRIDE);
+  const ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2];
+  const vx=d[0]-a[0],vy=d[1]-a[1],vz=d[2]-a[2];
+  let nx=uy*vz-uz*vy, ny=uz*vx-ux*vz, nz=ux*vy-uy*vx;
+  const l=Math.hypot(nx,ny,nz)||1; nx/=l;ny/=l;nz/=l;
+  const n=[nx,ny,nz];
+  vtx(a,n,c0,f);vtx(b,n,c0,f);vtx(c,n,c0,f);
+  vtx(a,n,c0,f);vtx(c,n,c0,f);vtx(d,n,c0,f);
+}
+function box(x0,y0,z0,x1,y1,z1,c0,f,skip){
+  skip=skip||0; // маска: 1 +X 2 -X 4 +Z 8 -Z 16 +Y 32 -Y
+  if(!(skip&1))  quad([x1,y0,z1],[x1,y0,z0],[x1,y1,z0],[x1,y1,z1],c0,f);
+  if(!(skip&2))  quad([x0,y0,z0],[x0,y0,z1],[x0,y1,z1],[x0,y1,z0],c0,f);
+  if(!(skip&4))  quad([x0,y0,z1],[x1,y0,z1],[x1,y1,z1],[x0,y1,z1],c0,f);
+  if(!(skip&8))  quad([x1,y0,z0],[x0,y0,z0],[x0,y1,z0],[x1,y1,z0],c0,f);
+  if(!(skip&16)) quad([x0,y1,z1],[x1,y1,z1],[x1,y1,z0],[x0,y1,z0],c0,f);
+  if(!(skip&32)) quad([x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],c0,f);
+}
+function plate(x0,z0,x1,z1,y,c0,f){ quad([x0,y,z1],[x1,y,z1],[x1,y,z0],[x0,y,z0],c0,f); }
+function sphere(cx,cy,cz,r,ry,c0,f,seg,ring){
+  seg=seg||9;ring=ring||6;
+  for(let i=0;i<ring;i++){
+    const p0=Math.PI*i/ring, p1=Math.PI*(i+1)/ring;
+    for(let j=0;j<seg;j++){
+      const t0=2*Math.PI*j/seg, t1=2*Math.PI*(j+1)/seg;
+      const P=(p,t)=>[cx+r*Math.sin(p)*Math.cos(t), cy+ry*Math.cos(p), cz+r*Math.sin(p)*Math.sin(t)];
+      quad(P(p1,t0),P(p1,t1),P(p0,t1),P(p0,t0),c0,f);
+    }
+  }
+}
+function cyl(cx,cz,r,y0,y1,c0,f,seg){
+  seg=seg||8;
+  for(let j=0;j<seg;j++){
+    const t0=2*Math.PI*j/seg, t1=2*Math.PI*(j+1)/seg;
+    const a=[cx+r*Math.cos(t0),y0,cz+r*Math.sin(t0)], b=[cx+r*Math.cos(t1),y0,cz+r*Math.sin(t1)];
+    quad(a,b,[b[0],y1,b[2]],[a[0],y1,a[2]],c0,f);
+  }
+}
+/* уровень земли для благоустройства: двор поднят над улицей */
+let Y0=0;
+
+/* ══════════════════════════════════════════════════════════════
+   2. ПАЛИТРА — снята пипеткой с рендеров cherry-dom.com
+   ══════════════════════════════════════════════════════════════ */
+const C = {
+  light:   hex('#D9D3C6'), light2: hex('#CEC7B8'),   // светлый клинкер основного объёма
+  lightW:  hex('#E3DED2'),
+  dark:    hex('#4A4A50'), dark2:  hex('#414147'),   // тёмный клинкер: цоколь и венчающий объём
+  red:     hex('#A8382C'), red2:   hex('#93302A'),   // красный клинкер: вставки 3D-укладки
+  redHot:  hex('#C0392B'),                            // фирменный красный: вывеска, арт-объекты
+  reveal:  hex('#C0B9AA'),                            // откосы проёмов
+  frame:   hex('#2E3033'),                            // тёмные переплёты и рамы эркеров
+  glass:   hex('#4E5D69'), glassD: hex('#282E34'),
+  shopgl:  hex('#232A31'),
+  rail:    hex('#303237'),
+  roof:    hex('#3A3C40'), roofEq: hex('#787C82'),
+  door:    hex('#3A3D41'),
+  asphalt: hex('#55585C'), asphalt2:hex('#5F6266'),
+  pave:    hex('#A9A49B'), pave2:  hex('#96918A'), pave3: hex('#BDB7AC'),
+  paveRed: hex('#A4614C'), paveRed2:hex('#925745'),  // клинкерное мощение двора
+  rubber:  hex('#45443F'),                            // тёмное покрытие игровой зоны
+  grass:   hex('#7E9A57'), grass2: hex('#88A462'),
+  hedge:   hex('#48682F'),
+  foliage: hex('#55823D'), foliage2:hex('#68954A'), foliage3:hex('#436B31'),
+  bloom:   hex('#C9AFB2'),                            // цветение вишни во дворе
+  trunk:   hex('#5A4732'),
+  wood:    hex('#8A6A46'), woodL: hex('#A98A5E'),
+  metal:   hex('#34363A'),
+  neigh:   hex('#BCAE9A'), neigh2: hex('#A89A86'), neigh3: hex('#C6BCA8'),
+  neighroof:hex('#4E5054'),
+  line:    hex('#DEDACE'),
+  soil:    hex('#4A3B2E')
+};
+const FLOWERS=['#B8402F','#E4E0D4','#D9A32C','#8E5A93','#C9536B','#EDD9A0'];
+const CARS=['#E7E4DE','#8E9298','#2C2F33','#6E7B86','#8B2F2C','#3E4A57','#C9C4BB','#4A5B4A'];
+
+/* ══════════════════════════════════════════════════════════════
+   3. ФАСАДЫ
+   ══════════════════════════════════════════════════════════════ */
+const GH=4.2;    // первый этаж — высокий цоколь
+const FH=3.0;    // жилой этаж (потолки 2,68–3,3 м)
+const PH=5.4;    // «Небесные дворцы» — двухуровневые, потолки до 5,3 м
+const BASE_TOP=GH+6*FH;      // 22.2 — верх основного объёма
+const CROWN_TOP=BASE_TOP+PH; // 27.6
+
+function sideBasis(x0,z0,x1,z1,side){
+  switch(side){
+    case 'S': return {O:[x0,0,z1],U:[1,0,0], N:[0,0,1],  W:x1-x0};
+    case 'N': return {O:[x1,0,z0],U:[-1,0,0],N:[0,0,-1], W:x1-x0};
+    case 'E': return {O:[x1,0,z1],U:[0,0,-1],N:[1,0,0],  W:z1-z0};
+    case 'W': return {O:[x0,0,z0],U:[0,0,1], N:[-1,0,0], W:z1-z0};
+  }
+}
+
+/** одна сторона объёма. Возвращает отметку верха. */
+function facade(b,side){
+  const B=sideBasis(b.x0,b.z0,b.x1,b.z1,side);
+  const id=b.id, f=[0,id,0];
+  // P(u,y,out): out > 0 — наружу от плоскости фасада
+  const P=(u,y,out)=>[B.O[0]+B.U[0]*u+B.N[0]*out, y, B.O[2]+B.U[2]*u+B.N[2]*out];
+  const pbox=(u0,u1,y0,y1,o0,o1,c,fl)=>{
+    const A=P(u0,y0,o0), D=P(u1,y1,o1);
+    box(Math.min(A[0],D[0]),Math.min(y0,y1),Math.min(A[2],D[2]),
+        Math.max(A[0],D[0]),Math.max(y0,y1),Math.max(A[2],D[2]),c,fl||f);
+  };
+
+  const crown=!!b.crown;
+  const levels=[]; let y=b.base;
+  if(crown){ levels.push([y,y+PH,0,1]); y+=PH; }
+  else { levels.push([y,y+GH,1,0]); y+=GH;
+         for(let i=0;i<6;i++){ levels.push([y,y+FH,0,0]); y+=FH; } }
+  const top=y;
+
+  if(B.W<2.6){                       // узкий торец — глухая стена
+    pbox(0,B.W,b.base,top,-0.001,0,C.dark);
+    quad(P(0,b.base,0),P(B.W,b.base,0),P(B.W,top,0),P(0,top,0),C.dark,f);
+    return top;
+  }
+
+  const bays=Math.max(2,Math.round(B.W/b.bay));
+  const bw=B.W/bays;
+  const isOriel=bi=>b.oriel && bi%3===1 && bi>0 && bi<bays-1;
+  const retail=b.retail&&b.retail.indexOf(side)>=0;
+  const garage=b.garage&&b.garage.indexOf(side)>=0;
+  const lift=(b.yard&&b.yard.indexOf(side)>=0)?1.62:0;   // дворовые фасады стоят на подиуме
+
+  /* Красные вставки «3D-укладки» кладутся ТОЛЬКО по глухой стене: прямоугольник
+     проёма исключается, иначе кирпичи повисают прямо перед стеклом. */
+  function redInserts(u0,u1,y0,y1,ex){
+    if(u1-u0<0.55||y1-y0<0.62) return;
+    const n=ri(6,11);
+    let placed=0, guard=0;
+    while(placed<n && guard++<70){
+      const w2=rr(0.26,Math.min(0.76,u1-u0-0.22));
+      const uu=rr(u0+0.10,u1-0.10-w2), yy=rr(y0+0.16,y1-0.30);
+      if(ex && uu+w2>ex[0]-0.09 && uu<ex[1]+0.09 && yy+0.14>ex[2]-0.09 && yy<ex[3]+0.09) continue;
+      pbox(uu,uu+w2,yy,yy+0.14,-0.012,0.055,tint(rnd()<0.5?C.red:C.red2,rr(0.86,1.14)));
+      placed++;
+    }
+  }
+
+  for(let li=0;li<levels.length;li++){
+    const [y0,y1,ground,penth]=levels[li];
+    for(let bi=0;bi<bays;bi++){
+      const u0=bi*bw, u1=u0+bw;
+      const seed=rnd();
+      // тёмный клинкер: цоколь, венчающие этажи и угловые пилоны сверху вниз до 4-го этажа —
+      // так же, как на рендерах: светлое поле внизу, тёмный верх и тёмные углы
+      const corner=(bi===0||bi===bays-1);
+      const dark = ground || crown || li>=levels.length-1 || (corner&&li>=3);
+      const wallC = dark ? (seed<0.5?C.dark:C.dark2) : (seed<0.5?C.light:C.light2);
+      const revC  = dark ? tint(wallC,1.20) : C.reveal;
+
+      if(isOriel(bi)&&!ground){       // ячейка перекрыта эркером — только стена,
+        quad(P(u0,y0,0),P(u1,y0,0),P(u1,y1,0),P(u0,y1,0),wallC,f);
+        continue;                     // вставки не нужны: их всё равно закрывает эркер
+      }
+
+      if(ground && garage && bi>=1 && bi<=bays-2){    // индивидуальные гаражи
+        const gy=y0+0.05, gt=y0+2.85, gL=u0+0.42, gR=u1-0.42;
+        quad(P(u0,y0,0),P(u1,y0,0),P(u1,y1,0),P(u0,y1,0),wallC,f);
+        // обрамление ворот — рамка из трёх узких простенков, а не сплошная панель
+        pbox(gL-0.16,gL,gy,gt+0.16,-0.03,0.05,C.red2);
+        pbox(gR,gR+0.16,gy,gt+0.16,-0.03,0.05,C.red2);
+        pbox(gL-0.16,gR+0.16,gt,gt+0.16,-0.03,0.05,C.red2);
+        pbox(gL,gR,gy,gt,-0.28,-0.16,C.door);
+        for(let s=0;s<7;s++){        // рёбра секционных ворот
+          const yy=gy+(gt-gy)*(s+0.5)/7;
+          pbox(gL,gR,yy-0.03,yy+0.03,-0.16,-0.12,tint(C.door,1.45));
+        }
+        if(dark) redInserts(u0,u1,y0,y1,[gL-0.16,gR+0.16,gy,gt+0.16]);
+        continue;
+      }
+
+      let mL,mR,mB,mT,dep,gl,kind;
+      if(ground && retail){                      // витрины и входные группы
+        mL=0.66;mR=0.66;mB=0.55+lift;mT=0.95;dep=0.30;gl=C.shopgl;kind=2;
+      } else if(ground){
+        mL=1.05;mR=1.05;mB=1.55+lift;mT=1.15;dep=0.26;gl=C.glassD;kind=1;
+      } else if(penth){                          // «Небесные дворцы» — окна в пол
+        mL=0.46;mR=0.46;mB=0.42;mT=0.80;dep=0.24;gl=C.glass;kind=1;
+      } else {
+        const wide=seed<0.32;
+        mL=wide?0.46:0.74; mR=mL; mB=0.94; mT=0.62; dep=0.22; gl=C.glass; kind=1;
+      }
+      if(y1-mT<=y0+mB){                          // проём не помещается — глухая панель
+        quad(P(u0,y0,0),P(u1,y0,0),P(u1,y1,0),P(u0,y1,0),wallC,f);
+        if(dark) redInserts(u0,u1,y0,y1,null);
+        continue;
+      }
+      const uA=u0+mL,uC=u1-mR,yB=y0+mB,yT=y1-mT;
+      // стена вокруг проёма — раскладка без щелей
+      quad(P(u0,y0,0),P(u1,y0,0),P(u1,yB,0),P(u0,yB,0),wallC,f);
+      quad(P(u0,yT,0),P(u1,yT,0),P(u1,y1,0),P(u0,y1,0),wallC,f);
+      quad(P(u0,yB,0),P(uA,yB,0),P(uA,yT,0),P(u0,yT,0),wallC,f);
+      quad(P(uC,yB,0),P(u1,yB,0),P(u1,yT,0),P(uC,yT,0),wallC,f);
+      // откосы — в тон стены, иначе светлая рамка съедает цвет цоколя
+      quad(P(uA,yB,0),P(uA,yB,-dep),P(uA,yT,-dep),P(uA,yT,0),revC,f);
+      quad(P(uC,yB,0),P(uC,yT,0),P(uC,yT,-dep),P(uC,yB,-dep),revC,f);
+      quad(P(uA,yB,0),P(uC,yB,0),P(uC,yB,-dep),P(uA,yB,-dep),tint(revC,1.06),f);
+      quad(P(uA,yT,0),P(uA,yT,-dep),P(uC,yT,-dep),P(uC,yT,0),tint(revC,0.80),f);
+      // остекление с переплётом
+      quad(P(uA,yB,-dep),P(uC,yB,-dep),P(uC,yT,-dep),P(uA,yT,-dep),gl,[kind,id,seed]);
+      pbox(uA,uC,yB,yB+0.07,-dep,-dep+0.05,C.frame);
+      pbox(uA,uC,yT-0.07,yT,-dep,-dep+0.05,C.frame);
+      const um=(uA+uC)/2;
+      pbox(um-0.035,um+0.035,yB,yT,-dep,-dep+0.05,C.frame);
+
+      // вставки красного клинкера — «3D-укладка», фирменный приём дома. Проём исключён.
+      if(dark) redInserts(u0,u1,y0,y1,[uA,uC,yB,yT]);
+
+      // красная клинкерная панель под окном — ритм светлой части фасада
+      if(!dark && hash1(bi*3.17+li*7.91+id*2.3)>0.44){
+        pbox(u0+0.26,u1-0.26,y0+0.16,yB-0.14,-0.012,0.052,rnd()<0.5?C.red:C.red2);
+      }
+      // французский балкон: тонкое тёмное ограждение перед окном
+      if(!dark && !ground && hash1(bi*5.71+li*2.93+id)>0.68){
+        pbox(uA-0.10,uC+0.10,yB+0.52,yB+0.60,0.04,0.11,C.rail);
+        pbox(uA-0.10,uC+0.10,yB+1.00,yB+1.08,0.04,0.11,C.rail);
+        for(let s=0;s<6;s++){
+          const uu=uA-0.10+(uC-uA+0.20)*(s+0.5)/6;
+          pbox(uu-0.02,uu+0.02,yB+0.10,yB+1.08,0.055,0.095,C.rail);
+        }
+      }
+      if(ground && retail){          // козырёк над входной группой
+        pbox(u0+0.22,u1-0.22,y1-1.02,y1-0.88,0,1.35,C.metal);
+      }
+    }
+  }
+
+  // красный пояс поверх цоколя — держит низ фасада, как на рендерах
+  if(!crown){
+    pbox(0,B.W,b.base+GH-0.78,b.base+GH-0.06,-0.01,0.08,C.red);
+    if(!garage) pbox(0,B.W,b.base+0.05,b.base+0.58,-0.01,0.07,C.red2);
+  }
+
+  // ЭРКЕРЫ — главный вертикальный мотив фасада
+  if(b.oriel){
+    const oy0=crown?b.base:b.base+GH, oy1=top, D=0.66;
+    for(let bi=0;bi<bays;bi++){
+      if(!isOriel(bi)) continue;
+      const u0=bi*bw, u1=u0+bw;
+      // боковые рамы
+      pbox(u0,u0+0.11,oy0,oy1,0,D,C.frame);
+      pbox(u1-0.11,u1,oy0,oy1,0,D,C.frame);
+      // боковое остекление
+      pbox(u0+0.11,u0+0.16,oy0+0.2,oy1-0.30,0.05,D-0.05,C.glass,[1,id,0.31]);
+      pbox(u1-0.16,u1-0.11,oy0+0.2,oy1-0.30,0.05,D-0.05,C.glass,[1,id,0.67]);
+      // фронтальное остекление по этажам
+      let yy=oy0;
+      while(yy<oy1-0.4){
+        const lh=(crown?PH:FH), yt=Math.min(yy+lh,oy1);
+        const gB=yy+0.24, gT=yt-0.16;
+        if(gT>gB+0.3){
+          quad(P(u0+0.11,gB,D),P(u1-0.11,gB,D),P(u1-0.11,gT,D),P(u0+0.11,gT,D),
+               C.glass,[1,id,hash1(bi*13.7+yy*0.41)]);
+          for(let m=1;m<3;m++){
+            const uu=u0+0.11+(u1-u0-0.22)*m/3;
+            pbox(uu-0.04,uu+0.04,gB,gT,D-0.03,D+0.02,C.frame);
+          }
+        }
+        pbox(u0,u1,yt-0.16,yt+0.08,-0.01,D+0.03,C.frame);   // межэтажный пояс
+        yy+=lh;
+      }
+      pbox(u0-0.06,u1+0.06,oy1-0.32,oy1,-0.01,D+0.06,C.dark);  // завершение эркера
+      pbox(u0,u1,oy0-0.20,oy0,-0.01,D+0.04,C.dark);            // опорный пояс
+    }
+  }
+
+  // карниз
+  quad(P(0,top-0.42,0.14),P(B.W,top-0.42,0.14),P(B.W,top,0.14),P(0,top,0.14),
+       tint(crown?C.dark:C.light,1.06),f);
+  quad(P(0,top-0.42,0),P(0,top-0.42,0.14),P(B.W,top-0.42,0.14),P(B.W,top-0.42,0),
+       tint(crown?C.dark:C.light,0.72),f);
+  return top;
+}
+
+/* ── вывеска CHILI: объёмные буквы, ночью светятся ───────────── */
+const GLYPH={
+  C:[[0,0,0.22,1],[0,0.78,1,0.22],[0,0,1,0.22]],
+  H:[[0,0,0.22,1],[0.78,0,0.22,1],[0,0.40,1,0.20]],
+  I:[[0,0,0.32,1]],
+  L:[[0,0,0.22,1],[0,0,1,0.22]]
+};
+const GWID={C:0.74,H:0.74,I:0.32,L:0.68};
+/** side: 'N'|'S'|'E'|'W' — плоскость и наружная нормаль; (ax,az) — левый край надписи */
+function sign(ax,y,az,side,h){
+  const f=[2,-1,0.99], d=0.13;
+  const dir = side==='N'?[-1,0]: side==='S'?[1,0]: side==='E'?[0,-1]:[0,1];
+  const out = side==='N'?[0,-1]: side==='S'?[0,1]: side==='E'?[1,0]:[-1,0];
+  const put=(u0,u1,y0,y1)=>{
+    const p0=[ax+dir[0]*u0, y0, az+dir[1]*u0], p1=[ax+dir[0]*u1, y1, az+dir[1]*u1];
+    const q0=[p0[0]+out[0]*d, 0, p0[2]+out[1]*d];
+    box(Math.min(p0[0],p1[0],q0[0]),y0,Math.min(p0[2],p1[2],q0[2]),
+        Math.max(p0[0],p1[0],q0[0])+ (out[0]?0:0.001), y1,
+        Math.max(p0[2],p1[2],q0[2])+ (out[1]?0:0.001), C.redHot,f);
+  };
+  let u=0;
+  // знак-перчик перед словом
+  sphere(ax+dir[0]*(u+0.30*h)+out[0]*d*0.5, y+h*0.52, az+dir[1]*(u+0.30*h)+out[1]*d*0.5,
+         h*0.26, h*0.30, C.redHot, f, 9, 6);
+  u+=h*0.78;
+  for(const ch of 'CHILI'){
+    const w=GWID[ch]*h;
+    for(const [gx,gy,gw,gh] of GLYPH[ch]) put(u+gx*w, u+gx*w+gw*w, y+gy*h, y+gy*h+gh*h);
+    u+=w+h*0.17;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4. ОБЪЁМЫ ДОМА
+   Г-образный корпус вокруг поднятого двора. Смежные объёмы
+   разведены на 5 см — без z-fighting.
+   ══════════════════════════════════════════════════════════════ */
+/* Контур снят с реальной подосновы (OSM/2ГИС, ул. Спирина 6, Вологда) и развёрнут
+   на -22.85° — дом стоит по осям сцены, весь остальной мир повёрнут вместе с ним.
+   Г-образный корпус: длинное крыло 52.8 × 18.9 м вдоль улицы (юг, +Z),
+   северный выступ 17.7 × 32.7 м. Двор — в вогнутом углу, на северо-западе. */
+const BLOCKS=[
+  // Западная часть длинного крыла (глубина 18.9 м)
+  {id:0,x0:-39.1,z0:-5.1, x1:-22.0,z1:13.8, base:0,        bay:3.42,sides:'SWN',
+   oriel:1,retail:'SN',yard:'N'},
+  {id:2,x0:-39.1,z0:-3.7, x1:-22.0,z1:13.8, base:BASE_TOP, bay:3.42,sides:'SWN',oriel:1,crown:1},
+  // Средняя часть длинного крыла (глубина 14.3 м)
+  {id:0,x0:-22.05,z0:-0.5,x1:-4.0, z1:13.8, base:0,        bay:3.61,sides:'SN',
+   oriel:1,retail:'SN',yard:'N'},
+  {id:2,x0:-22.05,z0:0.9, x1:-4.0, z1:13.8, base:BASE_TOP, bay:3.61,sides:'SN',oriel:1,crown:1},
+  // Северный выступ + восточный торец, в цоколе гаражи со стороны парковки
+  {id:1,x0:-4.05,z0:-18.9,x1:13.7, z1:13.8, base:0,        bay:3.55,sides:'SENW',
+   oriel:1,retail:'SW',garage:'E',yard:'W'},
+  {id:2,x0:-4.05,z0:-17.5,x1:13.7, z1:13.8, base:BASE_TOP, bay:3.55,sides:'SENW',oriel:1,crown:1}
+];
+
+function buildBlocks(){
+  for(const b of BLOCKS){
+    let top=0;
+    for(const s of b.sides) top=facade(b,s);
+    b.top=top;
+    const f=[0,b.id,0];
+    plate(b.x0,b.z0,b.x1,b.z1,top-0.42,C.roof,f);          // кровля
+    if(b.crown){
+      const p=0.36;                                         // парапет — рамка из четырёх балок
+      box(b.x0,top-0.42,b.z0,b.x1,top+1.0,b.z0+p,C.dark,f);
+      box(b.x0,top-0.42,b.z1-p,b.x1,top+1.0,b.z1,C.dark,f);
+      box(b.x0,top-0.42,b.z0,b.x0+p,top+1.0,b.z1,C.dark,f);
+      box(b.x1-p,top-0.42,b.z0,b.x1,top+1.0,b.z1,C.dark,f);
+      // собственная газовая котельная на кровле + машинные отделения лифтов
+      const cx=(b.x0+b.x1)/2, cz=(b.z0+b.z1)/2;
+      box(cx-3.4,top-0.5,cz-2.4,cx+3.4,top+2.4,cz+2.4,tint(C.dark,1.18),f);
+      for(let i=0;i<2;i++){
+        const px=cx-1.6+i*3.2;
+        cyl(px,cz+3.4,0.24,top-0.4,top+4.6,C.roofEq,f,8);
+        cyl(px,cz+3.4,0.26,top+3.4,top+3.9,C.redHot,[6,b.id,0],8);
+      }
+      for(let i=0;i<ri(3,5);i++){
+        const w=rr(2.0,3.8), d=rr(1.6,2.8);
+        const x=rr(b.x0+1.6,b.x1-w-1.6), z=rr(b.z0+1.6,b.z1-d-1.6);
+        box(x,top-0.5,z,x+w,top-0.5+rr(0.7,1.5),z+d,C.roofEq,f);
+      }
+    } else {
+      // эксплуатируемая кровля-терраса «Небесных дворцов»: венчающий объём отступает
+      // от дворового (северного) края на 1.4 м — освободившаяся полоса и есть терраса
+      const tz0=b.z0, tz1=b.z0+1.4;
+      plate(b.x0,tz0,b.x1,tz1,top-0.38,C.woodL,[6,b.id,0]);
+      for(let x=b.x0+2.2;x<b.x1-3;x+=5.4)
+        box(x,top-0.38,tz0+0.35,x+2.4,top+0.5,tz0+1.05,C.hedge,[3,b.id,rnd()]);
+      box(b.x0,top-0.38,tz0,b.x1,top+0.72,tz0+0.08,C.rail,[6,b.id,0]);   // ограждение
+    }
+  }
+  // возвраты уступов дворового фасада: торцы, обнажённые сдвигом глубины крыльев
+  box(-22.06,0,-5.1,-21.94,CROWN_TOP+1.0,-0.5,C.dark,[0,0,0]);
+  box(-4.11,0,-5.9,-3.99,CROWN_TOP+1.0,-0.5,C.dark,[0,0,0]);
+  // вывески на венчающем объёме: две на уличный фронт, одна на восточный торец
+  sign(-9.0,  CROWN_TOP-0.1, 13.82, 'S', 1.15);
+  sign(-33.0, CROWN_TOP-0.1, 13.82, 'S', 1.15);
+  sign(13.72, CROWN_TOP-0.1, 8.0,  'E', 1.15);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   5. БЛАГОУСТРОЙСТВО И КОНТЕКСТ
+   ══════════════════════════════════════════════════════════════ */
+/* плодовое дерево двора: вишня, яблоня — рыхлая крона из мелких клубков */
+function tree(x,z,h,r,det,bloomy){
+  const f=[3,-1,rnd()];
+  const SG=det?9:7, RG=det?6:4;
+  const th=h*0.42, tr=0.08+h*0.017;
+  cyl(x,z,tr,Y0,Y0+th,C.trunk,[0,-1,0],6);
+  for(let i=0;i<3;i++){
+    const a=rr(0,6.283), L=r*rr(0.5,0.9);
+    const bx=x+Math.cos(a)*L*0.6, bz=z+Math.sin(a)*L*0.6;
+    quad([x-0.07,Y0+th*0.72,z],[x+0.07,Y0+th*0.72,z],
+         [bx+0.03,Y0+th+h*0.16,bz],[bx-0.03,Y0+th+h*0.16,bz],C.trunk,[0,-1,0]);
+  }
+  const cols=[C.foliage,C.foliage2,C.foliage3];
+  const n=det?ri(14,19):ri(8,11);
+  for(let i=0;i<n;i++){
+    const a=rr(0,6.283), rad=r*Math.pow(rnd(),0.55);
+    const cx=x+Math.cos(a)*rad, cz=z+Math.sin(a)*rad;
+    const cy=Y0+th+r*rr(0.05,0.95);
+    const s=r*rr(0.22,0.40)*(1-0.30*rad/r);
+    // цветение — редкими пятнами по кроне, иначе дерево читается ватным комом
+    const c0=(bloomy&&rnd()<0.14)?tint(C.bloom,rr(0.90,1.0)):tint(cols[ri(0,2)],rr(0.86,1.14));
+    sphere(cx,cy,cz,s,s*rr(0.74,1.02),c0,f,SG,RG);
+  }
+}
+function shrub(x,z,r){ sphere(x,Y0+r*0.62,z,r,r*0.7,tint(C.hedge,rr(0.9,1.15)),[3,-1,rnd()],7,4); }
+/* стриженый шар — во дворе их много */
+function topiary(x,z,r){
+  cyl(x,z,0.06,Y0,Y0+r*0.5,C.trunk,[0,-1,0],5);
+  sphere(x,Y0+r*1.05,z,r,r,tint(C.hedge,rr(0.94,1.10)),[3,-1,rnd()],9,6);
+}
+function hedge(x0,z0,x1,z1){ box(x0,Y0,z0,x1,Y0+rr(0.55,0.75),z1,C.hedge,[3,-1,rnd()]); }
+function flowerbed(x0,z0,x1,z1){
+  plate(x0,z0,x1,z1,Y0+0.07,C.soil,[4,-1,0]);
+  const n=Math.max(6,Math.round((x1-x0)*(z1-z0)*0.55));
+  for(let i=0;i<n;i++){
+    const r=rr(0.26,0.58), cx=rr(x0+r,x1-r), cz=rr(z0+r,z1-r);
+    sphere(cx,Y0+r*0.72,cz,r,r*0.62,
+      rnd()<0.45?tint(C.foliage2,rr(0.85,1.15)):hex(FLOWERS[ri(0,FLOWERS.length-1)]),
+      [3,-1,rnd()],6,4);
+  }
+}
+const SKIN=['#C89B78','#E0BC9A','#A97C58'];
+const WEAR=['#E8E3D8','#3A3F48','#8C6A52','#B8402F','#5A6B7A','#D8D2C4','#2E3238'];
+function person(x,z){
+  const f=[6,-1,0], w=hex(WEAR[ri(0,WEAR.length-1)]), s=hex(SKIN[ri(0,SKIN.length-1)]);
+  const a=rr(0,6.283), dx=0.17*Math.cos(a), dz=0.17*Math.sin(a);
+  box(x-0.10,Y0,z-0.10,x+0.10,Y0+0.86,z+0.10,tint(w,0.72),f);
+  box(x-0.24+dx*0.3,Y0+0.84,z-0.16+dz*0.3,x+0.24+dx*0.3,Y0+1.52,z+0.16+dz*0.3,w,f);
+  sphere(x+dx*0.3,Y0+1.63,z+dz*0.3,0.115,0.135,s,f,6,4);
+}
+function bench(x,z,rot){
+  const f=[6,-1,0], along=rot<0.4, w=1.9, d=0.52;
+  const ax=along?w:d, az=along?d:w;
+  box(x-ax/2,Y0+0.42,z-az/2, x+ax/2,Y0+0.54,z+az/2, C.wood,f);
+  box(x-ax/2+0.1,Y0+0.05,z-az/2+0.1, x-ax/2+0.3,Y0+0.42,z+az/2-0.1, C.metal,f);
+  box(x+ax/2-0.3,Y0+0.05,z-az/2+0.1, x+ax/2-0.1,Y0+0.42,z+az/2-0.1, C.metal,f);
+}
+function lamp(x,z,h){
+  const f=[6,-1,0];
+  cyl(x,z,0.10,Y0,Y0+h,C.metal,f,6);
+  box(x-0.50,Y0+h-0.16,z-0.15,x+0.50,Y0+h,z+0.15,C.metal,f);
+  box(x-0.38,Y0+h-0.29,z-0.12,x+0.38,Y0+h-0.17,z+0.12,hex('#FFE7BC'),[2,-1,0.99]);
+}
+function car(x,z,rot,col){
+  const c=hex(col), f=[6,-1,0], g=[1,-1,0.02];
+  const along=rot<0.4, L=4.62, W=1.88;
+  const P=[[-0.50,0.30,0.74,0.80],[-0.42,0.24,0.80,0.94],[-0.26,0.22,0.86,1.00],
+           [-0.10,0.22,1.34,0.97],[ 0.06,0.22,1.45,0.95],[ 0.24,0.23,1.42,0.94],
+           [ 0.38,0.26,1.10,0.90],[ 0.48,0.31,0.86,0.78],[ 0.50,0.36,0.72,0.62]];
+  const V=(i,side,top)=>{
+    const p=P[i], d=p[0]*L, w=p[3]*W/2*side, y=Y0+(top?p[2]:p[1]);
+    return along ? [x+d,y,z+w] : [x+w,y,z+d];
+  };
+  for(let i=0;i<P.length-1;i++){
+    const glassy=P[i][2]>1.05&&P[i+1][2]>1.05;
+    const cc=glassy?C.glass:c, ff=glassy?g:f;
+    quad(V(i,1,0),V(i+1,1,0),V(i+1,1,1),V(i,1,1),cc,ff);
+    quad(V(i+1,-1,0),V(i,-1,0),V(i,-1,1),V(i+1,-1,1),cc,ff);
+    quad(V(i,1,1),V(i+1,1,1),V(i+1,-1,1),V(i,-1,1),cc,ff);
+    quad(V(i+1,1,0),V(i,1,0),V(i,-1,0),V(i+1,-1,0),tint(c,0.45),f);
+  }
+  quad(V(0,-1,0),V(0,1,0),V(0,1,1),V(0,-1,1),tint(c,0.9),f);
+  const n=P.length-1;
+  quad(V(n,1,0),V(n,-1,0),V(n,-1,1),V(n,1,1),tint(c,0.9),f);
+  const wx=along?1.44:0.76, wz=along?0.76:1.44, wr=0.33;
+  for(const[dx,dz]of[[-wx,-wz],[wx,-wz],[-wx,wz],[wx,wz]]){
+    const cx=x+dx, cz=z+dz;
+    for(let j=0;j<8;j++){
+      const a0=2*Math.PI*j/8, a1=2*Math.PI*(j+1)/8;
+      if(along) quad([cx+wr*Math.cos(a1),Y0+wr+wr*Math.sin(a1),cz-0.12],
+                     [cx+wr*Math.cos(a0),Y0+wr+wr*Math.sin(a0),cz-0.12],
+                     [cx+wr*Math.cos(a0),Y0+wr+wr*Math.sin(a0),cz+0.12],
+                     [cx+wr*Math.cos(a1),Y0+wr+wr*Math.sin(a1),cz+0.12],C.metal,f);
+      else      quad([cx-0.12,Y0+wr+wr*Math.sin(a1),cz+wr*Math.cos(a1)],
+                     [cx-0.12,Y0+wr+wr*Math.sin(a0),cz+wr*Math.cos(a0)],
+                     [cx+0.12,Y0+wr+wr*Math.sin(a0),cz+wr*Math.cos(a0)],
+                     [cx+0.12,Y0+wr+wr*Math.sin(a1),cz+wr*Math.cos(a1)],C.metal,f);
+    }
+  }
+}
+/* арт-объект: красная улитка — символ неспешной жизни, стоит в центре двора */
+function snail(x,z,s){
+  const f=[6,-1,0];
+  sphere(x-0.55*s,Y0+0.32*s,z,0.62*s,0.34*s,tint(C.redHot,0.94),f,10,6);   // тело
+  sphere(x-1.05*s,Y0+0.46*s,z,0.26*s,0.28*s,tint(C.redHot,1.02),f,8,5);    // голова
+  for(let i=0;i<2;i++)                                                      // рожки
+    cyl(x-1.10*s,z-0.12*s+i*0.24*s,0.045*s,Y0+0.60*s,Y0+0.95*s,C.redHot,f,5);
+  const cx=x+0.22*s, cy=Y0+0.92*s;
+  for(let i=0;i<26;i++){                                                    // раковина-спираль
+    const t=i/26, a=t*Math.PI*3.3, R=(1-0.78*t)*0.86*s;
+    sphere(cx+Math.cos(a)*R, cy+Math.sin(a)*R, z, (0.27-0.17*t)*s, (0.27-0.17*t)*s,
+           tint(C.redHot,0.86+0.30*t), f, 8, 5);
+  }
+}
+/* игровой комплекс: чёрный каркас, внутри красные стержни — «лабиринт из перцев» */
+function playFrame(x,z,w,d,h){
+  const f=[6,-1,0];
+  for(const[px,pz]of[[x,z],[x+w,z],[x,z+d],[x+w,z+d]]) box(px-0.09,Y0,pz-0.09,px+0.09,Y0+h,pz+0.09,C.metal,f);
+  for(const zz of [z,z+d]) box(x,Y0+h-0.14,zz-0.07,x+w,Y0+h,zz+0.07,C.metal,f);
+  for(const xx of [x,x+w]) box(xx-0.07,Y0+h-0.14,z,xx+0.07,Y0+h,z+d,C.metal,f);
+  for(let i=1;i<8;i++) box(x+w*i/8-0.05,Y0+h-0.12,z,x+w*i/8+0.05,Y0+h-0.02,z+d,C.metal,f);
+  for(let i=1;i<8;i++) for(let j=1;j<4;j++){          // стержни-«перцы»
+    if(hash1(i*7.3+j*3.1)<0.42) continue;
+    const px=x+w*i/8, pz=z+d*j/4;
+    box(px-0.055,Y0+0.1,pz-0.055,px+0.055,Y0+h-0.14,pz+0.055,C.redHot,f);
+  }
+}
+function pergola(x,z,w,d){
+  const f=[6,-1,0];
+  for(const[px,pz]of[[x,z],[x+w,z],[x,z+d],[x+w,z+d]]) box(px-0.09,Y0,pz-0.09,px+0.09,Y0+2.75,pz+0.09,C.metal,f);
+  for(let i=0;i<=w;i+=0.58) box(x+i-0.04,Y0+2.62,z,x+i+0.04,Y0+2.75,z+d,C.wood,f);
+  box(x-0.16,Y0+2.50,z-0.16,x+w+0.16,Y0+2.62,z+d+0.16,C.metal,f);
+  box(x+w*0.28,Y0+0.70,z+d*0.30,x+w*0.72,Y0+0.78,z+d*0.70,C.wood,f);   // стол
+}
+/* парковочный ряд: разметка + машины. rot=0 — вдоль X, иначе поперёк */
+function parkRow(x0,z0,x1,z1,rot,n){
+  plate(x0,z0,x1,z1,Y0+0.04,C.asphalt2,[4,-1,0]);
+  if(rot<0.4){
+    for(let z=z0;z<z1-0.1;z+=(z1-z0)/n) plate(x0,z,x1,z+0.14,Y0+0.07,C.line,[4,-1,0]);
+    for(let i=0;i<n;i++) car((x0+x1)/2,z0+(z1-z0)*(i+0.5)/n,0,CARS[ri(0,CARS.length-1)]);
+  } else {
+    for(let x=x0;x<x1-0.1;x+=(x1-x0)/n) plate(x,z0,x+0.14,z1,Y0+0.07,C.line,[4,-1,0]);
+    for(let i=0;i<n;i++) car(x0+(x1-x0)*(i+0.5)/n,(z0+z1)/2,1,CARS[ri(0,CARS.length-1)]);
+  }
+}
+/* ограждение по улице: кирпичные тумбы и чёрная решётка */
+function railing(x0,z0,x1,z1,step){
+  const f=[6,-1,0], along=(x1-x0)>(z1-z0);
+  const L=along?x1-x0:z1-z0, n=Math.max(1,Math.round(L/step));
+  for(let i=0;i<=n;i++){
+    const t=i/n, px=along?x0+(x1-x0)*t:x0, pz=along?z0:z0+(z1-z0)*t;
+    box(px-0.22,Y0,pz-0.22,px+0.22,Y0+1.55,pz+0.22,C.red,[0,-1,0]);
+  }
+  if(along){
+    box(x0,Y0+1.18,z0-0.04,x1,Y0+1.26,z0+0.04,C.metal,f);
+    box(x0,Y0+0.35,z0-0.04,x1,Y0+0.42,z0+0.04,C.metal,f);
+    for(let x=x0;x<x1;x+=0.22) box(x-0.02,Y0+0.35,z0-0.03,x+0.02,Y0+1.42,z0+0.03,C.metal,f);
+  } else {
+    box(x0-0.04,Y0+1.18,z0,x0+0.04,Y0+1.26,z1,C.metal,f);
+    box(x0-0.04,Y0+0.35,z0,x0+0.04,Y0+0.42,z1,C.metal,f);
+    for(let z=z0;z<z1;z+=0.22) box(x0-0.03,Y0+0.35,z-0.02,x0+0.03,Y0+1.42,z+0.02,C.metal,f);
+  }
+}
+
+/* ── реальная подоснова: контуры зданий, дороги и площадки с карты ─────────
+   Координаты уже переведены в метры и развёрнуты в систему дома.
+   b:[этажей,[[x,z],…]] · r:[ширина,тротуар?,[[x,z],…]] · a:[тип,[[x,z],…]] */
+const CTX={"b":[[2,[[-124.5,-347.8],[-95.3,-276.2],[-74.7,-284.6],[-103.8,-356.2]]],[2,[[-49.1,-423.6],[-34.0,-422.1],[-32.4,-438.3],[-47.4,-439.8]]],[2,[[74.7,-306.9],[89.9,-303.8],[90.9,-309.0],[95.8,-308.0],[97.9,-318.9],[90.2,-320.5],[89.6,-317.2],[77.2,-319.6]]],[2,[[97.8,-365.7],[87.7,-392.9],[74.0,-387.8],[84.1,-360.6]]],[10,[[-523.8,-20.2],[-518.6,-17.8],[-503.7,-10.9],[-485.6,-2.5],[-455.7,11.4],[-429.9,23.3],[-416.9,29.3],[-411.6,18.0],[-518.5,-31.6]]],[4,[[-57.5,19.4],[-66.4,19.2],[-70.3,19.1],[-70.3,18.4],[-71.6,18.4],[-71.3,2.9],[-70.4,2.9],[-70.2,-8.8],[-69.7,-8.8],[-69.5,-20.8],[-68.8,-20.8],[-68.8,-24.6],[-55.7,-24.3],[-56.1,-1.1],[-56.8,-1.1],[-57.0,7.4],[-57.2,7.4]]],[2,[[-101.9,-418.6],[-108.4,-404.2],[-120.5,-409.6],[-114.0,-424.0]]],[2,[[251.1,74.0],[300.1,73.6],[299.9,49.2],[251.0,49.6]]],[2,[[-94.5,-397.9],[-79.7,-391.6],[-74.6,-403.3],[-89.4,-409.6]]],[2,[[0.1,-378.5],[12.8,-377.2],[14.5,-393.9],[1.8,-395.1]]],[2,[[-4.6,-441.2],[13.5,-439.7],[14.0,-445.4],[19.8,-445.0],[20.8,-457.3],[-3.1,-459.3]]],[2,[[80.6,-189.8],[80.3,-180.0],[71.6,-180.3],[71.9,-190.1]]],[5,[[-405.0,-145.1],[-341.9,-115.5],[-336.0,-128.2],[-346.2,-133.0],[-361.2,-140.0],[-374.4,-146.2],[-389.4,-153.2],[-399.1,-157.7]]],[3,[[-398.0,88.8],[-406.6,107.9],[-414.0,104.5],[-425.9,99.2],[-430.5,97.2],[-422.1,78.3],[-416.9,80.7],[-415.7,78.1],[-408.8,81.2],[-409.8,83.5]]],[2,[[73.6,-225.7],[84.3,-225.2],[84.6,-233.1],[74.0,-233.5]]],[5,[[-459.4,-226.5],[-371.1,-185.5],[-365.5,-197.6],[-375.6,-202.3],[-391.2,-209.5],[-404.2,-215.5],[-417.0,-221.4],[-430.0,-227.5],[-444.8,-234.4],[-453.8,-238.5]]],[2,[[38.9,-325.5],[53.6,-323.4],[55.1,-334.1],[40.4,-336.1]]],[2,[[-155.1,-230.8],[-128.1,-163.4],[-152.7,-153.6],[-179.7,-220.9]]],[5,[[-357.6,-216.3],[-301.1,-190.0],[-295.7,-201.5],[-303.3,-205.0],[-317.7,-211.7],[-331.7,-218.2],[-346.3,-225.0],[-352.3,-227.8]]],[2,[[-10.1,-349.6],[12.7,-346.7],[14.8,-362.3],[-8.1,-365.2]]],[2,[[44.7,-387.7],[59.2,-386.7],[60.2,-400.7],[45.7,-401.7]]],[2,[[-54.5,53.0],[-59.0,77.0],[-68.8,75.1],[-64.3,51.1]]],[2,[[343.2,276.8],[344.2,289.3],[323.9,290.9],[322.9,278.5]]],[5,[[-206.0,-348.1],[-231.2,-289.6],[-244.3,-295.2],[-240.8,-303.5],[-234.7,-317.6],[-229.3,-330.1],[-223.1,-344.4],[-219.1,-353.8]]],[2,[[61.8,137.5],[60.8,164.2],[46.9,163.6],[47.9,137.0]]],[5,[[-348.7,-55.0],[-351.2,-56.1],[-357.1,-58.9],[-359.3,-59.9],[-360.3,-57.7],[-367.9,-61.1],[-373.6,-63.8],[-380.8,-67.1],[-385.7,-56.4],[-386.6,-54.4],[-373.3,-48.2],[-364.9,-44.4],[-364.0,-46.3],[-354.7,-42.0]]],[2,[[-60.0,-379.7],[-36.6,-389.5],[-42.8,-404.1],[-66.2,-394.3]]],[2,[[24.3,-298.6],[18.1,-284.3],[7.5,-288.9],[13.8,-303.2]]],[5,[[-299.7,-139.2],[-339.7,-50.9],[-348.7,-55.0],[-351.2,-56.1],[-346.5,-66.5],[-339.9,-81.0],[-333.8,-94.5],[-327.8,-107.8],[-322.2,-120.2],[-315.1,-135.7],[-311.2,-144.4]]],[2,[[48.9,-427.6],[63.0,-426.3],[64.3,-439.9],[50.3,-441.2]]],[2,[[79.9,-164.9],[79.5,-154.3],[68.6,-154.8],[69.0,-165.3]]],[9,[[-513.6,-115.2],[-502.3,-110.0],[-481.4,-100.4],[-460.2,-90.6],[-438.9,-80.9],[-418.9,-71.7],[-397.9,-62.0],[-385.7,-56.4],[-386.6,-54.4],[-391.4,-44.1],[-519.3,-102.8]]],[2,[[-125.2,-128.4],[-147.1,-118.9],[-152.8,-131.9],[-130.8,-141.4]]],[2,[[-1.3,-263.8],[1.0,-262.8],[-1.4,-257.3],[-8.5,-260.3],[-4.1,-270.6],[0.7,-268.5]]],[2,[[47.9,-287.4],[41.5,-272.3],[28.6,-277.8],[35.1,-292.9]]],[2,[[82.4,-210.1],[82.0,-201.7],[70.5,-202.3],[70.9,-210.7]]],[5,[[-337.0,-258.8],[-279.5,-233.0],[-273.5,-246.0],[-282.2,-249.9],[-296.6,-256.3],[-310.8,-262.7],[-325.1,-269.1],[-331.2,-271.8]]],[2,[[40.8,-349.9],[56.7,-348.4],[57.7,-359.4],[41.9,-360.9]]],[2,[[1.0,-408.4],[13.4,-407.2],[15.1,-425.6],[2.6,-426.8]]],[2,[[444.8,-22.4],[416.9,-21.3],[416.4,-35.3],[444.3,-36.4]]],[5,[[-357.3,-312.8],[-270.1,-274.9],[-265.7,-285.0],[-264.7,-287.2],[-274.5,-291.5],[-290.5,-298.4],[-303.3,-304.0],[-315.4,-309.3],[-328.6,-315.0],[-344.6,-322.0],[-351.9,-325.2]]],[2,[[41.0,-133.9],[50.0,-133.4],[50.4,-141.9],[41.5,-142.4]]],[2,[[79.3,-115.2],[78.9,-107.6],[67.1,-108.3],[67.5,-115.9]]],[5,[[-485.3,-169.4],[-423.4,-140.7],[-417.7,-153.0],[-427.7,-157.6],[-442.4,-164.4],[-455.5,-170.5],[-471.0,-177.7],[-479.6,-181.7]]],[2,[[-92.5,-452.8],[-98.4,-438.6],[-110.9,-443.8],[-105.0,-458.0]]],[5,[[-336.8,-366.3],[-273.1,-337.7],[-267.4,-350.4],[-278.4,-355.4],[-292.8,-361.8],[-305.8,-367.7],[-321.5,-374.7],[-331.1,-379.1]]],[10,[[-228.6,-387.0],[-222.5,-384.3],[-222.1,-385.3],[-218.6,-383.7],[-218.0,-385.2],[-211.6,-382.4],[-214.8,-374.9],[-211.3,-373.4],[-208.1,-372.0],[-206.6,-375.4],[-197.1,-371.3],[-191.2,-384.8],[-197.8,-387.7],[-198.3,-386.5],[-207.9,-390.7],[-205.2,-396.8],[-211.6,-399.7],[-212.4,-397.9],[-222.0,-402.1]]],[2,[[323.4,244.0],[337.6,242.7],[337.1,236.3],[322.8,237.6]]],[9,[[-383.1,32.3],[-388.9,44.4],[-390.1,43.8],[-395.0,53.9],[-393.5,54.6],[-399.0,66.0],[-400.0,65.5],[-402.8,71.3],[-414.2,65.8],[-410.8,58.8],[-409.7,59.3],[-407.1,54.1],[-405.5,50.7],[-406.8,50.0],[-402.4,40.8],[-401.3,41.3],[-399.2,36.8],[-404.2,34.4],[-407.4,32.8],[-408.0,34.1],[-411.7,32.3],[-406.3,21.2],[-401.2,23.6],[-400.2,21.4],[-388.1,27.3],[-389.1,29.4]]],[2,[[405.3,-22.3],[378.8,-23.1],[379.4,-38.5],[405.9,-37.7]]],[1,[[336.7,140.2],[408.6,139.3],[408.8,153.1],[336.9,154.0]]],[2,[[369.2,-100.9],[424.1,-101.3],[424.2,-88.4],[369.3,-88.0]]],[1,[[271.2,-331.1],[278.5,-331.3],[282.0,-197.6],[274.7,-197.5]]],[1,[[336.5,98.7],[414.5,98.2],[414.6,112.9],[336.6,113.4]]],[1,[[337.1,78.5],[417.9,78.3],[417.9,91.6],[337.1,91.9]]],[1,[[316.8,190.1],[329.5,189.9],[329.8,216.8],[317.1,216.9]]],[1,[[336.3,58.3],[416.6,58.2],[416.7,72.7],[336.4,72.8]]],[2,[[270.8,-186.1],[291.7,-186.9],[293.2,-150.1],[297.6,-150.3],[298.2,-135.9],[272.8,-134.9]]],[1,[[336.0,160.0],[404.8,159.0],[405.0,173.4],[378.0,173.8],[377.9,167.6],[371.2,167.7],[371.4,178.2],[356.9,178.4],[356.7,166.9],[349.4,167.0],[349.6,179.9],[336.3,180.1]]],[1,[[315.3,41.6],[328.9,41.5],[329.5,184.8],[315.9,184.8]]],[2,[[297.5,-52.5],[294.8,-112.1],[307.5,-112.7],[310.2,-53.0]]],[1,[[336.3,119.8],[409.2,119.1],[409.3,132.3],[336.4,133.0]]],[1,[[356.9,188.6],[371.8,188.4],[372.6,241.6],[365.1,241.7],[365.0,232.3],[357.6,232.4]]],[1,[[336.8,189.1],[351.5,189.0],[351.8,219.2],[337.1,219.4]]],[5,[[365.0,-285.9],[413.6,-286.8],[414.9,-211.3],[363.5,-210.4],[363.2,-226.5],[395.8,-227.1],[395.0,-271.4],[365.3,-270.9]]],[1,[[378.5,186.5],[398.7,186.6],[398.6,202.4],[391.2,202.4],[390.9,245.6],[378.2,245.5]]],[1,[[409.5,173.6],[430.3,44.9],[443.6,47.0],[422.9,175.7]]],[2,[[367.9,-171.8],[417.7,-174.2],[418.5,-160.2],[368.6,-157.7]]],[1,[[336.3,43.0],[422.1,42.3],[422.2,50.7],[336.3,51.4]]],[2,[[363.3,-65.8],[430.6,-65.8],[430.6,-52.0],[410.1,-52.0],[410.1,-46.0],[373.5,-46.1],[373.5,-51.7],[363.3,-51.8]]],[1,[[408.9,179.2],[396.3,245.7],[409.2,248.2],[421.8,181.7]]],[5,[[276.5,113.3],[293.3,113.1],[294.1,163.8],[277.3,164.0]]],[1,[[-289.9,-211.2],[-279.5,-233.0],[-265.4,-226.3],[-275.9,-204.5]]],[1,[[-308.5,-171.4],[-298.1,-194.5],[-283.8,-188.0],[-291.0,-172.1],[-294.2,-164.9]]],[2,[[-42.6,495.7],[-33.8,410.2],[80.9,422.1],[81.8,413.5],[94.6,414.8],[84.9,508.5],[78.5,507.9],[78.2,511.3],[77.8,514.7],[42.3,511.0],[43.0,504.4],[10.0,501.0],[9.2,508.2],[-24.9,504.7],[-24.2,497.6]]],[1,[[-253.3,-279.7],[-255.6,-263.7],[-253.8,-263.0],[-255.8,-258.4],[-250.0,-255.9],[-248.1,-260.4],[-241.8,-257.7],[-235.5,-272.4]]],[5,[[-244.3,-295.2],[-256.1,-300.3],[-258.1,-295.6],[-258.8,-294.0],[-261.5,-295.1],[-264.7,-287.2],[-265.7,-285.0],[-253.3,-279.7],[-249.1,-289.4],[-247.2,-288.6]]],[2,[[347.2,-140.4],[422.7,-136.9],[422.3,-127.8],[346.8,-131.3]]],[2,[[-318.5,65.9],[-337.4,60.1],[-330.4,37.3],[-288.7,50.1],[-292.7,63.1],[-315.4,56.1]]],[12,[[-254.5,128.4],[-258.1,148.0],[-196.2,159.2],[-192.8,140.8]]],[10,[[-194.8,231.0],[-183.8,233.4],[-184.2,235.4],[-168.8,238.8],[-168.4,236.8],[-154.2,239.9],[-154.6,241.7],[-139.2,245.0],[-138.9,243.2],[-125.2,246.2],[-125.6,247.9],[-110.2,251.3],[-109.9,249.5],[-98.8,252.0],[-97.4,246.0],[-95.9,246.3],[-93.8,236.7],[-106.5,233.9],[-142.9,226.0],[-179.5,218.0],[-182.8,217.3],[-178.9,199.4],[-176.1,200.1],[-164.8,202.5],[-162.7,192.9],[-166.5,192.1],[-164.9,185.1],[-183.5,181.0],[-185.1,188.1],[-187.1,187.7],[-195.2,225.0],[-193.6,225.4]]],[3,[[-135.4,18.2],[-116.3,19.8],[-113.2,-18.2],[-132.3,-19.8]]],[3,[[-169.9,-4.4],[-170.1,17.1],[-143.8,17.3],[-143.7,2.9],[-152.9,2.9],[-152.9,-4.2]]],[3,[[-108.8,-69.0],[-133.2,-42.2],[-120.2,-30.2],[-108.0,-43.6],[-99.2,-35.6],[-86.9,-49.1]]],[4,[[31.7,-0.1],[31.7,13.2],[80.9,13.4],[81.0,0.1]]],[5,[[49.6,-21.1],[53.0,-20.9],[52.9,-18.4],[61.2,-18.0],[61.3,-19.9],[64.2,-19.8],[64.3,-21.0],[84.7,-20.1],[87.3,-83.6],[72.2,-84.2],[72.0,-81.2],[70.2,-81.3],[68.5,-40.5],[71.6,-40.3],[71.3,-32.3],[50.1,-33.2]]],[2,[[-308.2,16.9],[-294.7,-12.7],[-268.5,-0.5],[-253.1,-0.0],[-252.6,20.7],[-296.2,23.0]]],[3,[[56.8,-281.6],[87.2,-268.3],[88.2,-268.9],[92.3,-262.4],[91.3,-261.8],[91.1,-250.9],[88.8,-250.9],[88.7,-244.5],[77.8,-244.7],[77.8,-245.5],[74.4,-245.6],[74.5,-250.7],[70.3,-257.3],[67.2,-258.7],[66.8,-257.6],[49.6,-265.1]]],[2,[[3.0,-139.6],[4.1,-125.4],[18.5,-126.7],[18.7,-133.3],[16.0,-132.8],[15.6,-137.4],[12.2,-136.6],[12.2,-139.8]]],[2,[[-54.1,-103.3],[-47.8,-128.9],[-31.8,-123.6],[-33.2,-118.6],[-30.0,-115.5],[-30.5,-111.7],[-34.2,-110.1],[-37.7,-110.5],[-38.6,-107.4],[-42.8,-107.5],[-45.4,-100.3]]],[2,[[13.7,-68.7],[11.7,-53.0],[23.5,-50.5],[26.2,-66.6]]],[2,[[-11.6,-75.6],[-11.2,-67.0],[-6.5,-67.3],[-5.9,-56.9],[5.8,-57.6],[5.0,-76.5]]],[2,[[-40.4,-82.3],[-39.9,-65.1],[-28.7,-65.3],[-29.1,-82.6]]],[4,[[-167.6,80.2],[-169.7,91.4],[-170.9,91.2],[-173.2,103.2],[-172.0,103.4],[-172.8,107.6],[-157.9,110.4],[-157.0,105.7],[-156.5,105.8],[-154.3,94.1],[-154.8,94.0],[-152.7,82.6],[-152.4,82.7],[-150.1,70.2],[-150.4,70.1],[-149.6,66.2],[-151.2,65.9],[-150.7,63.4],[-172.4,59.3],[-174.6,71.0],[-169.5,71.9],[-170.2,75.4],[-168.3,75.8],[-169.0,79.9]]],[2,[[-109.7,172.1],[-109.7,186.5],[-90.3,186.4],[-90.4,172.0]]],[2,[[-354.2,199.1],[-351.6,198.4],[-348.8,198.1],[-346.9,198.2],[-342.3,199.3],[-342.5,198.0],[-342.6,194.7],[-341.8,191.3],[-341.1,188.5],[-339.8,186.0],[-336.7,180.2],[-339.3,178.4],[-333.8,163.2],[-337.7,161.2],[-335.9,154.9],[-335.0,150.2],[-334.7,144.8],[-346.9,143.9],[-346.7,146.6],[-346.8,149.5],[-347.1,151.9],[-347.7,154.7],[-348.7,157.6],[-349.7,159.9],[-351.2,162.5],[-348.7,164.1],[-354.0,176.7],[-354.6,179.2],[-351.6,182.6],[-352.9,186.1],[-353.5,189.6],[-353.9,192.0],[-354.5,195.2]]],[5,[[-223.9,-2.4],[-223.6,17.7],[-195.8,17.2],[-196.0,2.6],[-207.5,2.8],[-207.6,-2.7]]],[1,[[-253.6,106.0],[-233.3,107.6],[-234.0,118.8],[-253.7,116.8]]],[2,[[-273.3,166.0],[-269.0,165.8],[-268.8,172.5],[-273.1,172.7]]],[5,[[-188.2,285.6],[-191.7,301.5],[-126.5,315.5],[-123.1,299.6]]],[5,[[-117.3,343.5],[-101.4,290.9],[-82.5,296.7],[-98.0,347.9],[-102.6,346.6],[-102.8,347.0],[-107.2,345.7],[-107.4,346.5]]],[5,[[-78.9,345.4],[-70.5,299.9],[-55.9,302.6],[-61.2,331.8],[-3.5,342.4],[-6.5,358.8]]],[2,[[-263.8,72.6],[-259.9,48.7],[-231.0,53.3],[-234.9,77.2]]],[2,[[-276.6,46.2],[-283.1,69.8],[-275.0,72.1],[-268.5,48.4]]],[2,[[-4.5,-223.4],[1.9,-243.7],[17.8,-238.7],[11.4,-218.4]]],[2,[[1.2,-186.7],[4.6,-174.6],[23.0,-179.8],[19.6,-191.9]]],[5,[[-448.2,193.3],[-428.9,150.1],[-433.5,148.0],[-414.0,104.5],[-425.9,99.2],[-428.9,105.8],[-440.6,132.2],[-445.4,142.7],[-440.3,145.0],[-444.0,153.2],[-455.6,179.2],[-459.6,188.2]]],[2,[[10.4,-111.8],[9.6,-121.2],[24.9,-122.5],[25.7,-113.1]]],[2,[[-31.8,-41.4],[-31.7,-53.9],[-15.9,-53.8],[-16.0,-41.3]]],[2,[[-98.3,-76.3],[-89.2,-80.6],[-82.1,-65.7],[-91.2,-61.4]]],[2,[[-65.3,-81.4],[-63.9,-64.9],[-76.7,-63.8],[-78.0,-80.4]]],[2,[[-53.0,-86.1],[-53.0,-91.3],[-45.3,-91.4],[-45.2,-86.2]]],[2,[[-59.3,-59.7],[-59.3,-77.9],[-48.0,-78.0],[-47.9,-59.7]]],[2,[[-93.4,-132.4],[-85.6,-135.9],[-81.8,-127.4],[-89.6,-123.9]]],[2,[[-87.3,-352.7],[-80.7,-350.0],[-83.2,-343.9],[-89.8,-346.6]]],[2,[[-127.1,-357.3],[-119.8,-360.4],[-117.1,-354.1],[-124.4,-351.0]]],[2,[[-127.7,-368.2],[-126.0,-372.3],[-111.7,-366.3],[-113.4,-362.2]]],[2,[[-132.5,-374.9],[-128.8,-354.6],[-134.0,-353.6],[-137.7,-374.0]]],[2,[[-41.2,-418.7],[-27.4,-414.4],[-30.0,-406.0],[-43.8,-410.3]]],[2,[[-64.7,-430.6],[-68.3,-432.4],[-65.3,-438.5],[-61.7,-436.7]]],[2,[[-91.2,-441.2],[-86.1,-451.3],[-76.4,-446.4],[-81.4,-436.3]]],[2,[[-196.3,377.5],[-238.7,370.0],[-235.8,353.4],[-193.4,360.9]]],[2,[[-193.4,360.9],[-174.4,364.2],[-177.3,380.8],[-196.3,377.5]]],[2,[[-150.4,363.0],[-160.4,350.0],[-161.2,349.1],[-143.6,335.5],[-132.8,349.4]]],[2,[[-174.4,364.2],[-167.2,358.6],[-168.8,356.5],[-160.4,350.0],[-150.4,363.0],[-149.5,364.2],[-172.2,381.8],[-177.3,380.8]]],[2,[[19.6,-156.4],[28.3,-157.0],[29.0,-146.5],[20.3,-146.0]]]],"r":[[6.0,0,[[107.0,-272.8],[103.4,-277.2],[74.0,-291.3],[61.1,-296.5],[39.3,-307.0],[20.7,-316.2],[-27.8,-340.1],[-102.3,-371.8],[-143.1,-387.5],[-153.1,-391.3],[-165.1,-395.9],[-174.3,-400.2],[-223.8,-423.1],[-237.3,-429.3],[-253.7,-436.1],[-258.2,-438.2],[-316.4,-463.9],[-320.6,-465.8],[-403.2,-502.8],[-458.8,-524.9],[-463.7,-526.9],[-476.7,-532.2],[-515.7,-548.6],[-559.7,-567.1],[-574.9,-573.5],[-580.9,-576.1],[-663.5,-611.3],[-720.2,-634.3],[-736.6,-640.9],[-754.7,-649.5],[-775.7,-654.4]]],[6.0,0,[[-341.4,7.2],[-353.2,1.4],[-387.2,-15.1],[-405.5,-23.6],[-502.6,-68.7],[-532.0,-82.3],[-533.8,-83.2],[-585.9,-107.6],[-624.5,-125.2],[-672.6,-145.6],[-684.3,-150.6],[-688.0,-152.3],[-692.8,-154.6],[-827.1,-217.7],[-835.7,-221.9],[-841.6,-224.7],[-935.1,-269.2],[-948.5,-275.8]]],[6.0,0,[[-165.1,-395.9],[-169.7,-385.8],[-185.2,-350.9],[-233.4,-238.8],[-249.8,-201.2],[-255.4,-188.3],[-276.0,-143.8],[-321.6,-39.4],[-336.0,-6.5],[-341.4,7.2]]],[3.6,0,[[-471.1,188.7],[-450.3,143.0],[-450.6,127.1],[-436.6,97.9],[-437.5,86.1],[-426.3,64.3],[-416.1,45.1],[-421.5,37.6],[-488.7,5.8],[-499.2,6.7],[-525.9,-4.6],[-543.1,-6.6],[-579.3,-23.9],[-583.6,-26.9],[-584.6,-30.7],[-585.8,-38.2]]],[3.6,0,[[-255.4,-188.3],[-266.3,-192.8],[-272.3,-196.0],[-293.7,-210.6],[-351.5,-237.8],[-355.6,-237.8],[-359.4,-235.1],[-366.9,-221.2],[-372.2,-214.8],[-380.5,-212.9],[-417.2,-229.9],[-445.5,-242.0]]],[6.0,0,[[-102.7,163.4],[-153.0,154.6],[-152.4,144.1],[-158.0,138.6],[-165.4,132.8],[-183.3,122.2],[-222.5,106.6],[-240.9,96.8],[-253.4,91.4],[-296.6,81.7],[-314.3,76.0],[-363.3,59.4]]],[3.6,0,[[-417.2,-229.9],[-387.3,-291.4],[-376.5,-313.9],[-352.6,-331.9],[-280.6,-302.2],[-272.5,-298.9],[-258.8,-299.1],[-246.3,-304.3],[-238.7,-319.7],[-233.6,-330.9],[-237.5,-342.4],[-248.1,-350.1],[-256.6,-353.6],[-247.2,-377.4],[-253.5,-384.6],[-253.9,-391.5],[-253.3,-393.0],[-247.0,-408.1],[-240.2,-424.6],[-237.3,-429.3]]],[3.6,0,[[-373.3,-48.2],[-370.6,-54.6],[-367.9,-61.1]]],[3.6,0,[[-387.2,-15.1],[-381.9,-27.8],[-373.3,-48.2]]],[3.6,0,[[-367.9,-61.1],[-366.2,-65.0],[-365.5,-66.8],[-364.5,-69.0]]],[1.8,1,[[107.0,-272.8],[115.7,-274.1],[128.1,-256.2],[136.2,-251.4],[148.8,-249.6],[155.0,-249.9],[160.1,-250.5]]],[1.8,1,[[160.1,-250.5],[166.2,-250.7]]],[1.8,1,[[166.2,-250.7],[179.1,-252.2],[196.6,-259.1],[219.3,-276.3],[232.5,-289.9],[240.5,-306.3],[240.0,-323.7],[235.2,-338.9],[234.5,-359.9],[233.1,-380.9],[229.2,-386.3],[222.9,-385.6],[220.1,-387.3],[208.8,-409.9],[204.1,-424.0],[201.0,-429.9],[192.5,-443.6],[180.0,-462.8],[171.4,-487.0]]],[6.0,0,[[98.4,-93.4],[101.2,-155.3],[106.1,-218.6],[107.3,-243.2],[108.3,-263.2],[108.6,-269.7],[107.0,-272.8]]],[6.0,0,[[-152.4,144.1],[-147.0,136.8],[-138.5,94.3],[-134.5,61.4],[-132.2,53.8],[-128.3,47.3],[-123.9,37.9],[-122.2,31.6],[-107.1,30.7]]],[6.0,0,[[-107.1,30.7],[-74.3,32.0],[-51.9,32.5],[-46.4,32.3],[14.4,30.6],[28.6,30.1],[85.6,27.1],[97.5,27.0]]],[3.6,0,[[-426.3,64.3],[-389.0,83.6],[-377.3,89.5]]],[3.6,0,[[-281.0,578.8],[-276.6,548.0],[-276.7,534.7],[-276.7,528.4],[-277.0,461.4],[-277.4,382.9],[-270.8,355.5],[-283.8,241.1]]],[3.6,0,[[-1.7,-199.3],[-11.2,-214.2],[-21.5,-230.7],[-41.9,-253.6],[-36.0,-289.4],[-27.8,-340.1],[-14.8,-474.4],[-9.0,-475.5],[30.7,-470.4],[35.9,-462.8],[20.7,-316.2]]],[1.8,1,[[229.2,-386.3],[252.0,-413.4]]],[1.8,1,[[240.0,-323.7],[253.8,-386.4],[252.0,-413.4],[246.3,-495.5],[275.2,-484.2]]],[3.6,0,[[-326.7,-134.7],[-395.2,-165.3],[-402.4,-163.7],[-418.4,-162.3],[-482.1,-190.7]]],[3.6,0,[[-364.5,-69.0],[-356.9,-70.1],[-336.6,-112.8],[-335.1,-116.0],[-326.7,-134.7],[-316.6,-151.7],[-311.9,-155.2],[-306.7,-154.8],[-290.4,-150.1],[-276.0,-143.8]]],[3.6,0,[[-102.3,-371.8],[-99.3,-364.1],[-87.8,-335.6],[-65.7,-280.8]]],[3.6,0,[[-247.2,-377.4],[-217.7,-365.0],[-194.2,-354.8],[-185.2,-350.9]]],[3.6,0,[[121.0,606.3],[117.3,596.4],[117.0,587.1],[117.9,580.6],[118.5,575.7],[123.4,562.9],[143.6,499.1],[152.4,446.0],[152.8,436.7],[152.1,431.7],[150.8,426.7],[148.7,422.1],[145.8,417.4],[138.4,408.2],[134.5,404.9],[130.5,403.0],[105.8,400.1],[96.1,399.0],[35.5,391.9],[2.6,382.0],[0.4,381.7],[-5.0,381.0],[-22.2,379.4],[-37.2,378.0],[-64.9,375.4],[-71.6,375.3],[-77.9,376.5],[-83.5,379.3],[-88.3,383.2],[-92.2,387.5],[-94.4,392.6],[-95.7,398.7],[-95.9,405.1],[-96.9,487.2],[-95.9,541.8],[-96.4,562.8]]],[6.0,0,[[923.5,140.5],[898.6,135.9],[850.6,127.1],[776.9,111.2],[769.4,109.8],[702.6,97.2],[658.8,85.8],[621.5,76.1],[606.9,73.3],[593.2,72.4],[580.0,70.2],[554.3,65.7],[532.7,62.5],[489.6,56.0],[467.4,49.6],[447.6,43.3],[427.2,38.6],[420.1,37.8],[332.6,38.3],[311.8,38.4],[305.5,38.4],[249.3,38.7]]],[1.8,1,[[-680.3,-168.8],[-676.5,-167.1],[-667.6,-163.1],[-653.4,-156.2],[-643.7,-151.7],[-617.8,-139.5],[-598.7,-130.2],[-578.8,-120.9],[-558.6,-111.3],[-526.9,-96.4],[-525.6,-95.7],[-458.2,-63.8],[-385.9,-29.5],[-381.9,-27.8],[-353.1,-15.8],[-346.6,-12.4]]],[1.4,1,[[-418.4,-162.3],[-408.5,-143.7],[-397.9,-121.0],[-373.4,-107.9],[-373.3,-105.6],[-383.3,-84.0],[-373.2,-78.1],[-364.5,-69.0]]],[1.4,1,[[-432.9,-90.8],[-421.7,-116.9],[-413.1,-135.9],[-408.5,-143.7],[-407.0,-146.4],[-400.4,-158.7],[-395.2,-165.3]]],[3.6,0,[[412.3,135.8],[333.0,136.5]]],[3.6,0,[[419.4,95.0],[332.8,95.1]]],[3.6,0,[[421.6,75.5],[332.8,75.7]]],[3.6,0,[[416.3,116.1],[332.9,116.5]]],[3.6,0,[[410.2,156.1],[333.0,157.0]]],[3.6,0,[[332.7,54.8],[424.7,54.3]]],[3.6,0,[[412.9,249.1],[424.6,179.3],[447.6,43.3]]],[3.6,0,[[312.2,217.0],[312.1,187.5],[311.8,38.4]]],[3.6,0,[[374.6,169.4],[374.8,183.7],[374.0,254.7]]],[3.6,0,[[353.1,168.7],[353.2,179.9],[353.7,184.4],[354.2,188.9],[354.8,232.5]]],[3.6,0,[[312.1,187.5],[329.5,187.4],[333.1,186.2],[336.7,185.0],[353.7,184.4],[374.8,183.7],[407.1,176.2],[424.6,179.3]]],[3.6,0,[[333.2,218.2],[333.1,186.2],[333.0,157.0],[333.0,136.5],[332.9,116.5],[332.8,95.1],[332.8,75.7],[332.7,54.8],[332.6,38.3]]],[3.6,0,[[427.2,38.6],[424.7,54.3],[421.6,75.5],[419.4,95.0],[416.3,116.1],[412.3,135.8],[410.2,156.1],[407.1,176.2],[393.7,245.4]]],[3.6,0,[[-51.3,489.9],[-49.3,470.5],[-47.6,454.0],[-45.9,437.7],[-44.2,421.0],[-42.5,404.1],[-28.8,403.0],[-8.2,404.8],[-5.0,381.0]]],[3.6,0,[[-44.2,421.0],[-82.0,417.6]]],[3.6,0,[[-45.9,437.7],[-81.8,434.0]]],[3.6,0,[[-42.5,404.1],[-82.1,401.3],[-82.0,417.6],[-81.8,434.0],[-81.6,450.0],[-81.5,467.1],[-81.2,487.9]]],[3.6,0,[[105.8,400.1],[104.0,425.5],[102.4,441.3],[100.8,457.9],[99.2,473.8],[97.2,490.4],[95.0,509.2],[92.7,527.2]]],[3.6,0,[[-249.8,-201.2],[-192.4,-204.0],[-164.2,-142.5],[-156.6,-139.4],[-138.5,-145.4],[-133.1,-152.1],[-129.5,-156.6],[-124.9,-159.4],[-152.1,-228.0],[-154.5,-234.3],[-183.8,-222.4],[-192.4,-204.0]]],[1.4,1,[[-85.0,269.8],[-49.6,265.5],[-6.7,208.3],[36.3,208.1],[39.4,165.0]]],[1.4,1,[[36.3,208.1],[128.6,222.3]]],[6.0,0,[[-571.0,-77.5],[-540.2,-63.5],[-510.8,-50.1],[-361.9,19.7],[-348.4,24.8]]],[1.8,1,[[-365.1,26.4],[-361.9,19.7],[-353.2,1.4],[-350.8,-4.0]]],[1.8,1,[[-550.8,448.5],[-494.9,323.2],[-440.4,201.4],[-389.0,83.6],[-365.9,32.1],[-364.9,29.8],[-365.1,26.4]]],[1.8,1,[[-175.5,-397.0],[-226.1,-418.6],[-240.2,-424.6],[-259.9,-433.1],[-265.0,-435.2],[-323.1,-460.1],[-404.1,-494.8],[-406.5,-495.9],[-461.1,-519.3],[-466.2,-521.2],[-517.9,-543.6],[-573.6,-567.5],[-577.3,-568.7],[-583.8,-571.1],[-580.9,-576.1],[-578.1,-582.1],[-576.7,-586.0],[-644.1,-615.7],[-658.3,-622.0],[-723.9,-649.7],[-728.9,-656.9]]],[1.8,1,[[-133.1,-152.1],[-121.2,-151.7],[-56.9,-139.8],[-78.7,-205.6],[-25.4,-217.5],[-47.4,-247.7],[-109.3,-238.6],[-135.9,-233.5],[-150.4,-228.4],[-152.1,-228.0]]],[1.8,1,[[-570.6,-57.8],[-547.8,-46.9],[-520.1,-34.1],[-527.9,-17.3],[-415.9,34.1],[-406.5,14.1],[-365.9,32.1]]],[3.6,0,[[-364.5,-69.0],[-380.9,-71.1],[-387.3,-70.4],[-432.9,-90.8],[-442.7,-95.3],[-450.0,-98.6],[-464.2,-104.0],[-513.0,-126.8]]],[6.0,0,[[-165.1,-395.9],[-156.6,-403.7],[-148.2,-416.0],[-140.7,-429.4],[-113.6,-491.3],[-107.7,-504.8],[-99.0,-524.8],[-92.4,-539.8]]],[6.0,0,[[-122.2,31.6],[-138.4,31.0],[-175.6,30.9],[-179.5,31.1],[-189.6,31.6],[-227.0,33.5],[-245.9,34.0],[-265.5,33.5],[-286.3,33.3],[-308.9,33.9],[-326.6,26.8],[-335.1,23.0],[-344.7,16.2]]],[3.6,0,[[-209.0,238.6],[-206.1,225.4],[-192.5,167.4],[-152.6,176.0]]],[3.6,0,[[-206.1,225.4],[-270.1,211.5],[-272.5,210.9]]],[3.6,0,[[-192.5,167.4],[-187.4,138.5],[-187.5,136.1],[-188.8,134.5],[-257.8,118.5],[-260.7,118.5],[-262.7,120.4],[-270.0,147.4]]],[3.6,0,[[-270.0,147.4],[-269.8,149.0],[-268.4,150.1],[-262.3,151.6],[-192.5,167.4]]],[3.6,0,[[-233.4,-238.8],[-244.3,-242.8],[-250.2,-245.4],[-331.6,-280.3]]],[3.6,0,[[-184.0,76.1],[-181.1,80.4],[-177.4,84.1],[-176.9,88.2],[-181.5,112.7],[-183.3,122.2]]],[3.6,0,[[-299.1,-24.5],[-283.2,-15.7],[-269.5,-9.1],[-251.6,-6.5],[-249.1,-4.8],[-248.0,-2.3],[-247.0,23.3],[-245.9,34.0]]],[3.6,0,[[-321.6,-39.4],[-299.1,-24.5],[-326.6,26.8]]],[3.6,0,[[-262.3,151.6],[-265.3,163.0],[-263.5,191.5],[-265.1,202.8],[-270.1,211.5]]],[3.6,0,[[442.9,-317.1],[433.1,-316.4],[430.6,-316.2],[321.8,-311.4],[311.6,-309.4],[305.3,-300.3],[309.4,-191.9],[353.2,-189.4]]],[3.6,0,[[-390.0,178.9],[-382.2,182.9],[-367.3,189.8],[-367.7,193.4],[-366.1,196.6],[-362.5,202.6],[-358.0,206.3],[-352.1,207.9],[-346.8,207.1],[-341.4,205.1],[-336.6,198.8],[-335.8,193.9],[-335.0,188.5],[-326.4,162.3],[-326.6,156.9],[-326.7,152.7],[-325.6,140.1],[-325.8,137.4],[-326.2,134.6],[-327.6,132.2],[-330.4,130.2],[-333.8,128.8],[-363.2,119.1]]],[3.6,0,[[-390.0,178.9],[-363.2,119.1]]],[3.6,0,[[-256.6,-353.6],[-280.6,-302.2]]],[3.6,0,[[305.5,38.4],[305.6,82.7],[296.6,107.7],[298.0,159.9]]],[3.6,0,[[296.6,107.7],[275.6,108.6]]],[3.6,0,[[28.6,30.1],[29.2,24.2],[29.0,21.2],[29.3,-4.6],[84.8,-5.0],[84.9,21.4],[29.0,21.2]]],[3.6,0,[[-189.6,31.6],[-189.8,23.4],[-189.8,21.8],[-190.2,-7.1]]],[3.6,0,[[-138.4,31.0],[-137.9,23.3],[-137.9,-15.5]]],[3.6,0,[[98.4,-93.4],[88.4,-93.3],[67.0,-88.0],[64.7,-38.2],[48.8,-38.6],[50.4,-75.7],[67.0,-88.0]]],[3.6,0,[[61.1,-296.5],[59.0,-291.6],[58.6,-290.6],[56.4,-285.7],[45.1,-259.7],[61.9,-252.3]]],[6.0,0,[[-348.4,24.8],[-363.3,59.4],[-377.3,89.5],[-383.5,103.8],[-413.2,169.1],[-429.8,205.8],[-436.8,221.5],[-484.3,328.3],[-541.9,453.9],[-570.3,518.4]]],[6.0,0,[[-341.4,7.2],[-344.7,16.2],[-348.4,24.8]]],[1.4,1,[[-95.8,263.3],[-85.0,269.8]]],[1.4,1,[[-85.0,269.8],[-76.8,259.1],[-67.3,198.8],[-61.6,192.6],[-51.1,189.0],[-37.8,188.2],[-16.1,192.0],[-3.1,191.2],[-6.7,208.3]]],[1.4,1,[[-3.1,191.2],[-5.0,185.2],[-8.7,167.2],[-5.5,122.6],[3.9,77.7],[4.7,73.7],[14.4,30.6]]],[1.4,1,[[4.7,73.7],[15.0,78.4],[53.4,83.0]]],[1.4,1,[[53.4,83.0],[76.4,83.5],[85.6,27.1]]],[1.4,1,[[76.4,83.5],[131.2,80.8],[143.9,80.0]]],[1.4,1,[[159.4,76.6],[167.8,73.5],[178.7,74.5],[211.8,53.9],[233.4,53.2],[235.2,38.3],[249.3,38.7]]],[1.4,1,[[143.9,80.0],[147.1,79.4],[147.6,79.3],[159.4,76.6]]],[3.6,0,[[-330.2,-385.9],[-256.6,-353.6]]],[3.6,0,[[-233.6,-330.9],[-217.7,-365.0]]],[3.6,0,[[-249.3,-445.9],[-243.0,-444.9],[-236.8,-444.0],[-166.6,-413.8]]],[3.6,0,[[-144.4,-449.1],[-157.0,-420.2]]],[3.6,0,[[-157.0,-420.2],[-166.6,-413.8]]],[3.6,0,[[262.6,-464.4],[262.9,-432.1],[263.3,-424.5],[264.4,-402.2],[264.7,-395.2],[270.3,-191.7],[309.4,-191.9]]],[3.6,0,[[311.6,-309.4],[310.8,-345.9],[310.5,-362.3],[311.0,-374.5],[308.2,-381.2],[305.9,-390.7],[306.3,-399.7],[308.5,-405.2],[315.7,-421.8]]],[3.6,0,[[353.2,-189.4],[367.0,-201.7],[408.7,-202.5]]],[3.6,0,[[309.4,-191.9],[311.7,-136.2],[301.7,-128.0],[278.6,-127.0]]],[3.6,0,[[440.4,-147.6],[371.4,-148.9]]],[3.6,0,[[439.3,-105.6],[355.5,-109.9],[354.7,-72.1],[353.9,-33.7],[286.7,-31.3]]],[3.6,0,[[354.7,-72.1],[409.7,-72.2]]],[3.6,0,[[427.2,38.6],[418.4,30.4],[407.3,-2.1],[407.9,-17.8],[408.5,-34.0]]],[3.6,0,[[407.9,-17.8],[380.2,-17.9]]],[3.6,0,[[459.8,11.2],[451.2,-41.0],[444.6,-49.3],[445.5,-85.9]]],[3.6,0,[[374.0,254.7],[363.7,256.6],[357.1,257.0],[352.8,254.2],[345.3,245.2],[342.2,241.8],[341.5,236.1]]],[3.6,0,[[-413.2,169.1],[-390.0,178.9]]],[3.6,0,[[-363.2,119.1],[-360.8,113.9],[-383.5,103.8]]],[3.6,0,[[-326.2,134.6],[-288.9,143.6]]],[3.6,0,[[-326.6,156.9],[-293.9,165.3]]],[3.6,0,[[-335.8,193.9],[-298.4,204.2],[-301.6,215.6],[-341.4,205.1]]],[3.6,0,[[-283.8,241.1],[-181.9,264.4],[-41.2,296.5],[-42.5,323.5]]],[3.6,0,[[104.0,425.5],[139.2,429.3],[137.5,445.4],[135.8,461.6],[134.1,478.1],[132.4,495.1]]],[3.6,0,[[-314.3,76.0],[-310.8,64.3],[-291.8,70.7],[-285.1,50.5]]],[3.6,0,[[-253.4,91.4],[-252.1,78.9],[-269.4,75.4],[-265.4,55.4]]],[3.6,0,[[-252.1,78.9],[-230.3,82.4],[-226.0,56.0]]],[3.6,0,[[-227.5,-9.7],[-227.2,21.2],[-227.2,23.3],[-227.0,33.5]]],[3.6,0,[[-175.6,30.9],[-175.7,23.4],[-175.7,21.7],[-176.1,-6.9]]],[3.6,0,[[-137.9,-15.5],[-137.0,-24.3],[-116.9,-23.2],[-106.6,-35.1]]],[3.6,0,[[-137.0,-24.3],[-147.7,-35.7]]],[3.6,0,[[-73.6,-4.7],[-70.8,-28.2]]],[3.6,0,[[-46.4,32.3],[-46.9,0.3],[-43.0,-37.0],[-43.0,-45.8],[-50.5,-46.5],[-71.7,-48.3],[-77.7,-58.4]]],[3.6,0,[[-50.5,-46.5],[-50.3,-52.6]]],[3.6,0,[[67.0,-88.0],[22.1,-87.7],[-39.0,-87.2]]],[3.6,0,[[84.9,21.4],[85.2,24.3],[85.6,27.1]]],[3.6,0,[[22.1,-87.7],[21.9,-94.1],[21.5,-104.0],[0.4,-111.7],[-6.0,-107.1],[-12.5,-108.2],[-17.0,-111.4],[-30.5,-102.3]]],[3.6,0,[[0.4,-111.7],[0.8,-118.7],[-1.6,-123.5]]],[3.6,0,[[-11.2,-214.2],[-12.0,-206.3],[1.2,-162.2],[-2.0,-154.7],[-3.2,-152.0],[-1.6,-123.5]]],[3.6,0,[[-65.7,-280.8],[-79.1,-276.6],[-88.5,-273.9],[-95.5,-273.2],[-102.2,-273.5],[-108.8,-279.0],[-138.0,-350.8],[-141.0,-371.9],[-142.0,-379.1],[-142.6,-383.5],[-143.1,-387.5]]],[3.6,0,[[-138.0,-350.8],[-158.3,-359.2],[-151.3,-376.1],[-141.0,-371.9]]],[3.6,0,[[-87.8,-335.6],[-52.0,-323.4]]],[3.6,0,[[103.4,-277.2],[106.9,-341.6],[108.6,-364.3],[101.3,-384.8]]],[1.8,1,[[-350.8,-4.0],[-346.6,-12.4],[-334.2,-42.2],[-329.3,-61.2],[-290.4,-150.1],[-288.8,-157.7],[-272.3,-196.0],[-253.0,-240.2],[-250.2,-245.4],[-238.3,-255.8],[-194.2,-354.8],[-178.5,-390.0],[-175.5,-397.0]]],[1.8,1,[[-351.5,-237.8],[-331.6,-280.3]]],[1.4,1,[[-336.6,-112.8],[-373.3,-105.6]]],[1.8,1,[[-154.6,-387.6],[-153.1,-391.3],[-150.3,-395.8],[-150.4,-400.4],[-149.4,-405.4],[-142.4,-415.9],[-130.2,-441.5],[-121.4,-462.1],[-108.9,-489.3],[-103.3,-502.8],[-94.4,-522.9],[-81.1,-554.8],[-72.8,-574.2],[-52.1,-623.7]]],[1.8,1,[[-142.6,-383.5],[-154.6,-387.6],[-157.7,-388.7],[-160.3,-387.5],[-162.5,-384.5],[-163.3,-383.2],[-169.7,-385.8],[-178.5,-390.0]]],[1.8,1,[[-175.5,-397.0],[-174.3,-400.2],[-170.6,-408.6],[-160.7,-411.9],[-154.3,-420.3],[-145.9,-432.5],[-136.5,-453.0],[-116.0,-500.1],[-101.0,-536.8],[-82.0,-580.6],[-62.8,-625.2],[-61.3,-630.1],[-62.6,-633.7],[-66.9,-635.8],[-69.8,-636.4],[-67.8,-641.2],[-64.4,-648.5],[-50.5,-679.3],[-15.9,-756.3],[13.9,-821.3]]],[3.6,0,[[-190.2,-7.1],[-227.5,-9.7]]],[1.8,1,[[-247.0,23.3],[-227.2,23.3],[-189.8,23.4],[-175.7,23.4]]],[3.6,0,[[-179.7,53.4],[-151.8,58.6]]],[3.6,0,[[-179.5,31.1],[-177.9,43.9]]],[3.6,0,[[-98.3,271.9],[-95.8,263.3]]],[3.6,0,[[-209.0,238.6],[-210.9,247.3],[-98.3,271.9]]],[3.6,0,[[-94.5,259.0],[-95.8,263.3]]],[3.6,0,[[-95.8,263.3],[-209.0,238.6]]],[3.6,0,[[-87.1,234.0],[-94.5,259.0]]],[3.6,0,[[-90.3,224.3],[-87.2,228.5],[-87.1,234.0]]],[3.6,0,[[-149.5,179.8],[-156.1,210.0],[-90.3,224.3]]],[3.6,0,[[-153.0,154.6],[-153.4,159.3],[-152.6,176.0],[-149.5,179.8]]],[3.6,0,[[-283.8,241.1],[-285.5,227.1],[-283.5,218.6],[-278.6,213.3],[-272.5,210.9]]],[1.8,1,[[-74.1,24.5],[-51.8,25.0]]],[3.6,0,[[-50.5,-27.8],[-51.2,-4.0]]],[3.6,0,[[-70.8,-28.2],[-50.5,-27.8]]],[3.6,0,[[-51.2,-4.0],[-51.8,25.0],[-51.9,32.5]]],[3.6,0,[[-74.3,32.0],[-74.1,24.5],[-73.6,-4.7]]],[1.8,1,[[99.5,-269.5],[108.6,-269.7]]],[1.8,1,[[59.0,-291.6],[99.5,-274.1]]],[1.8,1,[[99.3,-244.1],[99.5,-269.5],[99.5,-274.1]]],[3.6,0,[[61.9,-252.3],[61.8,-245.6],[93.8,-242.2]]],[3.6,0,[[93.9,-244.6],[96.5,-244.4],[99.3,-244.1],[107.3,-243.2]]],[3.6,0,[[93.8,-242.2],[93.9,-244.6],[94.4,-269.2]]],[3.6,0,[[56.4,-285.7],[94.4,-269.2]]],[3.6,0,[[-176.1,-6.9],[-147.7,-35.7],[-111.2,-69.5]]],[3.6,0,[[-177.9,43.9],[-179.7,53.4],[-184.0,76.1]]],[3.6,0,[[-119.4,326.4],[-219.4,304.9],[-223.6,311.1],[-221.8,349.3]]],[3.6,0,[[-108.3,290.3],[-119.4,326.4],[-132.7,370.5]]],[3.6,0,[[-183.9,274.0],[-261.3,257.3]]],[3.6,0,[[-181.9,264.4],[-183.9,274.0],[-108.3,290.3]]]],"a":[[2,[[-457.1,33.2],[-435.0,42.6],[-440.4,55.3],[-462.4,45.9]]],[2,[[-89.7,-175.0],[-81.8,-153.2],[-70.7,-157.1],[-78.6,-179.0]]],[3,[[-366.2,13.2],[-362.7,13.4],[-360.2,10.2],[-360.4,7.3],[-361.2,4.5],[-363.7,2.7],[-678.4,-143.9],[-679.2,-144.2],[-680.9,-143.8],[-682.9,-142.5],[-684.2,-141.1],[-684.7,-138.8],[-684.1,-136.2],[-683.3,-134.3]]],[2,[[-425.2,-107.2],[-418.1,-122.9],[-417.2,-123.8],[-416.1,-124.5],[-414.9,-125.1],[-413.4,-125.2],[-411.8,-124.9],[-378.5,-109.1],[-377.5,-108.2],[-376.6,-107.3],[-376.0,-106.5],[-375.6,-105.0],[-375.6,-103.4],[-382.3,-87.7],[-383.8,-86.3],[-386.4,-85.4],[-388.4,-85.6],[-423.9,-101.6],[-425.1,-103.0],[-425.6,-104.3],[-425.7,-105.4]]],[1,[[-312.4,-238.1],[-302.1,-233.1],[-307.1,-222.7],[-317.4,-227.6]]],[1,[[-435.8,-120.0],[-424.1,-114.8],[-428.6,-104.5],[-440.3,-109.7]]],[1,[[-181.7,15.5],[-186.4,15.3],[-187.9,14.5],[-188.3,14.0],[-187.5,-2.5],[-187.0,-3.1],[-185.7,-3.7],[-180.9,-3.5]]],[1,[[-191.5,95.7],[-184.4,97.0],[-186.1,106.0],[-192.7,102.2]]],[1,[[-198.0,91.8],[-197.5,88.9],[-194.5,82.9],[-192.1,81.9],[-185.0,83.2],[-183.4,84.5],[-182.4,86.7],[-183.9,94.4]]],[1,[[-144.7,206.4],[-138.4,177.6],[-138.1,176.0],[-148.8,173.7],[-151.0,160.2],[-123.5,168.1],[-120.4,176.5],[-119.9,182.2],[-122.1,209.6],[-134.6,206.9],[-135.1,209.3],[-136.6,211.7],[-139.7,212.6],[-145.8,211.3]]],[1,[[-73.3,-43.0],[-67.1,-42.5],[-67.5,-29.5],[-73.6,-29.6]]],[1,[[36.4,-244.1],[42.2,-257.7],[49.9,-254.3],[50.8,-245.9],[43.6,-245.4],[42.2,-244.1]]],[4,[[-42.4,20.3],[-41.6,-27.7],[18.4,-26.7],[17.6,21.4]]],[4,[[420.1,-311.8],[310.6,-304.5],[313.7,-169.2],[421.9,-178.2]]]]};
+
+function tri(a,b,c,c0,f){
+  grow(3*STRIDE);
+  const ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2];
+  const vx=c[0]-a[0],vy=c[1]-a[1],vz=c[2]-a[2];
+  let nx=uy*vz-uz*vy, ny=uz*vx-ux*vz, nz=ux*vy-uy*vx;
+  const l=Math.hypot(nx,ny,nz)||1; const n=[nx/l,ny/l,nz/l];
+  vtx(a,n,c0,f);vtx(b,n,c0,f);vtx(c,n,c0,f);
+}
+/** триангуляция простого многоугольника отсечением ушей — кровли невыпуклых контуров */
+function earcut(pts){
+  const n=pts.length; if(n<3) return [];
+  let a2=0; for(let i=0;i<n;i++){const p=pts[i],q=pts[(i+1)%n]; a2+=p[0]*q[1]-q[0]*p[1];}
+  const idx=[]; for(let i=0;i<n;i++) idx.push(i);
+  if(a2<0) idx.reverse();
+  const tris=[]; let guard=0;
+  while(idx.length>3 && guard++<4000){
+    let cut=false;
+    for(let i=0;i<idx.length;i++){
+      const i0=idx[(i+idx.length-1)%idx.length], i1=idx[i], i2=idx[(i+1)%idx.length];
+      const A=pts[i0],B=pts[i1],D=pts[i2];
+      if((B[0]-A[0])*(D[1]-A[1])-(B[1]-A[1])*(D[0]-A[0])<=0) continue;
+      let ok=true;
+      for(const j of idx){
+        if(j===i0||j===i1||j===i2) continue;
+        const P=pts[j];
+        const d1=(B[0]-A[0])*(P[1]-A[1])-(B[1]-A[1])*(P[0]-A[0]);
+        const d2=(D[0]-B[0])*(P[1]-B[1])-(D[1]-B[1])*(P[0]-B[0]);
+        const d3=(A[0]-D[0])*(P[1]-D[1])-(A[1]-D[1])*(P[0]-D[0]);
+        if(d1>=0&&d2>=0&&d3>=0){ ok=false; break; }
+      }
+      if(!ok) continue;
+      tris.push([i0,i1,i2]); idx.splice(i,1); cut=true; break;
+    }
+    if(!cut) break;
+  }
+  if(idx.length===3) tris.push([idx[0],idx[1],idx[2]]);
+  return tris;
+}
+function polyFill(g,y,col,flg){
+  for(const [i0,i1,i2] of earcut(g))
+    tri([g[i0][0],y,g[i0][1]],[g[i1][0],y,g[i1][1]],[g[i2][0],y,g[i2][1]],col,flg);
+}
+function bbox(g){
+  let x0=1e9,z0=1e9,x1=-1e9,z1=-1e9;
+  for(const p of g){ if(p[0]<x0)x0=p[0]; if(p[0]>x1)x1=p[0];
+                     if(p[1]<z0)z0=p[1]; if(p[1]>z1)z1=p[1]; }
+  return [x0,z0,x1,z1];
+}
+function inPoly(x,z,g){
+  let c=false;
+  for(let i=0,j=g.length-1;i<g.length;j=i++){
+    if((g[i][1]>z)!==(g[j][1]>z) &&
+       x < (g[j][0]-g[i][0])*(z-g[i][1])/(g[j][1]-g[i][1])+g[i][0]) c=!c;
+  }
+  return c;
+}
+/** дом окружения по реальному контуру: стены выведены выше кровли — получается парапет */
+function ctxBuilding(g,lv,near){
+  const h=lv*3.05+0.5, hp=h+(lv>1?0.65:0.35);
+  const c=tint([C.neigh,C.neigh2,C.neigh3][ri(0,2)],rr(0.92,1.08));
+  const f=[0,-1,0];
+  let cx=0,cz=0; for(const p of g){cx+=p[0];cz+=p[1];} cx/=g.length; cz/=g.length;
+  for(let i=0;i<g.length;i++){
+    const a=g[i], b=g[(i+1)%g.length];
+    quad([a[0],0,a[1]],[b[0],0,b[1]],[b[0],hp,b[1]],[a[0],hp,a[1]],c,f);
+    if(!near||lv<2) continue;
+    const dx=b[0]-a[0], dz=b[1]-a[1], L=Math.hypot(dx,dz);
+    if(L<3.4) continue;
+    const ux=dx/L, uz=dz/L;
+    let nx=uz, nz=-ux;                              // наружу — прочь от центра контура
+    const mx=(a[0]+b[0])/2, mz=(a[1]+b[1])/2;
+    if((mx-cx)*nx+(mz-cz)*nz<0){ nx=-nx; nz=-nz; }
+    for(let y=3.2;y<h-1.9;y+=3.05)
+      for(let s=1.1;s<L-2.6;s+=3.3){
+        const o=0.06;
+        const ax=a[0]+ux*s+nx*o, az=a[1]+uz*s+nz*o;
+        const bx=a[0]+ux*(s+1.7)+nx*o, bz=a[1]+uz*(s+1.7)+nz*o;
+        quad([ax,y,az],[bx,y,bz],[bx,y+1.5,bz],[ax,y+1.5,az],tint(C.glass,0.92),[1,-1,rnd()]);
+      }
+  }
+  polyFill(g,h,C.neighroof,f);
+  const [x0,z0,x1,z1]=bbox(g);
+  for(let i=0;i<ri(1,3);i++){                        // оборудование на кровле
+    const w=rr(1.6,3.4), d=rr(1.4,2.6);
+    const px=rr(x0+1,Math.max(x0+1.2,x1-w-1)), pz=rr(z0+1,Math.max(z0+1.2,z1-d-1));
+    if(!inPoly(px+w/2,pz+d/2,g)) continue;
+    box(px,h,pz,px+w,h+rr(0.7,1.5),pz+d,C.roofEq,f);
+  }
+}
+/** проезжая часть или тротуар по реальной оси улицы */
+function ctxRoad(g,w,foot){
+  const col=foot?C.pave:C.asphalt, k=foot?[5,-1,0]:[4,-1,0], y=foot?0.05:0.02;
+  for(let i=0;i<g.length-1;i++){
+    const a=g[i],b=g[i+1];
+    const dx=b[0]-a[0], dz=b[1]-a[1], L=Math.hypot(dx,dz); if(L<0.2) continue;
+    const nx=dz/L*w/2, nz=-dx/L*w/2;
+    quad([a[0]-nx,y,a[1]-nz],[b[0]-nx,y,b[1]-nz],[b[0]+nx,y,b[1]+nz],[a[0]+nx,y,a[1]+nz],col,k);
+    if(i>0) plate(a[0]-w/2,a[1]-w/2,a[0]+w/2,a[1]+w/2,y,col,k);   // заплатка на изломе
+  }
+}
+
+function buildSite(){
+  const g=[4,-1,0], pv=[5,-1,0];
+  plate(-900,-900,900,900,-0.06,tint(C.grass,0.90),g);
+
+  /* ── ПОДИУМ ДВОРА: двор поднят над улицей, подпорные стены из красного клинкера.
+     Двор в вогнутом углу буквы Г: с юга и востока — дом, с севера и запада — стены ── */
+  const PY=1.62;
+  box(-40.0,0,-39.4,-4.05,PY,-5.1,C.red,[0,3,0]);          // тело подиума
+  box(-22.05,0,-5.1,-4.05,PY,-0.5,C.red,[0,3,0]);          // добор до среднего крыла
+  box(-40.0,0,-39.4,-39.1,PY+1.05,-5.1,C.red2,[0,3,0]);    // западная подпорная стена
+  box(-40.0,0,-39.4,-4.05,PY+1.05,-38.5,C.red2,[0,3,0]);   // северная подпорная стена
+  plate(-40.0,-39.4,-39.1,-5.1,PY+1.05,tint(C.red,0.8),[0,3,0]);
+  plate(-40.0,-39.4,-4.05,-38.5,PY+1.05,tint(C.red,0.8),[0,3,0]);
+  // лестница с северной стороны
+  for(let i=0;i<8;i++)
+    box(-27.4,0,-39.6,-23.6,PY*(i+1)/8,-38.5+0.34*i,tint(C.pave2,1.0),[5,3,0]);
+
+  /* ── ДВОР 12 соток: мощение, площадки, зелень ─────────────── */
+  // всё во дворе строится от отметки подиума PY — иначе покрытия уходят внутрь него
+  Y0=PY;
+  plate(-39.1,-38.5,-4.05,-5.1,PY+0.02,C.paveRed,pv);      // клинкерное мощение
+  plate(-35,-35,-8,-8.5,PY+0.03,C.paveRed2,pv);
+  plate(-39.1,-19.4,-4.05,-16.2,PY+0.05,C.pave3,pv);       // светлые дорожки
+  plate(-27.5,-38.5,-24.5,-5.1,PY+0.05,C.pave3,pv);
+  plate(-30.5,-29,-13,-15,PY+0.06,C.rubber,g);             // покрытие игровой зоны — компактнее
+
+  snail(-22.0,-20.5,1.9);                                  // красная улитка
+  for(const[x,z,r]of[[-17.6,-23.6,0.62],[-15.7,-22.2,0.44],[-18.9,-21.2,0.38],[-13.9,-24.4,0.30]])
+    sphere(x,PY+r,z,r,r,tint(C.redHot,rr(0.9,1.1)),[6,-1,0]);  // красные шары
+  playFrame(-19.0,-30.0,7.0,5.4,3.2);                      // «лабиринт из перцев»
+  // горка и башенка
+  box(-31.0,PY+0.06,-15.4,-28.8,PY+1.85,-13.2,C.wood,[6,-1,0]);
+  box(-31.2,PY+1.85,-15.6,-28.6,PY+2.02,-13.0,C.woodL,[6,-1,0]);
+  for(const[px,pz]of[[-30.9,-15.3],[-28.9,-15.3],[-30.9,-13.3],[-28.9,-13.3]])
+    box(px-0.07,PY+2.02,pz-0.07,px+0.07,PY+2.95,pz+0.07,C.wood,[6,-1,0]);
+  quad([-28.8,PY+1.85,-15.0],[-26.3,PY+0.10,-15.0],[-26.3,PY+0.10,-14.0],[-28.8,PY+1.85,-14.0],
+       C.metal,[6,-1,0]);
+  // качели и спорт
+  for(let i=0;i<2;i++){
+    const x=-34.0+i*3.4;
+    box(x-0.07,PY+0.06,-9.4,x+0.07,PY+2.35,-9.26,C.redHot,[6,-1,0]);
+    box(x-0.07,PY+0.06,-7.2,x+0.07,PY+2.35,-7.06,C.redHot,[6,-1,0]);
+  }
+  box(-34.2,PY+2.28,-9.4,-30.3,PY+2.40,-7.06,C.metal,[6,-1,0]);
+  for(let i=0;i<3;i++){
+    const x=-16.5+i*2.6;
+    box(x-0.06,PY+0.06,-8.2,x+0.06,PY+2.30,-8.08,C.redHot,[6,-1,0]);
+  }
+  box(-16.8,PY+2.20,-8.2,-11.1,PY+2.30,-8.08,C.metal,[6,-1,0]);
+
+  // зелень двора: вишни, яблони, кустарник, стриженые шары, цветники
+  for(let x=-37.5;x<-6;x+=3.1) topiary(x,-6.6,rr(0.42,0.62));
+  for(let z=-36;z<-8;z+=3.1)   topiary(-5.7,z,rr(0.42,0.62));
+  hedge(-37.4,-34.6,-34.6,-11.4); hedge(-9.4,-34.6,-6.6,-11.4);
+  flowerbed(-38.6,-37.8,-30.4,-35.6); flowerbed(-15.4,-37.8,-5.4,-35.6);
+  flowerbed(-38.6,-6.6,-24.0,-5.6);
+  for(let i=0,n=MOBILE?8:12;i<n;i++) tree(rr(-37,-6),rr(-37,-7),rr(4.4,6.8),rr(1.5,2.2),1,rnd()<0.45);
+  for(let i=0,n=MOBILE?15:26;i<n;i++) shrub(rr(-38,-5.5),rr(-37.5,-6),rr(0.38,0.72));
+  for(let i=0;i<9;i++)  bench(rr(-36,-7),rr(-36,-7),rnd()<0.5?0:Math.PI/2);
+  pergola(-38.0,-37.0,5.4,4.0);
+  for(const[x,z]of[[-33,-24],[-13,-24],[-31,-9],[-9,-31],[-21,-36],[-8,-12]]) lamp(x,z,4.2);
+  for(let i=0,n=MOBILE?13:24;i<n;i++) person(rr(-38,-5.5),rr(-37.5,-6));
+  Y0=0;
+
+  /* ── УЛИЦА СПИРИНА, ПАРКОВКИ, ГАРАЖИ ──────────────────────── */
+  // Уличный фронт — южный фасад (z = 13.8). Сама проезжая часть рисуется ниже
+  // по реальной оси улицы из подосновы; здесь — тротуар, парковка и ограда участка.
+  plate(-42,14.4,16,17.8,0.03,C.pave,pv);                  // тротуар вдоль дома
+  plate(-40,17.8,14,18.4,0.04,C.pave2,pv);
+  railing(-39.1,14.2,13.7,14.2,3.6);
+  plate(-40,18.4,14,24.6,0.03,C.asphalt2,g);
+  parkRow(-38,19.0,12,24.0,1,19);                          // парковка вдоль улицы
+
+  // восточная парковка перед гаражами
+  plate(14.2,-19,26.5,13,0.03,C.asphalt,g);
+  parkRow(15.4,-17,21.0,12,0,13);
+  for(let z=-17;z<12;z+=4.0) plate(14.0,z,14.4,z+2.6,0.06,C.line,g);   // разметка у ворот
+  // парковка снаружи дворовой стены (северо-запад)
+  plate(-53,-34,-40.4,-6,0.03,C.asphalt,g);
+  parkRow(-50,-32,-44.6,-8,0,11);
+  plate(-40.2,-39.6,-4.05,-33,0.03,C.asphalt,g);           // проезд вдоль северной стены
+  parkRow(-30,-38.6,-6,-34.2,1,9);
+
+  // проезды и тротуары по периметру участка
+  plate(-42,-6,-40.2,14.6,0.04,C.pave,pv);
+  plate(13.9,-19.4,16.2,14.6,0.04,C.pave,pv);
+
+  // уличная зелень и жизнь вдоль фасада
+  for(let x=-37;x<14;x+=6.2) tree(x,16.2,rr(5.5,7.4),rr(1.7,2.4),1,0);
+  for(let i=0;i<22;i++) shrub(rr(-38,13),rr(14.8,16.0),rr(0.4,0.75));
+  flowerbed(-36,14.8,-24,16.1); flowerbed(-8,14.8,6,16.1);
+  for(const x of[-34,-20,-6,8]) lamp(x,17.4,5.0);
+  for(const[x,z]of[[17.6,-12],[17.6,2],[-42.6,-24],[-42.6,-8]]) lamp(x,z,5.0);
+  for(let i=0;i<18;i++) person(rr(-38,13),rr(14.6,17.6));
+  for(let i=0;i<8;i++)  person(rr(16,24),rr(-16,12));
+
+  /* ── РЕАЛЬНОЕ ОКРУЖЕНИЕ: контуры домов, улицы и площадки с карты ─────
+     Всё ниже построено по подоснове CTX, а не придумано. */
+  for(const [w,foot,line] of CTX.r) ctxRoad(line,w,foot);
+  for(const [kind,poly] of CTX.a){
+    const col=[C.grass2,C.rubber,C.paveRed2,tint(C.foliage3,0.9),C.pave2][kind]||C.grass2;
+    polyFill(poly,0.04,col,kind===3?[4,-1,0]:[4,-1,0]);
+  }
+  const BB=[];
+  for(const [lv,poly] of CTX.b){
+    const [x0,z0,x1,z1]=bbox(poly);
+    BB.push([x0,z0,x1,z1]);
+    const d=Math.hypot((x0+x1)/2,(z0+z1)/2);
+    if(d>(MOBILE?150:260)) continue;
+    ctxBuilding(poly,lv,d<(MOBILE?70:130));
+  }
+  // машины во дворах соседей — по реальным служебным проездам
+  for(const [w,foot,line] of CTX.r){
+    if(foot||w<3.4) continue;
+    for(let i=0;i<line.length-1;i+=2){
+      const a=line[i],b=line[i+1];
+      const dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz);
+      if(L<9||Math.hypot(a[0],a[1])>200) continue;
+      if(rnd()>0.45) continue;
+      const t=rr(0.2,0.8);
+      car(a[0]+dx*t+rr(-1,1), a[1]+dz*t+rr(-1,1),
+          Math.abs(dx)>Math.abs(dz)?0:1, CARS[ri(0,CARS.length-1)]);
+    }
+  }
+  /* Зелень: участок на окраине Вологды, вокруг много деревьев, но в карте они
+     отдельными объектами не размечены — раскидываем по сетке, пропуская пятна
+     реальных зданий, дорог и сам участок ЖК. */
+  function freeSpot(x,z){
+    if(x>-56&&x<30&&z>-46&&z<28) return false;             // участок ЖК и подходы
+    for(let i=0;i<BB.length;i++){
+      const b=BB[i];
+      if(x>b[0]-5&&x<b[2]+5&&z>b[1]-5&&z<b[3]+5) return false;
+    }
+    return true;
+  }
+  const STEP=MOBILE?23:15, RAD=MOBILE?112:158, DET=MOBILE?45:75;
+  for(let gx=-160;gx<=160;gx+=STEP)
+    for(let gz=-160;gz<=160;gz+=STEP){
+      const px=gx+rr(-4.5,4.5), pz=gz+rr(-4.5,4.5);
+      const d=Math.hypot(px,pz);
+      if(d>RAD||!freeSpot(px,pz)) continue;
+      tree(px,pz,rr(7,13),rr(2.4,4.0),d<DET?1:0,0);
+    }
+  // дальний лесной фон
+  for(let i=0,n=MOBILE?26:70;i<n;i++){
+    const a=rr(0,6.283), r=rr(170,260);
+    tree(Math.cos(a)*r,Math.sin(a)*r,rr(9,15),rr(3.0,4.6),0,0);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   6. WEBGL
+   ══════════════════════════════════════════════════════════════ */
+const cvs=document.getElementById('gl');
+const gl=cvs.getContext('webgl2',{antialias:true,alpha:false,preserveDrawingBuffer:true,
+  powerPreference:'high-performance'});
+if(!gl){
+  document.getElementById('loader').innerHTML=
+    '<div id="fallback">Для просмотра 3D-модели нужен браузер с поддержкой WebGL 2 — ' +
+    'Chrome, Edge, Safari 15+ или Firefox. Обновите браузер и откройте страницу снова.</div>';
+  return;
+}
+function sh(type,src){
+  const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)+'\n'+src);
+  return s;
+}
+function prog(v,f){
+  const p=gl.createProgram();
+  gl.attachShader(p,sh(gl.VERTEX_SHADER,v)); gl.attachShader(p,sh(gl.FRAGMENT_SHADER,f));
+  gl.bindAttribLocation(p,0,'aPos'); gl.bindAttribLocation(p,1,'aNrm');
+  gl.bindAttribLocation(p,2,'aCol'); gl.bindAttribLocation(p,3,'aFlg');
+  gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+  return p;
+}
+const V_MAIN=`#version 300 es
+layout(location=0) in vec3 aPos; layout(location=1) in vec3 aNrm;
+layout(location=2) in vec3 aCol; layout(location=3) in vec3 aFlg;
+uniform mat4 uVP,uLVP;
+out vec3 vN,vC,vW; out vec3 vF; out vec4 vL;
+void main(){ vN=aNrm; vC=aCol; vW=aPos; vF=aFlg; vL=uLVP*vec4(aPos,1.0);
+  gl_Position=uVP*vec4(aPos,1.0); }`;
+
+const F_MAIN=`#version 300 es
+precision highp float; precision highp sampler2DShadow;
+in vec3 vN,vC,vW; in vec3 vF; in vec4 vL;
+uniform vec3 uSun,uSunC,uSkyC,uGndC,uHaze,uCam,uWarm;
+uniform float uNight,uSel,uHasSel,uShadowTexel,uExp;
+uniform sampler2DShadow uShadow;
+out vec4 outC;
+
+float hash21(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+
+/* мягкая тень: 5x5 PCF. Глубина карты 760 м — смещение крошечное, иначе тень
+   отрывается от земли и кадр читается как пасмурный */
+float shadow(float ndl){
+  vec3 p=vL.xyz/vL.w*0.5+0.5;
+  if(p.x<0.002||p.x>0.998||p.y<0.002||p.y>0.998||p.z>1.0) return 1.0;
+  float bias=0.00006+0.00022*(1.0-ndl);
+  float s=0.0, r=1.45*uShadowTexel;
+  for(int x=-2;x<=2;x++) for(int y=-2;y<=2;y++)
+    s+=texture(uShadow,vec3(p.xy+vec2(float(x),float(y))*r,p.z-bias));
+  return s/25.0;
+}
+
+/* клинкерная кладка: маска шва — она же карта рельефа */
+const float BH=0.076, BL=0.250;
+float brickJoint(float u,float v){
+  float row=floor(v/BH);
+  float off=mod(row,2.0)*0.5*BL;
+  float fy=abs(fract(v/BH)-0.5)*2.0;
+  float fx=abs(fract((u+off)/BL)-0.5)*2.0;
+  return clamp(smoothstep(0.74,0.99,fy)+smoothstep(0.90,1.0,fx),0.0,1.0);
+}
+/* мелкий шум внутри кирпича: клинкер никогда не бывает ровно одного тона */
+float grain(vec2 p){
+  return hash21(floor(p*vec2(11.0,17.0)))*0.55 + hash21(floor(p*vec2(3.1,4.7)))*0.45;
+}
+vec3 brickColor(vec3 col,float u,float v,float joint,float fade,float boost){
+  float row=floor(v/BH);
+  float off=mod(row,2.0)*0.5*BL;
+  float r=hash21(vec2(floor((u+off)/BL),row));
+  float fy=abs(fract(v/BH)-0.5)*2.0;
+  // разнотон кирпича + микрошум внутри самого камня
+  vec3 c=col*mix(1.0-0.15*boost,1.0+0.17*boost,r);
+  c*=mix(0.955,1.045,grain(vec2(u,v)));
+  c*=1.0-(0.34+0.16*boost)*joint;               // шов глубже на цоколе и вставках
+  c+=col*0.13*smoothstep(0.55,0.0,fy);          // блик по верхней грани ряда
+  // тёплый подмес в светлые тона — керамика, а не бетон
+  c=mix(c,c*vec3(1.045,1.005,0.945),0.55);
+  return mix(col,c,fade);
+}
+vec3 paving(vec3 col,vec3 P,float fade){
+  if(fade<=0.001) return col;
+  vec2 q=P.xz/vec2(0.44,0.125);
+  float row=floor(q.y);
+  q.x+=mod(row,2.0)*0.5;
+  vec2 f=abs(fract(q)-0.5)*2.0;
+  float joint=clamp(smoothstep(0.90,1.0,f.x)+smoothstep(0.78,1.0,f.y),0.0,1.0);
+  float r=hash21(vec2(floor(q.x),row));
+  vec3 c=col*mix(0.955,1.055,r)*(1.0-0.13*joint);
+  c*=mix(0.97,1.03,grain(P.xz*0.6));            // мягче, без «пластиковой» плитки
+  return mix(col,c,fade);
+}
+vec3 aces(vec3 x){ return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.0,1.0); }
+
+void main(){
+  vec3 N=normalize(vN); if(!gl_FrontFacing) N=-N;    // геометрия двусторонняя
+  vec3 V=normalize(uCam-vW);
+  float kind=vF.x, seed=vF.z;
+  float dist=length(uCam-vW);
+  float near=smoothstep(190.0,44.0,dist);            // фактура гаснет вдали — без муара
+
+  vec3 base=vC*vC;                                    // sRGB-альбедо → линейное пространство
+
+  if(kind>5.5){ /* гладкие поверхности: машины, металл, арт-объекты */ }
+  else if(kind<0.5&&abs(N.y)<0.55){
+    // цоколь и красные вставки получают более резкий шов и разнотон, чем светлое поле
+    float lum=dot(vC,vec3(0.299,0.587,0.114));
+    float sat=max(vC.r,max(vC.g,vC.b))-min(vC.r,min(vC.g,vC.b));
+    float boost=clamp(smoothstep(0.62,0.30,lum)+smoothstep(0.10,0.30,sat),0.0,1.0);
+    float u = abs(N.x)>0.5 ? vW.z : vW.x;
+    float j0=brickJoint(u,vW.y);
+    base=brickColor(base,u,vW.y,j0,near,boost);
+    if(near>0.01){
+      float du=brickJoint(u+0.016,vW.y)-j0, dv=brickJoint(u,vW.y+0.016)-j0;
+      vec3 Tg = abs(N.x)>0.5 ? vec3(0.0,0.0,1.0) : vec3(1.0,0.0,0.0);
+      N=normalize(N - (Tg*du + vec3(0.0,1.0,0.0)*dv)*(0.90+0.45*boost)*near);
+    }
+  }
+  else if(kind>4.5&&kind<5.5) base=paving(base,vW,near);
+  else if(kind>3.5&&kind<4.5) base*=mix(1.0,0.92+0.16*grain(vW.xz*0.55),near);  // мягкая трава
+
+  float ndl=max(dot(N,uSun),0.0);
+  float sh=ndl>0.0 ? shadow(ndl) : 1.0;
+  vec3 amb=mix(uGndC,uSkyC,clamp(N.y*0.5+0.5,0.0,1.0));
+  // затенение в нижней зоне — только для объёмов зданий, земли не касается
+  float occ=kind<2.5 ? mix(0.74,1.0,clamp(vW.y/7.0,0.0,1.0)) : 1.0;
+
+  // в тени приглушается и рассеянный свет — иначе тени деревьев на газоне не читаются
+  vec3 col=base*(amb*occ*mix(0.80,1.0,sh)+uSunC*ndl*sh);
+
+  if(kind>0.5&&kind<1.5){                                  // остекление
+    float fres=pow(1.0-max(dot(N,V),0.0),4.0);
+    vec3 R=reflect(-V,N);
+    vec3 refl=mix(uGndC*2.3,uHaze,clamp(R.y*3.0+0.5,0.0,1.0));   // низ отражает землю
+    refl=mix(refl,uSkyC*1.55,clamp(R.y*1.4,0.0,1.0));            // верх — небо
+    col=mix(base*amb*0.92,refl,0.22+0.52*fres);
+    vec3 H=normalize(uSun+V);
+    col+=uSunC*pow(max(dot(N,H),0.0),190.0)*sh*1.7;
+    float sill=smoothstep(0.0,0.55,fract(vW.y/3.0));       // штора в верхней части проёма
+    col=mix(col,col*0.55+vec3(0.30,0.27,0.24)*0.55,
+            (1.0-sill)*step(0.5,fract(seed*31.7))*0.72);
+    // вечер: горит примерно каждое третье окно и с разной силой, а не подряд
+    float w2=fract(seed*53.71);
+    float lit=step(0.62,fract(seed*17.317));
+    col=mix(col,uWarm*(0.80+0.55*w2),uNight*lit*0.92);
+  } else if(kind>1.5&&kind<2.5){                           // витрины, фонари, вывеска
+    col=mix(col,uWarm*1.34,max(uNight,0.09)*0.92);         // днём почти не светятся
+  } else if(kind>2.5&&kind<3.5){                           // листва — подсвет насквозь
+    col+=base*0.40*max(dot(-N,uSun),0.0)*sh;
+    col*=mix(0.82,1.16,hash21(floor(vW.xz*3.1+vW.y)));
+  }
+
+  if(uHasSel>0.5){
+    if(abs(vF.y-uSel)<0.5) col*=1.18;
+    else { float l=dot(col,vec3(0.299,0.587,0.114)); col=mix(col,vec3(l)*0.72,0.66); }
+  }
+  col=mix(col,uHaze,clamp(1.0-exp(-pow(dist*0.0019,2.3)),0.0,0.62));
+  outC=vec4(pow(aces(col*uExp),vec3(1.0/2.2)),1.0);
+}`;
+
+const V_DEPTH=`#version 300 es
+layout(location=0) in vec3 aPos; uniform mat4 uLVP;
+void main(){ gl_Position=uLVP*vec4(aPos,1.0); }`;
+const F_DEPTH=`#version 300 es
+precision mediump float; void main(){}`;
+
+const V_SKY=`#version 300 es
+const vec2 P[3]=vec2[3](vec2(-1.,-1.),vec2(3.,-1.),vec2(-1.,3.));
+out vec2 vUv; void main(){ vUv=P[gl_VertexID]; gl_Position=vec4(P[gl_VertexID],1.,1.); }`;
+const F_SKY=`#version 300 es
+precision highp float; in vec2 vUv; out vec4 outC;
+uniform mat4 uInvVP; uniform vec3 uCam,uSun,uZen,uHaze,uSunC;
+uniform float uExp,uTime,uNight;
+float hash21(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+float vnoise(vec2 p){
+  vec2 i=floor(p),f=fract(p); f=f*f*(3.0-2.0*f);
+  return mix(mix(hash21(i),hash21(i+vec2(1,0)),f.x),
+             mix(hash21(i+vec2(0,1)),hash21(i+vec2(1,1)),f.x),f.y);
+}
+float fbm(vec2 p){
+  float s=0.0,a=0.52;
+  for(int i=0;i<5;i++){ s+=a*vnoise(p); p=p*2.07+vec2(1.7,-1.1); a*=0.5; }
+  return s;
+}
+vec3 aces(vec3 x){ return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.0,1.0); }
+void main(){
+  vec4 p=uInvVP*vec4(vUv,1.0,1.0); vec3 d=normalize(p.xyz/p.w-uCam);
+  float t=clamp(d.y,0.0,1.0);
+  vec3 c=mix(uHaze,uZen,pow(t,0.55));   // синева спускается ниже к горизонту
+  if(d.y<0.0) c=mix(uHaze,uHaze*0.62,clamp(-d.y*2.6,0.0,1.0));
+  float s=max(dot(d,uSun),0.0);
+  if(d.y>0.012){
+    vec2 cp=(uCam.xz+d.xz*(1100.0/d.y))*0.00085+vec2(uTime*0.0035,uTime*0.0012);
+    float f=fbm(cp);
+    float cov=smoothstep(0.44,0.80,f)*smoothstep(0.012,0.19,d.y);
+    float lit=0.62+0.55*pow(s,2.2)+0.30*smoothstep(0.44,0.86,f);
+    vec3 cc=mix(uHaze*1.06,vec3(1.0,0.98,0.95),0.60)*lit;
+    cc=mix(cc,uSunC*0.42,0.30*pow(s,3.0));
+    c=mix(c,cc,cov*(0.88-0.45*uNight));
+  }
+  c+=uSunC*pow(s,1400.0)*7.0;
+  c+=uSunC*pow(s,9.0)*0.26;
+  outC=vec4(pow(aces(c*uExp),vec3(1.0/2.2)),1.0);
+}`;
+
+const V_QUAD=`#version 300 es
+const vec2 P[3]=vec2[3](vec2(-1.,-1.),vec2(3.,-1.),vec2(-1.,3.));
+out vec2 vT; void main(){ vec2 p=P[gl_VertexID]; vT=p*0.5+0.5; gl_Position=vec4(p,0.,1.); }`;
+
+const F_BRIGHT=`#version 300 es
+precision highp float; in vec2 vT; out vec4 outC;
+uniform sampler2D uTex; uniform vec2 uTexel; uniform float uThresh;
+void main(){
+  vec3 c=(texture(uTex,vT+uTexel*vec2(-1.,-1.)).rgb+texture(uTex,vT+uTexel*vec2(1.,-1.)).rgb
+         +texture(uTex,vT+uTexel*vec2(-1., 1.)).rgb+texture(uTex,vT+uTexel*vec2(1., 1.)).rgb)*0.25;
+  float l=dot(c,vec3(0.299,0.587,0.114));
+  outC=vec4(c*smoothstep(uThresh,uThresh+0.20,l),1.0);
+}`;
+
+const F_BLUR=`#version 300 es
+precision highp float; in vec2 vT; out vec4 outC;
+uniform sampler2D uTex; uniform vec2 uDir;
+void main(){
+  vec3 c=texture(uTex,vT).rgb*0.227027;
+  c+=(texture(uTex,vT+uDir*1.3846154).rgb+texture(uTex,vT-uDir*1.3846154).rgb)*0.3162162;
+  c+=(texture(uTex,vT+uDir*3.2307692).rgb+texture(uTex,vT-uDir*3.2307692).rgb)*0.0702703;
+  outC=vec4(c,1.0);
+}`;
+
+const F_SSAO=`#version 300 es
+precision highp float; in vec2 vT; out vec4 outC;
+uniform sampler2D uDepth;
+uniform float uNear,uFar,uP00,uP11,uRadius;
+float hash21(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+float lin(float d){ float z=d*2.0-1.0; return (2.0*uNear*uFar)/(uFar+uNear-z*(uFar-uNear)); }
+vec3 vpos(vec2 uv){
+  float z=lin(texture(uDepth,uv).r);
+  vec2 n=uv*2.0-1.0;
+  return vec3(n.x*z/uP00, n.y*z/uP11, -z);
+}
+void main(){
+  float d=texture(uDepth,vT).r;
+  if(d>=0.99995){ outC=vec4(1.0); return; }
+  vec3 P=vpos(vT);
+  if(-P.z>240.0){ outC=vec4(1.0); return; }
+  vec3 N=normalize(cross(dFdx(P),dFdy(P)));
+  float ang=hash21(floor(gl_FragCoord.xy))*6.2832;
+  float ca=cos(ang), sa=sin(ang), occ=0.0;
+  const int K=14;
+  for(int i=0;i<K;i++){
+    float a=float(i)*2.39996+ang;
+    float rad=uRadius*(0.30+0.70*float(i+1)/float(K));
+    vec2 dir=vec2(cos(a),sin(a));
+    vec2 off=vec2(dir.x*ca-dir.y*sa, dir.x*sa+dir.y*ca)*rad;
+    vec2 uv=vT+vec2(off.x*uP00, off.y*uP11)/(-P.z)*0.5;
+    if(uv.x<0.0||uv.x>1.0||uv.y<0.0||uv.y>1.0) continue;
+    vec3 S=vpos(uv);
+    vec3 df=S-P; float l=length(df);
+    if(l<0.02||l>uRadius*2.5) continue;
+    occ+=max(dot(N,df/l)-0.06,0.0)*(uRadius/(uRadius+l*l*0.5));
+  }
+  outC=vec4(clamp(1.0-occ/float(K)*2.4,0.0,1.0));
+}`;
+
+const F_POST=`#version 300 es
+precision highp float; in vec2 vT; out vec4 outC;
+uniform sampler2D uScene,uBloom,uAO; uniform vec2 uTexel; uniform float uBloom2,uAOAmt;
+void main(){
+  vec3 c=(texture(uScene,vT+uTexel*vec2(-0.5,-0.5)).rgb+texture(uScene,vT+uTexel*vec2(0.5,-0.5)).rgb
+         +texture(uScene,vT+uTexel*vec2(-0.5, 0.5)).rgb+texture(uScene,vT+uTexel*vec2(0.5, 0.5)).rgb)*0.25;
+  c*=mix(1.0,texture(uAO,vT).r,uAOAmt);
+  c+=texture(uBloom,vT).rgb*uBloom2;
+  vec2 v=vT-0.5;
+  c*=1.0-0.16*dot(v,v)*1.7;                 // виньетка мягче
+  c=(c-0.5)*1.045+0.5;
+  float l=dot(c,vec3(0.299,0.587,0.114));
+  c=mix(vec3(l),c,1.14);                    // насыщенность без «кислоты»
+  c*=vec3(1.018,1.002,0.982);               // общий тёплый уклон
+  outC=vec4(clamp(c,0.0,1.0),1.0);
+}`;
+
+const pMain=prog(V_MAIN,F_MAIN), pDepth=prog(V_DEPTH,F_DEPTH), pSky=prog(V_SKY,F_SKY);
+const pBright=prog(V_QUAD,F_BRIGHT), pBlur=prog(V_QUAD,F_BLUR), pPost=prog(V_QUAD,F_POST);
+const pSSAO=prog(V_QUAD,F_SSAO);
+const U=(p,n)=>gl.getUniformLocation(p,n);
+const uM={VP:U(pMain,'uVP'),LVP:U(pMain,'uLVP'),Sun:U(pMain,'uSun'),SunC:U(pMain,'uSunC'),
+  SkyC:U(pMain,'uSkyC'),GndC:U(pMain,'uGndC'),Haze:U(pMain,'uHaze'),Cam:U(pMain,'uCam'),
+  Warm:U(pMain,'uWarm'),Night:U(pMain,'uNight'),Sel:U(pMain,'uSel'),HasSel:U(pMain,'uHasSel'),
+  Shadow:U(pMain,'uShadow'),Texel:U(pMain,'uShadowTexel'),Exp:U(pMain,'uExp')};
+const uD={LVP:U(pDepth,'uLVP')};
+const uS={InvVP:U(pSky,'uInvVP'),Cam:U(pSky,'uCam'),Sun:U(pSky,'uSun'),Zen:U(pSky,'uZen'),
+  Haze:U(pSky,'uHaze'),SunC:U(pSky,'uSunC'),Exp:U(pSky,'uExp'),Time:U(pSky,'uTime'),Night:U(pSky,'uNight')};
+const uB={Tex:U(pBright,'uTex'),Texel:U(pBright,'uTexel'),Thresh:U(pBright,'uThresh')};
+const uL={Tex:U(pBlur,'uTex'),Dir:U(pBlur,'uDir')};
+const uP={Scene:U(pPost,'uScene'),Bloom:U(pPost,'uBloom'),AO:U(pPost,'uAO'),
+  Texel:U(pPost,'uTexel'),Amt:U(pPost,'uBloom2'),AOAmt:U(pPost,'uAOAmt')};
+const uA={Depth:U(pSSAO,'uDepth'),Near:U(pSSAO,'uNear'),Far:U(pSSAO,'uFar'),
+  P00:U(pSSAO,'uP00'),P11:U(pSSAO,'uP11'),Radius:U(pSSAO,'uRadius')};
+
+/* сборка сцены */
+buildBlocks(); buildSite();
+const DATA=buf.subarray(0,cur);
+const VERTS=cur/STRIDE;
+
+const vao=gl.createVertexArray(); gl.bindVertexArray(vao);
+const vbo=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,vbo);
+gl.bufferData(gl.ARRAY_BUFFER,DATA,gl.STATIC_DRAW);
+const SB=STRIDE*4;
+[[0,3,0],[1,3,12],[2,3,24],[3,3,36]].forEach(([i,n,o])=>{
+  gl.enableVertexAttribArray(i); gl.vertexAttribPointer(i,n,gl.FLOAT,false,SB,o); });
+gl.bindVertexArray(null);
+buf=null;
+
+/* карта теней */
+const SM=2048;
+const smTex=gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D,smTex);
+gl.texStorage2D(gl.TEXTURE_2D,1,gl.DEPTH_COMPONENT24,SM,SM);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_COMPARE_MODE,gl.COMPARE_REF_TO_TEXTURE);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_COMPARE_FUNC,gl.LEQUAL);
+const smFb=gl.createFramebuffer();
+gl.bindFramebuffer(gl.FRAMEBUFFER,smFb);
+gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.TEXTURE_2D,smTex,0);
+gl.drawBuffers([gl.NONE]); gl.readBuffer(gl.NONE);
+gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+
+function makeTarget(w,h,depth){
+  const t=gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D,t);
+  gl.texStorage2D(gl.TEXTURE_2D,1,gl.RGBA8,w,h);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  const f=gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER,f);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);
+  let dt=null;
+  if(depth){
+    dt=gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D,dt);
+    gl.texStorage2D(gl.TEXTURE_2D,1,gl.DEPTH_COMPONENT24,w,h);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.TEXTURE_2D,dt,0);
+  }
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  return {t:t,f:f,d:dt,w:w,h:h};
+}
+function dropTarget(T){ if(!T) return;
+  gl.deleteTexture(T.t); gl.deleteFramebuffer(T.f); if(T.d) gl.deleteTexture(T.d); }
+let scene=null,bloomA=null,bloomB=null,aoA=null,aoB=null;
+const MAXPIX=MOBILE?2.4e6:6.6e6;          // потолок по числу пикселей кадра
+function rebuildTargets(w,h){
+  dropTarget(scene); dropTarget(bloomA); dropTarget(bloomB);
+  dropTarget(aoA); dropTarget(aoB);
+  const ss=Math.min(2,Math.max(1,Math.sqrt(MAXPIX/Math.max(1,w*h))));
+  const sw=Math.max(2,Math.round(w*ss)), shh=Math.max(2,Math.round(h*ss));
+  scene=makeTarget(sw,shh,true);
+  const bw=Math.max(2,w>>2), bh=Math.max(2,h>>2);
+  bloomA=makeTarget(bw,bh,false); bloomB=makeTarget(bw,bh,false);
+  const aw=Math.max(2,w>>1), ah=Math.max(2,h>>1);
+  aoA=makeTarget(aw,ah,false); aoB=makeTarget(aw,ah,false);
+}
+function fsQuad(){ gl.drawArrays(gl.TRIANGLES,0,3); }
+
+/* ══════════════════════════════════════════════════════════════
+   7. ВРЕМЯ СУТОК
+   Солнце развёрнуто на ~65° вбок от оси основного ракурса:
+   уличный фасад в свету, торец в тени — иначе кадр плоский.
+   ══════════════════════════════════════════════════════════════ */
+const TIMES=[
+  // Направления солнца заданы по реальной ориентации участка: уличный фасад смотрит
+  // на юго-юго-запад (азимут ≈203°), вектора повёрнуты вместе с миром на -22.85°
+  { // утро — солнце с востока: в свету дворовый фасад и торец с гаражами
+    sun:[0.835,0.423,-0.352], sunC:[1.46,1.16,0.86], zen:[0.16,0.33,0.68],
+    haze:[0.62,0.66,0.70], sky:[0.28,0.36,0.50], gnd:[0.17,0.16,0.14], night:0, exp:0.56 },
+  { // день — тёплое послеполуденное солнце с юго-запада: уличный фасад в свету,
+    // восточный торец в тени. Это положение по умолчанию — ближе к рендерам застройщика
+    sun:[-0.280,0.669,0.688], sunC:[1.86,1.62,1.21], zen:[0.07,0.24,0.70],
+    // небесная составляющая поднята: двор весь день в тени дома, без неё он уходит в кашу
+    haze:[0.55,0.68,0.88], sky:[0.46,0.53,0.66], gnd:[0.29,0.26,0.20], night:0, exp:0.52 },
+  { // закат — низкое тёплое солнце в уличный фасад, как на исходном рендере
+    sun:[-0.722,0.174,0.670], sunC:[1.88,1.04,0.52], zen:[0.11,0.19,0.44],
+    haze:[0.82,0.54,0.33], sky:[0.38,0.32,0.32], gnd:[0.20,0.16,0.13], night:0.28, exp:0.68 },
+  { // вечер — светятся окна, витрины, фонари и вывеска
+    sun:[-0.55,0.20,0.55], sunC:[0.10,0.12,0.19], zen:[0.012,0.020,0.048],
+    haze:[0.045,0.055,0.090], sky:[0.070,0.085,0.135], gnd:[0.03,0.03,0.045], night:1, exp:0.95 }
+];
+const WARM=[1.0,0.80,0.50];
+let T={sun:[0,1,0],sunC:[0,0,0],zen:[0,0,0],haze:[0,0,0],sky:[0,0,0],gnd:[0,0,0],night:0,exp:0.52};
+let tFrom=TIMES[1], tTo=TIMES[1], tMix=1;
+function lerpT(k){
+  const L=(a,b)=>[a[0]+(b[0]-a[0])*k, a[1]+(b[1]-a[1])*k, a[2]+(b[2]-a[2])*k];
+  T.sun=L(tFrom.sun,tTo.sun); const l=Math.hypot(T.sun[0],T.sun[1],T.sun[2])||1;
+  T.sun=[T.sun[0]/l,T.sun[1]/l,T.sun[2]/l];
+  T.sunC=L(tFrom.sunC,tTo.sunC); T.zen=L(tFrom.zen,tTo.zen); T.haze=L(tFrom.haze,tTo.haze);
+  T.sky=L(tFrom.sky,tTo.sky); T.gnd=L(tFrom.gnd,tTo.gnd);
+  T.night=tFrom.night+(tTo.night-tFrom.night)*k;
+  T.exp=tFrom.exp+(tTo.exp-tFrom.exp)*k;
+}
+lerpT(1);
+
+/* ══════════════════════════════════════════════════════════════
+   8. КАМЕРА
+   позиция = цель + d·(cos(el)·sin(az), sin(el), cos(el)·cos(az))
+   Ракурсы посчитаны: камера не попадает внутрь объёма, небо в кадре.
+   ══════════════════════════════════════════════════════════════ */
+const VIEWS=[
+  {az:0.72, el:0.15, d:92,  t:[-12,9,2]},     // hero — уличный фасад с юго-востока, с уровня улицы
+  {az:0.95, el:0.85, d:165, t:[-12,8,-4]},    // с птичьего
+  {az:3.90, el:0.30, d:32,  t:[-21,4.6,-20]}, // двор — сверху северной подпорной стены
+  {az:0.28, el:0.13, d:78,  t:[-13,12,13.8]}, // уличный фасад
+  {az:1.62, el:0.20, d:60,  t:[14,10,-4]},    // гаражи и восточная парковка
+  {az:3.60, el:0.13, d:20,  t:[-20,6,-12]}    // входная группа со двора
+];
+const cam={az:VIEWS[0].az-0.30,el:VIEWS[0].el+0.07,d:VIEWS[0].d+38,t:VIEWS[0].t.slice(),
+           vaz:0,vel:0};
+let anim=null, spin=false;
+function flyTo(v,ms){
+  ms = (ms==null)?1500:ms;
+  if(ms<=0){                       // мгновенная установка — без этого (now-t0)/0 даёт NaN
+    cam.az=v.az; cam.el=v.el; cam.d=v.d; cam.t=v.t.slice();
+    cam.vaz=0; cam.vel=0; anim=null; return;
+  }
+  const from={az:cam.az,el:cam.el,d:cam.d,t:cam.t.slice()};
+  let az=v.az; while(az-from.az>Math.PI) az-=2*Math.PI; while(az-from.az<-Math.PI) az+=2*Math.PI;
+  anim={from,to:{az,el:v.el,d:v.d,t:v.t},t0:performance.now(),ms:ms};
+}
+function camPos(){
+  const ce=Math.cos(cam.el);
+  return [cam.t[0]+cam.d*ce*Math.sin(cam.az), cam.t[1]+cam.d*Math.sin(cam.el),
+          cam.t[2]+cam.d*ce*Math.cos(cam.az)];
+}
+
+/* ══════════════════════════════════════════════════════════════
+   9. УПРАВЛЕНИЕ
+   ══════════════════════════════════════════════════════════════ */
+let drag=null, pinch=null;
+const ptr=new Map();
+cvs.addEventListener('pointerdown',e=>{
+  cvs.setPointerCapture(e.pointerId); ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptr.size===1){ drag={x:e.clientX,y:e.clientY,pan:e.button===2||e.shiftKey,moved:0};
+    cvs.classList.add('dragging'); }
+  else if(ptr.size===2){ const a=[...ptr.values()]; pinch=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y); drag=null; }
+  anim=null; setSpin(false);
+});
+cvs.addEventListener('pointermove',e=>{
+  if(!ptr.has(e.pointerId)){ hoverTest(e); return; }
+  const prev=ptr.get(e.pointerId); ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pinch&&ptr.size===2){
+    const a=[...ptr.values()]; const dd=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);
+    cam.d=clamp(cam.d*(pinch/dd),16,420); pinch=dd; return;
+  }
+  if(!drag) return;
+  const dx=e.clientX-prev.x, dy=e.clientY-prev.y;
+  drag.moved+=Math.abs(dx)+Math.abs(dy);
+  if(drag.pan){
+    const s=cam.d*0.0016;
+    const sx=Math.cos(cam.az), sz=-Math.sin(cam.az);
+    cam.t[0]-=(dx*sx+dy*Math.sin(cam.az)*Math.sin(cam.el))*s;
+    cam.t[2]-=(dx*sz+dy*Math.cos(cam.az)*Math.sin(cam.el))*s;
+    cam.t[1]=clamp(cam.t[1]+dy*s*Math.cos(cam.el)*0.6,0,60);
+  } else { cam.vaz-=dx*0.0044; cam.vel+=dy*0.0032; }
+});
+function endPtr(e){
+  ptr.delete(e.pointerId);
+  if(ptr.size<2) pinch=null;
+  if(ptr.size===0){
+    cvs.classList.remove('dragging');
+    if(drag&&drag.moved<7) pick(e);
+    drag=null;
+  }
+}
+cvs.addEventListener('pointerup',endPtr);
+cvs.addEventListener('pointercancel',endPtr);
+cvs.addEventListener('contextmenu',e=>e.preventDefault());
+cvs.addEventListener('wheel',e=>{
+  e.preventDefault(); anim=null;
+  cam.d=clamp(cam.d*Math.exp(e.deltaY*0.0011),16,420);
+},{passive:false});
+
+/* выбор объёма: луч ↔ AABB */
+const BOXES=[
+  {id:0,min:[-39.1,0,-5.1],  max:[-4.0,BASE_TOP,13.8]},        // длинное крыло
+  {id:1,min:[-4.05,0,-18.9], max:[13.7,BASE_TOP,13.8]},        // северный выступ
+  {id:2,min:[-39.1,BASE_TOP,-18.9], max:[13.7,CROWN_TOP+1,13.8]}, // «Небесные дворцы»
+  {id:3,min:[-40,0,-39.4],   max:[-4.05,3.0,-5.1]},            // двор
+  {id:4,min:[14.2,0,-19],    max:[26.5,1.6,13]},               // восточная парковка
+  {id:4,min:[-40,0,18.4],    max:[14,1.6,24.6]},               // парковка вдоль улицы
+  {id:4,min:[-53,0,-34],     max:[-40.4,1.6,-6]}               // парковка за дворовой стеной
+];
+let lastVP=M4.ident();
+function rayAt(px,py){
+  const r=cvs.getBoundingClientRect();
+  const nx=(px-r.left)/r.width*2-1, ny=1-(py-r.top)/r.height*2;
+  const inv=M4.inv(lastVP);
+  const un=(x,y,z)=>{const v=[inv[0]*x+inv[4]*y+inv[8]*z+inv[12], inv[1]*x+inv[5]*y+inv[9]*z+inv[13],
+    inv[2]*x+inv[6]*y+inv[10]*z+inv[14], inv[3]*x+inv[7]*y+inv[11]*z+inv[15]];
+    return [v[0]/v[3],v[1]/v[3],v[2]/v[3]]};
+  const a=un(nx,ny,-1), b=un(nx,ny,1);
+  const d=[b[0]-a[0],b[1]-a[1],b[2]-a[2]]; const l=Math.hypot(d[0],d[1],d[2])||1;
+  return {o:a,d:[d[0]/l,d[1]/l,d[2]/l]};
+}
+function hit(px,py){
+  const {o,d}=rayAt(px,py); let best=null,bt=1e9;
+  for(const B of BOXES){
+    let t0=-1e9,t1=1e9,ok=true;
+    for(let i=0;i<3;i++){
+      if(Math.abs(d[i])<1e-8){ if(o[i]<B.min[i]||o[i]>B.max[i]){ok=false;break} continue }
+      let a=(B.min[i]-o[i])/d[i], b=(B.max[i]-o[i])/d[i];
+      if(a>b){const t=a;a=b;b=t}
+      t0=Math.max(t0,a); t1=Math.min(t1,b);
+      if(t0>t1){ok=false;break}
+    }
+    if(ok&&t1>0&&t0<bt){ bt=t0; best=B.id }
+  }
+  return best;
+}
+function hoverTest(e){ if(ptr.size) return; cvs.classList.toggle('over', hit(e.clientX,e.clientY)!==null); }
+function pick(e){ select(hit(e.clientX,e.clientY)); }
+
+/* ══════════════════════════════════════════════════════════════
+   10. ИНТЕРФЕЙС
+   ══════════════════════════════════════════════════════════════ */
+const objData=[
+  {name:'Длинное крыло', kicker:'Уличный фронт · ул. Спирина',
+   sub:'52,8 м вдоль улицы · 8 этажей · клинкер',
+   rows:[['Этажность','8'],['Отделка фасада','клинкерный кирпич'],
+         ['Высота потолков','2,68–3,3 м'],['Остекление','эркеры в пол'],
+         ['Первый этаж','входные группы'],['Шумоизоляция','несущие стены + звукопоглощение']],
+   note:'Уличный фронт держит красную линию ул. Спирина. Светлый клинкер основного объёма, тёмный с красными вставками — цоколь и венчающие этажи.'},
+  {name:'Северный выступ', kicker:'Второе крыло · восток',
+   sub:'32,7 м · в цоколе 8 гаражей',
+   rows:[['Этажность','8'],['Гаражей в цоколе','8'],['Высота потолков','2,68–3,3 м'],
+         ['Ориентация','окна во двор и на восток'],['Вентиляция','индивидуальная'],
+         ['Двор','без машин, приподнят']],
+   note:'Крыло замыкает двор с востока и вместе с длинным крылом образует букву Г. Индивидуальные гаражи выведены на внешнюю сторону, к парковке — двор остаётся без машин.'},
+  {name:'«Небесные дворцы»', kicker:'Венчающий уровень',
+   sub:'Двухуровневые квартиры с террасой',
+   rows:[['Уровней в квартире','2'],['Высота потолка','до 5,3 м'],
+         ['Остекление','панорамное'],['Терраса','собственная, на кровле'],
+         ['Отделка','тёмный клинкер, красные вставки'],['Цена','по запросу']],
+   note:'Верхний объём отступает от края кровли — образуется собственная терраса. Панорамные окна и потолки до 5,3 м.'},
+  {name:'Двор 12 соток', kicker:'Благоустройство',
+   sub:'Без машин · приподнят над улицей',
+   rows:[['Площадь','12 соток'],['Машины','нет, двор поднят'],
+         ['Озеленение','вишня, яблоня, кустарник'],['Детская площадка','«лабиринт из перцев»'],
+         ['Арт-объект','красные улитки'],['Покрытие','клинкер + резина']],
+   note:'Двор поднят над уровнем улицы и закрыт подпорными стенами из красного клинкера. Игровая зона, качели, гамаки, лавочки, зона тихого отдыха.'},
+  {name:'Паркинг и гаражи', kicker:'Инфраструктура',
+   sub:'более 80 машино-мест · 8 гаражей',
+   rows:[['Машино-мест','более 80'],['Индивидуальных гаражей','8'],
+         ['Размещение','по периметру квартала'],['Двор','закрыт для въезда'],
+         ['Кладовые','есть'],['Коммерция','предусмотрена']],
+   note:'Наземные парковки вынесены за периметр двора: восточная вдоль подпорной стены, южная и западная — перед гаражами.'}
+];
+let sel=-1;
+const dq=s=>document.querySelector(s);
+const dossier=dq('#dossier');
+function select(id){
+  if(id===null||id===undefined||id===sel){ sel=-1; dossier.classList.remove('on'); return }
+  sel=id;
+  const d=objData[id]; if(!d){ sel=-1; return }
+  dq('#d-kicker').textContent=d.kicker;
+  dq('#d-title').textContent=d.name;
+  dq('#d-sub').textContent=d.sub;
+  dq('#d-rows').innerHTML=d.rows.map(([k,v])=>
+    `<div class="row"><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+  dq('#d-note').textContent=d.note;
+  dossier.classList.add('on');
+}
+dq('#close').addEventListener('click',()=>select(null));
+
+function group(sel2,fn){
+  const btns=[...document.querySelectorAll(sel2)];
+  btns.forEach(b=>b.addEventListener('click',()=>{
+    btns.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    fn(b); hideHint();
+  }));
+}
+group('[data-view]',b=>flyTo(VIEWS[+b.dataset.view],1600));
+group('[data-time]',b=>{
+  const i=+b.dataset.time;
+  tFrom={sun:T.sun.slice(),sunC:T.sunC.slice(),zen:T.zen.slice(),haze:T.haze.slice(),
+         sky:T.sky.slice(),gnd:T.gnd.slice(),night:T.night,exp:T.exp};
+  tTo=TIMES[i]; tMix=0;
+});
+const spinBtn=dq('#btn-spin');
+function setSpin(v){ spin=v; spinBtn.setAttribute('aria-pressed',String(v)); }
+spinBtn.addEventListener('click',()=>{ setSpin(!spin); anim=null; hideHint(); });
+const pricesEl=dq('#prices'), pricesBtn=dq('#btn-prices');
+pricesEl.classList.add('on');
+pricesBtn.addEventListener('click',()=>{
+  const on=pricesEl.classList.toggle('on');
+  pricesBtn.setAttribute('aria-pressed',String(on));
+});
+dq('#btn-full').addEventListener('click',()=>{
+  if(document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
+});
+dq('#btn-shot').addEventListener('click',()=>{
+  render(true);
+  cvs.toBlob(b=>{
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(b);
+    a.download='chili-3d-'+new Date().toISOString().slice(0,10)+'.png';
+    a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  },'image/png');
+});
+const hintEl=dq('#hint');
+let hintTimer=setTimeout(hideHint,9000);
+function hideHint(){ hintEl.classList.add('gone'); clearTimeout(hintTimer) }
+cvs.addEventListener('pointerdown',hideHint,{once:true});
+window.addEventListener('keydown',e=>{
+  if(e.key==='Escape') select(null);
+  if(e.key>='1'&&e.key<='6'){ const b=document.querySelector(`[data-view="${+e.key-1}"]`); b&&b.click() }
+});
+
+/* ══════════════════════════════════════════════════════════════
+   11. ЦИКЛ ОТРИСОВКИ
+   ══════════════════════════════════════════════════════════════ */
+let W=-1,H=-1;                       // -1, чтобы буферы собрались даже при нулевом канвасе
+function resize(){
+  const dpr=Math.min(2,window.devicePixelRatio||1);
+  const w=Math.max(2,Math.round(cvs.clientWidth*dpr)), h=Math.max(2,Math.round(cvs.clientHeight*dpr));
+  if(w!==W||h!==H){ W=cvs.width=w; H=cvs.height=h; rebuildTargets(W,H); }
+}
+window.addEventListener('resize',resize);
+
+gl.enable(gl.DEPTH_TEST); gl.disable(gl.CULL_FACE);   // геометрия двусторонняя
+gl.clearColor(0.05,0.05,0.06,1);
+
+let prev=performance.now(), clock=0, AOAMT=0.58;
+function render(force){
+  const now=performance.now(), dt=Math.min(0.05,(now-prev)/1000); prev=now;
+  clock+=dt;
+  resize();
+
+  if(tMix<1){ tMix=Math.min(1,tMix+dt/1.15); lerpT(tMix<1?1-Math.pow(1-tMix,3):1); }
+
+  if(anim){
+    const k=Math.min(1,(now-anim.t0)/anim.ms), e=1-Math.pow(1-k,3.2);
+    cam.az=anim.from.az+(anim.to.az-anim.from.az)*e;
+    cam.el=anim.from.el+(anim.to.el-anim.from.el)*e;
+    cam.d =anim.from.d +(anim.to.d -anim.from.d )*e;
+    for(let i=0;i<3;i++) cam.t[i]=anim.from.t[i]+(anim.to.t[i]-anim.from.t[i])*e;
+    if(k>=1) anim=null;
+  } else {
+    cam.az+=cam.vaz; cam.el=clamp(cam.el+cam.vel,0.045,1.36);
+    cam.vaz*=0.86; cam.vel*=0.86;
+    if(spin) cam.az+=dt*0.018;               // медленный облёт, не карусель
+  }
+
+  const eye=camPos();
+  const proj=M4.persp(Math.PI/180*40, W/H||1, 1.0, 1400);
+  const view=M4.look(eye,cam.t,[0,1,0]);
+  const vp=M4.mul(proj,view); lastVP=vp;
+
+  // солнечная тень: ортопроекция на квартал
+  const C0=[-13,12,-4], R=150;
+  const le=[C0[0]+T.sun[0]*380, C0[1]+T.sun[1]*380, C0[2]+T.sun[2]*380];
+  const lview=M4.look(le,C0,[0,1,0]);
+  const lproj=M4.ortho(-R,R,-R,R,10,760);
+  const lvp=M4.mul(lproj,lview);
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER,smFb);
+  gl.viewport(0,0,SM,SM);
+  gl.clear(gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.POLYGON_OFFSET_FILL); gl.polygonOffset(1.1,1.6);
+  gl.useProgram(pDepth); gl.uniformMatrix4fv(uD.LVP,false,lvp);
+  gl.bindVertexArray(vao); gl.drawArrays(gl.TRIANGLES,0,VERTS);
+  gl.disable(gl.POLYGON_OFFSET_FILL);
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER,scene.f);
+  gl.viewport(0,0,scene.w,scene.h);
+  gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+
+  gl.disable(gl.DEPTH_TEST);
+  gl.useProgram(pSky);
+  gl.uniformMatrix4fv(uS.InvVP,false,M4.inv(vp));
+  gl.uniform3fv(uS.Cam,eye); gl.uniform3fv(uS.Sun,T.sun);
+  gl.uniform3fv(uS.Zen,T.zen); gl.uniform3fv(uS.Haze,T.haze); gl.uniform3fv(uS.SunC,T.sunC);
+  gl.uniform1f(uS.Exp,T.exp); gl.uniform1f(uS.Time,clock); gl.uniform1f(uS.Night,T.night);
+  fsQuad();
+  gl.enable(gl.DEPTH_TEST);
+
+  gl.useProgram(pMain);
+  gl.uniformMatrix4fv(uM.VP,false,vp); gl.uniformMatrix4fv(uM.LVP,false,lvp);
+  gl.uniform3fv(uM.Sun,T.sun); gl.uniform3fv(uM.SunC,T.sunC);
+  gl.uniform3fv(uM.SkyC,T.sky); gl.uniform3fv(uM.GndC,T.gnd);
+  gl.uniform3fv(uM.Haze,T.haze); gl.uniform3fv(uM.Cam,eye); gl.uniform3fv(uM.Warm,WARM);
+  gl.uniform1f(uM.Night,T.night); gl.uniform1f(uM.Sel,sel);
+  gl.uniform1f(uM.HasSel,sel>=0?1:0); gl.uniform1f(uM.Texel,1/SM);
+  gl.uniform1f(uM.Exp,T.exp);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,smTex);
+  gl.uniform1i(uM.Shadow,0);
+  gl.bindVertexArray(vao); gl.drawArrays(gl.TRIANGLES,0,VERTS);
+
+  gl.disable(gl.DEPTH_TEST);
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER,aoA.f);
+  gl.viewport(0,0,aoA.w,aoA.h);
+  gl.useProgram(pSSAO);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,scene.d);
+  gl.uniform1i(uA.Depth,0);
+  gl.uniform1f(uA.Near,1.0); gl.uniform1f(uA.Far,1400);
+  gl.uniform1f(uA.P00,proj[0]); gl.uniform1f(uA.P11,proj[5]);
+  gl.uniform1f(uA.Radius,1.35);
+  fsQuad();
+  gl.useProgram(pBlur); gl.uniform1i(uL.Tex,0);
+  gl.bindFramebuffer(gl.FRAMEBUFFER,aoB.f);
+  gl.bindTexture(gl.TEXTURE_2D,aoA.t);
+  gl.uniform2f(uL.Dir,1/aoA.w,0); fsQuad();
+  gl.bindFramebuffer(gl.FRAMEBUFFER,aoA.f);
+  gl.bindTexture(gl.TEXTURE_2D,aoB.t);
+  gl.uniform2f(uL.Dir,0,1/aoA.h); fsQuad();
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER,bloomA.f);
+  gl.viewport(0,0,bloomA.w,bloomA.h);
+  gl.useProgram(pBright);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,scene.t);
+  gl.uniform1i(uB.Tex,0); gl.uniform2f(uB.Texel,1/scene.w,1/scene.h);
+  gl.uniform1f(uB.Thresh,0.74-0.22*T.night);
+  fsQuad();
+
+  gl.useProgram(pBlur); gl.uniform1i(uL.Tex,0);
+  gl.bindFramebuffer(gl.FRAMEBUFFER,bloomB.f);
+  gl.bindTexture(gl.TEXTURE_2D,bloomA.t);
+  gl.uniform2f(uL.Dir,1/bloomA.w,0); fsQuad();
+  gl.bindFramebuffer(gl.FRAMEBUFFER,bloomA.f);
+  gl.bindTexture(gl.TEXTURE_2D,bloomB.t);
+  gl.uniform2f(uL.Dir,0,1/bloomA.h); fsQuad();
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  gl.viewport(0,0,W,H);
+  gl.useProgram(pPost);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,scene.t);
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,bloomA.t);
+  gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D,aoA.t);
+  gl.uniform1i(uP.Scene,0); gl.uniform1i(uP.Bloom,1); gl.uniform1i(uP.AO,2);
+  gl.uniform2f(uP.Texel,1/scene.w,1/scene.h);
+  gl.uniform1f(uP.Amt,0.20+0.50*T.night);   // свечение приглушено — без «мыла»
+  gl.uniform1f(uP.AOAmt,AOAMT*0.62);
+  fsQuad();
+  gl.activeTexture(gl.TEXTURE0);
+  gl.enable(gl.DEPTH_TEST);
+
+  if(!force) requestAnimationFrame(()=>render(false));
+}
+
+/* внешний API — управление моделью при встраивании на сайт */
+window.chili3d={
+  frame:()=>render(true),
+  view:(i,ms)=>flyTo(VIEWS[i]||VIEWS[0], ms==null?1500:ms),
+  time:i=>{ tFrom=TIMES[i]||TIMES[1]; tTo=tFrom; tMix=1; lerpT(1); },
+  select, camera:cam, verts:VERTS,
+  ao:v=>{ AOAMT=Math.max(0,Math.min(1,v)); }
+};
+
+/* старт */
+const loader=document.getElementById('loader');
+document.getElementById('loader-txt').textContent=
+  'Дом собран · ' + (VERTS/1000|0).toLocaleString('ru-RU') + ' тыс. вершин';
+requestAnimationFrame(()=>{
+  render(false);
+  const slow=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  flyTo(VIEWS[0], slow?0:2100);            // короткий вступительный подлёт
+  setTimeout(()=>loader.classList.add('gone'),420);
+});
+
+})();
+</script>
+</body>
+</html>

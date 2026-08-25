@@ -9,8 +9,8 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
 import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { ServiceCard } from "@/components/cards";
-import { siteConfig, services } from "@/lib/site-config";
-import { buildPageMetadata, absoluteUrl, siteEntityIds } from "@/lib/seo";
+import { aiSalesFaqs, siteConfig, services } from "@/lib/site-config";
+import { buildFaqSchema, buildPageMetadata, absoluteUrl, siteEntityIds } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "AI для продаж - автоматизация воронки и работы с клиентами",
@@ -85,6 +85,9 @@ export default function AiDlyaProdazhPage() {
       <Script id="adp-schema" type="application/ld+json" strategy="beforeInteractive">
         {JSON.stringify(buildSchema())}
       </Script>
+      <Script id="adp-faq-schema" type="application/ld+json" strategy="beforeInteractive">
+        {JSON.stringify(buildFaqSchema(aiSalesFaqs))}
+      </Script>
 
       <section className="page-hero">
         <PageBreadcrumbs
@@ -103,7 +106,7 @@ export default function AiDlyaProdazhPage() {
           <MagneticLink href="/contact" className="button button--primary" external={false}>
             Бесплатный аудит воронки продаж
           </MagneticLink>
-          <MagneticLink href={siteConfig.telegram} className="button button--secondary" external>
+          <MagneticLink href={siteConfig.telegram} className="button button--secondary" external goal="lead_telegram">
             Написать в Telegram
           </MagneticLink>
         </div>
@@ -178,6 +181,44 @@ export default function AiDlyaProdazhPage() {
             {services.map((service) => (
               <ServiceCard key={service.slug} service={service} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--muted">
+        <div className="section__inner">
+          <SectionHeading eyebrow="FAQ" title="Вопросы про AI в отделе продаж" />
+          <dl className="faq-list">
+            {aiSalesFaqs.map((item) => (
+              <div key={item.question} className="faq-list__item">
+                <dt>{item.question}</dt>
+                <dd>{item.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      <section className="section section--muted">
+        <div className="section__inner">
+          <SectionHeading
+            eyebrow="Блог"
+            title="Разбор пилота для отдела продаж"
+            description="Что реально автоматизировать за 30 дней: процесс, данные, метрика и когда AI не нужен."
+          />
+          <div className="ai-agenty__blog-links">
+            <Link href="/blog/ai-agent-dlya-otdela-prodazh-za-30-dney" className="button button--secondary">
+              AI-агент для продаж за 30 дней — полный разбор
+            </Link>
+            <Link href="/blog/keys-kvalifikaciya-lidov-ai-agentom" className="button button--secondary">
+              Кейс: квалификация лидов — какие цифры смотреть
+            </Link>
+            <Link href="/blog/ai-agenty-dlya-b2b-dlinnyy-cikl" className="button button--secondary">
+              AI-агенты для B2B с длинным циклом
+            </Link>
+            <Link href="/blog/ai-agent-i-crm-minimalnye-integracii" className="button button--secondary">
+              AI-агент и CRM: минимальные интеграции
+            </Link>
           </div>
         </div>
       </section>

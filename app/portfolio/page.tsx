@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 
 import { CaseCard } from "@/components/cards";
 import { LeadStrip } from "@/components/lead-strip";
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
+import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { getAllCaseStudies } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -27,6 +29,12 @@ export default function PortfolioPage() {
         </div>
 
         <div className="portfolio-hero__content">
+        <PageBreadcrumbs
+          items={[
+            { name: "Главная", path: "/" },
+            { name: "Кейсы", path: "/portfolio" },
+          ]}
+        />
         <SectionHeading
           as="h1"
           eyebrow="Кейсы"
@@ -55,6 +63,8 @@ export default function PortfolioPage() {
           </div>
         )}
       </section>
+
+      <SeoTopicHub title="Материалы по теме" description="Посадочные и статьи про внедрение AI-агентов." />
 
       <LeadStrip />
     </>

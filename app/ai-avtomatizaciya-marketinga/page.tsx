@@ -88,7 +88,7 @@ export default function AiAvtomatizaciyaMarketingaPage() {
           <MagneticLink href="/contact" className="button button--primary" external={false}>
             Обсудить автоматизацию маркетинга
           </MagneticLink>
-          <MagneticLink href={siteConfig.telegram} className="button button--secondary" external>
+          <MagneticLink href={siteConfig.telegram} className="button button--secondary" external goal="lead_telegram">
             Написать в Telegram
           </MagneticLink>
         </div>
@@ -172,6 +172,9 @@ export default function AiAvtomatizaciyaMarketingaPage() {
         <div style={{ marginTop: 24, display: "flex", gap: 16, flexWrap: "wrap" }}>
           <Link href="/contact" className="button button--primary">
             Записаться на аудит
+          </Link>
+          <Link href="/blog/ai-agent-dlya-marketinga-pervyy-shag" className="button button--secondary">
+            Читать: AI для маркетинга — что автоматизировать первым
           </Link>
           <Link href="/blog/vnedrenie-ai-agenta-v-kompanii-poshagovo" className="button button--secondary">
             Читать: как внедрять AI-агента пошагово

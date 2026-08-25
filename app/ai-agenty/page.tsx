@@ -9,7 +9,7 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
 import { SeoTopicHub } from "@/components/seo-topic-hub";
 import { ServiceCard } from "@/components/cards";
-import { aiAgentsFaqs, siteConfig, services } from "@/lib/site-config";
+import { aiAgentsFaqs, contractorChecklist, serviceRegions, siteConfig, services } from "@/lib/site-config";
 import { buildAiAgentsLandingSchema, buildFaqSchema, buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -60,7 +60,7 @@ export default function AiAgentsPage() {
           <MagneticLink href="/contact" className="button button--primary" external={false}>
             Записаться на бесплатный аудит 30 мин
           </MagneticLink>
-          <MagneticLink href={siteConfig.telegram} className="button button--secondary" external>
+          <MagneticLink href={siteConfig.telegram} className="button button--secondary" external goal="lead_telegram">
             Telegram {siteConfig.telegramHandle}
           </MagneticLink>
         </div>
@@ -146,6 +146,39 @@ export default function AiAgentsPage() {
 
       <section className="section section--muted">
         <div className="section__inner">
+          <SectionHeading
+            eyebrow="География"
+            title="Москва, Санкт-Петербург, Екатеринбург — удалённо, без офиса в каждом городе"
+            description="Как у aiagent0.ru и dodigital.ru: проект ведётся онлайн — Zoom, Telegram, общий доступ к CRM и документам. Вы не платите за московскую аренду в смете, получаете production-системы и фиксированные пакеты."
+          />
+          <div className="cards-grid-3 cards-grid-3--tight">
+            {serviceRegions.map((item) => (
+              <article key={item.city} className="service-card">
+                <h3>{item.city}</h3>
+                <p>{item.note}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="section__inner">
+          <SectionHeading
+            eyebrow="Выбор подрядчика"
+            title="Чек-лист перед подписанием договора на AI-агента"
+            description="Собрал по опыту конкурентов (MBK-Agent, DoDigital, USS-SPb) и своих проектов. Если подрядчик не отвечает на эти пункты — риск «демо вместо production»."
+          />
+          <ul className="about-proof-list" style={{ marginTop: 24, maxWidth: 720 }}>
+            {contractorChecklist.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="section section--muted">
+        <div className="section__inner">
           <SectionHeading eyebrow="FAQ" title="Частые вопросы про AI-агентов" />
           <dl className="faq-list">
             {aiAgentsFaqs.map((item) => (
@@ -166,11 +199,20 @@ export default function AiAgentsPage() {
             description="Пошаговый разбор внедрения AI-агентов: от аудита процессов до production. Реальный опыт, типичные ошибки и метрики."
           />
           <div className="ai-agenty__blog-links">
-            <Link href="/blog/nayti-ai-specialista-ili-vnedrenie-pod-klyuch" className="button button--secondary">
-              Нанять AI-специалиста или внедрение под ключ
+            <Link href="/blog/ai-agent-dlya-otdela-prodazh-za-30-dney" className="button button--secondary">
+              AI в продажах: что автоматизировать за 30 дней
             </Link>
-            <Link href="/blog/vnedrenie-ai-agenta-v-kompanii-poshagovo" className="button button--secondary">
-              Внедрение AI-агента: пошагово от аудита до production
+            <Link href="/blog/skolko-stoit-vnedrenie-ai-agenta-2026" className="button button--secondary">
+              Сколько стоит внедрение AI-агента в 2026
+            </Link>
+            <Link href="/blog/ai-agent-vs-chat-bot" className="button button--secondary">
+              AI-агент vs чат-бот: в чём разница
+            </Link>
+            <Link href="/blog/kak-vybrat-podryadchika-ai-agentov" className="button button--secondary">
+              Как выбрать подрядчика: чек-лист
+            </Link>
+            <Link href="/blog/kak-izmerit-roi-ai-agenta" className="button button--secondary">
+              Как измерить ROI AI-агента
             </Link>
             <Link href="/blog" className="button button--secondary">
               Все статьи в блоге

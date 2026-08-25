@@ -13,6 +13,7 @@ import { MouseEvent as ReactMouseEvent, useEffect, useRef, useState } from "reac
 import { MagneticLink } from "@/components/motion/magnetic";
 import { SplitText } from "@/components/motion/split-text";
 import { siteConfig } from "@/lib/site-config";
+import { metrikaGoals, reachGoal } from "@/lib/metrika";
 
 const TERMINAL_LINES: Array<{ type: "prompt" | "arrow" | "folder" | "comment" | "spacer"; text: string }> = [
   { type: "prompt", text: "whoami" },
@@ -108,6 +109,15 @@ export function HeroBlock() {
   const instantMotion = !!reduceMotion;
   const { visibleLines, typedChars } = useTypedTerminal(instantMotion);
   const tilt = useTerminalTilt();
+  const [allowVideo, setAllowVideo] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const narrow = window.matchMedia("(max-width: 960px)").matches;
+    const saveData = "connection" in navigator && Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
+    setAllowVideo(!coarse && !narrow && !saveData && !reduceMotion);
+  }, [reduceMotion]);
 
   return (
     <section id="hero" className="hero">
@@ -192,7 +202,7 @@ export function HeroBlock() {
               delay: instantMotion ? 0 : 0.6,
             }}
           >
-            <MagneticLink href={siteConfig.hero.primaryCta.href} className="button button--primary">
+            <MagneticLink href={siteConfig.hero.primaryCta.href} className="button button--primary" goal={metrikaGoals.auditClick}>
               {siteConfig.hero.primaryCta.label}
             </MagneticLink>
             <Link href={siteConfig.hero.secondaryCta.href} className="button button--secondary">
@@ -240,17 +250,30 @@ export function HeroBlock() {
             </div>
             <div className="terminal__viewport">
               <div className="terminal__bg" aria-hidden="true">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  poster="/media/terminal-graph-poster.webp"
-                >
-                  <source src="/media/terminal-graph.webm" type="video/webm" />
-                  <source src="/media/terminal-graph.mp4" type="video/mp4" />
-                </video>
+                {allowVideo ? (
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="none"
+                    poster="/media/terminal-graph-poster.webp"
+                    className="terminal__bg-video"
+                  >
+                    <source src="/media/terminal-graph.webm" type="video/webm" />
+                    <source src="/media/terminal-graph.mp4" type="video/mp4" />
+                  </video>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src="/media/terminal-graph-poster.webp"
+                    alt=""
+                    className="terminal__bg-video"
+                    width={640}
+                    height={400}
+                    decoding="async"
+                  />
+                )}
                 <div className="terminal__bg-veil" />
               </div>
               <div className="terminal__body">

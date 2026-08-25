@@ -97,7 +97,7 @@ export default function OptimizaciyaBiznesProcessovPage() {
           <MagneticLink href="/contact" className="button button--primary" external={false}>
             Бесплатный аудит процессов - 30 мин
           </MagneticLink>
-          <MagneticLink href={siteConfig.telegram} className="button button--secondary" external>
+          <MagneticLink href={siteConfig.telegram} className="button button--secondary" external goal="lead_telegram">
             Написать в Telegram
           </MagneticLink>
         </div>

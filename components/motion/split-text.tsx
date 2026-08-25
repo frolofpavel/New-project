@@ -55,7 +55,7 @@ export function SplitText({
       initial="hidden"
       whileInView="visible"
       viewport={{ once, amount: 0.4 }}
-      aria-label={text}
+      aria-hidden="true"
     >
       {words.map((word, wi) => {
         if (/^\s+$/.test(word)) {

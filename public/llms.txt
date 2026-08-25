@@ -6,11 +6,31 @@
 
 - [Главная](https://pavelfrolof.ru/): AI-агенты в бизнес-процессах под ключ
 - [AI-агенты — продукт](https://pavelfrolof.ru/ai-agenty/): пакеты аудит / пилот / система
-- [Блог — найм vs внедрение](https://pavelfrolof.ru/blog/nayti-ai-specialista-ili-vnedrenie-pod-klyuch/)
+- [AI для продаж — посадочная](https://pavelfrolof.ru/ai-dlya-prodazh/)
+- [AI-автоматизация маркетинга](https://pavelfrolof.ru/ai-avtomatizaciya-marketinga/)
 - [Услуги](https://pavelfrolof.ru/services/)
 - [Кейсы](https://pavelfrolof.ru/portfolio/)
 - [Блог](https://pavelfrolof.ru/blog/)
 - [Контакт](https://pavelfrolof.ru/contact/)
+
+## Блог — кластер AI-агентов
+
+- [Дайджест: 15 статей](https://pavelfrolof.ru/blog/daydzhest-15-statey-ai-agenty/)
+- [AI в продажах за 30 дней](https://pavelfrolof.ru/blog/ai-agent-dlya-otdela-prodazh-za-30-dney/)
+- [Внедрение AI-агента пошагово](https://pavelfrolof.ru/blog/vnedrenie-ai-agenta-v-kompanii-poshagovo/)
+- [Найм vs внедрение под ключ](https://pavelfrolof.ru/blog/nayti-ai-specialista-ili-vnedrenie-pod-klyuch/)
+- [AI-агент и CRM](https://pavelfrolof.ru/blog/ai-agent-i-crm-minimalnye-integracii/)
+- [ROI AI-агента](https://pavelfrolof.ru/blog/kak-izmerit-roi-ai-agenta/)
+- [Ошибки внедрения AI](https://pavelfrolof.ru/blog/oshibki-vnedreniya-ai-v-biznes/)
+- [AI-агент vs чат-бот](https://pavelfrolof.ru/blog/ai-agent-vs-chat-bot/)
+- [Стоимость внедрения 2026](https://pavelfrolof.ru/blog/skolko-stoit-vnedrenie-ai-agenta-2026/)
+- [AI для маркетинга: первый шаг](https://pavelfrolof.ru/blog/ai-agent-dlya-marketinga-pervyy-shag/)
+- [RAG и база знаний](https://pavelfrolof.ru/blog/rag-baza-znaniy-dlya-ai-agenta/)
+- [152-ФЗ и on-premise](https://pavelfrolof.ru/blog/ai-agent-152-fz-on-premise/)
+- [AI для HR и рекрутинга](https://pavelfrolof.ru/blog/ai-agent-dlya-hr-i-rekrutinga/)
+- [Чек-лист подрядчика](https://pavelfrolof.ru/blog/kak-vybrat-podryadchika-ai-agentov/)
+- [Кейс: квалификация лидов](https://pavelfrolof.ru/blog/keys-kvalifikaciya-lidov-ai-agentom/)
+- [AI для B2B длинный цикл](https://pavelfrolof.ru/blog/ai-agenty-dlya-b2b-dlinnyy-cikl/)
 
 ## Лаборатория и продукты
 
