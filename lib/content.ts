@@ -19,6 +19,7 @@ type ContentFrontmatter = {
   services?: string[];
   tags?: string[];
   readingTime?: string;
+  noindex?: boolean;
 };
 
 function readMarkdownFiles(folder: "blog" | "portfolio") {
@@ -74,9 +75,14 @@ export function getAllBlogPosts(): BlogPost[] {
       seo: data.seo,
       tags: data.tags ?? [],
       readingTime: data.readingTime ?? "5 минут",
+      noindex: data.noindex === true,
       content,
     }))
     .sort((a, b) => (a.publishedAt < b.publishedAt ? 1 : -1));
+}
+
+export function getIndexedBlogPosts(): BlogPost[] {
+  return getAllBlogPosts().filter((item) => !item.noindex);
 }
 
 export function getBlogPostBySlug(slug: string) {

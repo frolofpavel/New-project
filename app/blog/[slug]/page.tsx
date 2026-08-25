@@ -28,19 +28,26 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     return {};
   }
 
-  return {
-    ...buildPageMetadata({
-      title: item.seo.title,
-      description: item.seo.description,
-      path: `/blog/${item.slug}`,
-      socialTitle: item.seo.title,
-      article: {
-        publishedTime: item.publishedAt,
-        modifiedTime: item.publishedAt,
-        tags: item.tags,
-      },
-    }),
-  };
+  const metadata = buildPageMetadata({
+    title: item.seo.title,
+    description: item.seo.description,
+    path: `/blog/${item.slug}`,
+    socialTitle: item.seo.title,
+    article: {
+      publishedTime: item.publishedAt,
+      modifiedTime: item.publishedAt,
+      tags: item.tags,
+    },
+  });
+
+  if (item.noindex) {
+    return {
+      ...metadata,
+      robots: { index: false, follow: true },
+    };
+  }
+
+  return metadata;
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {

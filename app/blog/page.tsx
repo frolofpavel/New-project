@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 
 import { BlogCard } from "@/components/cards";
 import { LeadStrip } from "@/components/lead-strip";
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { SectionHeading } from "@/components/section-heading";
-import { getAllBlogPosts } from "@/lib/content";
+import { SeoTopicHub } from "@/components/seo-topic-hub";
+import { getIndexedBlogPosts } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -14,11 +16,17 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function BlogPage() {
-  const posts = getAllBlogPosts();
+  const posts = getIndexedBlogPosts();
 
   return (
     <>
       <section className="page-hero">
+        <PageBreadcrumbs
+          items={[
+            { name: "Главная", path: "/" },
+            { name: "Блог", path: "/blog" },
+          ]}
+        />
         <SectionHeading
           as="h1"
           eyebrow="Блог"
@@ -42,6 +50,8 @@ export default function BlogPage() {
           </div>
         )}
       </section>
+
+      <SeoTopicHub title="Материалы по AI-агентам" description="Посадочные страницы и статьи кластера внедрения." />
 
       <LeadStrip />
     </>

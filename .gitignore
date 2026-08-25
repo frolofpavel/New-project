@@ -6,3 +6,8 @@ out
 .env.local
 .env.*.local
 tmp/
+
+# Коммерческие предложения и черновики — в репозиторий не идут:
+# в них цены и данные клиентов, а репозиторий на GitHub.
+public/proposals/*.html
+content/drafts/

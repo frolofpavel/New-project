@@ -118,4 +118,5 @@ export type BlogPost = {
   tags: string[];
   readingTime: string;
   content: string;
+  noindex?: boolean;
 };
