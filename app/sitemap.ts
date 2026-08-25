@@ -86,6 +86,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     {
 
+      url: sitemapUrl("/marketing-spetstehnika"),
+
+      lastModified: new Date(),
+
+      changeFrequency: "monthly",
+
+      priority: 0.95,
+
+    },
+
+    {
+
       url: sitemapUrl("/services"),
 
       lastModified: new Date(),

@@ -37,6 +37,7 @@ export function SiteFooter() {
             <Link href="/ai-agenty">AI-агенты</Link>
             <Link href="/direktor-po-marketingu">Директор по маркетингу</Link>
             <Link href="/marketing-dlya-zastroyshchikov">Маркетинг застройщикам</Link>
+            <Link href="/marketing-spetstehnika">Маркетинг спецтехники</Link>
             <Link href="/services">Услуги</Link>
             <Link href="/portfolio">Кейсы</Link>
             <Link href="/blog">Блог</Link>

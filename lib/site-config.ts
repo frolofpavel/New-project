@@ -268,6 +268,11 @@ export const seoHubPages = [
     description: "Реклама новостроек, аналитика до брони, связка с продажами.",
   },
   {
+    href: "/marketing-spetstehnika",
+    title: "Маркетинг спецтехники",
+    description: "Директ, Авито и тендерный трафик в промышленном B2B.",
+  },
+  {
     href: "/optimizaciya-biznes-processov",
     title: "Оптимизация бизнес-процессов",
     description: "Автоматизация рутины, сокращение ФОТ, ускорение операций.",
