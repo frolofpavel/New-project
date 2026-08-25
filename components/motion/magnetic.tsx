@@ -4,12 +4,15 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 import Link from "next/link";
 import { MouseEvent, ReactNode, useRef } from "react";
 
+import { reachGoal } from "@/lib/metrika";
+
 type MagneticLinkProps = {
   href: string;
   children: ReactNode;
   className?: string;
   strength?: number;
   external?: boolean;
+  goal?: string;
 };
 
 export function MagneticLink({
@@ -18,6 +21,7 @@ export function MagneticLink({
   className,
   strength = 0.3,
   external = false,
+  goal,
 }: MagneticLinkProps) {
   const ref = useRef<HTMLAnchorElement>(null);
   const x = useMotionValue(0);
@@ -39,11 +43,16 @@ export function MagneticLink({
     y.set(0);
   }
 
+  function onClick() {
+    if (goal) reachGoal(goal);
+  }
+
   const commonProps = {
     ref,
     className,
     onMouseMove: onMove,
     onMouseLeave: onLeave,
+    onClick,
     style: { x: sx, y: sy },
   } as const;
 

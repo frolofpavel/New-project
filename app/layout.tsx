@@ -4,7 +4,7 @@ import Script from "next/script";
 
 // CustomCursor disabled — hides system cursor, causes UX issues on Windows
 // import { CustomCursor } from "@/components/motion/cursor";
-import { ScrollProgress } from "@/components/motion/scroll-progress";
+import { ScrollProgressLazy } from "@/components/motion/scroll-progress-lazy";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { SmoothScroll } from "@/components/smooth-scroll";
@@ -15,16 +15,18 @@ import "./globals.css";
 
 const onest = Onest({
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
   variable: "--font-sans",
   display: "swap",
+  preload: true,
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "500"],
+  weight: ["400"],
   variable: "--font-mono",
   display: "swap",
+  preload: false,
 });
 
 export const viewport: Viewport = {
@@ -41,6 +43,7 @@ export const metadata: Metadata = {
   description: siteConfig.seo.description,
   verification: {
     yandex: "e761f1efc48e766c",
+    google: "IP-TkNKb1Y_x2tw7QgdqTOyok58O4vSRwJ5LcLxHXTA",
   },
   alternates: {
     canonical: "/",
@@ -90,7 +93,7 @@ export default function RootLayout({
           {JSON.stringify(buildSiteJsonLdGraph())}
         </Script>
         <SmoothScroll />
-        <ScrollProgress />
+        <ScrollProgressLazy />
         <div className="grain" aria-hidden="true" />
         <div className="page-shell">
           <div className="bg-glow" aria-hidden="true" />
@@ -98,7 +101,7 @@ export default function RootLayout({
           <main>{children}</main>
           <SiteFooter />
         </div>
-        <Script id="yandex-metrika" strategy="afterInteractive">
+        <Script id="yandex-metrika" strategy="lazyOnload">
           {`
             (function(m,e,t,r,i,k,a){
                 m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
