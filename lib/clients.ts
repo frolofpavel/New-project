@@ -49,7 +49,7 @@ export const clientGroups: ClientGroup[] = [
       { name: "КСК ГРУПП", file: "/images/clients/ksk.svg", width: 99, height: 67 },
       { name: "Додо Пицца" },
       { name: "Кари" },
-      { name: "Алгоритмика" },
+      { name: "Алгоритмика", file: "/images/clients/algoritmika.svg", width: 242, height: 143 },
     ],
   },
   {
