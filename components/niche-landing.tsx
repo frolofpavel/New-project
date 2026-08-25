@@ -457,6 +457,29 @@ export function NicheLanding({ config }: { config: NicheLandingConfig }) {
           </div>
         </div>
       </section>
+
+      {/* Липкая полоса действий на мобильном. Из Директа больше половины
+          трафика — телефоны, а единственная кнопка звонка была в самом низу
+          длинной страницы. На десктопе скрыта. */}
+      <div className="cmo-sticky" aria-label="Быстрая связь">
+        <a
+          className="cmo-sticky__call"
+          href={`tel:${siteConfig.phone.replace(/[^\d+]/g, "")}`}
+        >
+          Позвонить
+        </a>
+        <a
+          className="cmo-sticky__tg"
+          href={siteConfig.telegram}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Telegram
+        </a>
+        <a className="cmo-sticky__form" href="#zayavka">
+          Заявка
+        </a>
+      </div>
     </>
   );
 }
