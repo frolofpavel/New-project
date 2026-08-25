@@ -9,8 +9,8 @@
   --border: #1a1e2e;
   --border-2: #222840;
   --text: #e8eaf4;
-  --muted: #4a5270;
-  --muted-2: #7a86a8;
+  --muted: #9aa3c0;
+  --muted-2: #b4bdd4;
   --accent: #2563eb;
   --accent-2: #4d7ef5;
   --accent-dim: rgba(37, 99, 235, 0.15);
@@ -2212,7 +2212,8 @@ main { flex: 1; }
   70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
   100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
 }
-.site-footer__col h4 {
+.site-footer__col h4,
+.site-footer__heading {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--muted);
@@ -2539,6 +2540,7 @@ main { flex: 1; }
     transition: opacity 0.2s, transform 0.2s;
   }
   .site-nav--mobile.is-open {
+    display: flex;
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
@@ -2782,4 +2784,1025 @@ main { flex: 1; }
   .service-card:hover {
     transform: none;
   }
+}
+
+/* ===================================================================
+   Посадочная «Директор по маркетингу на аутсорсе»
+   /direktor-po-marketingu — трафик из Яндекс.Директа
+   =================================================================== */
+
+/* --- Доказательства на первом экране --- */
+.cmo-hero-proof {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 44px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+.cmo-hero-proof li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cmo-hero-proof strong {
+  font-family: var(--font-mono);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--accent-2);
+}
+.cmo-hero-proof span {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* --- Контекстная реклама: две дорожки --- */
+.cmo-ads-grid {
+  margin-top: 8px;
+}
+.cmo-track {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+  height: 100%;
+}
+.cmo-track__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-2);
+}
+.cmo-track__title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.cmo-track__note {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  padding: 4px 10px;
+  background: var(--accent-dim-2);
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  border-radius: 999px;
+}
+.cmo-track__list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+.cmo-track__list li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted-2);
+}
+.cmo-track__list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim-2);
+}
+
+/* --- Плашка-акцент --- */
+.cmo-callout {
+  margin-top: 28px;
+  padding: 20px 24px;
+  background: var(--accent-dim-2);
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--muted-2);
+}
+.cmo-callout strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* --- Таблица сравнения --- */
+.cmo-table-wrap {
+  margin-top: 32px;
+  overflow-x: auto;
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  background: var(--surface);
+  -webkit-overflow-scrolling: touch;
+}
+.cmo-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.cmo-table th,
+.cmo-table td {
+  padding: 16px 18px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.55;
+}
+.cmo-table thead th {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface-2);
+  white-space: nowrap;
+}
+.cmo-table tbody th {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  width: 190px;
+}
+.cmo-table td {
+  color: var(--muted-2);
+}
+.cmo-table tr:last-child th,
+.cmo-table tr:last-child td {
+  border-bottom: none;
+}
+.cmo-table [data-highlight="true"] {
+  background: var(--accent-dim-2);
+  color: var(--text);
+}
+.cmo-table thead [data-highlight="true"] {
+  color: var(--accent-2);
+  background: var(--accent-dim);
+}
+.cmo-table-note {
+  margin-top: 20px;
+  max-width: 760px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+/* --- Этапы работы --- */
+.cmo-stages {
+  list-style: none;
+  counter-reset: none;
+  margin-top: 32px;
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+.cmo-stage {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 28px;
+  padding: 28px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.cmo-stage:last-child {
+  border-bottom: none;
+}
+.cmo-stage:hover {
+  background: var(--surface-2);
+}
+.cmo-stage__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cmo-stage__num {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.55;
+}
+.cmo-stage__period {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.cmo-stage__title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.cmo-stage__text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted-2);
+  max-width: 720px;
+}
+
+/* --- Ссылки под блоком --- */
+.cmo-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 32px;
+}
+
+/* --- Блок заявки --- */
+.cmo-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+.cmo-lead__list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+}
+.cmo-lead__list li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--muted-2);
+}
+.cmo-lead__list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--success);
+}
+.cmo-lead__direct {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+.cmo-lead__direct a {
+  color: var(--muted-2);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-2);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.cmo-lead__direct a:hover {
+  color: var(--accent-2);
+  border-color: var(--accent);
+}
+
+/* --- Согласие на обработку данных в форме --- */
+.lead-form__consent {
+  grid-column: 1 / -1;
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 10px !important;
+  font-family: var(--font-sans) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.55;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  color: var(--muted) !important;
+  cursor: pointer;
+}
+.lead-form__consent input[type="checkbox"] {
+  width: 17px !important;
+  height: 17px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  padding: 0 !important;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.lead-form__consent a {
+  color: var(--muted-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.lead-form__consent a:hover {
+  color: var(--accent-2);
+}
+
+/* --- Юридический документ --- */
+.legal-doc {
+  max-width: 780px;
+}
+.legal-doc h2 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 40px;
+  margin-bottom: 14px;
+}
+.legal-doc h2:first-child {
+  margin-top: 0;
+}
+.legal-doc p,
+.legal-doc li {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--muted-2);
+}
+.legal-doc p {
+  margin-bottom: 14px;
+}
+.legal-doc ul {
+  margin: 0 0 16px 20px;
+  display: grid;
+  gap: 8px;
+}
+
+/* --- Адаптив --- */
+@media (max-width: 960px) {
+  .cmo-lead {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+  }
+  .cmo-stage {
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 720px) {
+  .cmo-hero-proof {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+    margin-top: 36px;
+    padding-top: 26px;
+  }
+  .cmo-track {
+    padding: 22px;
+  }
+  .cmo-stage {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    padding: 24px 20px;
+  }
+  .cmo-stage__aside {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .cmo-stage__num {
+    font-size: 22px;
+  }
+  .cmo-stage__title {
+    font-size: 18px;
+  }
+  .cmo-callout {
+    padding: 18px 20px;
+    font-size: 14.5px;
+  }
+  .cmo-table-note {
+    font-size: 13.5px;
+  }
+  .cmo-lead__direct {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cmo-hero-proof {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .cmo-hero-proof strong {
+    font-size: 24px;
+  }
+  .cmo-links .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Таблица сравнения на мобильном: вместо горизонтальной прокрутки —
+   карточки по критериям. Иначе колонка «Я на аутсорсе» уезжает за экран,
+   а именно она продаёт. */
+@media (max-width: 720px) {
+  .cmo-table-wrap {
+    overflow-x: visible;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+  }
+  .cmo-table {
+    min-width: 0;
+    display: block;
+  }
+  .cmo-table thead {
+    display: none;
+  }
+  .cmo-table tbody,
+  .cmo-table tr,
+  .cmo-table th,
+  .cmo-table td {
+    display: block;
+    width: auto;
+  }
+  .cmo-table tr {
+    margin-bottom: 14px;
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .cmo-table tr:last-child {
+    margin-bottom: 0;
+  }
+  .cmo-table tbody th {
+    width: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface-2);
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cmo-table td {
+    padding: 12px 18px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cmo-table tr td:last-child {
+    border-bottom: none;
+  }
+  .cmo-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cmo-table td[data-highlight="true"]::before {
+    color: var(--accent-2);
+  }
+}
+
+/* Шапка: восьмой пункт меню («Маркетинг») ломал строку на экранах между
+   десктопом и порогом бургер-меню в 960px. Запрещаем перенос и поджимаем
+   отступы только в этом диапазоне. */
+.site-nav a {
+  white-space: nowrap;
+}
+@media (min-width: 961px) {
+  .site-nav {
+    gap: 2px;
+  }
+  .site-nav a {
+    padding: 8px 9px;
+    font-size: 12.5px;
+  }
+  .site-header__right {
+    gap: 12px;
+  }
+  .live-status {
+    white-space: nowrap;
+  }
+}
+@media (min-width: 961px) and (max-width: 1120px) {
+  .site-header__inner {
+    padding: 0 20px;
+  }
+  .live-status__text {
+    display: none;
+  }
+}
+
+/* ===================================================================
+   Визуальный слой посадочной /direktor-po-marketingu
+   =================================================================== */
+
+/* --- Первый экран: текст + портрет --- */
+.cmo-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 56px;
+  align-items: center;
+}
+.cmo-hero__copy {
+  min-width: 0;
+}
+.cmo-hero__media {
+  min-width: 0;
+  max-width: 440px;
+  justify-self: end;
+  width: 100%;
+}
+.cmo-hero__nameplate {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 22px 24px;
+  display: grid;
+  gap: 4px;
+  line-height: 1.4;
+  z-index: 1;
+}
+.cmo-hero__nameplate strong {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.cmo-hero__nameplate span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--muted-2);
+}
+
+/* --- Полоса клиентов --- */
+.cmo-clients {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.cmo-clients__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 48px 32px 40px;
+}
+.cmo-clients__heading {
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 32px;
+}
+.cmo-clients__group {
+  padding: 24px 0 4px;
+  border-top: 1px solid var(--border);
+}
+.cmo-clients__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+/* Сетка равных ячеек: логотипы приходят с разных сайтов и имеют разные
+   пропорции — без общей рамки широкие давят узкие. Ячейка одна на всех,
+   логотип вписывается внутрь и по высоте, и по ширине. */
+.cmo-clients__row {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+  gap: 10px;
+}
+.cmo-clients__cell {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  transition: border-color 0.25s, background 0.25s;
+}
+.cmo-clients__cell:hover {
+  border-color: var(--border-2);
+  background: var(--surface);
+}
+.cmo-clients__name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+  line-height: 1.3;
+  color: var(--muted-2);
+  opacity: 0.72;
+  transition: opacity 0.25s;
+}
+.cmo-clients__cell:hover .cmo-clients__name {
+  opacity: 1;
+}
+/* Логотипы разноцветные и с разных сайтов — приводим к одному монохрому,
+   иначе полоса выглядит как свалка чужих брендбуков. */
+.cmo-clients__logo {
+  max-height: 34px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.58;
+  transition: opacity 0.25s;
+}
+.cmo-clients__cell:hover .cmo-clients__logo {
+  opacity: 0.95;
+}
+
+/* --- Схема отчёта --- */
+.cmo-report {
+  margin: 32px 0 0;
+}
+.cmo-report__card {
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+.cmo-report__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.cmo-report__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.14);
+  flex-shrink: 0;
+}
+.cmo-report__title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--muted-2);
+}
+.cmo-report__tag {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 3px 9px;
+  border: 1px solid var(--border-2);
+  border-radius: 999px;
+}
+.cmo-report__rows {
+  display: grid;
+  gap: 2px;
+  padding: 8px 0;
+}
+.cmo-report__row {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr) 190px;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 20px;
+}
+.cmo-report__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.cmo-report__bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.cmo-report__bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+}
+.cmo-report__hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  text-align: right;
+}
+.cmo-report__foot {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--accent-dim-2);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted-2);
+}
+.cmo-report figcaption {
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 720px;
+}
+
+/* --- Видео-фон блока заявки --- */
+.cmo-lead-section {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.cmo-lead__video {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.cmo-lead__video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+.cmo-lead__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    var(--bg) 0%,
+    rgba(8, 9, 15, 0.82) 40%,
+    rgba(8, 9, 15, 0.92) 100%
+  );
+}
+
+/* --- Адаптив визуального слоя --- */
+@media (max-width: 960px) {
+  .cmo-hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  .cmo-hero__media {
+    justify-self: start;
+    max-width: 380px;
+  }
+  .cmo-report__row {
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 6px 16px;
+  }
+  .cmo-report__hint {
+    grid-column: 2;
+    text-align: left;
+  }
+}
+
+@media (max-width: 720px) {
+  .cmo-clients__inner {
+    padding: 22px 20px;
+    gap: 12px 24px;
+  }
+  .cmo-clients__row {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+  }
+  .cmo-clients__cell {
+    height: 60px;
+    padding: 10px 12px;
+  }
+  .cmo-clients__logo {
+    max-height: 26px;
+  }
+  .cmo-clients__name {
+    font-size: 12.5px;
+  }
+  .cmo-hero__media {
+    max-width: 100%;
+  }
+  .cmo-hero__nameplate {
+    padding: 18px 20px;
+  }
+  .cmo-report__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 14px 18px;
+  }
+  .cmo-report__hint {
+    grid-column: 1;
+  }
+  .cmo-report__bar {
+    order: 3;
+  }
+}
+
+/* Уважаем системную настройку «меньше движения» */
+@media (prefers-reduced-motion: reduce) {
+  .cmo-lead__video video {
+    display: none;
+  }
+}
+
+/* --- Объём продаж: сильнейшее доказательство на странице.
+       Все цифры одного веса и одного цвета — иначе блок распадается
+       на два несвязанных куска. --- */
+.cmo-volume {
+  margin-top: 36px;
+  padding: 30px 32px;
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--accent-dim) 0%, var(--accent-dim-2) 60%, transparent 100%);
+}
+.cmo-volume__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.cmo-volume__grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 28px 32px;
+}
+.cmo-volume__item {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+.cmo-volume__item strong {
+  font-family: var(--font-mono);
+  font-size: clamp(26px, 2.9vw, 34px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--accent-2);
+  white-space: nowrap;
+}
+.cmo-volume__item span {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--muted-2);
+}
+.cmo-volume__text {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(37, 99, 235, 0.25);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--muted-2);
+  max-width: 720px;
+}
+
+@media (max-width: 720px) {
+  .cmo-clients__inner {
+    padding: 22px 20px;
+    gap: 12px 24px;
+  }
+  .cmo-clients__row {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+  }
+  .cmo-clients__cell {
+    height: 60px;
+    padding: 10px 12px;
+  }
+  .cmo-clients__logo {
+    max-height: 26px;
+  }
+  .cmo-clients__name {
+    font-size: 12.5px;
+  }
+  .cmo-hero__media {
+    max-width: 100%;
+  }
+  .cmo-hero__nameplate {
+    padding: 18px 20px;
+  }
+  .cmo-report__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 14px 18px;
+  }
+  .cmo-report__hint {
+    grid-column: 1;
+  }
+  .cmo-report__bar {
+    order: 3;
+  }
+}
+
+/* Уважаем системную настройку «меньше движения» */
+@media (prefers-reduced-motion: reduce) {
+  .cmo-lead__video video {
+    display: none;
+  }
+}
+
+
+@media (max-width: 720px) {
+  .cmo-clients__inner {
+    padding: 36px 20px 32px;
+  }
+  .cmo-clients__group {
+    gap: 14px 24px;
+    padding: 18px 0;
+  }
+  .cmo-clients__label {
+    margin-bottom: 10px;
+  }
+  .cmo-volume {
+    padding: 24px 20px;
+    margin-top: 28px;
+  }
+  .cmo-volume__grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 22px 20px;
+  }
+  .cmo-volume__item strong {
+    font-size: 24px;
+  }
+  .cmo-volume__item span {
+    font-size: 12.5px;
+  }
+}
+
+
+/* --- Отзывы на нишевых посадочных --- */
+.cmo-quote {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+  height: 100%;
+}
+.cmo-quote__flag {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--danger);
+  padding: 4px 10px;
+  border: 1px dashed rgba(239, 68, 68, 0.45);
+  border-radius: 999px;
+}
+.cmo-quote__text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted-2);
+  flex: 1;
+}
+.cmo-quote__text::before {
+  content: "«";
+  color: var(--accent);
+  font-weight: 700;
+}
+.cmo-quote__text::after {
+  content: "»";
+  color: var(--accent);
+  font-weight: 700;
+}
+.cmo-quote__meta {
+  display: grid;
+  gap: 4px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.cmo-quote__meta strong {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cmo-quote__meta span {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted);
 }

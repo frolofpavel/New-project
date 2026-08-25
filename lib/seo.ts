@@ -24,7 +24,12 @@ function normalizePath(path: string) {
     return "/";
   }
 
-  return path.startsWith("/") ? path : `/${path}`;
+  const withSlash = path.startsWith("/") ? path : `/${path}`;
+  if (/\.[a-zA-Z0-9]+$/.test(withSlash)) {
+    return withSlash;
+  }
+
+  return withSlash.endsWith("/") ? withSlash : `${withSlash}/`;
 }
 
 export function absoluteUrl(path = "/") {

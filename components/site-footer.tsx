@@ -31,10 +31,12 @@ export function SiteFooter() {
         </div>
 
         <div className="site-footer__col">
-          <h4>Навигация</h4>
+          <p className="site-footer__heading">Навигация</p>
           <div className="site-footer__links">
             <Link href="/">Главная</Link>
             <Link href="/ai-agenty">AI-агенты</Link>
+            <Link href="/direktor-po-marketingu">Директор по маркетингу</Link>
+            <Link href="/marketing-dlya-zastroyshchikov">Маркетинг застройщикам</Link>
             <Link href="/services">Услуги</Link>
             <Link href="/portfolio">Кейсы</Link>
             <Link href="/blog">Блог</Link>
@@ -47,7 +49,7 @@ export function SiteFooter() {
         </div>
 
         <div className="site-footer__col">
-          <h4>Связь</h4>
+          <p className="site-footer__heading">Связь</p>
           <div className="site-footer__links">
             <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
             <a href={`tel:${siteConfig.phone.replace(/[^\d+]/g, "")}`}>
@@ -75,7 +77,8 @@ export function SiteFooter() {
       <div className="site-footer__bottom">
         <p className="site-footer__copy">{siteConfig.location}</p>
         <p className="site-footer__copy">
-          © {new Date().getFullYear()} · {siteConfig.name} · Новосибирск
+          © {new Date().getFullYear()} · {siteConfig.name} · Новосибирск ·{" "}
+          <Link href="/politika-konfidencialnosti">Политика конфиденциальности</Link>
         </p>
       </div>
     </footer>

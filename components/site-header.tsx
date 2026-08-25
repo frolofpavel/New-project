@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 const navigation = [
   { href: "/", label: "Главная" },
   { href: "/ai-agenty", label: "AI-агенты" },
+  { href: "/direktor-po-marketingu", label: "Маркетинг" },
   { href: "/services", label: "Услуги" },
   { href: "/portfolio", label: "Кейсы" },
   { href: "/blog", label: "Блог" },
@@ -70,7 +71,7 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <Link href="/" className="brand" aria-label="Павел Фролов — главная">
+        <Link href="/" className="brand">
           <span className="brand__mark" aria-hidden="true" />
           <span className="brand__text">
             Frolov<span>.PF</span>
@@ -115,7 +116,7 @@ export function SiteHeader() {
         id="mobile-nav"
         className={`site-nav site-nav--mobile${menuOpen ? " is-open" : ""}`}
         aria-label="Мобильная навигация"
-        aria-hidden={!menuOpen}
+        hidden={!menuOpen}
       >
         {navLinks}
         <Link
